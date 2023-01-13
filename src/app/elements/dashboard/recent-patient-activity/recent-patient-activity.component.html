@@ -1,0 +1,58 @@
+<div class="card">
+    <div class="card-header border-0 pb-0">
+        <h4 class="card-title">Recent Patient Activity</h4>
+        <div class="dropdown ml-auto dropdown-no-icon" ngbDropdown>
+            <div class="btn-link" data-toggle="dropdown" ngbDropdownToggle>
+                <svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1"><g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><rect x="0" y="0" width="24" height="24"></rect><circle fill="#000000" cx="5" cy="12" r="2"></circle><circle fill="#000000" cx="12" cy="12" r="2"></circle><circle fill="#000000" cx="19" cy="12" r="2"></circle></g></svg>
+            </div>
+            <div class="dropdown-menu dropdown-menu-right" ngbDropdownMenu>
+                <a class="dropdown-item" href="#">Edit</a>
+                <a class="dropdown-item" href="#">Delete</a>
+            </div>
+        </div>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive ">
+            <table class="table patient-activity">
+                <tbody>
+                    <tr *ngFor="let item of data" class="{{item.active_class}}">
+                        <td>
+                            <div class="media align-items-center">
+                                <img class="mr-3 img-fluid rounded" width="78" src="{{item.image}}" alt="DexignZone">
+                                <div class="media-body">
+                                    <a routerLink="/{{item.url}}"><h5 class="mt-0 mb-1">{{item.patient_detail}}</h5></a>
+                                    <p class="mb-0">{{item.age}}</p>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <p class="mb-0">Disease</p>
+                            <h5 class="my-0 text-primary">{{item.disease}}</h5>
+                        </td>
+                        <td>
+                            <div class="d-flex align-items-center">
+                                <div>
+                                    <p class="mb-1">Status</p>
+                                    <h5 class="mt-0 mb-1 {{item.status_class}}">{{item.status}}</h5>
+                                    <small>{{item.date}}</small>
+                                </div>
+                                <div class="dropdown ml-auto dropdown-no-icon" placement="bottom-right" ngbDropdown>
+                                    <div class="btn-link" data-toggle="dropdown" ngbDropdownToggle>
+                                        <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1"><g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><rect x="0" y="0" width="24" height="24"></rect><circle fill="#000000" cx="12" cy="5" r="2"></circle><circle fill="#000000" cx="12" cy="12" r="2"></circle><circle fill="#000000" cx="12" cy="19" r="2"></circle></g></svg>
+                                    </div>
+                                    <div class="dropdown-menu dropdown-menu-right" ngbDropdownMenu>
+                                        <a class="dropdown-item" href="#">Edit</a>
+                                        <a class="dropdown-item" href="#">Delete</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+               </tbody>
+            </table>
+        </div>
+    </div>
+    <!-- <div class="card-footer border-0 pt-0 text-center">
+        <a href="javascript:void(0);" class="btn-link">See More >></a>
+    </div> -->
+</div>

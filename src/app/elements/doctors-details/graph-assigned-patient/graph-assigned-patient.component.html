@@ -1,0 +1,41 @@
+<div class="card">
+    <div class="card-header border-0 pb-0">
+        <h4 class="card-title">Assigned Patient</h4>
+    </div>
+    <div class="card-body">
+        <div class="media patient-box">
+            <img class="mr-3 img-fluid rounded" width="110" src="assets/images/avatar/1.jpg" alt="DexignZone">
+            <div class="media-body">
+                <h3 class="mt-0 mb-2 text-black bold mt-1"><b>Brian Lucky</b></h3>
+                <h4 class="mb-4 text-primary">Cold & Flue</h4>
+                <a href="javascript:void(0);" class="btn-link mr-4 text-dark">Unassign</a>
+                <a href="javascript:void(0);" class="btn-link text-danger ">Check Imporvement</a>
+            </div>
+            <div id="chart" class="mr-0">
+            </div>
+            
+                 <apx-chart
+                    [series]="chartOptions.series"
+                    [chart]="chartOptions.chart"
+                    [xaxis]="chartOptions.xaxis"
+                    [yaxis]="chartOptions.yaxis"
+                    [grid]="chartOptions.grid"
+                    [stroke]="chartOptions.stroke"
+                    [title]="chartOptions.title"
+                    [legend]="chartOptions.legend"
+                    [tooltip]="chartOptions.tooltip"
+                ></apx-chart>
+                
+                    <!-- [dataLabels]="chartOptions.dataLabels" -->
+                
+            
+            
+            <div class="media-footer align-self-center">
+                <div class="up-sign text-success">
+                    <i class="fa fa-caret-up"></i>
+                    <h3 class="text-success">4%</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

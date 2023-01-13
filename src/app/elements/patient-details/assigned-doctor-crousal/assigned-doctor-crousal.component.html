@@ -1,0 +1,29 @@
+<div class="card">
+    <div class="card-header border-0 pb-0">
+        <h4 class="card-title">Assigned Doctor</h4>
+    </div>
+    <div class="card-body">
+        <owl-carousel-o [options]="customOptions" class="assigned-doctor owl-carousel-1">
+            <ng-template carouselSlide *ngFor="let items of data">
+                <div class="items">
+                    <div class="bootstrap-media">
+                        <div class="media mb-4">
+                            <img class="mr-3 img-fluid rounded" width="94" src="{{items.image}}" alt="DexignZone">
+                            <div class="media-body">
+                                <h4 class="mt-0 mb-1"><a routerLink="/{{items.url}}" class="text-black">{{items.name}}</a></h4>
+                                <p class="mb-1">{{items.specialist}}</p>
+                                <div class="star-review fs-14">
+                                    <i *ngFor="let ratings of items.ratings_class " class="{{ratings.icon_class}}"></i>
+                                    <span class="ml-3">{{items.total_reviews}}</span>
+                                </div>
+                            </div>
+                        </div>
+                        <a href="javascript:void(0);" class="btn btn-outline-dark mr-2">Availability</a>
+                        <a href="javascript:void(0);" class="btn btn-danger">+ Assign</a>
+                    </div>
+                </div>
+            
+            </ng-template>
+        </owl-carousel-o>
+    </div>
+</div>

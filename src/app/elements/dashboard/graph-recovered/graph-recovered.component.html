@@ -1,0 +1,53 @@
+<div class="card">
+    <div class="card-header border-0 pb-0">
+        <h4 class="card-title">Recovered</h4>
+        <div class="dropdown ml-auto dropdown-no-icon" ngbDropdown>
+            <div class="btn-link" data-toggle="dropdown" ngbDropdownToggle>
+                <svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1"><g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><rect x="0" y="0" width="24" height="24"></rect><circle fill="#000000" cx="5" cy="12" r="2"></circle><circle fill="#000000" cx="12" cy="12" r="2"></circle><circle fill="#000000" cx="19" cy="12" r="2"></circle></g></svg>
+            </div>
+            <div class="dropdown-menu dropdown-menu-right" ngbDropdownMenu>
+                <a class="dropdown-item" href="#">Edit</a>
+                <a class="dropdown-item" href="#">Delete</a>
+            </div>
+        </div>
+    </div>
+    <div class="card-body pb-0">
+        <div class="recovered-chart-deta d-flex">
+            <div class="col">
+                <span class="bg-danger"></span>	
+                <div>
+                    <p>New</p>
+                    <h5>451</h5>
+                </div>
+            </div>
+            <div class="col">
+                <span class="bg-success"></span>	
+                <div>
+                    <p>Recovered</p>
+                    <h5>623</h5>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card-body pt-0 px-3 pb-3">
+        <div id="chartTimeline" style="width:100%;">
+        
+            <apx-chart
+                [series]="chartOptions.series"
+                [chart]="chartOptions.chart"
+                [dataLabels]="chartOptions.dataLabels"
+                [plotOptions]="chartOptions.plotOptions"
+                [yaxis]="chartOptions.yaxis"
+                [legend]="chartOptions.legend"
+                [fill]="chartOptions.fill"
+                [stroke]="chartOptions.stroke"
+                [tooltip]="chartOptions.tooltip"
+                [xaxis]="chartOptions.xaxis"
+                [colors]="chartOptions.colors"
+                [responsive]="chartOptions.responsive"
+                [grid]="chartOptions.grid"
+            ></apx-chart>
+            
+        </div>
+    </div>
+</div>

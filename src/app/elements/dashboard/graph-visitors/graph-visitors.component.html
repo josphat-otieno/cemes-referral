@@ -1,0 +1,40 @@
+<div class="card">
+    <div class="card-header border-0 pb-0">
+        <h4 class="card-title">Visitors</h4>
+        <div class="dropdown ml-auto dropdown-no-icon" ngbDropdown>
+            <div class="btn-link" data-toggle="dropdown" ngbDropdownToggle>
+                <svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1"><g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><rect x="0" y="0" width="24" height="24"></rect><circle fill="#000000" cx="5" cy="12" r="2"></circle><circle fill="#000000" cx="12" cy="12" r="2"></circle><circle fill="#000000" cx="19" cy="12" r="2"></circle></g></svg>
+            </div>
+            <div class="dropdown-menu dropdown-menu-right" ngbDropdownMenu>
+                <a class="dropdown-item" href="#">Edit</a>
+                <a class="dropdown-item" href="#">Delete</a>
+            </div>
+        </div>
+    </div>
+    <div class="card-body px-3 pt-2">
+        <div id="chartStrock">
+                
+            <apx-chart
+                id="lineChart"
+                [series]="chartOptions.series"
+                [chart]="chartOptions.chart"
+                [xaxis]="chartOptions.xaxis"
+                [dataLabels]="chartOptions.dataLabels"
+                [yaxis]="chartOptions.yaxis"
+                [labels]="chartOptions.labels"
+                [title]="chartOptions.title"
+                [subtitle]="chartOptions.subtitle"
+                [colors]="chartOptions.colors"
+                [fill]="chartOptions.fill"
+                [tooltip]="chartOptions.tooltip"
+                [grid]="chartOptions.grid"
+                [responsive]="chartOptions.responsive"
+                [markers]="chartOptions.markers"
+                [responsive]="chartOptions.responsive"
+            ></apx-chart>
+            
+                <!-- [stroke]="chartOptions.stroke" -->
+                <!-- [legend]="chartOptions.legend" -->
+        </div>
+    </div>
+</div>

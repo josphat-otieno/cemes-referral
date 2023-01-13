@@ -1,0 +1,36 @@
+<div class="card">
+    <div class="card-header border-0 pb-0">
+        <h4 class="card-title">Revenue</h4>
+        <mat-form-field class="form-control style-1 default-select  mr-3 style-2 mb-3 dashboard-select">
+            <mat-select value="2021">
+                <mat-option value="2021">2021</mat-option>
+                <mat-option value="2020">2020</mat-option>
+                <mat-option value="2019">2019</mat-option>
+            </mat-select>
+        </mat-form-field>
+    </div>
+    <div class="card-body pt-2">
+        <h3 class="text-primary font-w600">$41,512k <small class="text-dark ml-2">$25,612k</small></h3>
+        <div id="chartBar">
+            
+            <apx-chart
+                [series]="chartOptions.series"
+                [chart]="chartOptions.chart"
+                [dataLabels]="chartOptions.dataLabels"
+                [plotOptions]="chartOptions.plotOptions"
+                [yaxis]="chartOptions.yaxis"
+                [legend]="chartOptions.legend"
+                [fill]="chartOptions.fill"
+                [stroke]="chartOptions.stroke"
+                [tooltip]="chartOptions.tooltip"
+                [xaxis]="chartOptions.xaxis"
+                [colors]="chartOptions.colors"
+                [responsive]="chartOptions.responsive"
+                [grid]="chartOptions.grid"
+                [markers]="chartOptions.markers"
+            ></apx-chart>
+                
+            
+        </div>
+    </div>
+</div>

@@ -1,0 +1,60 @@
+<div class="card">
+    <div class="card-header border-0 pb-0">
+        <h4 class="card-title">Patients (%)</h4>
+        <mat-form-field class="form-control style-1 default-select  mr-3 style-2 mb-3 dashboard-select">
+            <mat-select value="Weekly">
+                <mat-option value="Weekly">Weekly</mat-option>
+                <mat-option value="Daily">Daily</mat-option>
+                <mat-option value="Monthly">Monthly</mat-option>
+            </mat-select>
+        </mat-form-field>
+    </div>
+    <div class="card-body pt-2">
+        <h4 class="text-dark font-w400">Total Patient</h4>
+        <h3 class="text-primary font-w600">562,084 People</h3>
+        <div class="row mx-0 align-items-center">
+            <div class="col-sm-8 col-md-7  px-0">
+                <div id="chartCircle">
+                    <apx-chart
+                        [series]="chartOptions.series"
+                        [chart]="chartOptions.chart"
+                        [plotOptions]="chartOptions.plotOptions"
+                        [labels]="chartOptions.labels"
+                        [responsive]="chartOptions.responsive"
+                        [fill]="chartOptions.fill"
+                        [colors]="chartOptions.colors"
+                        [legend]="chartOptions.legend"
+                    ></apx-chart>
+                        
+                </div>
+            </div>
+            <div class="col-sm-4 col-md-5 px-0">
+                <div class="patients-chart-deta">
+                    <div class="col px-0">
+                        <span class="bg-danger"></span>	
+                        <div>
+                            <p>New</p>
+                            <h3>64%</h3>
+                        </div>
+                    </div>
+                    <div class="col px-0">
+                        <span class="bg-success"></span>	
+                        <div>
+                            <p>Recovered</p>
+                            <h3>73%</h3>
+                        </div>
+                    </div>
+                    <div class="col px-0">
+                        <span class="bg-warning"></span>	
+                        <div>
+                            <p>In Treatment</p>
+                            <h3>48%</h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        
+    </div>
+</div>

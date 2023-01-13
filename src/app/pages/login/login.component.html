@@ -1,0 +1,53 @@
+<div class="authincation h-100">
+    <div class="container vh-100">
+        <div class="row justify-content-center h-100 align-items-center">
+            <div class="col-lg-6 col-md-8">
+                <div class="authincation-content">
+                    <div class="row no-gutters">
+                        <div class="col-xl-12">
+                            <div class="auth-form">
+                                <div class="text-center mb-3">
+                                    <a [routerLink]="['/admin/index']"><img class="home-logo" src="assets/images/cbf.png" alt=""></a>
+                                </div>
+
+                                <div class="container alert alert-danger" *ngIf="msg != ''">
+                                   <i class="fa fa-exclamation"></i> {{msg}}
+                                </div>
+                                <h4 class="text-center mb-4">Sign in to your account</h4>
+                                <form class="form" [formGroup]="signInForm" (ngSubmit)="loginUser()"> 
+                                    <div class="form-group">
+                                        <label class="mb-1"><strong>Email</strong></label>
+                                        <input type="email" class="form-control" value="vickoweb@gmail.com"  name="email" formControlName="email" autocomplete="off"
+                                        [ngClass]="{
+                                          'is-invalid': signInForm.controls['email'].invalid,
+                                          'is-valid': signInForm.controls['email'].valid
+                                        }" />
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="mb-1"><strong>Password</strong></label>
+                                        <input type="password" class="form-control" name="password" autocomplete="off"
+                                        formControlName="password" [ngClass]="{
+                                          'is-invalid': signInForm.controls['password'].invalid,
+                                          'is-valid': signInForm.controls['password'].valid
+                                        }" />
+                                    </div>
+                                    <div class="form-row d-flex justify-content-between mt-4 mb-2">
+                                        <div class="form-group">
+                                            <a [routerLink]="['/forgot-password']">Forgot Password?</a>
+                                        </div>
+                                    </div>
+                                    <div class="text-center">
+                                        <button type="submit" class="btn btn-primary btn-block">Sign Me In</button>
+                                    </div>
+                                </form>
+                                <div class="new-account mt-3">
+                                    <p>Don't have an account? <a class="text-primary" [routerLink]="['/register']">Sign up</a></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

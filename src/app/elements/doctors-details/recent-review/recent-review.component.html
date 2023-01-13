@@ -1,0 +1,22 @@
+<div class="card">
+    <div class="card-header border-0">
+        <h4 class="card-title">Recent Review</h4>
+    </div>
+    <div class="card-body pt-0 pb-0 loadmore-content height600 dz-scroll" id="recentReviewsContent">
+        
+        <div class="media review-box mb-4" *ngFor="let item of data">
+            <img class="mr-3 img-fluid rounded" width="105" src="{{item.image}}" alt="DexignZone">
+            <div class="media-body">
+                <h4 class="mt-0 mb-3"><a routerLink="/{{item.url}}" class="text-black">{{item.name}}</a></h4>
+                <p class="mb-3">{{item.description}}</p>
+                <span class="btn btn-xs light btn-danger btn-rounded mb-1 mr-2" *ngFor="let tag of item.tags">EXCELENT</span>
+            </div>
+            <div class="media-footer">
+                <div class="star-review text-md-center">
+                    <span class="text-primary">{{item.ratings}}</span>
+                    <i *ngFor="let ratings of item.ratings_class " class="{{ratings.icon_class}}"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
