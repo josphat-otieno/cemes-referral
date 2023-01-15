@@ -20,6 +20,10 @@ export class ApiEndpointService {
     UPDATE_PROFILE: `${ApiEndpointService.MAIN_CONTEXT}/user/`,
     UPDATE_USER: `${ApiEndpointService.MAIN_CONTEXT}/user/edit-user/`,
     RETRIEVE_TOKEN: `${ApiEndpointService.MAIN_CONTEXT}/user/token/refresh/`,
+
+    // Membership
+    GET_ALL_MEMBERS: `${ApiEndpointService.MAIN_CONTEXT}/user/user-details/`,
+
   }
 
   constructor() { }

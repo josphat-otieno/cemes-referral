@@ -42,10 +42,9 @@ export class CbfService implements OnDestroy {
   }
 
     // Users
-    public createUser(userDetails: UserModel): Observable<UserModel> {
+    public createUser(userDetails: FormData): Observable<UserModel> {
       const url = ApiEndpointService.getEndpoint(ApiEndpointService.ENDPOINT.REGISTER_USER);
-      const params = new HttpParams();
-      return this.http.post<UserModel>(url, userDetails, { params }).pipe(
+      return this.http.post<UserModel>(url, userDetails).pipe(
         map(function (response: any) {
           return response;
         }),
@@ -138,7 +137,6 @@ export class CbfService implements OnDestroy {
     );
   }
 
-
   // reset email address
   public resetEmail(requestData: FormData): Observable<any> {
     const url = ApiEndpointService.getEndpoint(ApiEndpointService.ENDPOINT.EMAIL_REQUEST);
@@ -152,7 +150,6 @@ export class CbfService implements OnDestroy {
     )
   }
 
-  
   public getAuthFromLocalStorage(): string | undefined {
     try {
       const lsValue = this.cookieService.get("JTW");
@@ -177,6 +174,28 @@ export class CbfService implements OnDestroy {
     this.router.navigate(['/login'], {
       queryParams: {},
     });
+  }
+
+
+  /* ------------------------------------------------------------------- Membership Endpoints --------------------------------------------------------------------------------------------------- */
+  public getAllMembers(access: string): Observable<any> {
+    const url = ApiEndpointService.getEndpoint(ApiEndpointService.ENDPOINT.GET_ALL_MEMBERS);
+    return this.http.get<any>(url+'?is_staff=false', {
+      headers: {
+        'Content-Type': 'application/json; charset=utf-8',
+        'Accept': 'application/json',
+        'Authorization': `Bearer ${access}`
+      }
+    }).pipe(
+      map(function (response: any) {
+        return response;
+      }),
+      catchError((fault: HttpErrorResponse) => {
+        return throwError(() => fault);
+
+      })
+    )
+
   }
 
   ngOnDestroy() {

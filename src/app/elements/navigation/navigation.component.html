@@ -4,10 +4,18 @@
 <div class="deznav">
     <div class="deznav-scroll" [perfectScrollbar]>
         <ul class="metismenu" id="menu" metis-menu>
-            <li [ngClass]="{'mm-active': dashboardArray.indexOf(currentHref) > -1}"><a class="has-arrow ai-icon" href="javascript:void()" aria-expanded="false">
+            <li class="{{(currentHref == '/admin/dashboard') ? 'mm-active' : ''}}">
+                <a [routerLink]="['/admin/dashboard']" class="ai-icon {{(currentHref == '/admin/dashboard') ? 'mm-active' : ''}}" aria-expanded="false">
+                    <i class="flaticon-381-networking"></i>
+                    <span class="nav-text">Dashboard</span>
+                </a>
+            </li>
+
+            <!-- <li [ngClass]="{'mm-active': dashboardArray.indexOf(currentHref) > -1}"><a class="has-arrow ai-icon" href="javascript:void()" aria-expanded="false">
                 <i class="flaticon-381-networking"></i>
                 <span class="nav-text">Dashboard</span>
-            </a>
+            </a> 
+            
             <ul aria-expanded="false"  [ngClass]="{'mm-show': dashboardArray.indexOf(currentHref) > -1}">
                 <li><a class="{{(currentHref == '/admin/index') ? 'mm-active' : ''}}"  [routerLink]="['/admin/index']">Dashboard</a></li>
                 <li><a class="{{(currentHref == '/admin/index-2') ? 'mm-active' : ''}}"  [routerLink]="['/admin/index-2']">Dashboard 2</a></li>
@@ -15,9 +23,10 @@
                 <li><a class="{{(currentHref == '/admin/doctors-details') ? 'mm-active' : ''}}"  [routerLink]="['/admin/doctors-details']">Doctors Details</a></li>
                 <li><a class="{{(currentHref == '/admin/doctors-review') ? 'mm-active' : ''}}"  [routerLink]="['/admin/doctors-review']">Doctors Review</a></li>
                 <li><a class="{{(currentHref == '/admin/patient-details') ? 'mm-active' : ''}}"  [routerLink]="['/admin/patient-details']">Patient Details</a></li>
-            </ul>
+            </ul> 
             
-            </li>
+             </li> -->
+
             <li [ngClass]="{'mm-active': apsArray.indexOf(currentHref) > -1}">
                 <a class="has-arrow ai-icon" href="javascript:void()" aria-expanded="false">
                     <i class="flaticon-381-television"></i>
@@ -157,7 +166,8 @@
                     <li><a [routerLink]="['/admin/mat-toolbar']" class="{{(currentHref == '/admin/mat-toolbar') ? 'mm-active' : ''}}">Toolbar</a></li>
 
                 </ul>
-            </li><li [ngClass]="{'mm-active': pluginsArray.indexOf(currentHref) > -1}">
+            </li>
+            <li [ngClass]="{'mm-active': pluginsArray.indexOf(currentHref) > -1}">
                 <a class="has-arrow ai-icon" href="javascript:void()" aria-expanded="false">
                     <i class="flaticon-381-heart"></i>
                     <span class="nav-text">Plugins</span>
@@ -167,11 +177,35 @@
                     <li><a [routerLink]="['/admin/uc-lightgallery']" class="{{(currentHref == '/admin/uc-lightgallery') ? 'mm-active' : ''}}">Lightgallery</a></li>
                 </ul>
             </li>
-            <li class="{{(currentHref == '/admin/widget-basic') ? 'mm-active' : ''}}">
+            <!-- <li class="{{(currentHref == '/admin/widget-basic') ? 'mm-active' : ''}}">
                 <a [routerLink]="['/admin/widget-basic']" class="ai-icon {{(currentHref == '/admin/widget-basic') ? 'mm-active' : ''}}" aria-expanded="false">
                     <i class="flaticon-381-settings-2"></i>
                     <span class="nav-text">Widget</span>
                 </a>
+            </li> -->
+
+            <li [ngClass]="{'mm-active': membershipArray.indexOf(currentHref) > -1}">
+                <a class="has-arrow ai-icon" href="javascript:void()" aria-expanded="false">
+                    <i class="flaticon-381-heart"></i>
+                    <span class="nav-text">Member Management</span>
+                </a>
+                <ul aria-expanded="false" [ngClass]="{'mm-show': membershipArray.indexOf(currentHref) > -1}">
+                    <li><a [routerLink]="['/admin/member-database']" class="{{(currentHref == '/admin/member-database') ? 'mm-active' : ''}}">Member Database</a></li>
+                    <li><a [routerLink]="['/admin/app-users']" class="{{(currentHref == '/admin/app-users') ? 'mm-active' : ''}}">App Users</a></li>
+                    <li><a [routerLink]="['/admin/uc-lightgallery']" class="{{(currentHref == '/admin/uc-lightgallery') ? 'mm-active' : ''}}">Payment</a></li>
+                    <li><a [routerLink]="['/admin/uc-lightgallery']" class="{{(currentHref == '/admin/uc-lightgallery') ? 'mm-active' : ''}}">Membership Requests</a></li>
+                    <li><a [routerLink]="['/admin/uc-lightgallery']" class="{{(currentHref == '/admin/uc-lightgallery') ? 'mm-active' : ''}}">Referrals</a></li>
+                </ul>
+            </li>
+
+            <li [ngClass]="{'mm-active': staffArray.indexOf(currentHref) > -1}">
+                <a class="has-arrow ai-icon" href="javascript:void()" aria-expanded="false">
+                    <i class="flaticon-381-heart"></i>
+                    <span class="nav-text">Staff Management</span>
+                </a>
+                <ul aria-expanded="false" [ngClass]="{'mm-show': staffArray.indexOf(currentHref) > -1}">
+                    <li><a [routerLink]="['/admin/users']" class="{{(currentHref == '/admin/users') ? 'mm-active' : ''}}">List of Staff</a></li>
+                </ul>
             </li>
             
             <li [ngClass]="{'mm-active': formsArray.indexOf(currentHref) > -1}">
@@ -206,13 +240,9 @@
             </li>
         </ul>
         
-        <div class="plus-box">
-            <p>Create new appointment</p>
-        </div>
-        <div class="copyright">
-            <p><strong>Mediqu Hospital Admin Dashboard</strong> © 2021 All Rights Reserved</p>
-            <p>Made with <span [ngClass]="{'': toggleIcon, 'heart-blast': !toggleIcon}" class="heart" (click)="toggleLoveIcon()"></span> by DexignZone</p>
-        </div>
+        <!-- <div class="plus-box">
+           <p>Sign Out</p>
+        </div> -->
     </div>
 </div>
 <!--**********************************

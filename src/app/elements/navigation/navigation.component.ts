@@ -150,6 +150,15 @@ export class NavigationComponent implements OnInit {
          '/admin/uc-nestable',
          '/admin/uc-lightgallery',
 	];
+
+    membershipArray = [
+         '/admin/uc-nestable',
+         '/admin/uc-lightgallery',
+	];
+
+    staffArray = [
+      '/admin/users'
+  ];
     
     formsArray = [
          '/admin/form-element',

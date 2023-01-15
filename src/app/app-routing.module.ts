@@ -132,6 +132,9 @@ import { Error404Component } from './pages/error404/error404.component';
 import { Error500Component } from './pages/error500/error500.component';
 import { Error503Component } from './pages/error503/error503.component';
 import { AuthGuard } from './services/auth.guard';
+import { UsersComponent } from './components/users/users.component';
+import { MembersComponent } from './components/members/members.component';
+import { AppUsersComponent } from './components/app-users/app-users.component';
 
 
 
@@ -259,8 +262,14 @@ const routes: Routes = [
               
               {path: 'form-element', component: ElementsComponent},
               {path: 'form-validate', component: FormValidateComponent},
+
+              // CBF Components
+              {path: 'users', component: UsersComponent},
+              {path: 'member-database', component: MembersComponent},
+              {path: 'app-users', component: AppUsersComponent}
       
           ]
+          
       },                        
                         
       {path: 'register', component: RegisterComponent},

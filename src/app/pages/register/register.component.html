@@ -21,28 +21,41 @@
                                         </div>
                                         <div class="form-group">
                                             <label class="mb-1"><strong>Email</strong></label>
-                                            <input type="email" class="form-control" placeholder="hello@example.com" formControlName="email" [ngClass]="{
+                                            <input type="email" #emailEntry class="form-control" placeholder="hello@example.com" formControlName="email" [ngClass]="{
                                                 'is-invalid': registerForm.controls['email'].invalid,
                                                 'is-valid': registerForm.controls['email'].valid
-                                              }" />
+                                              }" (input)="validateEmail(emailEntry.value)"/>
+                                            <i *ngIf="emailValidationMessage" style="color:red">The email address entered is not valid</i>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="mb-1"><strong>Phone Number</strong></label>
+                                            <input type="number" #phoneEntry class="form-control" placeholder="07xxxxx" formControlName="phoneNumber" [ngClass]="{
+                                                'is-invalid': registerForm.controls['phoneNumber'].invalid,
+                                                'is-valid': registerForm.controls['phoneNumber'].valid
+                                              }" (input)="validatePhone(phoneEntry.value)"/>
+                                              <i *ngIf="phoneValidationMessage" style="color:red">The phone number entered is not valid, format is 0xxxx and maximum length of 10 numbers</i> 
                                         </div>
                                         <div class="form-group">
                                             <label class="mb-1"><strong>Password</strong></label>
-                                              <input type="password" class="form-control" name="password" autocomplete="off"
-                                              formControlName="password" [ngClass]="{
+                                              <input type="password" #pass_One class="form-control" name="password" autocomplete="off"
+                                              formControlName="password" (input)="checkPasswordEntry(pass_One.value)" [ngClass]="{
                                                 'is-invalid': registerForm.controls['password'].invalid,
                                                 'is-valid': registerForm.controls['password'].valid
                                               }" />
                                         </div>
-                                        <!-- <div class="form-group" *ngIf="confirmPassword">
-                                            <label class="mb-1"><strong>Password</strong></label>
-                                            <input type="password" class="form-control" placeholder="Enter your password" formControlName="password" [ngClass]="{
-                                                'is-invalid': registerForm.controls['password].invalid,
-                                                'is-valid': registerForm.controls['password'].valid
-                                              }" />
-                                        </div> -->
+                                        <div class="form-group" *ngIf="confirmPassword">
+                                            <label class="mb-1"><strong>Confirm Password</strong></label>
+                                            <input type="password" #pass_Two class="form-control" name="password_confirmed" autocomplete="off"
+                                            formControlName="password_confirmed" (input)="confirmPassEntries(pass_Two)" [ngClass]="{
+                                              'is-invalid': registerForm.controls['password_confirmed'].invalid,
+                                              'is-valid': registerForm.controls['password_confirmed'].valid
+                                            }" />    
+
+                                        </div>  
+                                        <i *ngIf="passwordIncorrect" style="color:red">Passwords do not match, kindly try again</i>                                       
+
                                         <div class="text-center mt-4">
-                                            <button type="submit" class="btn btn-primary btn-block">Sign me up</button>
+                                            <button type="submit" [disabled]="validity" class="btn btn-primary btn-block">Sign me up</button>
                                         </div>
                                     </form>
                                     <div class="new-account mt-3">

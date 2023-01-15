@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpErrorResponse } from '@angular/common/http';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
-import ls from 'localstorage-slim';
-import { CookieService } from 'ngx-cookie-service';
+import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { CbfService } from 'src/app/core/cbf.service';
+import { ToastService } from 'src/app/bootstrap/toast/toast-global/toast-service';
+import { E } from '@angular/cdk/keycodes';
 
 @Component({
   selector: 'app-register',
@@ -15,12 +15,20 @@ import { CbfService } from 'src/app/core/cbf.service';
 export class RegisterComponent implements OnInit {
 
   public registerForm!:FormGroup
-  // public
+
+  // validation parameters
+  public validity:boolean = false
+  public passwordIncorrect:boolean = false
+  public confirmPassword:boolean = false
+  public phoneValidationMessage:boolean = false
+  public emailValidationMessage:boolean = false
   
   public defaultAuth: any = {
     full_name: '',
     email: '',
+    phoneNumber: '',
     password: '',
+    password_confirmed: '',
   };
   public msg:string = '';
   public hasError: boolean = false;
@@ -31,23 +39,36 @@ export class RegisterComponent implements OnInit {
   constructor(
     private cbfService: CbfService,
     private fb:FormBuilder,
-    private route: ActivatedRoute,
     private router: Router,
-    private cookieService: CookieService
-
-
+    private toaster: ToastService
   ) { }
 
   ngOnInit(): void {
 
     this.registerForm = this.fb.group({
+      full_name: [
+        this.defaultAuth.full_name,
+        Validators.compose([
+          Validators.required,
+          Validators.minLength(3),
+          Validators.maxLength(255), 
+        ]),
+      ],
       email: [
         this.defaultAuth.email,
         Validators.compose([
           Validators.required,
           Validators.email,
           Validators.minLength(3),
-          Validators.maxLength(320), 
+          Validators.maxLength(100), 
+        ]),
+      ],
+      phoneNumber: [
+        this.defaultAuth.phoneNumber,
+        Validators.compose([
+          Validators.required,
+          Validators.minLength(3),
+          Validators.maxLength(10), 
         ]),
       ],
       password: [
@@ -55,46 +76,114 @@ export class RegisterComponent implements OnInit {
         Validators.compose([
           Validators.required,
           Validators.minLength(6),
-          Validators.maxLength(100),
+          Validators.maxLength(14),
+        ]),
+      ],
+      password_confirmed: [
+        this.defaultAuth.password_confirmed,
+        Validators.compose([
+          Validators.required,
+          Validators.minLength(6),
+          Validators.maxLength(14),
         ]),
       ],
     });
 
   }
-
   
+  //Validate Phone Number
+  validatePhone(value: string) {
+      let phoneNumber = value;
+      if((phoneNumber.length > 10) || (phoneNumber.length < 10) && (phoneNumber.charAt(0) != '0')){
+        this.phoneValidationMessage = true;
+        this.validity = true;
+      } else {
+        this.phoneValidationMessage = false;
+        this.validity = false;
+      }
+  }
+  
+  //validate Email
+  validateEmail(value: string) {
+      let email = value;
+      if(!email.match("^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$")){
+        this.emailValidationMessage = true;
+        this.validity = true;
+      } else {
+        this.emailValidationMessage = false;
+        this.validity = false;
+      }
+  }
+
+  checkPasswordEntry(passValue:any) {
+
+    if(passValue != ''){
+      this.confirmPassword = true      
+      this.validity = false;
+    } else {
+      this.confirmPassword = false      
+      this.validity = true;
+      this.registerForm.get('password_confirmed')?.patchValue('')
+    }
+  }
+
+  confirmPassEntries(passValue:any) {
+    let passOneVal = this.registerForm.get('password')?.value
+    console.log(passOneVal)
+    let passTwoVal = passValue
+
+    if(passTwoVal != ''){
+      
+      if(passTwoVal == passOneVal){
+        this.passwordIncorrect = false        
+        this.validity = true;
+      } else {
+        this.passwordIncorrect = true        
+        this.validity = false;
+      }
+
+    } else {
+      this.passwordIncorrect = false   
+    }
+
+  }
 
   registerUser() {
     this.hasError = false;
-    const loginSubscr = this.cbfService.loginUser(this.registerForm.value)
+
+    const regData:FormData = new FormData()
+    regData.append('full_name', this.registerForm.get('full_name')?.value)
+    regData.append('email', this.registerForm.get('email')?.value)
+    regData.append('phone_number', this.registerForm.get('phoneNumber')?.value)
+    regData.append('password', this.registerForm.get('password_confirmed')?.value)
+    regData.append('is_staff', true.toString())
+
+    const regsterSubscr = this.cbfService.createUser(regData)
 
     .subscribe({
       next: (response: any) => {
         let results = response
 
-        // variables
-        let jwt = results.data.tokens.refresh
-        let staff_verify = results.data.is_staff
-        let user_id = results.data.id
+        if(results.data.error){
 
-        if(staff_verify != true){
-          this.msg="Only staff are allowed into this portal.";
+          console.log(results.data.error)
+          this.toaster.show(results.data.error, { classname: 'bg-warning text-light', delay: 10000 });
         } else {
-          this.msg = ''
+          this.toaster.show('Account created successfully', { classname: 'bg-success text-light', delay: 10000 });
 
-          //store session cookie
-          this.cookieService.set( 'JTW', jwt); // To Set Cookie
-
-          //store user id
-          ls.set('id', JSON.stringify(user_id), {encrypt: true, secret: 43});  
-          this.cbfService.getUserByToken()       
-          this.router.navigate([this.returnUrl]);
+          setTimeout(() => {
+            window.location.reload
+          }, 1260);
         }
+
       },
-      error: (e:HttpErrorResponse) =>  this.msg = 'Invalid credentials, please try again'     
+      error: (e:HttpErrorResponse) =>  {
+        this.msg = 'Something went wrong, please try again'
+        this.toaster.show(this.msg, { classname: 'bg-success text-light', delay: 10000 });
+      }    
     })
     
-    this.unsubscribe.push(loginSubscr);
+    this.unsubscribe.push(regsterSubscr);
   }
 
 

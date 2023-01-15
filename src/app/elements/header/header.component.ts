@@ -47,7 +47,6 @@ export class HeaderComponent implements OnInit {
     this.cbfService.logoutUser()
   }
 
-  
   getAccessToken(){
 
     const accessSubscr = this.cbfService.getAccess(this.token)

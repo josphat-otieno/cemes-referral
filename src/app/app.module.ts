@@ -657,6 +657,9 @@ import { Error403Component } from './pages/error403/error403.component';
 import { Error404Component } from './pages/error404/error404.component';
 import { Error500Component } from './pages/error500/error500.component';
 import { Error503Component } from './pages/error503/error503.component';
+import { UsersComponent } from './components/users/users.component';
+import { MembersComponent } from './components/members/members.component';
+import { AppUsersComponent } from './components/app-users/app-users.component';
 
 
 
@@ -1250,6 +1253,9 @@ import { Error503Component } from './pages/error503/error503.component';
     Error404Component,
     Error500Component,
     Error503Component,
+    UsersComponent,
+    MembersComponent,
+    AppUsersComponent,
     
     
   ],

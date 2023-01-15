@@ -28,6 +28,7 @@
     "@fullcalendar/timegrid": "^5.9.0",
     "@metismenu/angular": "0.0.2",
     "@ng-bootstrap/ng-bootstrap": "^10.0.0",
+    "angular-datatables": "^15.0.0",
     "apexcharts": "^3.28.3",
     "bootstrap": "^4.5.0",
     "chart.js": "^2.9.3",
@@ -41,6 +42,7 @@
     "ngx-owl-carousel-o": "^6.0.0",
     "ngx-perfect-scrollbar": "^10.1.1",
     "ngx-spinner": "^12.0.0",
+    "ngx-toastr": "^12.0.1",
     "rxjs": "~6.6.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.11.4"

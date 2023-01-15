@@ -1,0 +1,385 @@
+<div class="content-body">
+    <div class="container-fluid">
+        <div class="row page-titles mx-0">
+            <div class="col-sm-6 p-md-0">
+                <div class="welcome-text">
+                    <h4>Members Database</h4>
+                </div>
+            </div>
+            <div class="col-sm-6 p-md-0 justify-content-sm-end mt-2 mt-sm-0 d-flex">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="admin/dashboard">Home</a></li>
+                    <li class="breadcrumb-item active"><a href="javascript:void(0)">Member Management</a></li>
+                </ol>
+            </div>
+        </div>
+
+        <!-- Parameters -->
+        <div class="row">
+            <div class="col-xl-3 col-xxl-4 col-lg-6 col-sm-6">
+                <div class="widget-stat card">
+                    <div class="card-body p-4">
+                        <div class="media ai-icon">
+                            <span class="mr-3 bgl-primary text-primary">
+                                <!-- <i class="ti-user"></i> -->
+                                <svg id="icon-customers" xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-user">
+                                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                                    <circle cx="12" cy="7" r="4"></circle>
+                                </svg>
+                            </span>
+                            <div class="media-body">
+                                <p class="mb-1">Total Members</p>
+                                <h4 class="mb-0">{{memberCount}}</h4>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-3 col-xxl-4 col-lg-6 col-sm-6">
+                <div class="widget-stat card">
+                    <div class="card-body p-4">
+                        <div class="media ai-icon">
+                            <span class="mr-3 bgl-warning text-warning">
+                                <svg id="icon-customers" xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-user">
+                                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                                    <circle cx="12" cy="7" r="4"></circle>
+                                </svg>
+                            </span>
+                            <div class="media-body">
+                                <p class="mb-1">Total App Users</p>
+                                <h4 class="mb-0">0</h4>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-3 col-xxl-4 col-lg-6 col-sm-6">
+                <div class="widget-stat card">
+                    <div class="card-body  p-4">
+                        <div class="media ai-icon">
+                            <span class="mr-3 bgl-danger text-danger">
+                                <svg id="icon-revenue" xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-dollar-sign">
+                                    <line x1="12" y1="1" x2="12" y2="23"></line>
+                                    <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+                                </svg>
+                            </span>
+                            <div class="media-body">
+                                <p class="mb-1">Total Payments</p>
+                                <h4 class="mb-0">Ksh. 0</h4>
+                                <span class="badge badge-info">0%</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        
+        </div>
+
+        <!-- Main Content -->
+        <div class="card">
+            <div class="card-header">
+                <div class="col-6">
+                    List of all members
+                </div>
+
+                <div class="col-6">
+                    <button class="btn btn-sm btn-primary rightBtns" type="button" (click)="openModal(addMember)">
+                        <i class="fa fa-plus"></i>&nbsp;Add Member
+                    </button>
+                </div>
+            </div>
+           
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table datatable class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Full Name</th>
+                        <th scope="col">Email Address</th>
+                        <th scope="col">Phone Number</th>
+                        <th scope="col">Assembly</th>
+                        <th scope="col">Number of Businesses</th>
+                        <th scope="col">Joining Date</th>
+                        <th scope="col">Update Details</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr *ngFor="let member of members; index as i">
+                        <th scope="row">{{ i + 1 }}</th>		
+                        <td>{{member.full_name}}</td>
+                        <td>{{member.email}}</td>
+                        <td>{{member.phone_number}}</td>
+                        <td>Assembly One</td>
+                        <td>0</td>
+                        <td>Date One</td>
+                        <td>
+                            <button type="button" class="btn btn-sm btn-success" (click)="reviewUpdateModal(editMember, member)">Edit</button>
+                            <button type="button" class="btn btn-sm btn-danger" (click)="reviewModal(deleteMember, member)">Delete</button>
+                        </td>
+                    </tr>
+                    </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+      
+	</div>
+</div>
+
+<!-- Modals -->
+<ng-template #addMember let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title">Create Member</h4>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body default-calendar">
+        <div class="form-validation">
+            <form class="form-valide" action="#" method="post" [formGroup]="MemberRegistration" novalidate>
+                <div class="row">
+                    <div class="col-xl-6">
+                        <div class="form-group row">
+                            <label class="col-lg-4 col-form-label" for="fullName">Member Name
+                                <span class="text-danger">*</span>
+                            </label>
+                            <div class="col-lg-6">
+                                <input type="text" class="form-control" id="fullName" formControlName="fullName" placeholder="Enter full names..">
+                                <div *ngIf="MemberRegistration.controls['fullName'].invalid && (MemberRegistration.controls['fullName'].dirty || MemberRegistration.controls['fullName'].touched)" class="text-danger fs-13 mt-1">
+                                    
+                                    <div *ngIf="MemberRegistration.controls['fullName'].errors.required">
+                                        Full name is required.
+                                    </div>
+                                </div>
+                            </div>
+                            
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-lg-4 col-form-label" for="email">Email Address <span
+                                class="text-danger">*</span>
+                            </label>
+                            <div class="col-lg-6">
+                                <input type="text" class="form-control" id="email" formControlName="email" placeholder="Your valid email..">
+                                <div *ngIf="MemberRegistration.controls['email'].invalid && (MemberRegistration.controls['email'].dirty || MemberRegistration.controls['email'].touched)" class="text-danger fs-13 mt-1">
+                                    <div *ngIf="MemberRegistration.controls['email'].errors.required">
+                                        Email is required.
+                                    </div>
+                                    <div *ngIf="MemberRegistration.controls['email'].errors.pattern">
+                                        Email must be a valid email address.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-lg-4 col-form-label" for="assembly">Assembly
+                                <span class="text-danger">*</span>
+                            </label>
+                            <div class="col-lg-6">
+                                <select class="form-control default-select" id="assembly" formControlName="assembly" >
+                                    <option value="">Please select an assembly</option>
+                                    <option *ngFor="let res of assemblies" value="{{res.id}}">{{res.name}}</option>
+                                   
+                                </select>
+                                <div *ngIf="MemberRegistration.controls['assembly'].invalid && (MemberRegistration.controls['assembly'].dirty || MemberRegistration.controls['assembly'].touched)" class="text-danger fs-13 mt-1">
+                                    
+                                    <div *ngIf="MemberRegistration.controls['assembly'].errors.required">
+                                        Select at least one assembly.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-6">
+                      
+                        <div class="form-group row">
+                            <label class="col-lg-4 col-form-label" for="phoneNumber">Phone Number
+                                <span class="text-danger">*</span>
+                            </label>
+                            <div class="col-lg-6">
+                                <input type="text" class="form-control" id="phoneNumber" placeholder="07xxxxx" formControlName="phoneNumber">
+                                <div *ngIf="MemberRegistration.controls['phoneNumber'].invalid && (MemberRegistration.controls['phoneNumber'].dirty || MemberRegistration.controls['phoneNumber'].touched)" class="text-danger fs-13 mt-1">
+                                    
+                                    <div *ngIf="MemberRegistration.controls['phoneNumber'].errors.required">
+                                        Phone number is required.
+                                    </div>
+                                    
+                                    
+                                </div>
+                            </div>
+                        </div>                            
+                        
+                        <div class="form-group row">
+                            <label class="col-lg-4 col-form-label" for="val-password">Password
+                                <span class="text-danger">*</span>
+                            </label>
+                            <div class="col-lg-6">
+                                <div class="input-group">
+                                    <input #inputPassword type="password" class="form-control" formControlName="password"  id="password" placeholder="Choose a safe one..">
+                                    
+                                    <div class="input-group-append show-pass1 ">
+                                        <span class="input-group-text "> 
+                                            <i class="fa" [ngClass]="{'fa-eye-slash': toggleEye, 'fa-eye': !toggleEye}" (click)="toggleEyeIcon(inputPassword)"></i>
+                                        </span>
+                                    </div>
+                                </div>
+                                
+                                <div *ngIf="MemberRegistration.controls['password'].invalid && (MemberRegistration.controls['password'].dirty || MemberRegistration.controls['password'].touched)" class="text-danger fs-13 mt-1">
+                                    
+                                    <div *ngIf="MemberRegistration.controls['password'].errors.required">
+                                        Password is required.
+                                    </div>
+                                    <div *ngIf="MemberRegistration.controls['password'].errors.minlength">
+                                        Password must be at least 6 characters.
+                                    </div>
+                                </div>	
+                            </div>
+                            
+                        </div>
+
+                    </div>
+        
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-light" (click)="modal.close('Close click')">Cancel</button>
+        <button type="button" class="btn btn-outline-dark" [disabled]="MemberRegistration.pristine || MemberRegistration.invalid" (click)="saveMember()">Save</button>
+    </div>
+  </ng-template>
+
+  <ng-template #editMember let-modal>
+    <div class="modal-header alert alert-success">
+      <h4 class="modal-title" id="modal-edit-title">Edit Member</h4>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+
+    <div class="modal-body default-calendar">
+        <form class="form" #editForm="ngForm" autocomplete="on">
+            <div class="row g-3">
+
+
+                <div class="col-xl-6">
+                    <div class="form-group row">
+                        <label class="col-lg-4 col-form-label" for="fullNameEdit">Member Name
+                            <span class="text-danger">*</span>
+                        </label>
+                        <div class="col-lg-6">
+                            <input type="hidden" name="id" ngModel="{{memberModalData?.id}}" value="{{memberModalData?.id}}">
+                            <input type="text" class="form-control" id="fullNameEdit" name="full_name" ngModel="{{memberModalData?.full_name}}" value="{{memberModalData?.full_name}}">
+                        </div>                        
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-lg-4 col-form-label" for="emailUpdate">Email Address <span
+                            class="text-danger">*</span>
+                        </label>
+                        <div class="col-lg-6">                           
+                            <input type="email" class="form-control" id="emailUpdate" #email name="email" placeholder="Enter user's work email" ngModel="{{memberModalData?.email}}" value="{{memberModalData?.email}}"
+                              (input)="validateEmail(email.value)">
+                              <i *ngIf="emailValidationMessage" style="color:red">The email address entered is not valid</i>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-lg-4 col-form-label" for="assembly">Assembly
+                            <span class="text-danger">*</span>
+                        </label>
+                        <div class="col-lg-6">
+                            <select class="form-control" name="assemblyUpdate" ngModel="{{memberModalData?.assembly}}" value="{{memberModalData?.assembly}}">                                
+                                <option value="">Please select an assembly</option>
+                                <option *ngFor="let res of assemblies" value="{{res.id}}">{{res.name}}</option>
+                            </select>                           
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-6">
+                  
+                    <div class="form-group row">
+                        <label class="col-lg-4 col-form-label" for="phoneNumberUpdate">Phone Number
+                            <span class="text-danger">*</span>
+                        </label>
+                        <div class="col-lg-6">                           
+                            <input type="number" class="form-control" id="phoneNumberUpdate" #phone name="phone_number" ngModel="{{memberModalData?.phone_number}}" value="{{memberModalData?.phone_number}}" (input)="validatePhone(phone.value)">
+                            <i *ngIf="phoneValidationMessage" style="color:red">The phone number entered is not valid, format is 0xxxx and maximum length of 10 numbers</i> 
+                        </div>
+                    </div>                            
+                    
+                    <div class="form-group row">
+                        <label class="col-lg-4 col-form-label" for="inputPasswordUpdate">Password
+                            <span class="text-danger">*</span>
+                        </label>
+                        <div class="col-lg-6">
+                            <div class="input-group">
+                                <input name="password" id="inputPasswordUpdate" class="form-control" #passwd placeholder="Enter your password" ngModel=""
+                                type="password" value="{{passwordValue}}" (input)="passwordInput(passwd.value)">
+                                
+                                <div class="input-group-append show-pass1 ">
+                                    <span class="input-group-text "> 
+                                        <i class="fa" [ngClass]="{'fa-eye-slash': toggleEye, 'fa-eye': !toggleEye}" (click)="toggleEyeIcon(passwd)"></i>
+                                    </span>
+                                </div>
+                            </div>
+
+                            <button class="btn btn-sm random btn-success" type="button" (click)="openModal(passwordModal)">Generate
+                                random password</button>
+                            
+                        </div>
+                        
+                    </div>
+
+                </div>
+    
+        
+            </div>
+            <div class="modal-footer">
+              <button type="submit" [disabled]="validity" id="register" class="btn btn-primary" (click)="updateMember(editForm.value)"
+               >Save</button>
+              <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="modal.dismiss('Cross click')">Cancel</button>
+            </div>
+          </form>
+    </div>
+  </ng-template>
+
+  <ng-template #deleteMember let-modal>
+    <div class="modal-header alert alert-danger">
+      <h4 class="modal-title" id="modal-del-title">Delete Member</h4>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body default-calendar">
+      <form>
+        <input type="hidden">
+        <p>Are you sure you want to delete this member?</p>
+      </form>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-sm btn-secondary" (click)="modal.close('Close click')">No</button>
+        <button type="button" class="btn btn-sm btn-danger" (click)="modal.close('Save click')">Yes</button>
+    </div>
+  </ng-template>
+  
+  <ng-template #passwordModal let-modal>
+    <div class="modal-header">
+      <h5 class="modal-title" id="viewThemeLabel">Generated Password</h5>
+      <button type="button" class="close" (click)="modal.dismiss()" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+  
+    <div class="modal-body">
+  
+      <div class="form-group row">
+        <div class="col-sm-12">
+          <p>Kindly copy and save this safely for the user you are about to create</p>
+          <input type="text" class="form-control" readonly ngModel="{{passwordValue}}" value="{{passwordValue}}" />
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary btn-md" (click)="modal.dismiss()">Close</button>
+      </div>
+    </div>
+  </ng-template>
+  

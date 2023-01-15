@@ -1,7 +1,7 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import ls from 'localstorage-slim';
 import { CookieService } from 'ngx-cookie-service';
 import { Subscription } from 'rxjs';
@@ -29,7 +29,6 @@ export class LoginComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private cbfService: CbfService,
-    private route: ActivatedRoute,
     private router: Router,
     private cookieService: CookieService
   ) { }
