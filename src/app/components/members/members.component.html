@@ -47,7 +47,11 @@
                             </span>
                             <div class="media-body">
                                 <p class="mb-1">Total App Users</p>
-                                <h4 class="mb-0">0</h4>
+                                <h4 class="mb-0">0</h4> &nbsp;
+
+                                <a href="/admin/app-users">
+                                    <span class="badge badge-info"><i class="fa fa-eye"></i>View</span>
+                                </a>
                             </div>
                         </div>
                     </div>
@@ -263,7 +267,8 @@
                             </label>
                             <div class="col-lg-6">
                                 <input type="text" class="form-control" id="phoneNumber" placeholder="07xxxxx" formControlName="phoneNumber">
-                                <div *ngIf="MemberRegistration.controls['phoneNumber'].invalid && (MemberRegistration.controls['phoneNumber'].dirty || MemberRegistration.controls['phoneNumber'].touched)" class="text-danger fs-13 mt-1">
+                                <div *ngIf="MemberRegistration.controls['phoneNumber'].invalid && MemberRegistration.controls['phoneNumber'].length > 10 || MemberRegistration.controls['phoneNumber'].length < 10
+                                     && (MemberRegistration.controls['phoneNumber'].dirty || MemberRegistration.controls['phoneNumber'].touched)" class="text-danger fs-13 mt-1">
                                     
                                     <div *ngIf="MemberRegistration.controls['phoneNumber'].errors.required">
                                         Phone number is required.
@@ -307,10 +312,17 @@
                 </div>
             </form>
         </div>
+        
+        <!-- message -->
+        <div *ngIf="messageResponse" class="row alert alert-info">
+            <p><i class="fa fa-exclamation"></i> &nbsp;  {{messageResponse}}</p>
+        </div>
+
     </div>
+
     <div class="modal-footer">
         <button type="button" class="btn btn-light" (click)="modal.close('Close click')">Cancel</button>
-        <button type="button" class="btn btn-outline-dark" [disabled]="MemberRegistration.pristine || MemberRegistration.invalid" (click)="saveMember()">Save</button>
+        <button type="button" class="btn btn-primary" [disabled]="MemberRegistration.pristine || MemberRegistration.invalid" (click)="saveMember()">Save</button>
     </div>
   </ng-template>
 
@@ -325,7 +337,6 @@
     <div class="modal-body default-calendar">
         <form class="form" #editForm="ngForm" autocomplete="on">
             <div class="row g-3">
-
 
                 <div class="col-xl-6">
                     <div class="form-group row">
@@ -373,7 +384,6 @@
                     
                     <div class="form-group row">
                         <label class="col-lg-4 col-form-label" for="inputPasswordUpdate">Password
-                            <span class="text-danger">*</span>
                         </label>
                         <div class="col-lg-6">
                             <div class="input-group">
@@ -387,7 +397,7 @@
                                 </div>
                             </div>
 
-                            <button class="btn btn-sm random btn-success" type="button" (click)="openModal(passwordModal)">Generate
+                            <button class="btn btn-sm random btn-success" type="button" (click)="generatePassword()">Generate
                                 random password</button>
                             
                         </div>
@@ -395,13 +405,16 @@
                     </div>
 
                 </div>
-    
-        
             </div>
+            <!-- message -->
+            <div *ngIf="messageResponse" class="row alert alert-info">
+                <p><i class="fa fa-exclamation"></i> &nbsp;  {{messageResponse}}</p>
+            </div>
+
             <div class="modal-footer">
+              <button type="button" class="btn btn-light" data-dismiss="modal" (click)="modal.dismiss('Cross click')">Cancel</button>
               <button type="submit" [disabled]="validity" id="register" class="btn btn-primary" (click)="updateMember(editForm.value)"
                >Save</button>
-              <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="modal.dismiss('Cross click')">Cancel</button>
             </div>
           </form>
     </div>
@@ -418,11 +431,17 @@
       <form #deleteForm="ngForm">        
         <input type="hidden" name="id" ngModel="{{memberModalData?.id}}" value="{{memberModalData?.id}}">
         <p>Are you sure you want to delete {{memberModalData.name}}?</p>
-        <i class="text-muted">Doing this will deactivate all their businesses too</i>
+        <i class="text-muted fs-10">Doing this will deactivate all their businesses too</i>
       </form>
+
+       <!-- message -->
+       <div *ngIf="messageResponse" class="row alert alert-info">
+        <p><i class="fa fa-exclamation"></i> &nbsp;  {{messageResponse}}</p>
+        </div>
+
     </div>
     <div class="modal-footer">
-        <button type="button" class="btn btn-sm btn-secondary" (click)="modal.close('Close click')">No</button>
+        <button type="button" class="btn btn-sm btn-light" (click)="modal.close('Close click')">No</button>
         <button type="button" class="btn btn-sm btn-danger" (click)="deleteMemberAction(deleteForm.value)">Yes</button>
     </div>
   </ng-template>
@@ -439,16 +458,17 @@
         <input type="hidden" name="id" ngModel="{{memberModalData?.id}}" value="{{memberModalData?.id}}">
         <p>Are you sure you want to approve {{memberModalData.name}}?</p>
       </form>
-    </div>
 
-    <!-- message -->
-    <div *ngIf="messageResponse" class="row alert alert-info">
-        <p>{{messageResponse}}</p>
+      <!-- message -->
+      <div *ngIf="messageResponse" class="row alert alert-info">
+        <p><i class="fa fa-exclamation"></i> &nbsp;  {{messageResponse}}</p>
+        </div>
+
     </div>
 
     <div class="modal-footer">
-        <button type="button" class="btn btn-sm btn-secondary" (click)="modal.close('Close click')">No</button>
-        <button type="button" class="btn btn-sm btn-danger" (click)="approveMemberAction(approvalForm.value)">Yes</button>
+        <button type="button" class="btn btn-sm btn-light" (click)="modal.close('Close click')">No</button>
+        <button type="button" class="btn btn-sm btn-success" (click)="approveMemberAction(approvalForm.value)">Yes</button>
     </div>
   </ng-template>
 
@@ -463,34 +483,18 @@
       <form #rejectForm="ngForm">        
         <input type="hidden" name="id" ngModel="{{memberModalData?.id}}" value="{{memberModalData?.id}}">
         <p>Are you sure you want to reject {{memberModalData.name}} as a member?</p>
-        <i class="text-muted">Doing this will also revoke any business management privileges they had</i>
+        <i class="text-muted fs-10">Doing this will also revoke any business management privileges they had</i>
       </form>
+
+      <!-- message -->
+      <div *ngIf="messageResponse" class="row alert alert-info">
+        <p><i class="fa fa-exclamation"></i> &nbsp;  {{messageResponse}}</p>
+      </div>
+
     </div>
     <div class="modal-footer">
-        <button type="button" class="btn btn-sm btn-secondary" (click)="modal.close('Close click')">No</button>
+        <button type="button" class="btn btn-sm btn-light" (click)="modal.close('Close click')">No</button>
         <button type="button" class="btn btn-sm btn-danger" (click)="revokeMemberAction(rejectForm.value)">Yes</button>
     </div>
   </ng-template>
-  
-  <ng-template #passwordModal let-modal>
-    <div class="modal-header">
-      <h5 class="modal-title" id="viewThemeLabel">Generated Password</h5>
-      <button type="button" class="close" (click)="modal.dismiss()" aria-label="Close">
-        <span aria-hidden="true">&times;</span>
-      </button>
-    </div>
-  
-    <div class="modal-body">
-  
-      <div class="form-group row">
-        <div class="col-sm-12">
-          <p>Kindly copy and save this safely for the user you are about to create</p>
-          <input type="text" class="form-control" readonly ngModel="{{passwordValue}}" value="{{passwordValue}}" />
-        </div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary btn-md" (click)="modal.dismiss()">Close</button>
-      </div>
-    </div>
-  </ng-template>
-  
+    

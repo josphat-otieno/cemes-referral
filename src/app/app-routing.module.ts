@@ -2,8 +2,7 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
 import { AdminComponent } from './admin/admin.component';
-import { DashboardComponent } from './dashboard/dashboard.component';
-import { Dashboard2Component } from './dashboard2/dashboard2.component';
+import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { DoctorsComponent } from './doctors/doctors.component';
 import { DoctorsDetailsComponent } from './doctors-details/doctors-details.component';
 import { DoctorsReviewComponent } from './doctors-review/doctors-review.component';
@@ -147,9 +146,6 @@ const routes: Routes = [
               {path: 'index', component: DashboardComponent},
               {path: 'index-1', component: DashboardComponent},
               {path: 'dashboard', component: DashboardComponent},
-              {path: 'index2', component: Dashboard2Component},
-              {path: 'index-2', component: Dashboard2Component},
-              {path: 'dashboard2', component: Dashboard2Component},
               
               {path: 'doctors', component: DoctorsComponent},
               {path: 'doctors-details', component: DoctorsDetailsComponent},

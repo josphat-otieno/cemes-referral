@@ -62,7 +62,6 @@ export class MembersComponent implements OnInit {
   
 
   ngOnInit(): void {
-    this.getAssemblies()
     
     this.token =  this.cookieService.get("JTW");
     this.getAccessToken()
@@ -114,6 +113,9 @@ export class MembersComponent implements OnInit {
       size: 'lg'
     });
 
+	}
+
+  generatePassword() {
     function getRandomString(length:any) {
       var randomChars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
       var result = '';
@@ -124,7 +126,7 @@ export class MembersComponent implements OnInit {
     }
   
     this.passwordValue = getRandomString(8);
-	}
+  }
 
   reviewModal(content:any, data:any) {
     this.modalService.open(content)
@@ -151,8 +153,9 @@ export class MembersComponent implements OnInit {
     .subscribe({
       next: (response: any) => {
         let result = response 
-        this.accessToken = result.access     
-                
+        this.accessToken = result.access
+        
+        this.getAssemblies(this.accessToken)                
         this.getMembers(this.accessToken)
         this.getPendingMembers(this.accessToken)
       },      
@@ -165,8 +168,20 @@ export class MembersComponent implements OnInit {
 
   }
 
-  getAssemblies() {
-    this.assemblies = [{'id':1, 'name':'CITAM Karen'}]
+  getAssemblies(accessTk: string) {
+
+    const assemblySubscr = this.cbfService.getAssemblies(accessTk)
+
+    .subscribe({
+      next: (response: any) => {
+        let queryResults = response
+        this.assemblies = queryResults.results
+        
+      },
+      error: (e:HttpErrorResponse) =>  this.msg = 'Something went wrong, please try again'     
+    })
+    
+    this.unsubscribe.push(assemblySubscr);
   }
 
   getMembers(access: string) {
@@ -228,14 +243,16 @@ export class MembersComponent implements OnInit {
         let results = response
         
         if(results.status){
+          
+          this.messageResponse = results.message
 
           if(results.status == 1){
             this.toaster.show(results.message, { classname: 'bg-success text-light', delay: 10000 });
-            this.messageResponse = results.message
             
             setTimeout(() => {
               window.location.reload()
             }, 1200);
+
           } else {
             this.toaster.show(results.message, { classname: 'bg-warning text-light', delay: 10000 });
           }
@@ -273,13 +290,13 @@ export class MembersComponent implements OnInit {
 
     .subscribe({
       next: (response: any) => {
-        console.log(response)
         
         if(response.status){
+          
+          this.messageResponse = response.message
 
           if(response.status == 1){
 
-            console.log('here')
             this.toaster.show(response.message, { classname: 'bg-success text-light', delay: 10000 });
             
             setTimeout(() => {
@@ -293,8 +310,8 @@ export class MembersComponent implements OnInit {
         
       },
       error: (e:HttpErrorResponse) =>  {
-        this.msg = 'Something went wrong, please try again'  
-        this.toaster.show(this.msg, { classname: 'bg-warning text-light', delay: 10000 });
+        this.messageResponse = 'Something went wrong, please try again'  
+        this.toaster.show(this.messageResponse, { classname: 'bg-warning text-light', delay: 10000 });
       }   
     })
     
@@ -314,16 +331,16 @@ export class MembersComponent implements OnInit {
 
     .subscribe({
       next: (response: any) => {
-        console.log(response)
         
         if(response.status){
+          this.messageResponse = response.message
 
           if(response.status == 1){
             this.toaster.show(response.message, { classname: 'bg-success text-light', delay: 10000 });
             
-            // setTimeout(() => {
-            //   window.location.reload()
-            // }, 1200);
+            setTimeout(() => {
+              window.location.reload()
+            }, 1200);
           } else {
             this.toaster.show(response.message, { classname: 'bg-warning text-light', delay: 10000 });
           }
@@ -331,9 +348,9 @@ export class MembersComponent implements OnInit {
         }
         
       },
-      error: (e:HttpErrorResponse) =>  {
-        this.msg = 'Something went wrong, please try again'  
-        this.toaster.show(this.msg, { classname: 'bg-warning text-light', delay: 10000 });
+      error: (e:HttpErrorResponse) =>  {        
+        this.messageResponse = 'Something went wrong, please try again' 
+        this.toaster.show(this.messageResponse, { classname: 'bg-warning text-light', delay: 10000 });
       }   
     })
     
@@ -356,6 +373,7 @@ export class MembersComponent implements OnInit {
       next: (response: any) => {
         
         if(response.status){
+          this.messageResponse = response.message
 
           if(response.status == 1){
             this.toaster.show(response.message, { classname: 'bg-success text-light', delay: 10000 });
@@ -372,6 +390,7 @@ export class MembersComponent implements OnInit {
       },
       error: (e:HttpErrorResponse) =>  {
         this.msg = 'Something went wrong, please try again'  
+        this.messageResponse = this.msg
         this.toaster.show(this.msg, { classname: 'bg-warning text-light', delay: 10000 });
       }   
     })
@@ -395,6 +414,7 @@ export class MembersComponent implements OnInit {
       next: (response: any) => {
         
         if(response.status){
+          this.messageResponse = response.message
 
           if(response.status == 1){
             this.toaster.show(response.message, { classname: 'bg-success text-light', delay: 10000 });
@@ -410,8 +430,8 @@ export class MembersComponent implements OnInit {
         
       },
       error: (e:HttpErrorResponse) =>  {
-        this.msg = 'Something went wrong, please try again'  
-        this.toaster.show(this.msg, { classname: 'bg-warning text-light', delay: 10000 });
+        this.messageResponse = 'Something went wrong, please try again'  
+        this.toaster.show(this.messageResponse, { classname: 'bg-warning text-light', delay: 10000 });
       }   
     })
     

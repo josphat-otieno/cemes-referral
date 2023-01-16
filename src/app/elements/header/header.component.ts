@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import {NgbDropdownConfig} from '@ng-bootstrap/ng-bootstrap';
 import { HostListener } from "@angular/core";
 import { CbfService } from 'src/app/core/cbf.service';
-import ls from 'localstorage-slim'
 import { CookieService } from 'ngx-cookie-service';
 import { ApiEndpointService } from 'src/app/core/api-endpoint.service';
 import { HttpErrorResponse } from '@angular/common/http';
@@ -20,9 +19,8 @@ export class HeaderComponent implements OnInit {
     fullScreenClass: boolean = false;
     isfullscreen: boolean = false;    
   
-    public user_id:number = Number(ls.get('id', {decrypt: true, secret: 43}));
+    public user_id:number = 0
     public access_token:string = ''
-    public token:string = ''
     public loginName:string = ''
     public loginEmail:string = ''
     public profilePic:string = ''
@@ -31,43 +29,19 @@ export class HeaderComponent implements OnInit {
     private unsubscribe: Subscription[] = [];
 	
 	constructor(
-    private cbfService: CbfService,
-    private cookieService: CookieService
+    private cbfService: CbfService
   ) { }
 	
 	ngOnInit(): void {
-    this.token =  this.cookieService.get("JTW");
-
-    // this.cbfService.getUserByToken()
-    this.getAccessToken()
-
+    this.access_token =  this.cbfService.AccessToken
+    this.user_id = Number(this.cbfService.currentUserValue)
+    this.getUserDetail(this.access_token)
 	}
 
   logOut() {
     this.cbfService.logoutUser()
   }
 
-  getAccessToken(){
-
-    const accessSubscr = this.cbfService.getAccess(this.token)
-    // .map(region_name)
-    .subscribe({
-      next: (response: any) => {
-        let result = response 
-        console.log(result)
-        this.access_token = result.access     
-        
-        
-        this.getUserDetail(this.access_token)
-      },      
-      error: (err: HttpErrorResponse) => {
-        //  this.toaster.warning('Failure fetching user details, kindly refresh', 'Something went wrong')
-      }
-    })
-
-    this.unsubscribe.push(accessSubscr);
-
-  }
   getUserDetail(access:string){   
     let access_tk = access
 
@@ -76,8 +50,7 @@ export class HeaderComponent implements OnInit {
     .subscribe({
       next: (response: any) => {
         // console.log(response)
-        let result = response      
-        console.log(result)
+        let result = response   
 
         this.loginName = result.full_name;
         this.loginEmail = result.email;

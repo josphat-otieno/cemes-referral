@@ -164,6 +164,10 @@ export class RegisterComponent implements OnInit {
       next: (response: any) => {
         let results = response
 
+        console.log(results)
+        
+        console.log(results.data.error)
+
         if(results.data.error){
 
           console.log(results.data.error)
@@ -172,7 +176,7 @@ export class RegisterComponent implements OnInit {
           this.toaster.show('Account created successfully', { classname: 'bg-success text-light', delay: 10000 });
 
           setTimeout(() => {
-            window.location.reload
+            window.location.reload()
           }, 1260);
         }
 

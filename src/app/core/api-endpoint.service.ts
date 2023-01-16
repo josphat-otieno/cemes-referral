@@ -24,11 +24,15 @@ export class ApiEndpointService {
     // Membership
     REGISTER_MEMBER: `${ApiEndpointService.MAIN_CONTEXT}/user/register-member-admin/`,
     VERIFY_MEMBER: `${ApiEndpointService.MAIN_CONTEXT}/user/verify-member-admin/`,
+    VERIFY_APP_USER: `${ApiEndpointService.MAIN_CONTEXT}/user/verify-app-user-admin/`,
     UPDATE_MEMBER: `${ApiEndpointService.MAIN_CONTEXT}/user/update-member-admin/`,
     DELETE_MEMBER: `${ApiEndpointService.MAIN_CONTEXT}/user/delete-member-admin/`,
     GET_ALL_MEMBERS: `${ApiEndpointService.MAIN_CONTEXT}/user/get-member-list/`,
     GET_MEMBER_VERIFICATIONS: `${ApiEndpointService.MAIN_CONTEXT}/user/get-member-verification-list/`,
     GET_ALL_APP_USERS: `${ApiEndpointService.MAIN_CONTEXT}/user/get-app-user-list/`,
+
+    // Management    
+    GET_ASSEMBLIES: `${ApiEndpointService.MAIN_CONTEXT}/management/assembly/`,
 
   }
 

@@ -15,14 +15,14 @@ export type UserType = UserModel | undefined;
   providedIn: 'root'
 })
 export class CbfService implements OnDestroy {
+  // private
+  private unsubscribe: Subscription[] = [];
 
   // public variables  
-  AccessToken:string = ''
-  currentUser$!: Observable<UserType>;
-  currentUserSubject:any = undefined
-
-  private unsubscribe: Subscription[] = [];
+  currentUser$: Observable<UserType>;
   isLoading$: Observable<boolean>;
+  currentUserSubject:any = undefined
+  AccessToken:string = ''
   isLoadingSubject: BehaviorSubject<boolean>;
 
   get currentUserValue(): UserType {
@@ -37,88 +37,31 @@ export class CbfService implements OnDestroy {
     public http: HttpClient,
     private cookieService: CookieService,
     private router:Router
-  ) {   this.isLoadingSubject = new BehaviorSubject<boolean>(false);
+  ) {
+    this.isLoadingSubject = new BehaviorSubject<boolean>(false);
+    this.currentUserSubject = new BehaviorSubject<UserType>(undefined);
+    this.currentUser$ = this.currentUserSubject.asObservable();
     this.isLoading$ = this.isLoadingSubject.asObservable();
+    const subscr = this.getUserByToken().subscribe();
+    this.unsubscribe.push(subscr);
   }
 
-    // Users
-    public createUser(userDetails: FormData): Observable<UserModel> {
-      const url = ApiEndpointService.getEndpoint(ApiEndpointService.ENDPOINT.REGISTER_USER);
-      return this.http.post<UserModel>(url, userDetails).pipe(
-        map(function (response: any) {
-          return response;
-        }),
-        catchError((fault: HttpErrorResponse) => {
-          return throwError(() => fault);
-
-        })
-      );
-    }
-
-    // Get User Detail
-    public getUser(user_id: number, access: string): Observable<any> {
-      const url = ApiEndpointService.getEndpoint(ApiEndpointService.ENDPOINT.GET_USER);
-      return this.http.get<any>(url + user_id, {
-        headers: {
-          'Content-Type': 'application/json; charset=utf-8',
-          'Accept': 'application/json',
-          'Authorization': `Bearer ${access}`
-        }
-      }).pipe(
-        map(function (response: any) {
-          return response;
-        }),
-        catchError((fault: HttpErrorResponse) => {
-          return throwError(() => fault);
+  /* ------------------------------------------------------------------------- Auth Management ---------------------------------------------------------------- */
   
-        })
-      )
-  
-    }
-
   // Login User
   public loginUser(loginCredentials: UserModel): Observable<any> {
     const url = ApiEndpointService.getEndpoint(ApiEndpointService.ENDPOINT.LOGIN_USER);
     const params = new HttpParams();
     return this.http.post<UserModel>(url, loginCredentials, { params }).pipe(
-      map(function (response: any) {
+      map( (response: any) => {
+        this.getUserByToken()
         return response;
       }),
-      // switchMap(() => this.getUserByToken()),
       catchError((fault: HttpErrorResponse) => {
         return throwError(() => fault);
 
       })
     )
-  }
-
-  // Gets User by Token
-  getUserByToken(): Observable<UserType> {
-    const auth = this.getAuthFromLocalStorage();
-    console.log(auth)
-    if (!auth) {
-      return of(undefined);
-    }
-
-    this.isLoadingSubject.next(true);
-    this.getAccess(auth).pipe(
-      map((res: any) => {
-
-        console.log('res[o',res)
-        if (res.access) {
-          const userId = Number(ls.get('id', {decrypt: true, secret: 43}));
-          console.log('user', userId)
-          this.currentUserSubject.next(userId.toString());
-          this.AccessToken = res.access.toString();
-        } else {
-          this.logoutUser
-        }
-        return this.currentUserSubject;
-      }),
-      finalize(() => this.isLoadingSubject.next(false))
-    );
-
-    return this.currentUserSubject
   }
   
   // Refresh JWT token
@@ -137,19 +80,7 @@ export class CbfService implements OnDestroy {
     );
   }
 
-  // reset email address
-  public resetEmail(requestData: FormData): Observable<any> {
-    const url = ApiEndpointService.getEndpoint(ApiEndpointService.ENDPOINT.EMAIL_REQUEST);
-    return this.http.post<any>(url, requestData).pipe(
-      map(function (response: any) {
-        return response;
-      }),
-      catchError((fault: HttpErrorResponse) => {
-        return throwError(() => fault);
-      })
-    )
-  }
-
+  // get auth from ls
   public getAuthFromLocalStorage(): string | undefined {
     try {
       const lsValue = this.cookieService.get("JTW");
@@ -166,6 +97,30 @@ export class CbfService implements OnDestroy {
     }
   }
 
+  // get user auth
+  getUserByToken(): Observable<UserType> {
+    const auth = this.getAuthFromLocalStorage();
+    if (!auth) {
+      return of(undefined);
+    }
+
+    this.isLoadingSubject.next(true);
+    return this.getAccess(auth).pipe(
+      map((res: any) => {
+        if (res.access) {
+          const userId = Number(ls.get('id', {decrypt: true, secret: 43}));
+          this.currentUserSubject.next(userId.toString());
+          this.AccessToken = res.access.toString();
+        } else {
+          this.logoutUser();
+        }
+        return this.currentUserSubject;
+      }),
+      finalize(() => this.isLoadingSubject.next(false))
+    );
+  }
+  
+  // logout
   public logoutUser() {
     this.cookieService.deleteAll();
     ls.clear()
@@ -176,8 +131,58 @@ export class CbfService implements OnDestroy {
     });
   }
 
+  /* ------------------------------------------------------------------------- User Management ---------------------------------------------------------------- */
+  
+  // Register User
+  public createUser(userDetails: FormData): Observable<UserModel> {
+    const url = ApiEndpointService.getEndpoint(ApiEndpointService.ENDPOINT.REGISTER_USER);
+    return this.http.post<UserModel>(url, userDetails).pipe(
+      map(function (response: any) {
+        return response;
+      }),
+      catchError((fault: HttpErrorResponse) => {
+        return throwError(() => fault);
+
+      })
+    );
+  }
+
+  // Get User Detail
+  public getUser(user_id: number, access: string): Observable<any> {
+    const url = ApiEndpointService.getEndpoint(ApiEndpointService.ENDPOINT.GET_USER);
+    return this.http.get<any>(url + user_id, {
+      headers: {
+        'Content-Type': 'application/json; charset=utf-8',
+        'Accept': 'application/json',
+        'Authorization': `Bearer ${access}`
+      }
+    }).pipe(
+      map(function (response: any) {
+        return response;
+      }),
+      catchError((fault: HttpErrorResponse) => {
+        return throwError(() => fault);
+
+      })
+    )
+
+  }
+
+  // reset email address
+  public resetEmail(requestData: FormData): Observable<any> {
+    const url = ApiEndpointService.getEndpoint(ApiEndpointService.ENDPOINT.EMAIL_REQUEST);
+    return this.http.post<any>(url, requestData).pipe(
+      map(function (response: any) {
+        return response;
+      }),
+      catchError((fault: HttpErrorResponse) => {
+        return throwError(() => fault);
+      })
+    )
+  }
 
   /* ------------------------------------------------------------------- Membership Endpoints --------------------------------------------------------------------------------------------------- */
+  
   // Get member list
   public getAllMembers(assembly:number, access: string): Observable<any> {
     const url = ApiEndpointService.getEndpoint(ApiEndpointService.ENDPOINT.GET_ALL_MEMBERS);
@@ -298,11 +303,51 @@ export class CbfService implements OnDestroy {
 
   }
 
+  // Verify App User
+  public verifyAppUser(userData:FormData, access: string): Observable<any> {
+    const url = ApiEndpointService.getEndpoint(ApiEndpointService.ENDPOINT.VERIFY_APP_USER);
+    return this.http.post<any>(url, userData, {
+      headers: {
+        'Authorization': `Bearer ${access}`
+      }
+    }).pipe(
+      map(function (response: any) {
+        return response;
+      }),
+      catchError((fault: HttpErrorResponse) => {
+        return throwError(() => fault);
+
+      })
+    )
+
+  }
+
   // Delete Member
   public deleteMember(memberData:FormData, access: string): Observable<any> {
     const url = ApiEndpointService.getEndpoint(ApiEndpointService.ENDPOINT.DELETE_MEMBER);
     return this.http.post<any>(url, memberData, {
       headers: {
+        'Authorization': `Bearer ${access}`
+      }
+    }).pipe(
+      map(function (response: any) {
+        return response;
+      }),
+      catchError((fault: HttpErrorResponse) => {
+        return throwError(() => fault);
+
+      })
+    )
+
+  }
+
+  // Get Assemblies
+  public getAssemblies(access: string): Observable<any> {
+    const url = ApiEndpointService.getEndpoint(ApiEndpointService.ENDPOINT.GET_ASSEMBLIES);
+    return this.http.get<any>(url, {
+      headers: {
+        'Content-Type': 'application/json; charset=utf-8',
+        'Accept': 'application/json',
         'Authorization': `Bearer ${access}`
       }
     }).pipe(

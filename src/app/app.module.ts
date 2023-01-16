@@ -1,6 +1,5 @@
-import { NgModule } from '@angular/core';
+import { NgModule, APP_INITIALIZER, Injectable } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { Injectable } from '@angular/core';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
   
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
@@ -91,15 +90,13 @@ import { NavigationComponent } from './elements/navigation/navigation.component'
 import { HeaderComponent } from './elements/header/header.component';
 import { FooterComponent } from './elements/footer/footer.component';
 
-import { DashboardComponent } from './dashboard/dashboard.component';
+import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { GraphRecoveredComponent } from './elements/dashboard/graph-recovered/graph-recovered.component';
 import { GraphVisitorsComponent } from './elements/dashboard/graph-visitors/graph-visitors.component';
 import { GraphPatientsComponent } from './elements/dashboard/graph-patients/graph-patients.component';
 import { GraphRevenueComponent } from './elements/dashboard/graph-revenue/graph-revenue.component';
 import { RecentPatientActivityComponent } from './elements/dashboard/recent-patient-activity/recent-patient-activity.component';
 import { BestDoctorComponent } from './elements/dashboard/best-doctor/best-doctor.component';
-
-import { Dashboard2Component } from './dashboard2/dashboard2.component';
 
 
 
@@ -660,8 +657,16 @@ import { Error503Component } from './pages/error503/error503.component';
 import { UsersComponent } from './components/users/users.component';
 import { MembersComponent } from './components/members/members.component';
 import { AppUsersComponent } from './components/app-users/app-users.component';
+import { CbfService } from './core/cbf.service';
 
-
+function appInitializer(authService: CbfService) {
+  return () => {
+    return new Promise((resolve) => {
+      //@ts-ignore
+      authService.getUserByToken().subscribe().add(resolve);
+    });
+  };
+}
 
 @NgModule({
   declarations: [
@@ -682,8 +687,6 @@ import { AppUsersComponent } from './components/app-users/app-users.component';
     GraphRevenueComponent,
     RecentPatientActivityComponent,
     BestDoctorComponent,
-    
-    Dashboard2Component,
    
    
     ProfileComponent,
@@ -1317,8 +1320,16 @@ import { AppUsersComponent } from './components/app-users/app-users.component';
     MatTreeModule,
   ],
   providers: [
-		SharedService  
+		// SharedService,
+    {
+      provide: APP_INITIALIZER,
+      useFactory: appInitializer,
+      multi: true,
+      deps: [CbfService, SharedService],
+    },
   ],
+
+  
   bootstrap: [AppComponent]
 })
 export class AppModule { }

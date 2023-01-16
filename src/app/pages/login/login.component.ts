@@ -79,8 +79,7 @@ export class LoginComponent implements OnInit {
           this.cookieService.set( 'JTW', jwt); // To Set Cookie
 
           //store user id
-          ls.set('id', JSON.stringify(user_id), {encrypt: true, secret: 43});  
-          this.cbfService.getUserByToken()       
+          ls.set('id', JSON.stringify(user_id), {encrypt: true, secret: 43});     
           this.router.navigate([this.returnUrl]);
         }
       },

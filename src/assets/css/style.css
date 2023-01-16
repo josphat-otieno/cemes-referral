@@ -33252,4 +33252,12 @@ html[dir="rtl"] [direction="rtl"][data-sidebar-style="compact"]:not([data-layout
   [data-theme-version="dark"] .doctor-list .accordion__header--indicator {
     opacity: 1; }
 
+  /* Custom Css */
+  
+  /* global css for profile pic holder */
+  .tableBanner {
+      width: 100%;
+  }
+
+
 /*# sourceMappingURL=style.css.map */
