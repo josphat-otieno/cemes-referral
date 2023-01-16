@@ -22,7 +22,13 @@ export class ApiEndpointService {
     RETRIEVE_TOKEN: `${ApiEndpointService.MAIN_CONTEXT}/user/token/refresh/`,
 
     // Membership
-    GET_ALL_MEMBERS: `${ApiEndpointService.MAIN_CONTEXT}/user/user-details/`,
+    REGISTER_MEMBER: `${ApiEndpointService.MAIN_CONTEXT}/user/register-member-admin/`,
+    VERIFY_MEMBER: `${ApiEndpointService.MAIN_CONTEXT}/user/verify-member-admin/`,
+    UPDATE_MEMBER: `${ApiEndpointService.MAIN_CONTEXT}/user/update-member-admin/`,
+    DELETE_MEMBER: `${ApiEndpointService.MAIN_CONTEXT}/user/delete-member-admin/`,
+    GET_ALL_MEMBERS: `${ApiEndpointService.MAIN_CONTEXT}/user/get-member-list/`,
+    GET_MEMBER_VERIFICATIONS: `${ApiEndpointService.MAIN_CONTEXT}/user/get-member-verification-list/`,
+    GET_ALL_APP_USERS: `${ApiEndpointService.MAIN_CONTEXT}/user/get-app-user-list/`,
 
   }
 

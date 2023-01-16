@@ -2,6 +2,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import ls from 'localstorage-slim';
 import { CookieService } from 'ngx-cookie-service';
 import { Subscription } from 'rxjs';
 import { ToastService } from 'src/app/bootstrap/toast/toast-global/toast-service';
@@ -15,16 +16,22 @@ import { CbfService } from 'src/app/core/cbf.service';
 export class MembersComponent implements OnInit {
 
   public token:string = ''
-  public accessToken:string = ''
+  public accessToken:string = ''  
+  public user_id:number = Number(ls.get('id', {decrypt: true, secret: 43}));
   public MemberRegistration: FormGroup | any;
   public members:any = []
+  public pendingMembers:any = []
   public assemblies:any = []
   private unsubscribe: Subscription[] = [];
   private msg:string = ''  
   public password:string =''
   public passwordValue:string =''
 
+  // response
+  public messageResponse:string = ''
+
   // parameters
+  public pendingMemberCount:number = 0
   public memberCount:number = 0
   public memberModalData:any = []
 
@@ -144,11 +151,10 @@ export class MembersComponent implements OnInit {
     .subscribe({
       next: (response: any) => {
         let result = response 
-        console.log(result)
         this.accessToken = result.access     
-        
-        
+                
         this.getMembers(this.accessToken)
+        this.getPendingMembers(this.accessToken)
       },      
       error: (err: HttpErrorResponse) => {
         //  this.toaster.warning('Failure fetching user details, kindly refresh', 'Something went wrong')
@@ -165,8 +171,9 @@ export class MembersComponent implements OnInit {
 
   getMembers(access: string) {
     let acessTkString = access
+    let assembly = 0
 
-    const memberSubscr = this.cbfService.getAllMembers(acessTkString)
+    const memberSubscr = this.cbfService.getAllMembers(assembly, acessTkString)
 
     .subscribe({
       next: (response: any) => {
@@ -174,9 +181,27 @@ export class MembersComponent implements OnInit {
 
         this.memberCount = queryResults.count
         this.members = queryResults.results
-        console.log(queryResults)
-        // this.router.navigate([this.returnUrl]);
+        
+      },
+      error: (e:HttpErrorResponse) =>  this.msg = 'Something went wrong, please try again'     
+    })
+    
+    this.unsubscribe.push(memberSubscr);
 
+  }
+
+  getPendingMembers(access: string) {
+    let acessTkString = access
+    let assembly = 0
+
+    const memberSubscr = this.cbfService.getPendingMembers(assembly, acessTkString)
+
+    .subscribe({
+      next: (response: any) => {
+        let queryResults = response
+
+        this.pendingMemberCount = queryResults.count
+        this.pendingMembers = queryResults.results
         
       },
       error: (e:HttpErrorResponse) =>  this.msg = 'Something went wrong, please try again'     
@@ -193,24 +218,29 @@ export class MembersComponent implements OnInit {
     regData.append('email', this.MemberRegistration.get('email')?.value)
     regData.append('phone_number', this.MemberRegistration.get('phoneNumber')?.value)
     regData.append('password', this.MemberRegistration.get('password')?.value)
-    regData.append('is_staff', false.toString())
-    regData.append('is_member', true.toString())
-    regData.append('is_verified', true.toString())
+    regData.append('assembly', this.MemberRegistration.get('assembly')?.value)
+    regData.append('user', this.user_id.toString())
 
-    const regsterSubscr = this.cbfService.createUser(regData)
+    const regsterSubscr = this.cbfService.registerMember(regData, this.accessToken)
 
     .subscribe({
       next: (response: any) => {
         let results = response
         
-        if(results.counter){
-          this.toaster.show('Member created successfully', { classname: 'bg-success text-light', delay: 10000 });
+        if(results.status){
 
-          setTimeout(() => {
-            window.location.reload
-          }, 1200);
+          if(results.status == 1){
+            this.toaster.show(results.message, { classname: 'bg-success text-light', delay: 10000 });
+            this.messageResponse = results.message
+            
+            setTimeout(() => {
+              window.location.reload()
+            }, 1200);
+          } else {
+            this.toaster.show(results.message, { classname: 'bg-warning text-light', delay: 10000 });
+          }
+          
         }
-
         
       },
       error: (e:HttpErrorResponse) =>  {
@@ -224,6 +254,170 @@ export class MembersComponent implements OnInit {
 
   updateMember(data: any) {
 
+    let modalData = data
+
+    const updateData:FormData = new FormData()
+    updateData.append('full_name', modalData.full_name)
+    updateData.append('email', modalData.email)
+    updateData.append('phone_number', modalData.phone_number)
+
+    if(this.passwordValue != '' && modalData.password != ''){
+      updateData.append('password', modalData.password)
+    }
+
+    updateData.append('assembly', modalData.assemblyUpdate)
+    updateData.append('businessOwner', modalData.id)
+    updateData.append('user', this.user_id.toString())
+
+    const regsterSubscr = this.cbfService.updateMember(updateData, this.accessToken)
+
+    .subscribe({
+      next: (response: any) => {
+        console.log(response)
+        
+        if(response.status){
+
+          if(response.status == 1){
+
+            console.log('here')
+            this.toaster.show(response.message, { classname: 'bg-success text-light', delay: 10000 });
+            
+            setTimeout(() => {
+              window.location.reload()
+            }, 1200);
+          } else {
+            this.toaster.show(response.message, { classname: 'bg-warning text-light', delay: 10000 });
+          }
+          
+        }
+        
+      },
+      error: (e:HttpErrorResponse) =>  {
+        this.msg = 'Something went wrong, please try again'  
+        this.toaster.show(this.msg, { classname: 'bg-warning text-light', delay: 10000 });
+      }   
+    })
+    
+    this.unsubscribe.push(regsterSubscr);
+
   }
 
+  deleteMemberAction(data: any) {
+
+    let modalData = data
+
+    const delData:FormData = new FormData()
+    delData.append('businessOwner', modalData.id)
+    delData.append('user', this.user_id.toString())
+
+    const delSubscr = this.cbfService.deleteMember(delData, this.accessToken)
+
+    .subscribe({
+      next: (response: any) => {
+        console.log(response)
+        
+        if(response.status){
+
+          if(response.status == 1){
+            this.toaster.show(response.message, { classname: 'bg-success text-light', delay: 10000 });
+            
+            // setTimeout(() => {
+            //   window.location.reload()
+            // }, 1200);
+          } else {
+            this.toaster.show(response.message, { classname: 'bg-warning text-light', delay: 10000 });
+          }
+          
+        }
+        
+      },
+      error: (e:HttpErrorResponse) =>  {
+        this.msg = 'Something went wrong, please try again'  
+        this.toaster.show(this.msg, { classname: 'bg-warning text-light', delay: 10000 });
+      }   
+    })
+    
+    this.unsubscribe.push(delSubscr);
+
+  }
+
+  approveMemberAction(data: any) {
+
+    let modalData = data
+
+    const apprvData:FormData = new FormData()
+    apprvData.append('type', 'approve')
+    apprvData.append('businessOwner', modalData.id)
+    apprvData.append('user', this.user_id.toString())
+
+    const apprvSubscr = this.cbfService.verifyMember(apprvData, this.accessToken)
+
+    .subscribe({
+      next: (response: any) => {
+        
+        if(response.status){
+
+          if(response.status == 1){
+            this.toaster.show(response.message, { classname: 'bg-success text-light', delay: 10000 });
+            
+            setTimeout(() => {
+              window.location.reload()
+            }, 1200);
+          } else {
+            this.toaster.show(response.message, { classname: 'bg-warning text-light', delay: 10000 });
+          }
+          
+        }
+        
+      },
+      error: (e:HttpErrorResponse) =>  {
+        this.msg = 'Something went wrong, please try again'  
+        this.toaster.show(this.msg, { classname: 'bg-warning text-light', delay: 10000 });
+      }   
+    })
+    
+    this.unsubscribe.push(apprvSubscr);
+
+  }
+
+  revokeMemberAction(data: any) {
+
+    let modalData = data
+
+    const apprvData:FormData = new FormData()
+    apprvData.append('type', 'reject')
+    apprvData.append('businessOwner', modalData.id)
+    apprvData.append('user', this.user_id.toString())
+
+    const apprvSubscr = this.cbfService.verifyMember(apprvData, this.accessToken)
+
+    .subscribe({
+      next: (response: any) => {
+        
+        if(response.status){
+
+          if(response.status == 1){
+            this.toaster.show(response.message, { classname: 'bg-success text-light', delay: 10000 });
+            
+            setTimeout(() => {
+              window.location.reload()
+            }, 1200);
+          } else {
+            this.toaster.show(response.message, { classname: 'bg-warning text-light', delay: 10000 });
+          }
+          
+        }
+        
+      },
+      error: (e:HttpErrorResponse) =>  {
+        this.msg = 'Something went wrong, please try again'  
+        this.toaster.show(this.msg, { classname: 'bg-warning text-light', delay: 10000 });
+      }   
+    })
+    
+    this.unsubscribe.push(apprvSubscr);
+
+  }
+  
+  
 }
