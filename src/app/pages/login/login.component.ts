@@ -22,6 +22,11 @@ export class LoginComponent implements OnInit {
   public hasError: boolean = false;
   public returnUrl: string = '';
 
+  // Alerts
+  public alertMessage:string = '';
+  public successAlert:boolean = false;
+  public warningAlert:boolean = false;
+
   public signInForm!:FormGroup
 
   private unsubscribe: Subscription[] = [];
@@ -70,20 +75,30 @@ export class LoginComponent implements OnInit {
         let staff_verify = results.data.is_staff
         let user_id = results.data.id
 
-        if(staff_verify != true){
-          this.msg="Only staff are allowed into this portal.";
+        if(!jwt){
+          this.warningAlert = true
         } else {
-          this.msg = ''
-
-          //store session cookie
-          this.cookieService.set( 'JTW', jwt); // To Set Cookie
-
-          //store user id
-          ls.set('id', JSON.stringify(user_id), {encrypt: true, secret: 43});     
-          this.router.navigate([this.returnUrl]);
+          if(staff_verify != true){
+            this.alertMessage="Only staff are allowed into this portal.";
+          } else {
+            this.alertMessage = ''
+  
+            this.successAlert = true;
+  
+            //store session cookie
+            this.cookieService.set( 'JTW', jwt); // To Set Cookie
+  
+            //store user id
+            ls.set('id', JSON.stringify(user_id), {encrypt: true, secret: 43});     
+            
+            setTimeout(() => {
+              this.router.navigate([this.returnUrl]);
+            }, 2000);
+          }
         }
+      
       },
-      error: (e:HttpErrorResponse) =>  this.msg = 'Invalid credentials, please try again'     
+      error: (e:HttpErrorResponse) =>  this.alertMessage = 'No account matches these credentials, please try again'
     })
     
     this.unsubscribe.push(loginSubscr);

@@ -151,18 +151,22 @@ export class NavigationComponent implements OnInit {
          '/admin/uc-lightgallery',
 	];
 
-    membershipArray = [
-         '/admin/uc-nestable',
-         '/admin/uc-lightgallery',
+  businessArray = [
+    '/admin/business-list',
+  ]
+
+  membershipArray = [
+    '/admin/uc-nestable',
+    '/admin/uc-lightgallery',
 	];
 
-    staffArray = [
-      '/admin/users'
+  staffArray = [
+    '/admin/users'
   ];
     
-    formsArray = [
-         '/admin/form-element',
-         '/admin/form-validate',
+  formsArray = [
+    '/admin/form-element',
+    '/admin/form-validate',
 	];
 
 }

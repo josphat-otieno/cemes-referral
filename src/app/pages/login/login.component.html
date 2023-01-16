@@ -14,6 +14,19 @@
                                    <i class="fa fa-exclamation"></i> {{msg}}
                                 </div>
                                 <h4 class="text-center mb-4">Sign in to your account</h4>
+
+                                <!-- Message Container -->
+                                <div class="row alert alert-warning" *ngIf="warningAlert === true">
+                                    <p class="fs-8 text-muted"> <i class="fa fa-exclamation-triangle"></i>&nbsp; Incorrect username or password, please try again</p>
+                                </div>
+                                <div class="row alert alert-success" *ngIf="successAlert === true">
+                                    <p class="fs-8 text-muted"> <i class="fa fa-handshake-o"></i>&nbsp; Logging you in ...</p>
+                                </div>
+                                <div class="row alert alert-danger" *ngIf="alertMessage">
+                                    <p class="fs-8 text-muted"> <i class="fa fa-exclamation-triangle"></i>&nbsp; {{alertMessage}}</p>
+                                </div>
+                                <!-- Message Container -->
+
                                 <form class="form" [formGroup]="signInForm" (ngSubmit)="loginUser()"> 
                                     <div class="form-group">
                                         <label class="mb-1"><strong>Email</strong></label>
@@ -37,11 +50,11 @@
                                         </div>
                                     </div>
                                     <div class="text-center">
-                                        <button type="submit" class="btn btn-primary btn-block">Sign Me In</button>
+                                        <button type="submit" class="btn btn-danger btn-block">Sign Me In</button>
                                     </div>
                                 </form>
                                 <div class="new-account mt-3">
-                                    <p>Don't have an account? <a class="text-primary" [routerLink]="['/register']">Sign up</a></p>
+                                    <p>Don't have an account? <a class="text-danger" [routerLink]="['/register']">Sign up</a></p>
                                 </div>
                             </div>
                         </div>

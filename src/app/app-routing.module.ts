@@ -134,6 +134,7 @@ import { AuthGuard } from './services/auth.guard';
 import { UsersComponent } from './components/users/users.component';
 import { MembersComponent } from './components/members/members.component';
 import { AppUsersComponent } from './components/app-users/app-users.component';
+import { BusinessListingComponent } from './components/business-listing/business-listing.component';
 
 
 
@@ -262,7 +263,8 @@ const routes: Routes = [
               // CBF Components
               {path: 'users', component: UsersComponent},
               {path: 'member-database', component: MembersComponent},
-              {path: 'app-users', component: AppUsersComponent}
+              {path: 'app-users', component: AppUsersComponent},
+              {path: 'business-list', component: BusinessListingComponent}
       
           ]
           

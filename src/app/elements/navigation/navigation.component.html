@@ -184,9 +184,21 @@
                 </a>
             </li> -->
 
+            <li [ngClass]="{'mm-active': businessArray.indexOf(currentHref) > -1}">
+                <a class="has-arrow ai-icon" href="javascript:void()" aria-expanded="false">
+                    <i class="flaticon-381-blueprint"></i>
+                    <span class="nav-text">Business Management</span>
+                </a>
+                <ul aria-expanded="false" [ngClass]="{'mm-show': businessArray.indexOf(currentHref) > -1}">
+                    <li><a [routerLink]="['/admin/business-list']" class="{{(currentHref == '/admin/admin/business-list') ? 'mm-active' : ''}}">Business List</a></li>
+                    <li><a [routerLink]="['/admin/app-users']" class="{{(currentHref == '/admin/app-users') ? 'mm-active' : ''}}">Integrity Ratings</a></li>
+                    <li><a [routerLink]="['/admin/uc-lightgallery']" class="{{(currentHref == '/admin/uc-lightgallery') ? 'mm-active' : ''}}">Business Ratings</a></li>
+                </ul>
+            </li>
+
             <li [ngClass]="{'mm-active': membershipArray.indexOf(currentHref) > -1}">
                 <a class="has-arrow ai-icon" href="javascript:void()" aria-expanded="false">
-                    <i class="flaticon-381-heart"></i>
+                    <i class="flaticon-381-user-9"></i>
                     <span class="nav-text">Member Management</span>
                 </a>
                 <ul aria-expanded="false" [ngClass]="{'mm-show': membershipArray.indexOf(currentHref) > -1}">
@@ -200,7 +212,7 @@
 
             <li [ngClass]="{'mm-active': staffArray.indexOf(currentHref) > -1}">
                 <a class="has-arrow ai-icon" href="javascript:void()" aria-expanded="false">
-                    <i class="flaticon-381-heart"></i>
+                    <i class="flaticon-381-user-1"></i>
                     <span class="nav-text">Staff Management</span>
                 </a>
                 <ul aria-expanded="false" [ngClass]="{'mm-show': staffArray.indexOf(currentHref) > -1}">

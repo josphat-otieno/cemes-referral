@@ -654,10 +654,12 @@ import { Error403Component } from './pages/error403/error403.component';
 import { Error404Component } from './pages/error404/error404.component';
 import { Error500Component } from './pages/error500/error500.component';
 import { Error503Component } from './pages/error503/error503.component';
+
+import { CbfService } from './core/cbf.service';
 import { UsersComponent } from './components/users/users.component';
 import { MembersComponent } from './components/members/members.component';
 import { AppUsersComponent } from './components/app-users/app-users.component';
-import { CbfService } from './core/cbf.service';
+import { BusinessListingComponent } from './components/business-listing/business-listing.component';
 
 function appInitializer(authService: CbfService) {
   return () => {
@@ -1259,6 +1261,7 @@ function appInitializer(authService: CbfService) {
     UsersComponent,
     MembersComponent,
     AppUsersComponent,
+    BusinessListingComponent,
     
     
   ],
