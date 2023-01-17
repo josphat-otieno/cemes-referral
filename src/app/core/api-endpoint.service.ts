@@ -34,6 +34,11 @@ export class ApiEndpointService {
     // Management    
     GET_ASSEMBLIES: `${ApiEndpointService.MAIN_CONTEXT}/management/assembly/`,
 
+    // Businesses
+    GET_BUSINESS_LIST: `${ApiEndpointService.MAIN_CONTEXT}/business/get-business-list/`,
+    UPDATE_BUSINESS_DETAILS: `${ApiEndpointService.MAIN_CONTEXT}/business/business/`,
+    BUSINESS_PRODUCT: `${ApiEndpointService.MAIN_CONTEXT}/business/business-product/`,
+
   }
 
   constructor() { }

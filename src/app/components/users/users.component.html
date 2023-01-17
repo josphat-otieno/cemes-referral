@@ -96,7 +96,7 @@
                     <table datatable class="table table-striped">
                     <thead>
                     <tr>
-                        <th scope="col">#</th>
+                        <th scope="col">Profile Picture</th>
                         <th scope="col">Full Name</th>
                         <th scope="col">Email Address</th>
                         <th scope="col">Phone Number</th>
@@ -107,7 +107,11 @@
                     <tbody>
                     <tr *ngFor="let user of users; index as i">
                         <th scope="row">{{ i + 1 }}</th>		
-                        <td></td>
+                        <td>
+                            <div class="circular_image_container symbol symbol-50px me-5">
+                                <!-- <img src="{{res.business.logo}}" alt="business logo"/> -->
+                            </div>
+                        </td>
                         <td></td>
                         <td></td>
                         <td></td>

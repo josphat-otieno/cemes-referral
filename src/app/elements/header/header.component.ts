@@ -33,10 +33,10 @@ export class HeaderComponent implements OnInit {
   ) { }
 	
 	ngOnInit(): void {
-    this.access_token =  this.cbfService.AccessToken
-    this.user_id = Number(this.cbfService.currentUserValue)
     
     setTimeout(() => {
+      this.access_token =  this.cbfService.AccessToken
+      this.user_id = Number(this.cbfService.currentUserValue)
       this.getUserDetail(this.access_token)
     }, 1200);
 	}

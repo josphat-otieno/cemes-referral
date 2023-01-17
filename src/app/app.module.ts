@@ -660,6 +660,7 @@ import { UsersComponent } from './components/users/users.component';
 import { MembersComponent } from './components/members/members.component';
 import { AppUsersComponent } from './components/app-users/app-users.component';
 import { BusinessListingComponent } from './components/business-listing/business-listing.component';
+import { DataTablesModule } from 'angular-datatables';
 
 function appInitializer(authService: CbfService) {
   return () => {
@@ -1283,6 +1284,7 @@ function appInitializer(authService: CbfService) {
     PerfectScrollbarModule,
     NgxDropzoneModule,
     CarouselModule,
+    DataTablesModule,
     
     MatListModule,
     MatAutocompleteModule,

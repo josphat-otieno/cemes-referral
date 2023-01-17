@@ -17,27 +17,27 @@ export class DashboardComponent implements OnInit {
   
   dashboardWidgets = [
         {
-          title: "Appointment",
-          total_no: "76",
-          icon_class: "flaticon-381-calendar-1",
+          title: "Number of Businesses",
+          total_no: "0",
+          icon_class: "flaticon-381-list",
           wrapper_class: "bg-danger",
         },
         {
-          title: "Hospital Earning",
-          total_no: "$56K",
-          icon_class: "flaticon-381-diamond",
+          title: "Number of Members",
+          total_no: "0",
+          icon_class: "flaticon-381-user-9",
           wrapper_class: "bg-success",
         },
         {
-          title: "Total Patient",
-          total_no: "783K",
-          icon_class: "flaticon-381-heart",
+          title: "Join Requests",
+          total_no: "0",
+          icon_class: "flaticon-381-add-3",
           wrapper_class: "bg-info",
         },
         {
-          title: "Doctor",
-          total_no: "$76",
-          icon_class: "flaticon-381-user-7",
+          title: "Revenue",
+          total_no: "Ksh.0.00",
+          icon_class: "flaticon-381-diamond",
           wrapper_class: "bg-primary",
         },
   ];
@@ -112,9 +112,9 @@ export class DashboardComponent implements OnInit {
     ];
     
     
-    bestDoctor = this.sharedService.bestDoctor;
+    bestBusinesses = this.sharedService.bestBusinesses;
     
-    /* bestDoctor = [
+    /* bestBusinesses = [
         {
           image: "assets/images/avatar/1.jpg",
           number: "#1",

@@ -44,8 +44,8 @@
                     <tr *ngFor="let user of appUsers; index as i">
                         <!-- <th scope="row">{{ i + 1 }}</th>		 -->
                         <td>
-                            <div class="symbol symbol-50px me-5">
-                                <img src="{{user.profilePicture}}" style="width:50%;" alt="profile pic" />
+                            <div class="circular_image_container symbol symbol-50px me-5">
+                              <img src="{{user.profilePicture}}" alt="profile pic"/>
                             </div>
                         </td>
                         <td>{{user.name}}</td>

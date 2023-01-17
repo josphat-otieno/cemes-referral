@@ -117,8 +117,8 @@
                             <tr *ngFor="let member of members; index as i">
                                 <!-- <th scope="row">{{ i + 1 }}</th>		 -->
                                 <td>
-                                    <div class="symbol symbol-50px me-5">
-                                        <img src="{{member.profilePicture}}" class="tableBanner" alt="profile pic" />
+                                    <div class="circular_image_container symbol symbol-50px me-5">
+                                        <img src="{{member.profilePicture}}" alt="profile pic"/>
                                     </div>
                                 </td>
                                 <td>{{member.name}}</td>
@@ -163,8 +163,8 @@
                             <tr *ngFor="let member of pendingMembers; index as i">
                                 <!-- <th scope="row">{{ i + 1 }}</th>		 -->
                                 <td>
-                                    <div class="symbol symbol-50px me-5">
-                                        <img src="{{member.profilePicture}}" class="tableBanner" alt="profile pic" />
+                                    <div class="circular_image_container symbol symbol-50px me-5">
+                                        <img src="{{member.profilePicture}}" alt="profile pic"/>
                                     </div>
                                 </td>
                                 <td>{{member.name}}</td>
