@@ -16,7 +16,8 @@ export class ApiEndpointService {
     REGISTER_USER: `${ApiEndpointService.MAIN_CONTEXT}/user/register/`, 
     LOGIN_USER: `${ApiEndpointService.MAIN_CONTEXT}/user/login/`, 
     EMAIL_REQUEST: `${ApiEndpointService.MAIN_CONTEXT}/user/request-reset-email/`,
-    GET_USER: `${ApiEndpointService.MAIN_CONTEXT}/user/get-profile/`,
+    GET_USER: `${ApiEndpointService.MAIN_CONTEXT}/user/get-profile/`,    
+    GET_ALL_STAFF: `${ApiEndpointService.MAIN_CONTEXT}/user/get-staff-list/`,
     UPDATE_PROFILE: `${ApiEndpointService.MAIN_CONTEXT}/user/`,
     UPDATE_USER: `${ApiEndpointService.MAIN_CONTEXT}/user/edit-user/`,
     RETRIEVE_TOKEN: `${ApiEndpointService.MAIN_CONTEXT}/user/token/refresh/`,
@@ -32,7 +33,8 @@ export class ApiEndpointService {
     GET_ALL_APP_USERS: `${ApiEndpointService.MAIN_CONTEXT}/user/get-app-user-list/`,
 
     // Management    
-    GET_ASSEMBLIES: `${ApiEndpointService.MAIN_CONTEXT}/management/assembly/`,
+    ASSEMBLY_MGT: `${ApiEndpointService.MAIN_CONTEXT}/management/assembly/`,
+    ACCOUNT_PACKAGES: `${ApiEndpointService.MAIN_CONTEXT}/management/account-package/`,
 
     // Businesses
     GET_BUSINESS_LIST: `${ApiEndpointService.MAIN_CONTEXT}/business/get-business-list/`,

@@ -4,7 +4,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import ls from 'localstorage-slim';
 import { CookieService } from 'ngx-cookie-service';
-import { Subscription } from 'rxjs';
+import { Subject, Subscription } from 'rxjs';
 import { ToastService } from 'src/app/bootstrap/toast/toast-global/toast-service';
 import { CbfService } from 'src/app/core/cbf.service';
 
@@ -40,6 +40,14 @@ export class MembersComponent implements OnInit {
   public phoneValidationMessage:boolean = false
   public emailValidationMessage:boolean = false
 
+  // Datatables
+  dtOptions: any = {};
+  dtTrigger: Subject<any> = new Subject<any>();
+
+  ptOptions: any = {};
+  ptTrigger: Subject<any> = new Subject<any>();
+  
+
   constructor(
     private fb: FormBuilder, 
     private cookieService: CookieService,   
@@ -62,6 +70,33 @@ export class MembersComponent implements OnInit {
   
 
   ngOnInit(): void {
+
+     // datatable
+     this.dtOptions = {
+      pagingType: 'full_numbers',
+      pageLength: 10,
+      processing: true,
+      buttons: [
+        'copy',
+        'print',
+        'csv',
+        'excel',
+        'pdf'
+      ]
+    };
+    this.ptOptions = {
+      pagingType: 'full_numbers',
+      pageLength: 10,
+      processing: true,
+      buttons: [
+        'copy',
+        'print',
+        'csv',
+        'excel',
+        'pdf'
+      ]
+    };
+    
     
     this.token =  this.cookieService.get("JTW");
     this.getAccessToken()
@@ -196,6 +231,10 @@ export class MembersComponent implements OnInit {
 
         this.memberCount = queryResults.count
         this.members = queryResults.results
+
+        if(this.memberCount > 0){
+          this.dtTrigger.next(this.members)
+        }
         
       },
       error: (e:HttpErrorResponse) =>  this.msg = 'Something went wrong, please try again'     
@@ -217,7 +256,11 @@ export class MembersComponent implements OnInit {
 
         this.pendingMemberCount = queryResults.count
         this.pendingMembers = queryResults.results
-        
+
+        if(this.pendingMemberCount > 0){
+          this.ptTrigger.next(this.pendingMembers)
+        }
+
       },
       error: (e:HttpErrorResponse) =>  this.msg = 'Something went wrong, please try again'     
     })

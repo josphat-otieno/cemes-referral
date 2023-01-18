@@ -97,9 +97,10 @@
 
                 <mat-tab-group>
                     <mat-tab label="Verified Members"> 
+                        <br/>
                            
                         <div class="table-responsive">
-                            <table datatable class="table table-striped">
+                            <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="table table-striped">
                             <thead>
                             <tr>
                                 <th scope="col">Profile Picture</th>
@@ -114,28 +115,36 @@
                             </tr>
                             </thead>
                             <tbody>
-                            <tr *ngFor="let member of members; index as i">
-                                <!-- <th scope="row">{{ i + 1 }}</th>		 -->
-                                <td>
-                                    <div class="circular_image_container symbol symbol-50px me-5">
-                                        <img src="{{member.profilePicture}}" alt="profile pic"/>
-                                    </div>
-                                </td>
-                                <td>{{member.name}}</td>
-                                <td>{{member.email}}</td>
-                                <td>{{member.phone}}</td>
-                                <td>{{member.assembly}}</td>
-                                <td>{{member.businesses}}</td>
-                                <td>{{member.joinDate | date:'mediumDate'}}</td>
-                                <td>
-                                    <span *ngIf="member.deleteStatus === true" class="badge badge-danger">Inactive</span>
-                                    <span *ngIf="member.deleteStatus === false" class="badge badge-success">Active</span>
-                                </td>
-                                <td>
-                                    <button type="button" class="btn btn-sm btn-success" (click)="reviewUpdateModal(editMember, member)">Edit</button>
-                                    <button type="button" [disabled]="member.deleteStatus === true" class="btn btn-sm btn-danger" (click)="reviewModal(deleteMember, member)">Delete</button>
-                                </td>
-                            </tr>
+                                <tr *ngFor="let member of members; index as i">
+                                    <!-- <th scope="row">{{ i + 1 }}</th>		 -->
+                                    <td>
+                                        <div class="circular_image_container symbol symbol-50px me-5">
+                                            <img src="{{member.profilePicture}}" alt="profile pic"/>
+                                        </div>
+                                    </td>
+                                    <td>{{member.name}}</td>
+                                    <td>{{member.email}}</td>
+                                    <td>{{member.phone}}</td>
+                                    <td>{{member.assembly}}</td>
+                                    <td class="text-center">{{member.businesses}}</td>
+                                    <td>{{member.joinDate | date:'mediumDate'}}</td>
+                                    <td>
+                                        <span *ngIf="member.deleteStatus === true" class="badge badge-danger">Inactive</span>
+                                        <span *ngIf="member.deleteStatus === false" class="badge badge-success">Active</span>
+                                    </td>
+                                    <td>
+                                        <div class="button_containers">                                        
+                                            <button type="button" class="btn btn-sm btn-success" (click)="reviewUpdateModal(editMember, member)"> <i class="fa fa-pencil"></i>Edit</button> &nbsp;
+                                            <button type="button" [disabled]="member.deleteStatus === true" class="btn btn-sm btn-danger" (click)="reviewModal(deleteMember, member)"> <i class="fa fa-trash"></i>Delete</button>
+                                        </div>
+                                    </td>
+                                </tr>
+
+                                <tr *ngIf="memberCount == 0">
+                                    <td colspan="9" class="no_data_display">
+                                        No data available for display
+                                    </td>
+                                </tr>
                             </tbody>
                             </table>
                         </div>
@@ -143,9 +152,10 @@
                     </mat-tab>
 
                     <mat-tab label="Pending Verification: {{pendingMemberCount}} Request(s)">
+                        <br/>
 
                         <div class="table-responsive">
-                            <table datatable class="table table-striped">
+                            <table datatable [dtOptions]="ptOptions" [dtTrigger]="ptTrigger" class="table table-striped">
                             <thead>
                             <tr>
                                 <th scope="col">Profile Picture</th>
@@ -160,28 +170,38 @@
                             </tr>
                             </thead>
                             <tbody>
-                            <tr *ngFor="let member of pendingMembers; index as i">
-                                <!-- <th scope="row">{{ i + 1 }}</th>		 -->
-                                <td>
-                                    <div class="circular_image_container symbol symbol-50px me-5">
-                                        <img src="{{member.profilePicture}}" alt="profile pic"/>
-                                    </div>
-                                </td>
-                                <td>{{member.name}}</td>
-                                <td>{{member.email}}</td>
-                                <td>{{member.phone}}</td>
-                                <td>{{member.assembly}}</td>
-                                <td>{{member.businesses}}</td>
-                                <td>{{member.joinDate | date:'mediumDate'}}</td>
-                                <td>
-                                    <span *ngIf="member.deleteStatus === true" class="badge badge-danger">Inactive</span>
-                                    <span *ngIf="member.deleteStatus === false" class="badge badge-success">Active</span>
-                                </td>
-                                <td>
-                                    <button type="button" class="btn btn-sm btn-success" (click)="reviewModal(approveMember, member)">Approve</button>
-                                    <button type="button" [disabled]="member.deleteStatus === true" class="btn btn-sm btn-danger" (click)="reviewModal(rejectMember, member)">Reject</button>
-                                </td>
-                            </tr>
+                                <tr *ngFor="let member of pendingMembers; index as i">
+                                    <!-- <th scope="row">{{ i + 1 }}</th>		 -->
+                                    <td>
+                                        <div class="circular_image_container symbol symbol-50px me-5">
+                                            <img src="{{member.profilePicture}}" alt="profile pic"/>
+                                        </div>
+                                    </td>
+                                    <td>{{member.name}}</td>
+                                    <td>{{member.email}}</td>
+                                    <td>{{member.phone}}</td>
+                                    <td>{{member.assembly}}</td>
+                                    <td>{{member.businesses}}</td>
+                                    <td>{{member.joinDate | date:'mediumDate'}}</td>
+                                    <td>
+                                        <span *ngIf="member.deleteStatus === true" class="badge badge-danger">Inactive</span>
+                                        <span *ngIf="member.deleteStatus === false" class="badge badge-success">Active</span>
+                                    </td>
+                                    <td>
+
+                                        <div class="button_containers">                                        
+                                            <button type="button" class="btn btn-sm btn-success" (click)="reviewModal(approveMember, member)"> <i class="fa fa-check"></i> Approve</button> &nbsp;
+                                            <button type="button" [disabled]="member.deleteStatus === true" class="btn btn-sm btn-danger" (click)="reviewModal(rejectMember, member)"> <i class="fa fa-close"></i> Reject</button>
+                                        </div>
+                                    
+                                    </td>
+                                </tr>
+
+                                <tr *ngIf="pendingMemberCount == 0">
+                                    <td colspan="9" class="no_data_display">
+                                        No data available for display
+                                    </td>
+                                </tr>
                             </tbody>
                             </table>
                         </div>
@@ -430,7 +450,7 @@
     <div class="modal-body default-calendar">
       <form #deleteForm="ngForm">        
         <input type="hidden" name="id" ngModel="{{memberModalData?.id}}" value="{{memberModalData?.id}}">
-        <p>Are you sure you want to delete {{memberModalData.name}}?</p>
+        <p>Are you sure you want to delete <b>{{memberModalData.name}}</b>?</p>
         <i class="text-muted fs-10">Doing this will deactivate all their businesses too</i>
       </form>
 
@@ -456,7 +476,7 @@
     <div class="modal-body default-calendar">
       <form #approvalForm="ngForm">        
         <input type="hidden" name="id" ngModel="{{memberModalData?.id}}" value="{{memberModalData?.id}}">
-        <p>Are you sure you want to approve {{memberModalData.name}}?</p>
+        <p>Are you sure you want to approve <b>{{memberModalData.name}}</b>?</p>
       </form>
 
       <!-- message -->
@@ -482,7 +502,7 @@
     <div class="modal-body default-calendar">
       <form #rejectForm="ngForm">        
         <input type="hidden" name="id" ngModel="{{memberModalData?.id}}" value="{{memberModalData?.id}}">
-        <p>Are you sure you want to reject {{memberModalData.name}} as a member?</p>
+        <p>Are you sure you want to reject <b>{{memberModalData.name}}</b> as a member?</p>
         <i class="text-muted fs-10">Doing this will also revoke any business management privileges they had</i>
       </form>
 

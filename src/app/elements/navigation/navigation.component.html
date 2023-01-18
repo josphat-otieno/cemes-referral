@@ -11,6 +11,24 @@
                 </a>
             </li>
 
+            <li [ngClass]="{'mm-active': systemParameterArray.indexOf(currentHref) > -1}">
+                <a class="has-arrow ai-icon" href="javascript:void()" aria-expanded="false">
+                    <i class="flaticon-381-settings-2"></i>
+                    <span class="nav-text">System Parameters</span>
+                </a> 
+            
+                <ul aria-expanded="false"  [ngClass]="{'mm-show': systemParameterArray.indexOf(currentHref) > -1}">
+                    <li><a class="{{(currentHref == '/admin/assembly') ? 'mm-active' : ''}}"  [routerLink]="['/admin/assembly']">Assembly Management</a></li>
+                    <li><a class="{{(currentHref == '/admin/account-packages') ? 'mm-active' : ''}}"  [routerLink]="['/admin/account-packages']">Account Packages</a></li>
+                    <li><a class="{{(currentHref == '/admin/business-category') ? 'mm-active' : ''}}"  [routerLink]="['/admin/business-category']">Business Category</a></li>
+                    <li><a class="{{(currentHref == '/admin/business-sub-category') ? 'mm-active' : ''}}"  [routerLink]="['/admin/business-sub-category']">Business Sub-Category</a></li>
+                    <li><a class="{{(currentHref == '/admin/forum-category') ? 'mm-active' : ''}}"  [routerLink]="['/admin/forum-category']">Forum Category</a></li>
+                    <li><a class="{{(currentHref == '/admin/forum') ? 'mm-active' : ''}}"  [routerLink]="['/admin/forum']">Forum</a></li>
+                </ul> 
+            
+            </li>
+
+
             <!-- <li [ngClass]="{'mm-active': dashboardArray.indexOf(currentHref) > -1}"><a class="has-arrow ai-icon" href="javascript:void()" aria-expanded="false">
                 <i class="flaticon-381-networking"></i>
                 <span class="nav-text">Dashboard</span>
@@ -27,7 +45,7 @@
             
              </li> -->
 
-            <li [ngClass]="{'mm-active': apsArray.indexOf(currentHref) > -1}">
+            <!-- <li [ngClass]="{'mm-active': apsArray.indexOf(currentHref) > -1}">
                 <a class="has-arrow ai-icon" href="javascript:void()" aria-expanded="false">
                     <i class="flaticon-381-television"></i>
                     <span class="nav-text">Apps</span>
@@ -176,7 +194,7 @@
                     <li><a [routerLink]="['/admin/uc-nestable']" class="{{(currentHref == '/admin/uc-nestable') ? 'mm-active' : ''}}">Nestedable</a></li>
                     <li><a [routerLink]="['/admin/uc-lightgallery']" class="{{(currentHref == '/admin/uc-lightgallery') ? 'mm-active' : ''}}">Lightgallery</a></li>
                 </ul>
-            </li>
+            </li> -->
             <!-- <li class="{{(currentHref == '/admin/widget-basic') ? 'mm-active' : ''}}">
                 <a [routerLink]="['/admin/widget-basic']" class="ai-icon {{(currentHref == '/admin/widget-basic') ? 'mm-active' : ''}}" aria-expanded="false">
                     <i class="flaticon-381-settings-2"></i>
@@ -191,8 +209,10 @@
                 </a>
                 <ul aria-expanded="false" [ngClass]="{'mm-show': businessArray.indexOf(currentHref) > -1}">
                     <li><a [routerLink]="['/admin/business-list']" class="{{(currentHref == '/admin/admin/business-list') ? 'mm-active' : ''}}">Business List</a></li>
-                    <li><a [routerLink]="['/admin/app-users']" class="{{(currentHref == '/admin/app-users') ? 'mm-active' : ''}}">Integrity Ratings</a></li>
-                    <li><a [routerLink]="['/admin/uc-lightgallery']" class="{{(currentHref == '/admin/uc-lightgallery') ? 'mm-active' : ''}}">Business Ratings</a></li>
+                    <li><a [routerLink]="['#']" class="{{(currentHref == '#') ? 'mm-active' : ''}}">Integrity Ratings</a></li>
+                    <li><a [routerLink]="['#']" class="{{(currentHref == '#') ? 'mm-active' : ''}}">Business Ratings</a></li>                    
+                    <li><a [routerLink]="['/admin/advertisement']" class="{{(currentHref == '/admin/advertisement') ? 'mm-active' : ''}}">Business Advertising</a></li>
+                    <li><a [routerLink]="['/admin/awareness']" class="{{(currentHref == '/admin/awareness') ? 'mm-active' : ''}}">Business Promotions</a></li>
                 </ul>
             </li>
 
@@ -204,9 +224,9 @@
                 <ul aria-expanded="false" [ngClass]="{'mm-show': membershipArray.indexOf(currentHref) > -1}">
                     <li><a [routerLink]="['/admin/member-database']" class="{{(currentHref == '/admin/member-database') ? 'mm-active' : ''}}">Member Database</a></li>
                     <li><a [routerLink]="['/admin/app-users']" class="{{(currentHref == '/admin/app-users') ? 'mm-active' : ''}}">App Users</a></li>
-                    <li><a [routerLink]="['/admin/uc-lightgallery']" class="{{(currentHref == '/admin/uc-lightgallery') ? 'mm-active' : ''}}">Payment</a></li>
-                    <li><a [routerLink]="['/admin/uc-lightgallery']" class="{{(currentHref == '/admin/uc-lightgallery') ? 'mm-active' : ''}}">Membership Requests</a></li>
-                    <li><a [routerLink]="['/admin/uc-lightgallery']" class="{{(currentHref == '/admin/uc-lightgallery') ? 'mm-active' : ''}}">Referrals</a></li>
+                    <li><a [routerLink]="['#']" class="{{(currentHref == '#') ? 'mm-active' : ''}}">Payment</a></li>
+                    <li><a [routerLink]="['#']" class="{{(currentHref == '#') ? 'mm-active' : ''}}">Membership Requests</a></li>
+                    <li><a [routerLink]="['#']" class="{{(currentHref == '#') ? 'mm-active' : ''}}">Referrals</a></li>
                 </ul>
             </li>
 
@@ -220,7 +240,7 @@
                 </ul>
             </li>
             
-            <li [ngClass]="{'mm-active': formsArray.indexOf(currentHref) > -1}">
+            <!-- <li [ngClass]="{'mm-active': formsArray.indexOf(currentHref) > -1}">
                 <a class="has-arrow ai-icon" href="javascript:void()" aria-expanded="false">
                     <i class="flaticon-381-notepad"></i>
                     <span class="nav-text">Forms</span>
@@ -249,7 +269,7 @@
                     </li>
                     <li><a [routerLink]="['/page-lock-screen']">Lock Screen</a></li>
                 </ul>
-            </li>
+            </li> -->
         </ul>
         
         <!-- <div class="plus-box">

@@ -34,11 +34,11 @@ export class HeaderComponent implements OnInit {
 	
 	ngOnInit(): void {
     
-    setTimeout(() => {
+    if(this.loginName == ''){
       this.access_token =  this.cbfService.AccessToken
       this.user_id = Number(this.cbfService.currentUserValue)
       this.getUserDetail(this.access_token)
-    }, 1200);
+    }
 	}
 
   logOut() {

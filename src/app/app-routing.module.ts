@@ -135,6 +135,14 @@ import { UsersComponent } from './components/users/users.component';
 import { MembersComponent } from './components/members/members.component';
 import { AppUsersComponent } from './components/app-users/app-users.component';
 import { BusinessListingComponent } from './components/business-listing/business-listing.component';
+import { AdvertisementsComponent } from './components/advertisements/advertisements.component';
+import { ForumCategoryComponent } from './components/forum-category/forum-category.component';
+import { ForumComponent } from './components/forum/forum.component';
+import { BusinessSubCategoryComponent } from './components/business-sub-category/business-sub-category.component';
+import { BusinessCategoryComponent } from './components/business-category/business-category.component';
+import { AccountPackagesComponent } from './components/account-packages/account-packages.component';
+import { AssemblyComponent } from './components/assembly/assembly.component';
+import { OffersPromotionsAwarenessComponent } from './components/offers-promotions-awareness/offers-promotions-awareness.component';
 
 
 
@@ -264,7 +272,15 @@ const routes: Routes = [
               {path: 'users', component: UsersComponent},
               {path: 'member-database', component: MembersComponent},
               {path: 'app-users', component: AppUsersComponent},
-              {path: 'business-list', component: BusinessListingComponent}
+              {path: 'business-list', component: BusinessListingComponent},
+              {path: 'assembly', component: AssemblyComponent},
+              {path: 'account-packages', component: AccountPackagesComponent},
+              {path: 'business-category', component: BusinessCategoryComponent},
+              {path: 'business-sub-category', component: BusinessSubCategoryComponent},
+              {path: 'forum', component: ForumComponent},
+              {path: 'forum-category', component: ForumCategoryComponent},
+              {path: 'advertisement', component: AdvertisementsComponent},
+              {path: 'awareness', component: OffersPromotionsAwarenessComponent},
       
           ]
           

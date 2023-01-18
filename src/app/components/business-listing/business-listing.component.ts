@@ -44,6 +44,9 @@ export class BusinessListingComponent implements OnInit {
   public phoneValidationMessage:boolean = false
   public emailValidationMessage:boolean = false
 
+  // public business 
+  public currentRate:number = 0
+
   // Datatables
   dtOptions: any = {};
   dtTrigger: Subject<any> = new Subject<any>();
@@ -183,6 +186,9 @@ export class BusinessListingComponent implements OnInit {
     this.password = ''
     let modalData = staff;
     this.businessModalData = modalData
+
+    // set rating
+    this.currentRate = this.businessModalData.business.rating
   
   }
  

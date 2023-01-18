@@ -168,6 +168,27 @@ export class CbfService implements OnDestroy {
 
   }
 
+  // Get Staff
+  public getStaff(access: string): Observable<any> {
+    const url = ApiEndpointService.getEndpoint(ApiEndpointService.ENDPOINT.GET_ALL_STAFF);
+    return this.http.get<any>(url, {
+      headers: {
+        'Content-Type': 'application/json; charset=utf-8',
+        'Accept': 'application/json',
+        'Authorization': `Bearer ${access}`
+      }
+    }).pipe(
+      map(function (response: any) {
+        return response;
+      }),
+      catchError((fault: HttpErrorResponse) => {
+        return throwError(() => fault);
+
+      })
+    )
+
+  }
+
   // reset email address
   public resetEmail(requestData: FormData): Observable<any> {
     const url = ApiEndpointService.getEndpoint(ApiEndpointService.ENDPOINT.EMAIL_REQUEST);
@@ -408,7 +429,7 @@ export class CbfService implements OnDestroy {
   
   // Get Assemblies
   public getAssemblies(access: string): Observable<any> {
-    const url = ApiEndpointService.getEndpoint(ApiEndpointService.ENDPOINT.GET_ASSEMBLIES);
+    const url = ApiEndpointService.getEndpoint(ApiEndpointService.ENDPOINT.ASSEMBLY_MGT);
     return this.http.get<any>(url, {
       headers: {
         'Content-Type': 'application/json; charset=utf-8',
@@ -426,6 +447,104 @@ export class CbfService implements OnDestroy {
     )
 
   }
+
+  // create Assembly
+  public registerAssembly(assemblyData:FormData, access: string): Observable<any> {
+    const url = ApiEndpointService.getEndpoint(ApiEndpointService.ENDPOINT.ASSEMBLY_MGT);
+    return this.http.post<any>(url, assemblyData, {
+      headers: {
+        'Authorization': `Bearer ${access}`
+      }
+    }).pipe(
+      map(function (response: any) {
+        return response;
+      }),
+      catchError((fault: HttpErrorResponse) => {
+        return throwError(() => fault);
+
+      })
+    )
+
+  }
+
+  // Update Assembly
+  public updateAssembly(assemblyData:FormData, assemblyId:number, access: string): Observable<any> {
+    const url = ApiEndpointService.getEndpoint(ApiEndpointService.ENDPOINT.ASSEMBLY_MGT);
+    return this.http.patch<any>(url+assemblyId+'/', assemblyData, {
+      headers: {
+        'Authorization': `Bearer ${access}`
+      }
+    }).pipe(
+      map(function (response: any) {
+        return response;
+      }),
+      catchError((fault: HttpErrorResponse) => {
+        return throwError(() => fault);
+
+      })
+    )
+
+  }
+
+  // Get Packages
+  public getAccountPackages(access: string): Observable<any> {
+    const url = ApiEndpointService.getEndpoint(ApiEndpointService.ENDPOINT.ACCOUNT_PACKAGES);
+    return this.http.get<any>(url, {
+      headers: {
+        'Content-Type': 'application/json; charset=utf-8',
+        'Accept': 'application/json',
+        'Authorization': `Bearer ${access}`
+      }
+    }).pipe(
+      map(function (response: any) {
+        return response;
+      }),
+      catchError((fault: HttpErrorResponse) => {
+        return throwError(() => fault);
+
+      })
+    )
+
+  }
+
+  // create account package
+  public registerPackage(packageData:FormData, access: string): Observable<any> {
+    const url = ApiEndpointService.getEndpoint(ApiEndpointService.ENDPOINT.ACCOUNT_PACKAGES);
+    return this.http.post<any>(url, packageData, {
+      headers: {
+        'Authorization': `Bearer ${access}`
+      }
+    }).pipe(
+      map(function (response: any) {
+        return response;
+      }),
+      catchError((fault: HttpErrorResponse) => {
+        return throwError(() => fault);
+
+      })
+    )
+
+  }
+
+  // Update Package
+  public updatePackage(packageData:FormData, packageId:number, access: string): Observable<any> {
+    const url = ApiEndpointService.getEndpoint(ApiEndpointService.ENDPOINT.ACCOUNT_PACKAGES);
+    return this.http.patch<any>(url+packageId+'/', packageData, {
+      headers: {
+        'Authorization': `Bearer ${access}`
+      }
+    }).pipe(
+      map(function (response: any) {
+        return response;
+      }),
+      catchError((fault: HttpErrorResponse) => {
+        return throwError(() => fault);
+
+      })
+    )
+
+  }
+
 
   ngOnDestroy() {
     this.unsubscribe.forEach((sb) => sb.unsubscribe());

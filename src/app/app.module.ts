@@ -655,12 +655,24 @@ import { Error404Component } from './pages/error404/error404.component';
 import { Error500Component } from './pages/error500/error500.component';
 import { Error503Component } from './pages/error503/error503.component';
 
+// depenedncies
+import { DataTablesModule } from 'angular-datatables';
+import { NgxStarRatingModule } from 'ngx-star-rating';
+import { NgbRatingModule } from '@ng-bootstrap/ng-bootstrap';
+
 import { CbfService } from './core/cbf.service';
 import { UsersComponent } from './components/users/users.component';
 import { MembersComponent } from './components/members/members.component';
 import { AppUsersComponent } from './components/app-users/app-users.component';
 import { BusinessListingComponent } from './components/business-listing/business-listing.component';
-import { DataTablesModule } from 'angular-datatables';
+import { AssemblyComponent } from './components/assembly/assembly.component';
+import { AccountPackagesComponent } from './components/account-packages/account-packages.component';
+import { BusinessCategoryComponent } from './components/business-category/business-category.component';
+import { BusinessSubCategoryComponent } from './components/business-sub-category/business-sub-category.component';
+import { ForumComponent } from './components/forum/forum.component';
+import { ForumCategoryComponent } from './components/forum-category/forum-category.component';
+import { AdvertisementsComponent } from './components/advertisements/advertisements.component';
+import { OffersPromotionsAwarenessComponent } from './components/offers-promotions-awareness/offers-promotions-awareness.component';
 
 function appInitializer(authService: CbfService) {
   return () => {
@@ -1263,6 +1275,14 @@ function appInitializer(authService: CbfService) {
     MembersComponent,
     AppUsersComponent,
     BusinessListingComponent,
+    AssemblyComponent,
+    AccountPackagesComponent,
+    BusinessCategoryComponent,
+    BusinessSubCategoryComponent,
+    ForumComponent,
+    ForumCategoryComponent,
+    AdvertisementsComponent,
+    OffersPromotionsAwarenessComponent,
     
     
   ],
@@ -1285,7 +1305,9 @@ function appInitializer(authService: CbfService) {
     NgxDropzoneModule,
     CarouselModule,
     DataTablesModule,
-    
+    NgxStarRatingModule,
+    NgbRatingModule,
+
     MatListModule,
     MatAutocompleteModule,
     MatFormFieldModule,
