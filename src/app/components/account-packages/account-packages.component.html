@@ -1,0 +1,217 @@
+<div class="content-body">
+    <div class="container-fluid">
+        <div class="row page-titles mx-0">
+            <div class="col-sm-6 p-md-0">
+                <div class="welcome-text">
+                    <h4>Account Package Management</h4>
+                </div>
+            </div>
+            <div class="col-sm-6 p-md-0 justify-content-sm-end mt-2 mt-sm-0 d-flex">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="admin/dashboard">Home</a></li>
+                    <li class="breadcrumb-item active"><a href="javascript:void(0)">System Parameters</a></li>
+                </ol>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="card">
+            <div class="card-header">
+                <div class="col-6">
+                    List of all account packages
+                </div>
+
+                <div class="col-6"> 
+                    <button class="btn btn-sm btn-primary rightBtns" type="button" (click)="openModal(addPackage, 'md')">
+                        <i class="fa fa-plus"></i>&nbsp;Add Package
+                    </button>                  
+                </div>
+            </div>
+           
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th scope="col">Package Name</th>
+                        <th scope="col">Amount (Ksh.)</th>
+                        <th scope="col">Number of Businesses</th>
+                        <th scope="col">Date Created</th>
+                        <th scope="col">Status</th>
+                        <th scope="col">Update Details</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let package of packageList; index as i">
+                            <td>{{package.name}}</td>
+                            <td>{{package.amount}}</td>
+                            <td class="text-center">{{package.business_limit}}</td>
+                            <td>{{package.created_at | date:'mediumDate'}}</td>
+                            <td>
+                                <span *ngIf="package.is_deleted === true" class="badge badge-danger">Deleted</span>
+                                <span *ngIf="package.is_deleted === false" class="badge badge-success">Active</span>
+                            </td>
+                            <td>
+                                <div class="button_containers">
+                                    <button type="button" class="btn btn-sm btn-success" (click)="reviewModal(editPackage, package)"> <i class="fa fa-pencil"></i>Edit</button> &nbsp;
+                                    <button type="button" [disabled]="package.is_deleted === true" class="btn btn-sm btn-danger" (click)="reviewModal(deletePackage, package)"> <i class="fa fa-trash"></i>Delete</button> 
+                                </div>
+                            </td>
+                        </tr>
+
+                        <tr *ngIf="packageCount == 0">
+                            <td colspan="6" class="no_data_display">
+                                No data available for display
+                            </td>
+                        </tr>
+                    </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+      
+	</div>
+</div>
+
+  
+<ng-template #addPackage let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title">Create Package</h4>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body default-calendar">
+        <div class="form-validation">
+            <form class="form-valide" action="#" method="post" [formGroup]="packageRegistration" novalidate>
+                <div class="form-group row">
+                    <label class="col-lg-5 col-form-label" for="packageName">Package Name
+                        <span class="text-danger">*</span>
+                    </label>
+                    <div class="col-lg-7">
+                        <input type="text" class="form-control" id="packageName" formControlName="packageName" placeholder="Enter package name..">
+                        <div *ngIf="packageRegistration.controls['packageName'].invalid && (packageRegistration.controls['packageName'].dirty || packageRegistration.controls['packageName'].touched)" class="text-danger fs-13 mt-1">
+                            
+                            <div *ngIf="packageRegistration.controls['packageName'].errors.required">
+                                Package name is required.
+                            </div>
+                        </div>
+                    </div>
+                    
+                </div>
+                <div class="form-group row">
+                    <label class="col-lg-5 col-form-label" for="amount">Amount in Ksh.<span
+                        class="text-danger">*</span>
+                    </label>
+                    <div class="col-lg-7">
+                        <input type="number" class="form-control" id="amount" formControlName="amount" placeholder="Amount in Ksh.">
+                        <div *ngIf="packageRegistration.controls['amount'].invalid && (packageRegistration.controls['amount'].dirty || packageRegistration.controls['amount'].touched)" class="text-danger fs-13 mt-1">
+                            <div *ngIf="packageRegistration.controls['amount'].errors.required">
+                                Amount is required.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-lg-5 col-form-label" for="businessLimit">Maximum number of businesses<span
+                        class="text-danger">*</span>
+                    </label>
+                    <div class="col-lg-7">
+                        <input type="number" class="form-control" id="businessLimit" formControlName="businessLimit" placeholder="Number of businesses">
+                        <div *ngIf="packageRegistration.controls['businessLimit'].invalid && (packageRegistration.controls['businessLimit'].dirty || packageRegistration.controls['businessLimit'].touched)" class="text-danger fs-13 mt-1">
+                            <div *ngIf="packageRegistration.controls['businessLimit'].errors.required">
+                                Business limit is required.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+        
+        <!-- message -->
+        <div *ngIf="messageResponse" class="row alert alert-info">
+            <p><i class="fa fa-exclamation"></i> &nbsp;  {{messageResponse}}</p>
+        </div>
+
+    </div>
+
+    <div class="modal-footer">
+        <button type="button" class="btn btn-light" (click)="modal.close('Close click')">Cancel</button>
+        <button type="button" class="btn btn-primary" [disabled]="packageRegistration.pristine || packageRegistration.invalid" (click)="savePackage()">Save</button>
+    </div>
+  </ng-template>
+
+<ng-template #editPackage let-modal>
+    <div class="modal-header alert alert-success">
+      <h4 class="modal-title" id="modal-edit-title">Edit Package Details</h4>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+
+    <div class="modal-body default-calendar">
+        <form class="form" #editForm="ngForm" autocomplete="on">
+            <div class="form-group row">
+                <label class="col-lg-5 col-form-label" for="packageNameEdit">Package Name
+                    <span class="text-danger">*</span>
+                </label>
+                <div class="col-lg-7">
+                    <input type="hidden" name="id" ngModel="{{packageModalData?.id}}" value="{{packageModalData?.id}}">
+                    <input type="text" class="form-control" id="packageNameEdit" name="name" ngModel="{{packageModalData?.name}}" value="{{packageModalData?.name}}">
+                </div>                        
+            </div>
+            <div class="form-group row">
+                <label class="col-lg-5 col-form-label" for="packageAmountEdit">Amount in Ksh.
+                    <span class="text-danger">*</span>
+                </label>
+                <div class="col-lg-7">
+                    <input type="number" class="form-control" id="packageAmountEdit" name="amount" ngModel="{{packageModalData?.amount}}" value="{{packageModalData?.amount}}">
+                </div>                        
+            </div>
+            <div class="form-group row">
+                <label class="col-lg-5 col-form-label" for="packageBizEdit">Maximum number of businesses
+                    <span class="text-danger">*</span>
+                </label>
+                <div class="col-lg-7">
+                    <input type="number" class="form-control" id="packageBizEdit" name="business_limit" ngModel="{{packageModalData?.business_limit}}" value="{{packageModalData?.business_limit}}">
+                </div>                        
+            </div>
+
+            <!-- message -->
+            <div *ngIf="messageResponse" class="row alert alert-info">
+                <p><i class="fa fa-exclamation"></i> &nbsp;  {{messageResponse}}</p>
+            </div>
+
+            <div class="modal-footer">
+              <button type="button" class="btn btn-light" data-dismiss="modal" (click)="modal.dismiss('Cross click')">Cancel</button>
+              <button type="submit" [disabled]="!editForm.valid" class="btn btn-primary" (click)="updatePackageAction(editForm.value)"
+               >Save Changes</button>
+            </div>
+          </form>
+    </div>
+  </ng-template>
+
+  <ng-template #deletePackage let-modal>
+    <div class="modal-header alert alert-danger">
+      <h4 class="modal-title" id="modal-del-title">Delete Package</h4>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body default-calendar">
+      <form #deleteForm="ngForm">        
+        <input type="hidden" name="id" ngModel="{{packageModalData?.id}}" value="{{packageModalData?.id}}">
+        <p>Are you sure you want to delete <b>{{packageModalData.name}}</b>?</p>
+      </form>
+
+       <!-- message -->
+       <div *ngIf="messageResponse" class="row alert alert-info">
+        <p><i class="fa fa-exclamation"></i> &nbsp;  {{messageResponse}}</p>
+        </div>
+
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-sm btn-light" (click)="modal.close('Close click')">No</button>
+        <button type="button" class="btn btn-sm btn-primary" (click)="deletePackageAction(deleteForm.value)">Yes</button>
+    </div>
+  </ng-template>
