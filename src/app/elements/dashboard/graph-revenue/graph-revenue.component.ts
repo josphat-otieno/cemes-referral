@@ -49,12 +49,12 @@ export class GraphRevenueComponent implements OnInit {
         this.chartOptions = {
             series: [
                 {
-                    name: 'Net Profit',
-                    data: [44, 55, 90, 80, 25, 15, 70, 55, 35, 15, 70, 55, 95, 35],
+                    name: 'Businesses',
+                    data: [44, 55, 90, 80, 25, 15, 70, 55, 35, 15, 70, 55],
                 },
                 {
                     name: 'Revenue',
-                    data: [15, 65, 15, 35, 30, 5, 40, 60, 10, 5, 40, 60, 10, 35]
+                    data: [15, 65, 15, 35, 30, 5, 40, 60, 10, 5, 40, 60]
                 } 
             ],
             chart: {
@@ -105,7 +105,7 @@ export class GraphRevenueComponent implements OnInit {
                 show: false,
             },
             xaxis: {
-                categories: ['01', '02', '03', '04', '05', '06', '07', '08', '09'],
+                categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
                 labels: {
                     style: {
                         colors: '#787878',
@@ -136,7 +136,7 @@ export class GraphRevenueComponent implements OnInit {
             tooltip: {
                 y: {
                     formatter: function (val:any) {
-                        return "$ " + val + " thousands"
+                        return val
                     }
                 }
             },

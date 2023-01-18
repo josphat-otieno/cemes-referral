@@ -32,7 +32,7 @@ export class GraphPatientsComponent implements OnInit {
 
   constructor() {
     this.chartOptions = {
-      series: [71, 63, 90],
+      series: [84, 64, 18],
         chart: {
             type: 'radialBar',
             //width:320,
@@ -81,8 +81,8 @@ export class GraphPatientsComponent implements OnInit {
 		fill: {
           opacity: 1
         },
-        colors:['#ff2c53', '#209f84', '#ff5c00'],
-        labels: ['New', 'Recover', 'In Treatment'],
+        colors:['#2781d5', '#209f84', '#f72b50'],
+        labels: ['Having Businesses', 'Active', 'Inactive'],
         legend: {
 			fontSize: '16px',  
 			show: false,
