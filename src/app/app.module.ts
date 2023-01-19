@@ -674,6 +674,7 @@ import { ProfileComponent } from './components/profile/profile.component';
 import { BusinessRatingComponent } from './components/business-rating/business-rating.component';
 import { BusinessIntegrityRatingComponent } from './components/business-integrity-rating/business-integrity-rating.component';
 import { PendingStaffListComponent } from './components/pending-staff-list/pending-staff-list.component';
+import { PaymentsComponent } from './components/payments/payments.component';
 
 function appInitializer(authService: CbfService) {
   return () => {
@@ -1289,6 +1290,7 @@ function appInitializer(authService: CbfService) {
     BusinessRatingComponent,
     BusinessIntegrityRatingComponent,
     PendingStaffListComponent,
+    PaymentsComponent,
     
     
   ],

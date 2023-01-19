@@ -144,6 +144,8 @@ import { AccountPackagesComponent } from './components/account-packages/account-
 import { AssemblyComponent } from './components/assembly/assembly.component';
 import { OffersPromotionsAwarenessComponent } from './components/offers-promotions-awareness/offers-promotions-awareness.component';
 import { ProfileComponent } from './components/profile/profile.component';
+import { BusinessRatingComponent } from './components/business-rating/business-rating.component';
+import { PaymentsComponent } from './components/payments/payments.component';
 
 
 
@@ -281,8 +283,9 @@ const routes: Routes = [
               {path: 'forum-category', component: ForumCategoryComponent},
               {path: 'advertisement', component: AdvertisementsComponent},
               {path: 'awareness', component: OffersPromotionsAwarenessComponent},
-              {path: 'business-ratings', component: RatingComponent},
+              {path: 'business-rating', component: BusinessRatingComponent},
               {path: 'profile', component: ProfileComponent},
+              {path: 'payments', component: PaymentsComponent},
       
           ]
           

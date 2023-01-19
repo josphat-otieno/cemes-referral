@@ -45,11 +45,13 @@ export class NavigationComponent implements OnInit {
     '/admin/business-list',
     '/admin/advertisement',
     '/admin/awareness',
+    '/admin/business-rating'
   ]
 
   membershipArray = [
-    '/admin/uc-nestable',
-    '/admin/uc-lightgallery',
+    '/admin/member-database',
+    '/admin/app-users',
+    '/admin/payments',
 	];
 
   staffArray = [

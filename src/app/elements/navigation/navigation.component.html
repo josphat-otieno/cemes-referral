@@ -210,7 +210,7 @@
                 <ul aria-expanded="false" [ngClass]="{'mm-show': businessArray.indexOf(currentHref) > -1}">
                     <li><a [routerLink]="['/admin/business-list']" class="{{(currentHref == '/admin/admin/business-list') ? 'mm-active' : ''}}">Business List</a></li>
                     <!-- <li><a [routerLink]="['#']" class="{{(currentHref == '#') ? 'mm-active' : ''}}">Integrity Ratings</a></li> -->
-                    <li><a [routerLink]="['#']" class="{{(currentHref == '#') ? 'mm-active' : ''}}">Business Ratings</a></li>                    
+                    <li><a [routerLink]="['/admin/business-rating']" class="{{(currentHref == '/admin/business-rating') ? 'mm-active' : ''}}">Business Ratings</a></li>                    
                     <li><a [routerLink]="['/admin/advertisement']" class="{{(currentHref == '/admin/advertisement') ? 'mm-active' : ''}}">Business Advertising</a></li>
                     <li><a [routerLink]="['/admin/awareness']" class="{{(currentHref == '/admin/awareness') ? 'mm-active' : ''}}">Business Promotions</a></li>
                 </ul>
@@ -224,7 +224,7 @@
                 <ul aria-expanded="false" [ngClass]="{'mm-show': membershipArray.indexOf(currentHref) > -1}">
                     <li><a [routerLink]="['/admin/member-database']" class="{{(currentHref == '/admin/member-database') ? 'mm-active' : ''}}">Member Database</a></li>
                     <li><a [routerLink]="['/admin/app-users']" class="{{(currentHref == '/admin/app-users') ? 'mm-active' : ''}}">App Users</a></li>
-                    <li><a [routerLink]="['#']" class="{{(currentHref == '#') ? 'mm-active' : ''}}">Payment</a></li>
+                    <li><a [routerLink]="['/admin/payments']" class="{{(currentHref == '/admin/payments') ? 'mm-active' : ''}}">Payment</a></li>
                     <!-- <li><a [routerLink]="['#']" class="{{(currentHref == '#') ? 'mm-active' : ''}}">Membership Requests</a></li> -->
                     <!-- <li><a [routerLink]="['#']" class="{{(currentHref == '#') ? 'mm-active' : ''}}">Referrals</a></li> -->
                 </ul>
