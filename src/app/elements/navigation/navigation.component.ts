@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Location } from '@angular/common';
 import { Router } from '@angular/router';
+import { CbfService } from 'src/app/core/cbf.service';
 
 @Component({
   selector: 'app-navigation',
@@ -12,7 +13,7 @@ export class NavigationComponent implements OnInit {
     public currentHref: string = "";
 
 
-  constructor(location: Location, router: Router) {
+  constructor(location: Location, router: Router, private cbfService:CbfService) {
     router.events.subscribe((val) => {
       if(location.path() != ''){
         this.currentHref = location.path();
@@ -62,5 +63,13 @@ export class NavigationComponent implements OnInit {
     '/admin/form-element',
     '/admin/form-validate',
 	];
+
+  logoutUserAction() {
+    // this.loade
+
+    setTimeout(() => {      
+    this.cbfService.logoutUser()
+    }, 2000);
+  }
 
 }
