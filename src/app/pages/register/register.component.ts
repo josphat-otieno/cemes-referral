@@ -5,7 +5,6 @@ import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { CbfService } from 'src/app/core/cbf.service';
 import { ToastService } from 'src/app/bootstrap/toast/toast-global/toast-service';
-import { E } from '@angular/cdk/keycodes';
 
 @Component({
   selector: 'app-register',
@@ -19,6 +18,7 @@ export class RegisterComponent implements OnInit {
   // validation parameters
   public validity:boolean = false
   public passwordIncorrect:boolean = false
+  public passwordLength:boolean = false
   public confirmPassword:boolean = false
   public phoneValidationMessage:boolean = false
   public emailValidationMessage:boolean = false
@@ -33,6 +33,11 @@ export class RegisterComponent implements OnInit {
   public msg:string = '';
   public hasError: boolean = false;
   public returnUrl: string = '';
+
+  // Alerts
+  public alertMessage:string = '';
+  public successAlert:boolean = false;
+  public warningAlert:boolean = false;
 
   private unsubscribe: Subscription[] = [];
 
@@ -118,18 +123,27 @@ export class RegisterComponent implements OnInit {
   checkPasswordEntry(passValue:any) {
 
     if(passValue != ''){
-      this.confirmPassword = true      
-      this.validity = false;
+
+      if(passValue.length >= 8){
+        
+        this.passwordLength = false
+        this.confirmPassword = true          
+        this.validity = true;
+
+      } else {
+        this.passwordLength = true              
+        this.validity = false;
+      }
+      
     } else {
       this.confirmPassword = false      
-      this.validity = true;
+      this.validity = false;
       this.registerForm.get('password_confirmed')?.patchValue('')
     }
   }
 
   confirmPassEntries(passValue:any) {
     let passOneVal = this.registerForm.get('password')?.value
-    console.log(passOneVal)
     let passTwoVal = passValue
 
     if(passTwoVal != ''){
@@ -143,7 +157,8 @@ export class RegisterComponent implements OnInit {
       }
 
     } else {
-      this.passwordIncorrect = false   
+      this.passwordIncorrect = false          
+      this.validity = false; 
     }
 
   }
@@ -157,6 +172,7 @@ export class RegisterComponent implements OnInit {
     regData.append('phone_number', this.registerForm.get('phoneNumber')?.value)
     regData.append('password', this.registerForm.get('password_confirmed')?.value)
     regData.append('is_staff', true.toString())
+    regData.append('is_verified', true.toString())
 
     const regsterSubscr = this.cbfService.createUser(regData)
 
@@ -164,26 +180,20 @@ export class RegisterComponent implements OnInit {
       next: (response: any) => {
         let results = response
 
-        console.log(results)
-        
-        console.log(results.data.error)
-
         if(results.data.error){
-
-          console.log(results.data.error)
-          this.toaster.show(results.data.error, { classname: 'bg-warning text-light', delay: 10000 });
+          this.alertMessage = results.data.error
         } else {
-          this.toaster.show('Account created successfully', { classname: 'bg-success text-light', delay: 10000 });
+          this.successAlert = true
 
           setTimeout(() => {
             window.location.reload()
-          }, 1260);
+          }, 1360);
         }
 
       },
       error: (e:HttpErrorResponse) =>  {
-        this.msg = 'Something went wrong, please try again'
-        this.toaster.show(this.msg, { classname: 'bg-success text-light', delay: 10000 });
+        this.msg = 'An account with this email already exists, please try again'
+        this.alertMessage = this.msg
       }    
     })
     

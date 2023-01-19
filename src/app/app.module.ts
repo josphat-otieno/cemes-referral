@@ -98,9 +98,6 @@ import { GraphRevenueComponent } from './elements/dashboard/graph-revenue/graph-
 import { RecentPatientActivityComponent } from './elements/dashboard/recent-patient-activity/recent-patient-activity.component';
 import { BestDoctorComponent } from './elements/dashboard/best-doctor/best-doctor.component';
 
-
-
-import { ProfileComponent } from './apps/profile/profile.component';
 import { UserStatisticsComponent } from './elements/profile/user-statistics/user-statistics.component';
 import { InterestComponent } from './elements/profile/interest/interest.component';
 import { LatestNewsComponent } from './elements/profile/latest-news/latest-news.component';
@@ -673,6 +670,7 @@ import { ForumComponent } from './components/forum/forum.component';
 import { ForumCategoryComponent } from './components/forum-category/forum-category.component';
 import { AdvertisementsComponent } from './components/advertisements/advertisements.component';
 import { OffersPromotionsAwarenessComponent } from './components/offers-promotions-awareness/offers-promotions-awareness.component';
+import { ProfileComponent } from './components/profile/profile.component';
 
 function appInitializer(authService: CbfService) {
   return () => {
@@ -703,8 +701,7 @@ function appInitializer(authService: CbfService) {
     RecentPatientActivityComponent,
     BestDoctorComponent,
    
-   
-    ProfileComponent,
+  
     UserStatisticsComponent,
 	InterestComponent,
 	LatestNewsComponent,
@@ -1271,6 +1268,8 @@ function appInitializer(authService: CbfService) {
     Error404Component,
     Error500Component,
     Error503Component,
+
+    // CBF
     UsersComponent,
     MembersComponent,
     AppUsersComponent,
@@ -1283,6 +1282,7 @@ function appInitializer(authService: CbfService) {
     ForumCategoryComponent,
     AdvertisementsComponent,
     OffersPromotionsAwarenessComponent,
+    ProfileComponent,
     
     
   ],

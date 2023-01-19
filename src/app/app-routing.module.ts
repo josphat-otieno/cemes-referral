@@ -8,7 +8,7 @@ import { DoctorsDetailsComponent } from './doctors-details/doctors-details.compo
 import { DoctorsReviewComponent } from './doctors-review/doctors-review.component';
 import { PatientDetailsComponent } from './patient-details/patient-details.component';
 
-import { ProfileComponent } from './apps/profile/profile.component';
+// import { ProfileComponent } from './apps/profile/profile.component';
 import { PostDetailsComponent } from './apps/post-details/post-details.component';
 import { ComposeComponent } from './apps/email/compose/compose.component';
 import { InboxComponent } from './apps/email/inbox/inbox.component';
@@ -143,6 +143,7 @@ import { BusinessCategoryComponent } from './components/business-category/busine
 import { AccountPackagesComponent } from './components/account-packages/account-packages.component';
 import { AssemblyComponent } from './components/assembly/assembly.component';
 import { OffersPromotionsAwarenessComponent } from './components/offers-promotions-awareness/offers-promotions-awareness.component';
+import { ProfileComponent } from './components/profile/profile.component';
 
 
 
@@ -161,7 +162,6 @@ const routes: Routes = [
               {path: 'doctors-review', component: DoctorsReviewComponent},
               {path: 'patient-details', component: PatientDetailsComponent},
               
-              {path: 'app-profile', component: ProfileComponent},
               {path: 'post-details', component: PostDetailsComponent},
               {path: 'email-compose', component: ComposeComponent},
               {path: 'email-inbox', component: InboxComponent},
@@ -281,6 +281,7 @@ const routes: Routes = [
               {path: 'forum-category', component: ForumCategoryComponent},
               {path: 'advertisement', component: AdvertisementsComponent},
               {path: 'awareness', component: OffersPromotionsAwarenessComponent},
+              {path: 'profile', component: ProfileComponent},
       
           ]
           

@@ -10,6 +10,16 @@
 										<a [routerLink]="['/admin/index']"><img class="home-logo" src="assets/images/cbf.png" alt=""></a>
 									</div>
                                     <h4 class="text-center mb-4">Sign up your account</h4>
+
+                                    <!-- Message Container -->
+                                    <div class="row alert alert-success" *ngIf="successAlert === true">
+                                        <p class="fs-8 text-muted"> <i class="fa fa-handshake-o"></i>&nbsp; Registration successful, redirecting you to login...</p>
+                                    </div>
+                                    <div class="row alert alert-danger" *ngIf="alertMessage">
+                                        <p class="fs-8 text-muted"> <i class="fa fa-exclamation-triangle"></i>&nbsp; {{alertMessage}}</p>
+                                    </div>
+                                    <!-- Message Container -->
+                                    
                                     <form class="form" [formGroup]="registerForm" autocomplete="off" (ngSubmit)="registerUser()">
                                         <div class="form-group">
                                             <label class="mb-1"><strong>Full Name</strong></label>
@@ -46,16 +56,17 @@
                                         <div class="form-group" *ngIf="confirmPassword">
                                             <label class="mb-1"><strong>Confirm Password</strong></label>
                                             <input type="password" #pass_Two class="form-control" name="password_confirmed" autocomplete="off"
-                                            formControlName="password_confirmed" (input)="confirmPassEntries(pass_Two)" [ngClass]="{
+                                            formControlName="password_confirmed" (input)="confirmPassEntries(pass_Two.value)" [ngClass]="{
                                               'is-invalid': registerForm.controls['password_confirmed'].invalid,
                                               'is-valid': registerForm.controls['password_confirmed'].valid
                                             }" />    
 
                                         </div>  
                                         <i *ngIf="passwordIncorrect" style="color:red">Passwords do not match, kindly try again</i>                                       
+                                        <i *ngIf="passwordLength" style="color:red">Please ensure your password has at least 8 characters</i>                                       
 
                                         <div class="text-center mt-4">
-                                            <button type="submit" [disabled]="validity" class="btn btn-primary btn-block">Sign me up</button>
+                                            <button type="submit" [disabled]="!validity" class="btn btn-primary btn-block">Sign me up</button>
                                         </div>
                                     </form>
                                     <div class="new-account mt-3">
