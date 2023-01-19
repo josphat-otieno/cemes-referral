@@ -545,6 +545,146 @@ export class CbfService implements OnDestroy {
 
   }
 
+  // Get Business categories
+  public getBusinessCategories(access: string): Observable<any> {
+    const url = ApiEndpointService.getEndpoint(ApiEndpointService.ENDPOINT.BUSINESS_CATEGORY);
+    return this.http.get<any>(url, {
+      headers: {
+        'Content-Type': 'application/json; charset=utf-8',
+        'Accept': 'application/json',
+        'Authorization': `Bearer ${access}`
+      }
+    }).pipe(
+      map(function (response: any) {
+        return response;
+      }),
+      catchError((fault: HttpErrorResponse) => {
+        return throwError(() => fault);
+
+      })
+    )
+
+  }
+
+  // Get Active Business categories
+  public getActiveBusinessCategories(access: string): Observable<any> {
+    const url = ApiEndpointService.getEndpoint(ApiEndpointService.ENDPOINT.BUSINESS_CATEGORY);
+    return this.http.get<any>(url+'?is_deleted=false', {
+      headers: {
+        'Content-Type': 'application/json; charset=utf-8',
+        'Accept': 'application/json',
+        'Authorization': `Bearer ${access}`
+      }
+    }).pipe(
+      map(function (response: any) {
+        return response;
+      }),
+      catchError((fault: HttpErrorResponse) => {
+        return throwError(() => fault);
+
+      })
+    )
+
+  }
+
+  // create business category
+  public registerBusinessCategory(businessData:FormData, access: string): Observable<any> {
+    const url = ApiEndpointService.getEndpoint(ApiEndpointService.ENDPOINT.BUSINESS_CATEGORY);
+    return this.http.post<any>(url, businessData, {
+      headers: {
+        'Authorization': `Bearer ${access}`
+      }
+    }).pipe(
+      map(function (response: any) {
+        return response;
+      }),
+      catchError((fault: HttpErrorResponse) => {
+        return throwError(() => fault);
+
+      })
+    )
+
+  }
+
+  // Update Business Category
+  public updateBusinessCategory(businessData:FormData, bizId:number, access: string): Observable<any> {
+    const url = ApiEndpointService.getEndpoint(ApiEndpointService.ENDPOINT.BUSINESS_CATEGORY);
+    return this.http.patch<any>(url+bizId+'/', businessData, {
+      headers: {
+        'Authorization': `Bearer ${access}`
+      }
+    }).pipe(
+      map(function (response: any) {
+        return response;
+      }),
+      catchError((fault: HttpErrorResponse) => {
+        return throwError(() => fault);
+
+      })
+    )
+
+  }
+
+   // Get Business sub categories
+   public getBusinessSubCategories(access: string): Observable<any> {
+    const url = ApiEndpointService.getEndpoint(ApiEndpointService.ENDPOINT.GET_BUSINESS_SUB_CATEGORIES);
+    return this.http.get<any>(url, {
+      headers: {
+        'Content-Type': 'application/json; charset=utf-8',
+        'Accept': 'application/json',
+        'Authorization': `Bearer ${access}`
+      }
+    }).pipe(
+      map(function (response: any) {
+        return response;
+      }),
+      catchError((fault: HttpErrorResponse) => {
+        return throwError(() => fault);
+
+      })
+    )
+
+  }
+
+  // create business sub category
+  public registerBusinessSubCategory(businessData:FormData, access: string): Observable<any> {
+    const url = ApiEndpointService.getEndpoint(ApiEndpointService.ENDPOINT.BUSINESS_SUB_CATEGORY);
+    return this.http.post<any>(url, businessData, {
+      headers: {
+        'Authorization': `Bearer ${access}`
+      }
+    }).pipe(
+      map(function (response: any) {
+        return response;
+      }),
+      catchError((fault: HttpErrorResponse) => {
+        return throwError(() => fault);
+
+      })
+    )
+
+  }
+
+  // Update Business SUb Category
+  public updateBusinessSubCategory(businessData:FormData, bizId:number, access: string): Observable<any> {
+    const url = ApiEndpointService.getEndpoint(ApiEndpointService.ENDPOINT.BUSINESS_SUB_CATEGORY);
+    return this.http.patch<any>(url+bizId+'/', businessData, {
+      headers: {
+        'Authorization': `Bearer ${access}`
+      }
+    }).pipe(
+      map(function (response: any) {
+        return response;
+      }),
+      catchError((fault: HttpErrorResponse) => {
+        return throwError(() => fault);
+
+      })
+    )
+
+  }
+
+
 
   ngOnDestroy() {
     this.unsubscribe.forEach((sb) => sb.unsubscribe());

@@ -58,7 +58,7 @@
                         </tr>
 
                         <tr *ngIf="assemblyCount == 0">
-                            <td colspan="6" class="no_data_display">
+                            <td colspan="5" class="no_data_display">
                                 No data available for display
                             </td>
                         </tr>
@@ -175,7 +175,7 @@
 
   <ng-template #deleteAssembly let-modal>
     <div class="modal-header alert alert-danger">
-      <h4 class="modal-title" id="modal-del-title">Delete Package</h4>
+      <h4 class="modal-title" id="modal-del-title">Delete Assembly</h4>
       <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
         <span aria-hidden="true">&times;</span>
       </button>
