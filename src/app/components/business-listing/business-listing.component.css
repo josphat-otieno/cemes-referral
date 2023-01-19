@@ -3,3 +3,8 @@
     margin-left: 80%;
     /* background-image: url($); */
 }
+
+.profiler {
+    max-height: 400px;
+    overflow-y: scroll;
+}

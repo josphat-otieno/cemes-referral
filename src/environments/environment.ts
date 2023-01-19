@@ -7,7 +7,6 @@ export const environment = {
   appVersion: 'v1',
   http: 'http://',
   domain: '127.0.0.1:8000',
-  // domain: '35.193.194.124:8000',
   path_name: '/',
   apiUrl: 'api',
   context: '',

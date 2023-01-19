@@ -293,15 +293,21 @@ const routes: Routes = [
       {path: 'page-forgot-password', component: ForgotPasswordComponent},
       {path: 'page-error-400', component: Error400Component},
       {path: 'page-error-403', component: Error403Component},
-      {path: 'page-error-404', component: Error404Component},
+      {path: 'error-404', component: Error404Component},
       {path: 'page-error-500', component: Error500Component},
       {path: 'page-error-503', component: Error503Component},
-            
+         
+      // if does not exists      
+      { path: '**', redirectTo: 'error-404' },
 
   ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes, {scrollPositionRestoration: 'enabled'})],
+  imports: [RouterModule.forRoot(routes, {
+    anchorScrolling: 'enabled',
+    scrollPositionRestoration: 'enabled',
+    relativeLinkResolution: 'legacy'
+  })],
   exports: [RouterModule],
   providers: [AuthGuard]
 })

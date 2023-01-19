@@ -104,7 +104,7 @@ export class AdvertisementsComponent implements OnInit {
 
     this.pendingAdsCount = 1
     this.activeAdsCount = 1
-    this.AdsCount = 1
+    this.AdsCount = 2
     
     this.accessToken =  this.cbfService.AccessToken
     this.user_id = Number(this.cbfService.currentUserValue)

@@ -671,6 +671,9 @@ import { ForumCategoryComponent } from './components/forum-category/forum-catego
 import { AdvertisementsComponent } from './components/advertisements/advertisements.component';
 import { OffersPromotionsAwarenessComponent } from './components/offers-promotions-awareness/offers-promotions-awareness.component';
 import { ProfileComponent } from './components/profile/profile.component';
+import { BusinessRatingComponent } from './components/business-rating/business-rating.component';
+import { BusinessIntegrityRatingComponent } from './components/business-integrity-rating/business-integrity-rating.component';
+import { PendingStaffListComponent } from './components/pending-staff-list/pending-staff-list.component';
 
 function appInitializer(authService: CbfService) {
   return () => {
@@ -1283,6 +1286,9 @@ function appInitializer(authService: CbfService) {
     AdvertisementsComponent,
     OffersPromotionsAwarenessComponent,
     ProfileComponent,
+    BusinessRatingComponent,
+    BusinessIntegrityRatingComponent,
+    PendingStaffListComponent,
     
     
   ],

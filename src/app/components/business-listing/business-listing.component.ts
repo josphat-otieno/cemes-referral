@@ -46,6 +46,7 @@ export class BusinessListingComponent implements OnInit {
 
   // public business 
   public currentRate:number = 0
+  public social_link:any = []
 
   // Datatables
   dtOptions: any = {};
@@ -101,6 +102,24 @@ export class BusinessListingComponent implements OnInit {
         'pdf'
       ]
     };
+
+    this.social_link = [
+      {
+        title:"instagram",
+        icon_class:"fa fa-instagram",
+        link:"#",
+      },
+      {
+        title:"twitter",
+        icon_class:"fa fa-twitter",
+        link:"#",
+      },
+      {
+        title:"facebook",
+        icon_class:"fa fa-facebook",
+        link:"#",
+      },
+    ]
     
     this.accessToken =  this.cbfService.AccessToken
     this.user_id = Number(this.cbfService.currentUserValue)

@@ -172,7 +172,7 @@ export class RegisterComponent implements OnInit {
     regData.append('phone_number', this.registerForm.get('phoneNumber')?.value)
     regData.append('password', this.registerForm.get('password_confirmed')?.value)
     regData.append('is_staff', true.toString())
-    regData.append('is_verified', true.toString())
+    regData.append('is_verified', false.toString())
 
     const regsterSubscr = this.cbfService.createUser(regData)
 

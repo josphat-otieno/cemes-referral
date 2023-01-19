@@ -54,7 +54,7 @@ export class CbfService implements OnDestroy {
     const params = new HttpParams();
     return this.http.post<UserModel>(url, loginCredentials, { params }).pipe(
       map( (response: any) => {
-        this.getUserByToken()
+        
         return response;
       }),
       catchError((fault: HttpErrorResponse) => {
@@ -122,7 +122,9 @@ export class CbfService implements OnDestroy {
   
   // logout
   public logoutUser() {
+    this.cookieService.delete('JTW');
     this.cookieService.deleteAll();
+
     ls.clear()
     localStorage.clear();
     sessionStorage.clear();

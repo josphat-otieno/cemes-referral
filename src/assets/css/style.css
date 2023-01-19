@@ -33323,5 +33323,31 @@ html[dir="rtl"] [direction="rtl"][data-sidebar-style="compact"]:not([data-layout
     padding: 10%;
   }
 
+  /* Advertisments Css */
+
+  .button_row {
+      width: 100%;
+      margin-bottom: 2%;
+      text-align: center;
+      display: inline-block;
+  }
+
+  .button_row btn {
+      width: 20%;
+  }
+
+  .image_container img {
+      z-index: 1;
+      padding: 0;
+      width: 280px;
+      max-width: 300px;
+      height: 220px;
+      border-radius: 10%;
+      overflow: hidden;
+      background-color: lightgray;
+      vertical-align: middle;
+      margin-bottom: 14px;
+      margin-top: 8px;
+  }
 
 /*# sourceMappingURL=style.css.map */

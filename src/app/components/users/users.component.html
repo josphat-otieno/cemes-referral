@@ -180,7 +180,7 @@
   
             <div class="modal-footer">
               <button type="button" class="btn btn-light" data-dismiss="modal" (click)="modal.dismiss('Cross click')">Cancel</button>
-              <button type="submit" [disabled]="!conversionForm.valid" class="btn btn-success" (click)="convertAction()">Convert to Staff</button>
+              <button type="submit" [disabled]="!conversionForm.valid" class="btn btn-primary" (click)="convertAction()">Convert to Staff</button>
             </div>
           </form>
     </div>
@@ -433,7 +433,7 @@
     </div>
     <div class="modal-footer">
         <button type="button" class="btn btn-sm btn-light" (click)="modal.close('Close click')">No</button>
-        <button type="button" class="btn btn-sm btn-danger" (click)="deleteMemberAction(deleteForm.value)">Yes</button>
+        <button type="button" class="btn btn-sm btn-primary" (click)="deleteMemberAction(deleteForm.value)">Yes</button>
     </div>
   </ng-template>
 
@@ -459,7 +459,7 @@
 
     <div class="modal-footer">
         <button type="button" class="btn btn-sm btn-light" (click)="modal.close('Close click')">No</button>
-        <button type="button" class="btn btn-sm btn-success" (click)="activateUserAction(approvalForm.value)">Yes</button>
+        <button type="button" class="btn btn-sm btn-primary" (click)="activateUserAction(approvalForm.value)">Yes</button>
     </div>
   </ng-template>
 
@@ -485,6 +485,6 @@
 
     <div class="modal-footer">
         <button type="button" class="btn btn-sm btn-light" (click)="modal.close('Close click')">No</button>
-        <button type="button" class="btn btn-sm btn-success" (click)="deactivateUserAction(deactivForm.value)">Yes</button>
+        <button type="button" class="btn btn-sm btn-primary" (click)="deactivateUserAction(deactivForm.value)">Yes</button>
     </div>
   </ng-template>

@@ -73,6 +73,7 @@ export class LoginComponent implements OnInit {
         // variables
         let jwt = results.data.tokens.refresh
         let staff_verify = results.data.is_staff
+        let account_verify = results.data.is_verified
         let user_id = results.data.id
 
         if(!jwt){
@@ -81,24 +82,39 @@ export class LoginComponent implements OnInit {
           if(staff_verify != true){
             this.alertMessage="Only staff are allowed into this portal.";
           } else {
+
             this.alertMessage = ''
+
+            // check verification
+            if(staff_verify != true){
+              this.alertMessage = 'Sorry, your account is yet to be verified. Kindly wait for verification'
+
+            } else {
+              
+              this.successAlert = true;
   
-            this.successAlert = true;
-  
-            //store session cookie
-            this.cookieService.set( 'JTW', jwt); // To Set Cookie
-  
-            //store user id
-            ls.set('id', JSON.stringify(user_id), {encrypt: true, secret: 43});     
-            
-            setTimeout(() => {
-              this.router.navigate([this.returnUrl]);
-            }, 2000);
+              //store session cookie
+              this.cookieService.set('JTW', jwt); // To Set Cookie
+    
+              //store user id
+              ls.set('id', JSON.stringify(user_id), {encrypt: true, secret: 43});    
+              
+              // set USer Id and Acstk
+              this.cbfService.getUserByToken().subscribe()
+              
+              setTimeout(() => {
+                this.router.navigate([this.returnUrl]);
+              }, 2000);
+            }
+           
           }
         }
       
       },
-      error: (e:HttpErrorResponse) =>  this.alertMessage = 'No account matches these credentials, please try again'
+      error: (e:HttpErrorResponse) =>  {
+        console.log(e)
+        this.alertMessage = 'No account matches these credentials, please try again'
+      }
     })
     
     this.unsubscribe.push(loginSubscr);

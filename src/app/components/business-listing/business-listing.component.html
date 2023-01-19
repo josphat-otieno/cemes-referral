@@ -132,7 +132,7 @@
                                         <button type="button" class="btn btn-sm btn-info" (click)="reviewUpdateModal(viewBusinessModal, res)">
                                             <i class="fa fa-eye"></i> View Details
                                         </button> &nbsp;
-                                        <button type="button" [disabled] class="btn btn-sm btn-success" (click)="reviewUpdateModal(editMember, res)"><i class="fa fa-edit"></i> Edit</button> &nbsp;
+                                        <button type="button" [disabled] class="btn btn-sm btn-success" (click)="reviewUpdateModal(editBusiness, res)"><i class="fa fa-edit"></i> Edit</button> &nbsp;
                                         <button type="button" *ngIf="res.business.status === true" class="btn btn-sm btn-danger" (click)="reviewModal(deactivateBusiness, res)"><i class="fa fa-close"></i> Deactivate</button>
                                         <button type="button" *ngIf="res.business.status === false" class="btn btn-sm btn-success" (click)="reviewModal(activateBusiness, res)"><i class="fa fa-refresh"></i> Activate</button>
                                     </div>
@@ -354,7 +354,7 @@
     <div class="modal-body default-calendar">
 
         <!-- display profile -->
-        <div class="row">
+        <div class="row profiler">
 			<div class="col-lg-12">
 				<div class="profile card card-body px-3 pt-3 pb-0">
 					<div class="profile-head">
@@ -380,25 +380,67 @@
 								
 							</div>
 						</div>
-					</div>
+					</div> <hr/>
+
+                    <!-- Business Details -->
+                    <div class="row">
+                        <div class="col-6">               
+                            <label class="text-muted mb-2">Business Details</label>
+                            <p class="fs-6">
+                                <b> Owned By: </b>{{businessModalData?.business.owner.name}}
+                            </p>
+                            <p class="fs-6">
+                                <b> Assembly: </b> {{businessModalData?.business.owner.assembly}}
+                            </p>
+                            <p class="fs-6">
+                                <b> Registration Date: </b>{{businessModalData.business.joinDate | date:'longDate'}}
+                           </p>
+                        </div>
+
+                        <div class="col-6">
+                            <label class="text-muted mb-2">Contact Information</label>
+                           
+                            <p class="fs-3">
+                                <b> Phone Number(s)</b> <br/> 0722590563, 07265482822
+                            </p>
+                            <p class="fs-3">
+                                <b> Email(s)</b> <br/> business@biz.ke
+                            </p>
+                            <p class="fs-3"><b>Social Links</b></p>
+
+                                <div class="social-media">
+                                    <a *ngFor="let social of social_link" title="{{social.title}}" href="{{social.link}}" 
+                                    class="btn btn-outline-primary btn-rounded btn-sm {{social.icon_class}}" target="_blank"></a> &nbsp;
+                                </div>
+
+                        </div>
+                    </div>
 
                     <!-- business images -->
+                    <div class="row">
+                        <div class="col-12">
+                            <label class="text-muted mb-2">Business Images</label>
+                            <div class="container image_container">
+                                <img src="assets/images/product/fries.jpg" alt="advert image"/>
+                            </div>
+                        </div>
+                    </div>
 
 				</div>
 			</div>
 		</div>
         
         <div class="modal-footer">
-            <button class="btn btn-block btn-md btn-light" type="button" aria-label="Close" (click)="modal.dismiss('Cross click')">
+            <button class="btn btn-block btn-md btn-primary" type="button" aria-label="Close" (click)="modal.dismiss('Cross click')">
                 Close
             </button>
         </div>
     </div>
   </ng-template>
 
-  <ng-template #editMember let-modal>
+  <ng-template #editBusiness let-modal>
     <div class="modal-header alert alert-success">
-      <h4 class="modal-title" id="modal-edit-title">Edit Member</h4>
+      <h4 class="modal-title" id="modal-edit-title">Edit Business</h4>
       <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
         <span aria-hidden="true">&times;</span>
       </button>
@@ -410,30 +452,21 @@
 
                 <div class="col-xl-6">
                     <div class="form-group row">
-                        <label class="col-lg-4 col-form-label" for="fullNameEdit">Member Name
+                        <label class="col-lg-4 col-form-label" for="fullNameEdit">Business Name
                             <span class="text-danger">*</span>
                         </label>
                         <div class="col-lg-6">
                             <input type="hidden" name="id" ngModel="{{businessModalData?.id}}" value="{{businessModalData?.id}}">
-                            <input type="text" class="form-control" id="fullNameEdit" name="full_name" ngModel="{{businessModalData?.name}}" value="{{businessModalData?.name}}">
+                            <input type="text" class="form-control" id="fullNameEdit" name="full_name" ngModel="{{businessModalData?.business.name}}" value="{{businessModalData?.business.name}}">
                         </div>                        
                     </div>
-                    <div class="form-group row">
-                        <label class="col-lg-4 col-form-label" for="emailUpdate">Email Address <span
-                            class="text-danger">*</span>
-                        </label>
-                        <div class="col-lg-6">                           
-                            <input type="email" class="form-control" id="emailUpdate" #email name="email" placeholder="Enter user's work email" ngModel="{{businessModalData?.email}}" value="{{businessModalData?.email}}"
-                              (input)="validateEmail(email.value)">
-                              <i *ngIf="emailValidationMessage" style="color:red">The email address entered is not valid</i>
-                        </div>
-                    </div>
+                    
                     <div class="form-group row">
                         <label class="col-lg-4 col-form-label" for="assembly">Assembly
                             <span class="text-danger">*</span>
                         </label>
                         <div class="col-lg-6">
-                            <select class="form-control" name="assemblyUpdate" ngModel="{{businessModalData?.assembly_id}}" value="{{businessModalData?.assembly_id}}">                                
+                            <select class="form-control" name="assemblyUpdate" ngModel="{{businessModalData?.business.owner.assemblyId}}" value="{{businessModalData?.business.owner.assemblyId}}">                                
                                 <option value="">Please select an assembly</option>
                                 <option *ngFor="let res of assemblies" value="{{res.id}}">{{res.name}}</option>
                             </select>                           
@@ -443,37 +476,15 @@
                 <div class="col-xl-6">
                   
                     <div class="form-group row">
-                        <label class="col-lg-4 col-form-label" for="phoneNumberUpdate">Phone Number
+                        <label class="col-lg-4 col-form-label" for="">Description
                             <span class="text-danger">*</span>
                         </label>
                         <div class="col-lg-6">                           
-                            <input type="number" class="form-control" id="phoneNumberUpdate" #phone name="phone_number" ngModel="{{businessModalData?.phone}}" value="{{businessModalData?.phone}}" (input)="validatePhone(phone.value)">
-                            <i *ngIf="phoneValidationMessage" style="color:red">The phone number entered is not valid, format is 0xxxx and maximum length of 10 numbers</i> 
+                            <textarea rows="4" class="form-control" name="nature" ngModel="{{businessModalData?.business.nature}}" value="{{businessModalData?.business.nature}}">{{businessModalData?.business.nature}}</textarea>
+                            <!-- <i *ngIf="phoneValidationMessage" style="color:red">The phone number entered is not valid, format is 0xxxx and maximum length of 10 numbers</i>  -->
                         </div>
                     </div>                            
                     
-                    <div class="form-group row">
-                        <label class="col-lg-4 col-form-label" for="inputPasswordUpdate">Password
-                        </label>
-                        <div class="col-lg-6">
-                            <div class="input-group">
-                                <input name="password" id="inputPasswordUpdate" class="form-control" #passwd placeholder="Enter your password" ngModel=""
-                                type="password" value="{{passwordValue}}" (input)="passwordInput(passwd.value)">
-                                
-                                <div class="input-group-append show-pass1 ">
-                                    <span class="input-group-text "> 
-                                        <i class="fa" [ngClass]="{'fa-eye-slash': toggleEye, 'fa-eye': !toggleEye}" (click)="toggleEyeIcon(passwd)"></i>
-                                    </span>
-                                </div>
-                            </div>
-
-                            <button class="btn btn-sm random btn-success" type="button" (click)="generatePassword()">Generate
-                                random password</button>
-                            
-                        </div>
-                        
-                    </div>
-
                 </div>
             </div>
             <!-- message -->
@@ -483,8 +494,7 @@
 
             <div class="modal-footer">
               <button type="button" class="btn btn-light" data-dismiss="modal" (click)="modal.dismiss('Cross click')">Cancel</button>
-              <button type="submit" [disabled]="validity" id="register" class="btn btn-primary" (click)="updateMember(editForm.value)"
-               >Save</button>
+              <button type="submit" [disabled]="validity" id="register" class="btn btn-primary" >Save</button>
             </div>
           </form>
     </div>
@@ -511,7 +521,7 @@
     </div>
     <div class="modal-footer">
         <button type="button" class="btn btn-sm btn-light" (click)="modal.close('Close click')">No</button>
-        <button type="button" class="btn btn-sm btn-danger" (click)="deactivateBusinessAction(deactivForm.value)">Yes</button>
+        <button type="button" class="btn btn-sm btn-primary" (click)="deactivateBusinessAction(deactivForm.value)">Yes</button>
     </div>
   </ng-template>
 
@@ -537,7 +547,7 @@
 
     <div class="modal-footer">
         <button type="button" class="btn btn-sm btn-light" (click)="modal.close('Close click')">No</button>
-        <button type="button" class="btn btn-sm btn-success" (click)="activateBusinessAction(activForm.value)">Yes</button>
+        <button type="button" class="btn btn-sm btn-primary" (click)="activateBusinessAction(activForm.value)">Yes</button>
     </div>
   </ng-template>
   
@@ -563,7 +573,7 @@
 
     <div class="modal-footer">
         <button type="button" class="btn btn-sm btn-light" (click)="modal.close('Close click')">No</button>
-        <button type="button" class="btn btn-sm btn-success" (click)="approveBusinessAction(approvalForm.value)">Yes</button>
+        <button type="button" class="btn btn-sm btn-primary" (click)="approveBusinessAction(approvalForm.value)">Yes</button>
     </div>
   </ng-template>
 
@@ -588,7 +598,7 @@
     </div>
     <div class="modal-footer">
         <button type="button" class="btn btn-sm btn-light" (click)="modal.close('Close click')">No</button>
-        <button type="button" class="btn btn-sm btn-danger" (click)="revokeBusinessAction(rejectForm.value)">Yes</button>
+        <button type="button" class="btn btn-sm btn-primary" (click)="revokeBusinessAction(rejectForm.value)">Yes</button>
     </div>
   </ng-template>
     
