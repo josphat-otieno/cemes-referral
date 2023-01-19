@@ -95,54 +95,100 @@
             </div>
            
             <div class="card-body">
-                <div class="table-responsive">
-                    <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="table table-striped">
-                    <thead>
-                    <tr>
-                        <th scope="col">Profile Picture</th>
-                        <th scope="col">Full Name</th>
-                        <th scope="col">Email Address</th>
-                        <th scope="col">Phone Number</th>
-                        <th scope="col">Assembly</th>
-                        <th scope="col">Registration Date</th>
-                        <th scope="col">Status</th>
-                        <th scope="col">Update Details</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                        <tr *ngFor="let staff of staffList; index as i">
-                            <td>
-                                <div class="circular_image_container symbol symbol-50px me-5">
-                                    <img src="{{staff.profilePicture}}" alt="profile pic"/>
-                                </div>
-                            </td>
-                            <td>{{staff.name}}</td>
-                            <td>{{staff.email}}</td>
-                            <td>{{staff.phone}}</td>
-                            <td>{{staff.assembly}}</td>
-                            <td>{{staff.joinDate | date:'mediumDate'}}</td>
-                            <td>
-                                <span *ngIf="staff.userStatus === false" class="badge badge-danger">Inactive</span>
-                                <span *ngIf="staff.userStatus === true" class="badge badge-success">Active</span>
-                            </td>
-                            <td>
-                                <div class="button_containers">
-                                    <button type="button" class="btn btn-sm btn-success" (click)="reviewUpdateModal(editStaff, staff)"> <i class="fa fa-pencil"></i>Edit</button> &nbsp;
-                                    <button type="button" [disabled]="staff.deleteStatus === true" class="btn btn-sm btn-danger" (click)="reviewModal(deleteStaff, staff)"> <i class="fa fa-trash"></i>Delete</button> &nbsp;
-                                    <button type="button" *ngIf="staff.userStatus === false" class="btn btn-sm btn-success" (click)="reviewModal(activateUser, staff)"> <i class="fa fa-refresh"></i> Activate</button> &nbsp;
-                                    <button type="button" *ngIf="staff.userStatus === true" class="btn btn-sm btn-danger" (click)="reviewModal(deactivateUser, staff)"> <i class="fa fa-close"></i> Deactivate</button>
-                                </div>
-                            </td>
-                        </tr>
 
-                        <tr *ngIf="staffCount == 0">
-                            <td colspan="8" class="no_data_display">
-                                No data available for display
-                            </td>
-                        </tr>
-                    </tbody>
-                    </table>
-                </div>
+                <mat-tab-group>
+                    <mat-tab label="Verified Staff"> 
+                        <br/>
+
+                        <div class="table-responsive">
+                            <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="table table-striped">
+                            <thead>
+                            <tr>
+                                <th scope="col">Profile Picture</th>
+                                <th scope="col">Full Name</th>
+                                <th scope="col">Email Address</th>
+                                <th scope="col">Phone Number</th>
+                                <th scope="col">Assembly</th>
+                                <th scope="col">Registration Date</th>
+                                <th scope="col">Status</th>
+                                <th scope="col">Update Details</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let staff of staffList; index as i">
+                                    <td>
+                                        <div class="circular_image_container symbol symbol-50px me-5">
+                                            <img src="{{staff.profilePicture}}" alt="profile pic"/>
+                                        </div>
+                                    </td>
+                                    <td>{{staff.name}}</td>
+                                    <td>{{staff.email}}</td>
+                                    <td>{{staff.phone}}</td>
+                                    <td>{{staff.assembly}}</td>
+                                    <td>{{staff.joinDate | date:'mediumDate'}}</td>
+                                    <td>
+                                        <span *ngIf="staff.userStatus === false && staff.deleteStatus === false" class="badge badge-danger">Inactive</span>
+                                        <span *ngIf="staff.deleteStatus === true" class="badge badge-danger">Deleted</span>
+                                        <span *ngIf="staff.userStatus === true" class="badge badge-success">Active</span>
+                                    </td>
+                                    <td>
+                                        <div class="button_containers">
+                                            <button type="button" [disabled]="staff.deleteStatus === true" class="btn btn-sm btn-success" (click)="reviewUpdateModal(editStaff, staff)"> <i class="fa fa-pencil"></i>Edit</button> &nbsp;
+                                            <button type="button" [disabled]="staff.deleteStatus === true" class="btn btn-sm btn-danger" (click)="reviewModal(deleteStaff, staff)"> <i class="fa fa-trash"></i>Delete</button> &nbsp;
+                                            <button type="button" [disabled]="staff.deleteStatus === true" *ngIf="staff.userStatus === false" class="btn btn-sm btn-success" (click)="reviewModal(activateUser, staff)"> <i class="fa fa-refresh"></i> Activate</button> &nbsp;
+                                            <button type="button" [disabled]="staff.deleteStatus === true" *ngIf="staff.userStatus === true" class="btn btn-sm btn-danger" (click)="reviewModal(deactivateUser, staff)"> <i class="fa fa-close"></i> Deactivate</button>
+                                        </div>
+                                    </td>
+                                </tr>
+        
+                                <tr *ngIf="staffCount == 0">
+                                    <td colspan="8" class="no_data_display">
+                                        No data available for display
+                                    </td>
+                                </tr>
+                            </tbody>
+                            </table>
+                        </div>
+
+                    </mat-tab>
+                    <mat-tab label="Pending Verification: {{pendingStaffCount}} user(s)"> 
+                        <br/>
+
+                        <table datatable [dtOptions]="ptOptions" [dtTrigger]="ptTrigger" class="table table-striped">
+                            <thead>
+                            <tr>
+                                <th scope="col">Full Name</th>
+                                <th scope="col">Email Address</th>
+                                <th scope="col">Phone Number</th>
+                                <th scope="col">Registration Date</th>
+                                <th scope="col">Update Details</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let staff of pendingStaffList">
+                                    <td>{{staff.name}}</td>
+                                    <td>{{staff.email}}</td>
+                                    <td>{{staff.phone}}</td>
+                                    <td>{{staff.joinDate | date:'mediumDate'}}</td>
+                                    <td>
+                                        <div class="button_containers">                                        
+                                            <button type="button" class="btn btn-sm btn-success" (click)="reviewModal(approveStaff, staff)"> <i class="fa fa-check"></i> Approve</button> &nbsp;
+                                            <button type="button" [disabled]="staff.deleteStatus === true" class="btn btn-sm btn-danger" (click)="reviewModal(rejectStaff, staff)"> <i class="fa fa-close"></i> Reject</button>
+                                        </div>                                    
+                                    </td>
+                                </tr>
+
+                                <tr *ngIf="pendingStaffCount == 0">
+                                    <td colspan="5" class="no_data_display">
+                                        No data available for display
+                                    </td>
+                                </tr>
+                            </tbody>
+                            </table>
+
+                    </mat-tab>
+                </mat-tab-group>                
+
             </div>
         </div>
       
@@ -237,7 +283,7 @@
                             </label>
                             <div class="col-lg-6">
                                 <select class="form-control default-select" id="assembly" formControlName="assembly" >
-                                    <option value="">Select an assembly...</option>
+                                    <option value="0">Select an assembly...</option>
                                     <option *ngFor="let res of assemblies" value="{{res.id}}">{{res.name}}</option>
                                    
                                 </select>
@@ -353,6 +399,7 @@
                               <i *ngIf="emailValidationMessage" style="color:red">The email address entered is not valid</i>
                         </div>
                     </div>
+
                     <div *ngIf="staffModalData.memberStatus == 'True'" class="form-group row">
                         <label class="col-lg-4 col-form-label" for="assembly">Assembly
                             <span class="text-danger">*</span>
@@ -408,7 +455,7 @@
 
             <div class="modal-footer">
               <button type="button" class="btn btn-light" data-dismiss="modal" (click)="modal.dismiss('Cross click')">Cancel</button>
-              <button type="submit" [disabled]="validity" id="register" class="btn btn-primary" (click)="updateMember(editForm.value)"
+              <button type="submit" [disabled]="validity" id="register" class="btn btn-primary" (click)="updateStaff(editForm.value)"
                >Save</button>
             </div>
           </form>
@@ -490,5 +537,56 @@
     <div class="modal-footer">
         <button type="button" class="btn btn-sm btn-light" (click)="modal.close('Close click')">No</button>
         <button type="button" class="btn btn-sm btn-primary" (click)="deactivateUserAction(deactivForm.value)">Yes</button>
+    </div>
+  </ng-template>
+
+  <ng-template #approveStaff let-modal>
+    <div class="modal-header alert alert-success">
+      <h4 class="modal-title" id="modal-del-title">Approve Staff Request</h4>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body default-calendar">
+      <form #approvalForm="ngForm">        
+        <input type="hidden" name="id" ngModel="{{staffModalData?.id}}" value="{{staffModalData?.id}}">
+        <p>Are you sure you want to approve <b>{{staffModalData.name}}</b>?</p>
+      </form>
+
+      <!-- message -->
+      <div *ngIf="messageResponse" class="row alert alert-info">
+        <p><i class="fa fa-exclamation"></i> &nbsp;  {{messageResponse}}</p>
+        </div>
+
+    </div>
+
+    <div class="modal-footer">
+        <button type="button" class="btn btn-sm btn-light" (click)="modal.close('Close click')">No</button>
+        <button type="button" class="btn btn-sm btn-primary" (click)="approveStaffAction(approvalForm.value)">Yes</button>
+    </div>
+  </ng-template>
+
+  <ng-template #rejectStaff let-modal>
+    <div class="modal-header alert alert-danger">
+      <h4 class="modal-title" id="modal-del-title">Reject Staff Request</h4>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body default-calendar">
+      <form #rejectForm="ngForm">        
+        <input type="hidden" name="id" ngModel="{{staffModalData?.id}}" value="{{staffModalData?.id}}">
+        <p>Are you sure you want to reject <b>{{staffModalData.name}}</b>?</p>
+      </form>
+
+      <!-- message -->
+      <div *ngIf="messageResponse" class="row alert alert-info">
+        <p><i class="fa fa-exclamation"></i> &nbsp;  {{messageResponse}}</p>
+      </div>
+
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-sm btn-light" (click)="modal.close('Close click')">No</button>
+        <button type="button" class="btn btn-sm btn-primary" (click)="revokeStaffAction(rejectForm.value)">Yes</button>
     </div>
   </ng-template>

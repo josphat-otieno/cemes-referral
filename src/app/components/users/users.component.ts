@@ -19,8 +19,10 @@ export class UsersComponent implements OnInit {
   // parameters
   public assemblies:any = []
   public staffList:any = []
+  public pendingStaffList:any = []
   public memberListing:any = []
 
+  public pendingStaffCount:number = 0
   public staffCount:number = 0
   public activeStaffCount:number = 0
   public inactiveStaffCount:number = 0
@@ -44,6 +46,9 @@ export class UsersComponent implements OnInit {
   dtOptions: any = {};
   dtTrigger: Subject<any> = new Subject<any>();
 
+  ptOptions: any = {};
+  ptTrigger: Subject<any> = new Subject<any>();
+
   constructor(
     private cbfService: CbfService,
     private modalService: NgbModal,
@@ -66,12 +71,25 @@ export class UsersComponent implements OnInit {
         'pdf'
       ]
     };    
+     this.ptOptions = {
+      pagingType: 'full_numbers',
+      pageLength: 10,
+      processing: true,
+      buttons: [
+        'copy',
+        'print',
+        'csv',
+        'excel',
+        'pdf'
+      ]
+    };    
 
     this.accessToken = this.cbfService.AccessToken
     this.user_id = Number(this.cbfService.currentUserValue)
     this.createForm()
     this.getAssemblies()
     this.getStaffList()
+    this.getPendingStaffList()
   }
 
   createForm() {
@@ -197,12 +215,11 @@ export class UsersComponent implements OnInit {
 
   getStaffList(){
 
-    const userSubscr = this.cbfService.getStaff(this.accessToken)
+    const userSubscr = this.cbfService.getStaff('approved', this.accessToken)
     // .map(region_name)
     .subscribe({
       next: (response: any) => {
-        let result = response   
-        console.log(result)
+        let result = response  
         this.staffCount = result.count.total
         this.activeStaffCount = result.count.active
         this.inactiveStaffCount = result.count.inactive
@@ -223,30 +240,51 @@ export class UsersComponent implements OnInit {
 
   }
 
+  getPendingStaffList(){
+
+    const userPendingSubscr = this.cbfService.getStaff('pending', this.accessToken)
+    // .map(region_name)
+    .subscribe({
+      next: (response: any) => {
+        let result = response  
+        this.pendingStaffCount = result.count.total
+        this.pendingStaffList = result.results 
+
+        if(this.pendingStaffCount > 0){
+          this.ptTrigger.next(this.pendingStaffList)
+        }        
+        
+      },      
+      error: (err: HttpErrorResponse) => {
+        //  this.toaster.warning('Failure fetching user details, kindly refresh', 'Something went wrong')
+      }
+    })
+
+    this.unsubscribe.push(userPendingSubscr);
+
+  }
+
+
   activateUserAction(data: any) {
     
     let modalData = data
+    let User = modalData.id
 
     const apprvData:FormData = new FormData()
-    apprvData.append('type', 'activate')
-    apprvData.append('userId', modalData.id)
-    apprvData.append('user', this.user_id.toString())
+    apprvData.append('is_active', true.toString())
 
-    const activSubscr = this.cbfService.verifyAppUser(apprvData, this.accessToken)
+    const activSubscr = this.cbfService.updateSpecificUser(apprvData, User, this.accessToken)
 
     .subscribe({
       next: (response: any) => {
         
-        if(response.status){
-          this.messageResponse = response.message
-
-          if(response.status == 1){
+        if(response.id){
+         
+          this.messageResponse = 'Staff successfuly activated'
             
-            setTimeout(() => {
-              window.location.reload()
-            }, 1200);
-
-          } 
+          setTimeout(() => {
+            window.location.reload()
+          }, 1200);
           
         }
         
@@ -262,27 +300,23 @@ export class UsersComponent implements OnInit {
   deactivateUserAction(data: any) {
     
     let modalData = data
+    let User = modalData.id
 
-    const apprvData:FormData = new FormData()
-    apprvData.append('type', 'deactivate')
-    apprvData.append('userId', modalData.id)
-    apprvData.append('user', this.user_id.toString())
+    const deactdata:FormData = new FormData()
+    deactdata.append('is_active', true.toString())
 
-    const activSubscr = this.cbfService.verifyAppUser(apprvData, this.accessToken)
+    const dactivSubscr = this.cbfService.updateSpecificUser(deactdata, User, this.accessToken)
 
     .subscribe({
       next: (response: any) => {
         
-        if(response.status){
-          this.messageResponse = response.message
-
-          if(response.status == 1){
+        if(response.id){
+         
+          this.messageResponse = 'Staff successfuly deactivated'
             
-            setTimeout(() => {
-              window.location.reload()
-            }, 1200);
-
-          } 
+          setTimeout(() => {
+            window.location.reload()
+          }, 1200);
           
         }
         
@@ -292,7 +326,7 @@ export class UsersComponent implements OnInit {
       }   
     })
     
-    this.unsubscribe.push(activSubscr);
+    this.unsubscribe.push(dactivSubscr);
   }
 
   convertAction() {
@@ -309,7 +343,7 @@ export class UsersComponent implements OnInit {
     regData.append('assembly', this.staffRegistration.get('assembly')?.value)
     regData.append('user', this.user_id.toString())
 
-    const regsterSubscr = this.cbfService.registerMember(regData, this.accessToken)
+    const regsterSubscr = this.cbfService.registerStaff(regData, this.accessToken)
 
     .subscribe({
       next: (response: any) => {
@@ -339,7 +373,7 @@ export class UsersComponent implements OnInit {
     this.unsubscribe.push(regsterSubscr);
   }
 
-  updateMember(data: any) {
+  updateStaff(data: any) {
 
     let modalData = data
 
@@ -352,11 +386,17 @@ export class UsersComponent implements OnInit {
       updateData.append('password', modalData.password)
     }
 
-    updateData.append('assembly', modalData.assemblyUpdate)
-    updateData.append('businessOwner', modalData.id)
+    if(modalData.assemblyUpdate !== undefined){
+      updateData.append('assembly', modalData.assemblyUpdate)
+    } else {
+      updateData.append('assembly', '0'.toString())
+    }
+
+    updateData.append('userID', modalData.id)
     updateData.append('user', this.user_id.toString())
 
-    const regsterSubscr = this.cbfService.updateMember(updateData, this.accessToken)
+    
+    const updSubscr = this.cbfService.updateStaff(updateData, this.accessToken)
 
     .subscribe({
       next: (response: any) => {
@@ -383,7 +423,7 @@ export class UsersComponent implements OnInit {
       }   
     })
     
-    this.unsubscribe.push(regsterSubscr);
+    this.unsubscribe.push(updSubscr);
 
   }
 
@@ -392,10 +432,10 @@ export class UsersComponent implements OnInit {
     let modalData = data
 
     const delData:FormData = new FormData()
-    delData.append('businessOwner', modalData.id)
+    delData.append('staffId', modalData.id)
     delData.append('user', this.user_id.toString())
 
-    const delSubscr = this.cbfService.deleteMember(delData, this.accessToken)
+    const delSubscr = this.cbfService.deleteStaff(delData, this.accessToken)
 
     .subscribe({
       next: (response: any) => {
@@ -421,6 +461,80 @@ export class UsersComponent implements OnInit {
     })
     
     this.unsubscribe.push(delSubscr);
+
+  }
+
+  approveStaffAction(data: any) {
+
+    let modalData = data
+
+    const apprvData:FormData = new FormData()
+    apprvData.append('type', 'approve')
+    apprvData.append('staffId', modalData.id)
+    apprvData.append('user', this.user_id.toString())
+
+    const apprvSubscr = this.cbfService.reviewStaff(apprvData, this.accessToken)
+
+    .subscribe({
+      next: (response: any) => {
+        
+        if(response.status){
+          this.messageResponse = response.message
+
+          if(response.status == 1){
+
+            setTimeout(() => {
+              window.location.reload()
+            }, 1200);
+
+          } 
+          
+        }
+        
+      },
+      error: (e:HttpErrorResponse) =>  {
+        this.msg = 'Something went wrong, please try again'  
+        this.messageResponse = this.msg
+      }   
+    })
+    
+    this.unsubscribe.push(apprvSubscr);
+
+  }
+
+  revokeStaffAction(data: any) {
+
+    let modalData = data
+
+    const apprvData:FormData = new FormData()
+    apprvData.append('type', 'reject')
+    apprvData.append('staffId', modalData.id)
+    apprvData.append('user', this.user_id.toString())
+
+    const rejectSubscr = this.cbfService.reviewStaff(apprvData, this.accessToken)
+
+    .subscribe({
+      next: (response: any) => {
+        
+        if(response.status){
+          this.messageResponse = response.message
+
+          if(response.status == 1){
+            
+            setTimeout(() => {
+              window.location.reload()
+            }, 1200);
+          } 
+
+        }
+        
+      },
+      error: (e:HttpErrorResponse) =>  {
+        this.messageResponse = 'Something went wrong, please try again'  
+      }   
+    })
+    
+    this.unsubscribe.push(rejectSubscr);
 
   }
 

@@ -19,7 +19,11 @@ export class ApiEndpointService {
     GET_USER: `${ApiEndpointService.MAIN_CONTEXT}/user/get-profile/`,    
     GET_ALL_STAFF: `${ApiEndpointService.MAIN_CONTEXT}/user/get-staff-list/`,
     UPDATE_PROFILE: `${ApiEndpointService.MAIN_CONTEXT}/user/`,
-    UPDATE_USER: `${ApiEndpointService.MAIN_CONTEXT}/user/edit-user/`,
+    UPDATE_USER: `${ApiEndpointService.MAIN_CONTEXT}/user/edit-user/`,    
+    REGISTER_STAFF_MEMBER: `${ApiEndpointService.MAIN_CONTEXT}/user/register-staff-admin/`,
+    UPDATE_STAFF: `${ApiEndpointService.MAIN_CONTEXT}/user/update-staff-admin/`,
+    DELETE_STAFF: `${ApiEndpointService.MAIN_CONTEXT}/user/delete-staff-admin/`,
+    REVIEW_STAFF: `${ApiEndpointService.MAIN_CONTEXT}/user/review-staff-admin/`,
     RETRIEVE_TOKEN: `${ApiEndpointService.MAIN_CONTEXT}/user/token/refresh/`,
 
     // Membership

@@ -149,6 +149,24 @@ export class CbfService implements OnDestroy {
     );
   }
 
+  // Register User
+  public updateSpecificUser(userDetails: FormData, userId:number, access:string): Observable<UserModel> {
+    const url = ApiEndpointService.getEndpoint(ApiEndpointService.ENDPOINT.UPDATE_USER);
+    return this.http.patch<UserModel>(url+userId, userDetails, {
+      headers: {
+        'Authorization': `Bearer ${access}`
+      }
+    }).pipe(
+      map(function (response: any) {
+        return response;
+      }),
+      catchError((fault: HttpErrorResponse) => {
+        return throwError(() => fault);
+
+      })
+    );
+  }
+
   // Get User Detail
   public getUser(user_id: number, access: string): Observable<any> {
     const url = ApiEndpointService.getEndpoint(ApiEndpointService.ENDPOINT.GET_USER);
@@ -170,13 +188,90 @@ export class CbfService implements OnDestroy {
 
   }
 
+  // register Staff
+  public registerStaff(memberData:FormData, access: string): Observable<any> {
+    const url = ApiEndpointService.getEndpoint(ApiEndpointService.ENDPOINT.REGISTER_STAFF_MEMBER);
+    return this.http.post<any>(url, memberData, {
+      headers: {
+        'Authorization': `Bearer ${access}`
+      }
+    }).pipe(
+      map(function (response: any) {
+        return response;
+      }),
+      catchError((fault: HttpErrorResponse) => {
+        return throwError(() => fault);
+
+      })
+    )
+
+  }
+
+
   // Get Staff
-  public getStaff(access: string): Observable<any> {
+  public getStaff(verificationStatus:string, access: string): Observable<any> {
     const url = ApiEndpointService.getEndpoint(ApiEndpointService.ENDPOINT.GET_ALL_STAFF);
-    return this.http.get<any>(url, {
+    return this.http.get<any>(url+'?verified='+verificationStatus, {
       headers: {
         'Content-Type': 'application/json; charset=utf-8',
         'Accept': 'application/json',
+        'Authorization': `Bearer ${access}`
+      }
+    }).pipe(
+      map(function (response: any) {
+        return response;
+      }),
+      catchError((fault: HttpErrorResponse) => {
+        return throwError(() => fault);
+
+      })
+    )
+
+  }
+
+   // Verify Staff
+   public reviewStaff(staffData:FormData, access: string): Observable<any> {
+    const url = ApiEndpointService.getEndpoint(ApiEndpointService.ENDPOINT.REVIEW_STAFF);
+    return this.http.post<any>(url, staffData, {
+      headers: {
+        'Authorization': `Bearer ${access}`
+      }
+    }).pipe(
+      map(function (response: any) {
+        return response;
+      }),
+      catchError((fault: HttpErrorResponse) => {
+        return throwError(() => fault);
+
+      })
+    )
+
+  }
+
+  // Update Staff
+  public updateStaff(staffData:FormData, access: string): Observable<any> {
+    const url = ApiEndpointService.getEndpoint(ApiEndpointService.ENDPOINT.UPDATE_STAFF);
+    return this.http.post<any>(url, staffData, {
+      headers: {
+        'Authorization': `Bearer ${access}`
+      }
+    }).pipe(
+      map(function (response: any) {
+        return response;
+      }),
+      catchError((fault: HttpErrorResponse) => {
+        return throwError(() => fault);
+
+      })
+    )
+
+  }
+  
+  // Delete Staff
+  public deleteStaff(staffData:FormData, access: string): Observable<any> {
+    const url = ApiEndpointService.getEndpoint(ApiEndpointService.ENDPOINT.DELETE_STAFF);
+    return this.http.post<any>(url, staffData, {
+      headers: {
         'Authorization': `Bearer ${access}`
       }
     }).pipe(
