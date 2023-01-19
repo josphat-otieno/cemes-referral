@@ -104,7 +104,7 @@
                     <div class="col-lg-7">
                         <select class="form-control default-select" id="businessCategory" formControlName="business_category" >
                             <option value="">Please select a category...</option>
-                            <option *ngFor="let res of categoryList" value="{{res.id}}">{{res.name}}</option>
+                            <option *ngFor="let res of categoryList" value="{{res.id}}">{{res.category}}</option>
                            
                         </select>
                         <div *ngIf="categoryRegistration.controls['business_category'].invalid && (categoryRegistration.controls['business_category'].dirty || categoryRegistration.controls['business_category'].touched)" class="text-danger fs-13 mt-1">
