@@ -1,1 +1,194 @@
-<p>forum-category works!</p>
+<div class="content-body">
+    <div class="container-fluid">
+        <div class="row page-titles mx-0">
+            <div class="col-sm-6 p-md-0">
+                <div class="welcome-text">
+                    <h4>Forum Category Management</h4>
+                </div>
+            </div>
+            <div class="col-sm-6 p-md-0 justify-content-sm-end mt-2 mt-sm-0 d-flex">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="admin/dashboard">Home</a></li>
+                    <li class="breadcrumb-item active"><a href="javascript:void(0)">System Parameters</a></li>
+                </ol>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="card">
+            <div class="card-header">
+                <div class="col-6">
+                    List of all forum categories
+                </div>
+
+                <div class="col-6"> 
+                    <button class="btn btn-sm btn-primary rightBtns" type="button" (click)="openModal(addCategory, 'md')">
+                        <i class="fa fa-plus"></i>&nbsp;Add Category
+                    </button>                  
+                </div>
+            </div>
+           
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th scope="col">Name</th>
+                        <th scope="col">Date Created</th>
+                        <th scope="col">Status</th>
+                        <th scope="col">Update Details</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let category of categoryList; index as i">
+                            <td>{{category.name}}</td>
+                            <td>{{category.created_at | date:'mediumDate'}}</td>
+                            <td>
+                                <span *ngIf="category.is_deleted === true" class="badge badge-danger">Deleted</span>
+                                <span *ngIf="category.is_deleted === false" class="badge badge-success">Active</span>
+                            </td>
+                            <td>
+                                <div class="button_containers">
+                                    <button type="button" class="btn btn-sm btn-success" (click)="reviewModal(editCategory, category)"> <i class="fa fa-pencil"></i>Edit</button> &nbsp;
+                                    <button type="button" [disabled]="category.is_deleted === true" class="btn btn-sm btn-danger" (click)="reviewModal(deleteCategory, category)"> <i class="fa fa-trash"></i>Delete</button> 
+                                </div>
+                            </td>
+                        </tr>
+
+                        <tr *ngIf="categoryCount == 0">
+                            <td colspan="4" class="no_data_display">
+                                No data available for display
+                            </td>
+                        </tr>
+                    </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+      
+	</div>
+</div>
+
+  
+<ng-template #addCategory let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title">Create Category</h4>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body default-calendar">
+        <div class="form-validation">
+            <form class="form-valide" action="#" method="post" [formGroup]="categoryRegistration" novalidate>
+                <div class="form-group row">
+                    <label class="col-lg-5 col-form-label" for="categoryName">Category Name
+                        <span class="text-danger">*</span>
+                    </label>
+                    <div class="col-lg-7">
+                        <input type="text" class="form-control" id="categoryName" formControlName="name" placeholder="Enter category name...">
+                        <div *ngIf="categoryRegistration.controls['name'].invalid && (categoryRegistration.controls['name'].dirty || categoryRegistration.controls['name'].touched)" class="text-danger fs-13 mt-1">
+                            
+                            <div *ngIf="categoryRegistration.controls['category'].errors.required">
+                                Category name is required.
+                            </div>
+                        </div>
+                    </div>
+                    
+                </div>
+                <div class="form-group row">
+                    <label class="col-lg-5 col-form-label" for="forumDesc">Description
+                        <span class="text-danger">*</span>
+                    </label>
+                    <div class="col-lg-7">
+                        <textarea class="form-control" id="forumDesc" formControlName="description" placeholder="Enter forum category description..."></textarea>
+                        <div *ngIf="categoryRegistration.controls['description'].invalid && (categoryRegistration.controls['description'].dirty || categoryRegistration.controls['description'].touched)" class="text-danger fs-13 mt-1">
+                            
+                            <div *ngIf="categoryRegistration.controls['description'].errors.required">
+                               Category description is required.
+                            </div>
+                        </div>
+                    </div>                    
+                </div>
+              
+            </form>
+        </div>
+        
+        <!-- message -->
+        <div *ngIf="messageResponse" class="row alert alert-info">
+            <p><i class="fa fa-exclamation"></i> &nbsp;  {{messageResponse}}</p>
+        </div>
+
+    </div>
+
+    <div class="modal-footer">
+        <button type="button" class="btn btn-light" (click)="modal.close('Close click')">Cancel</button>
+        <button type="button" class="btn btn-primary" [disabled]="categoryRegistration.pristine || categoryRegistration.invalid" (click)="saveCategory()">Save</button>
+    </div>
+  </ng-template>
+
+<ng-template #editCategory let-modal>
+    <div class="modal-header alert alert-success">
+      <h4 class="modal-title" id="modal-edit-title">Edit Category Details</h4>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+
+    <div class="modal-body default-calendar">
+        <form class="form" #editForm="ngForm" autocomplete="on">
+            <div class="form-group row">
+                <label class="col-lg-5 col-form-label" for="categoryNameEdit">Category Name
+                    <span class="text-danger">*</span>
+                </label>
+                <div class="col-lg-7">
+                    <input type="hidden" name="id" ngModel="{{categoryModalData?.id}}" value="{{categoryModalData?.id}}">
+                    <input type="text" class="form-control" id="categoryNameEdit" name="name" ngModel="{{categoryModalData?.name}}" value="{{categoryModalData?.name}}">
+                </div>                        
+            </div>      
+            <div class="form-group row">
+                <label class="col-lg-5 col-form-label" for="descUpdate">Forum Description
+                    <span class="text-danger">*</span>
+                </label>
+                <div class="col-lg-7">
+                    <textarea class="form-control" id="descUpdate" name="description" ngModel="{{categoryModalData?.description}}" value="{{categoryModalData?.description}}" placeholder="Enter forum description..."></textarea>                         
+                </div>
+            </div>       
+
+            <!-- message -->
+            <div *ngIf="messageResponse" class="row alert alert-info">
+                <p><i class="fa fa-exclamation"></i> &nbsp;  {{messageResponse}}</p>
+            </div>
+
+            <div class="modal-footer">
+              <button type="button" class="btn btn-light" data-dismiss="modal" (click)="modal.dismiss('Cross click')">Cancel</button>
+              <button type="submit" [disabled]="!editForm.valid" class="btn btn-primary" (click)="updateCategoryAction(editForm.value)"
+               >Save Changes</button>
+            </div>
+          </form>
+    </div>
+  </ng-template>
+
+  <ng-template #deleteCategory let-modal>
+    <div class="modal-header alert alert-danger">
+      <h4 class="modal-title" id="modal-del-title">Delete Category</h4>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body default-calendar">
+      <form #deleteForm="ngForm">        
+        <input type="hidden" name="id" ngModel="{{categoryModalData?.id}}" value="{{categoryModalData?.id}}">
+        <p>Are you sure you want to delete <b>{{categoryModalData.name}}</b>?</p>
+      </form>
+
+       <!-- message -->
+       <div *ngIf="messageResponse" class="row alert alert-info">
+        <p><i class="fa fa-exclamation"></i> &nbsp;  {{messageResponse}}</p>
+        </div>
+
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-sm btn-light" (click)="modal.close('Close click')">No</button>
+        <button type="button" class="btn btn-sm btn-primary" (click)="deleteCategoryAction(deleteForm.value)">Yes</button>
+    </div>
+  </ng-template>

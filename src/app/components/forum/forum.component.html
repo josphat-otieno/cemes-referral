@@ -1,1 +1,228 @@
-<p>forum works!</p>
+<div class="content-body">
+    <div class="container-fluid">
+        <div class="row page-titles mx-0">
+            <div class="col-sm-6 p-md-0">
+                <div class="welcome-text">
+                    <h4>Forum Management</h4>
+                </div>
+            </div>
+            <div class="col-sm-6 p-md-0 justify-content-sm-end mt-2 mt-sm-0 d-flex">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="admin/dashboard">Home</a></li>
+                    <li class="breadcrumb-item active"><a href="javascript:void(0)">System Parameters</a></li>
+                </ol>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="card">
+            <div class="card-header">
+                <div class="col-6">
+                    List of all forums
+                </div>
+
+                <div class="col-6"> 
+                    <button class="btn btn-sm btn-primary rightBtns" type="button" (click)="openModal(addForum, 'md')">
+                        <i class="fa fa-plus"></i>&nbsp;Add Forum
+                    </button>                  
+                </div>
+            </div>
+           
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th scope="col">Name</th>
+                        <th scope="col">Category</th>
+                        <th scope="col">Date Created</th>
+                        <th scope="col">Created By</th>
+                        <th scope="col">Status</th>
+                        <th scope="col">Update Details</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let forum of forumList; index as i">
+                            <td>{{forum.name}}</td>
+                            <td>{{forum.category}}</td>
+                            <td>{{forum.created_at | date:'mediumDate'}}</td>
+                            <td>{{forum.created_by}}</td>
+                            <td>
+                                <span *ngIf="forum.is_deleted === true" class="badge badge-danger">Deleted</span>
+                                <span *ngIf="forum.is_deleted === false" class="badge badge-success">Active</span>
+                            </td>
+                            <td>
+                                <div class="button_containers">
+                                    <button type="button" class="btn btn-sm btn-success" (click)="reviewModal(editForum, forum)"> <i class="fa fa-pencil"></i>Edit</button> &nbsp;
+                                    <button type="button" [disabled]="forum.is_deleted === true" class="btn btn-sm btn-danger" (click)="reviewModal(deleteForum, forum)"> <i class="fa fa-trash"></i>Delete</button> 
+                                </div>
+                            </td>
+                        </tr>
+
+                        <tr *ngIf="forumCount == 0">
+                            <td colspan="6" class="no_data_display">
+                                No data available for display
+                            </td>
+                        </tr>
+                    </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+      
+	</div>
+</div>
+
+  
+<ng-template #addForum let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title">Create Forum</h4>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body default-calendar">
+        <div class="form-validation">
+            <form class="form-valide" action="#" method="post" [formGroup]="forumRegistration" novalidate>
+                <div class="form-group row">
+                    <label class="col-lg-5 col-form-label" for="forumName">Name
+                        <span class="text-danger">*</span>
+                    </label>
+                    <div class="col-lg-7">
+                        <input type="text" class="form-control" id="forumName" formControlName="name" placeholder="Enter forum name...">
+                        <div *ngIf="forumRegistration.controls['name'].invalid && (forumRegistration.controls['name'].dirty || forumRegistration.controls['name'].touched)" class="text-danger fs-13 mt-1">
+                            
+                            <div *ngIf="forumRegistration.controls['name'].errors.required">
+                                Forum name is required.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-lg-5 col-form-label" for="forumCategory">Forum Category
+                        <span class="text-danger">*</span>
+                    </label>
+                    <div class="col-lg-7">
+                        <select class="form-control default-select" id="forumCategory" formControlName="category" >
+                            <option value="">Please select a category...</option>
+                            <option *ngFor="let res of categoryList" value="{{res.id}}">{{res.name}}</option>
+                           
+                        </select>
+                        <div *ngIf="forumRegistration.controls['category'].invalid && (forumRegistration.controls['category'].dirty || forumRegistration.controls['category'].touched)" class="text-danger fs-13 mt-1">
+                            
+                            <div *ngIf="forumRegistration.controls['category'].errors.required">
+                                Select at least one category.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                    
+                <div class="form-group row">
+                    <label class="col-lg-5 col-form-label" for="forumDesc">Description
+                        <span class="text-danger">*</span>
+                    </label>
+                    <div class="col-lg-7">
+                        <textarea class="form-control" id="forumDesc" formControlName="description" placeholder="Enter forum description..."></textarea>
+                        <div *ngIf="forumRegistration.controls['description'].invalid && (forumRegistration.controls['description'].dirty || forumRegistration.controls['description'].touched)" class="text-danger fs-13 mt-1">
+                            
+                            <div *ngIf="forumRegistration.controls['description'].errors.required">
+                                Description is required.
+                            </div>
+                        </div>
+                    </div>                    
+                </div>
+               
+              
+            </form>
+        </div>
+        
+        <!-- message -->
+        <div *ngIf="messageResponse" class="row alert alert-info">
+            <p><i class="fa fa-exclamation"></i> &nbsp;  {{messageResponse}}</p>
+        </div>
+
+    </div>
+
+    <div class="modal-footer">
+        <button type="button" class="btn btn-light" (click)="modal.close('Close click')">Cancel</button>
+        <button type="button" class="btn btn-primary" [disabled]="forumRegistration.pristine || forumRegistration.invalid" (click)="saveForum()">Save</button>
+    </div>
+  </ng-template>
+
+<ng-template #editForum let-modal>
+    <div class="modal-header alert alert-success">
+      <h4 class="modal-title" id="modal-edit-title">Edit forum Details</h4>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+
+    <div class="modal-body default-calendar">
+        <form class="form" #editForm="ngForm" autocomplete="on">
+            <div class="form-group row">
+                <label class="col-lg-5 col-form-label" for="categoryNameEdit">Name
+                    <span class="text-danger">*</span>
+                </label>
+                <div class="col-lg-7">
+                    <input type="hidden" name="id" ngModel="{{forumModalData?.id}}" value="{{forumModalData?.id}}">
+                    <input type="text" class="form-control" id="categoryNameEdit" name="name" ngModel="{{forumModalData?.name}}" value="{{forumModalData?.name}}">
+                </div>                        
+            </div>     
+            <div class="form-group row">
+                <label class="col-lg-5 col-form-label" for="catUpdate">Forum Category
+                    <span class="text-danger">*</span>
+                </label>
+                <div class="col-lg-7">
+                    <select class="form-control" id="catUpdate" name="categoryId" ngModel="{{forumModalData?.categoryId}}" value="{{forumModalData?.categoryId}}">                                
+                        <option value="">Please select a category...</option>
+                        <option *ngFor="let res of categoryList" value="{{res.id}}">{{res.name}}</option>
+                    </select>                           
+                </div>
+            </div>      
+            <div class="form-group row">
+                <label class="col-lg-5 col-form-label" for="descUpdate">Forum Description
+                    <span class="text-danger">*</span>
+                </label>
+                <div class="col-lg-7">
+                    <textarea class="form-control" id="descUpdate" name="description" ngModel="{{forumModalData?.description}}" value="{{forumModalData?.description}}" placeholder="Enter forum description..."></textarea>                         
+                </div>
+            </div>      
+
+            <!-- message -->
+            <div *ngIf="messageResponse" class="row alert alert-info">
+                <p><i class="fa fa-exclamation"></i> &nbsp;  {{messageResponse}}</p>
+            </div>
+
+            <div class="modal-footer">
+              <button type="button" class="btn btn-light" data-dismiss="modal" (click)="modal.dismiss('Cross click')">Cancel</button>
+              <button type="submit" [disabled]="!editForm.valid" class="btn btn-primary" (click)="updateAction(editForm.value)"
+               >Save Changes</button>
+            </div>
+          </form>
+    </div>
+  </ng-template>
+
+  <ng-template #deleteForum let-modal>
+    <div class="modal-header alert alert-danger">
+      <h4 class="modal-title" id="modal-del-title">Delete Forum</h4>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body default-calendar">
+      <form #deleteForm="ngForm">        
+        <input type="hidden" name="id" ngModel="{{forumModalData?.id}}" value="{{forumModalData?.id}}">
+        <p>Are you sure you want to delete <b>{{forumModalData.name}}</b>?</p>
+      </form>
+
+       <!-- message -->
+       <div *ngIf="messageResponse" class="row alert alert-info">
+        <p><i class="fa fa-exclamation"></i> &nbsp;  {{messageResponse}}</p>
+        </div>
+
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-sm btn-light" (click)="modal.close('Close click')">No</button>
+        <button type="button" class="btn btn-sm btn-primary" (click)="deleteAction(deleteForm.value)">Yes</button>
+    </div>
+  </ng-template>

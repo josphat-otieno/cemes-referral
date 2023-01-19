@@ -44,6 +44,11 @@ export class ApiEndpointService {
     BUSINESS_SUB_CATEGORY: `${ApiEndpointService.MAIN_CONTEXT}/business/business-sub-category/`,
     GET_BUSINESS_SUB_CATEGORIES: `${ApiEndpointService.MAIN_CONTEXT}/business/get-business-sub-category-list/`,
 
+    // Communication
+    GET_FORUM_LIST: `${ApiEndpointService.MAIN_CONTEXT}/communication/get-forum-list/`,
+    FORUM_MGT: `${ApiEndpointService.MAIN_CONTEXT}/communication/forum/`,
+    FORUM_CATEGORY: `${ApiEndpointService.MAIN_CONTEXT}/communication/forum-category/`,
+
   }
 
   constructor() { }
