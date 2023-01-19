@@ -86,9 +86,8 @@ export class LoginComponent implements OnInit {
             this.alertMessage = ''
 
             // check verification
-            if(staff_verify != true){
+            if(account_verify != true){
               this.alertMessage = 'Sorry, your account is yet to be verified. Kindly wait for verification'
-
             } else {
               
               this.successAlert = true;
