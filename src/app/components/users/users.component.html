@@ -257,7 +257,7 @@
                                 <span class="text-danger">*</span>
                             </label>
                             <div class="col-lg-6">
-                                <input type="text" class="form-control" id="phoneNumber" placeholder="07xxxxx" formControlName="phoneNumber">
+                                <input type="number" class="form-control" id="phoneNumber" placeholder="07xxxxx" formControlName="phoneNumber">
                                 <div *ngIf="staffRegistration.controls['phoneNumber'].invalid && staffRegistration.controls['phoneNumber'].length > 10 || staffRegistration.controls['phoneNumber'].length < 10
                                      && (staffRegistration.controls['phoneNumber'].dirty || staffRegistration.controls['phoneNumber'].touched)" class="text-danger fs-13 mt-1">
                                     
@@ -276,7 +276,7 @@
                             </label>
                             <div class="col-lg-6">
                                 <div class="input-group">
-                                    <input #inputPassword type="password" class="form-control" formControlName="password"  id="password" placeholder="Choose a safe one..">
+                                    <input #inputPassword type="password" class="form-control" formControlName="password" value="{{passwordValue}}"  id="password" placeholder="Choose a safe one..">
                                     
                                     <div class="input-group-append show-pass1 ">
                                         <span class="input-group-text "> 
@@ -291,9 +291,13 @@
                                         Password is required.
                                     </div>
                                     <div *ngIf="staffRegistration.controls['password'].errors.minlength">
-                                        Password must be at least 6 characters.
+                                        Password must be at least 8 characters.
                                     </div>
                                 </div>	
+
+                                <button class="btn btn-sm random btn-success" type="button" (click)="generatePassword()">Generate
+                                    random password</button>
+
                             </div>
                             
                         </div>

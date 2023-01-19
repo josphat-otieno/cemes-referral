@@ -148,7 +148,7 @@
 
   <ng-template #deactivateUser let-modal>
     <div class="modal-header alert alert-danger">
-      <h4 class="modal-title" id="modal-del-title">Reject Member</h4>
+      <h4 class="modal-title" id="modal-del-title">Deactivate User</h4>
       <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
         <span aria-hidden="true">&times;</span>
       </button>
@@ -156,7 +156,7 @@
     <div class="modal-body default-calendar">
       <form #deactivationForm="ngForm">        
         <input type="hidden" name="id" ngModel="{{userModalData?.id}}" value="{{userModalData?.id}}">
-        <p>Are you sure you want to deactivate {{userModalData.name}} as a member?</p>
+        <p>Are you sure you want to deactivate <b>{{userModalData.name}}</b>?</p>
       </form>
 
       <!-- message -->
