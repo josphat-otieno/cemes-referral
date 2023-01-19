@@ -28,7 +28,7 @@
                                 </svg>
                             </span>
                             <div class="media-body">
-                                <p class="mb-1">Total Advertisements</p>
+                                <p class="mb-1">Total Business Ratings</p>
                                 <h4 class="mb-0">{{AdsCount}}</h4>
                             </div>
                         </div>
@@ -49,7 +49,7 @@
                                 </svg>
                             </span>
                             <div class="media-body">
-                                <p class="mb-1">Advertisments pending verification</p>
+                                <p class="mb-1">Ratings pending verification</p>
                                 <h4 class="mb-0">{{pendingAdsCount}}</h4> 
                             </div>
                         </div>
@@ -68,7 +68,7 @@
                                 </svg> 
                             </span>
                             <div class="media-body">
-                                <p class="mb-1">Active Advertisements</p>
+                                <p class="mb-1">Total number of Reviews</p>
                                 <h4 class="mb-0">{{activeAdsCount}}</h4>
                             </div>
                         </div>
@@ -82,7 +82,7 @@
         <div class="card">
             <div class="card-header">
                 <div class="col-6">
-                    List of all Advertisements
+                    List of all Business ratings and reviews
                 </div>
 
                 <!-- <div class="col-6">
@@ -95,7 +95,7 @@
             <div class="card-body">
 
                 <mat-tab-group>
-                    <mat-tab label="Verified Advertisements"> 
+                    <mat-tab label="Verified Business Ratings"> 
                     <br/>
                            
                         <div class="table-responsive">
@@ -104,11 +104,8 @@
                             <tr>
                                 <th scope="col">Business Logo</th>
                                 <th scope="col">Business Name</th>
-                                <th scope="col">Submitted By</th>
-                                <th scope="col">Registration Date</th>
-                                <th scope="col">Payment Status</th>
-                                <th scope="col">Status</th>
-                                <th scope="col">Expiry Date</th>
+                                <th scope="col">Rating</th>
+                                <th scope="col">Rated By</th>
                                 <th scope="col">Update Details</th>
                             </tr>
                             </thead>
@@ -121,53 +118,18 @@
                                     </div>
                                 </td>
                                 <td>Joska Hardware</td>
-                                <td>Dr. James Gachagua</td>
-                                <td>Jan 12, 2023</td>
-                                <td>
-                                    <span class="badge badge-success">Paid</span>
-                                </td>
-                                <td>
-                                    <span class="badge badge-success">Active</span>
-                                </td>                                
-                                <td>Feb 12, 2023</td>
+                                <td>3.5</td>                
+                                <td>Pauline Mwamila</td>
                                 <td>
                                     <div class="button_containers">   
                                         <button type="button" [disabled] class="btn btn-sm btn-info" (click)="openModal(viewAdModal, 'lg')"><i class="fa fa-eye"></i> View Details</button> &nbsp;
-                                        <button type="button" class="btn btn-sm btn-danger" (click)="openModal(deactivateAd, 'md')"><i class="fa fa-close"></i> Deactivate</button>
+                                        <button type="button" class="btn btn-sm btn-danger" (click)="openModal(deactivateAd, 'md')"><i class="fa fa-close"></i> Delete</button>
                                     </div>
                                 </td>
-                                <!-- <td>
-                                    <div class="circular_image_container symbol symbol-50px me-5">
-                                        <img src="{{res.business.logo}}" alt="business logo"/>
-                                    </div>
-                                </td>
-                                <td>{{res.business.name}}</td>
-                                <td>{{res.business.owner.name}}</td>
-                                <td>{{res.business.joinDate | date:'mediumDate'}}</td>
-                                <td>
-                                    <span *ngIf="res.business.payment_status === complete" class="badge badge-success">Paid</span>
-                                    <span *ngIf="res.business.payment_status === partial" class="badge badge-warning">Partially Paid</span>
-                                    <span *ngIf="res.business.payment_status === pending" class="badge badge-danger">Pending</span>
-                                </td>
-                                <td>
-                                    <span *ngIf="res.business.status === true" class="badge badge-success">Active</span>
-                                    <span *ngIf="res.business.status === false" class="badge badge-danger">Inactive</span>
-                                </td>                                
-                                <td>{{res.business.joinDate | date:'mediumDate'}}</td>
-                                <td>
-                                    <div class="button_containers">                                        
-                                        <button type="button" class="btn btn-sm btn-info" (click)="openModal(viewAdModal, res)">
-                                            <i class="fa fa-eye"></i> View Details
-                                        </button> &nbsp;
-                                        <button type="button" [disabled] class="btn btn-sm btn-success" (click)="openModal(editMember, res)"><i class="fa fa-edit"></i> Edit</button> &nbsp;
-                                        <button type="button" *ngIf="res.business.status === true" class="btn btn-sm btn-danger" (click)="reviewModal(deactivateAd, res)"><i class="fa fa-close"></i> Deactivate</button>
-                                        <button type="button" *ngIf="res.business.status === false" class="btn btn-sm btn-success" (click)="reviewModal(activateBusiness, res)"><i class="fa fa-refresh"></i> Activate</button>
-                                    </div>
-                                </td> -->
                             </tr>
 
                             <tr *ngIf="AdsCount == 0">
-                                <td colspan="7" class="no_data_display">
+                                <td colspan="6" class="no_data_display">
                                     No data available for display
                                 </td>
                             </tr>
@@ -178,7 +140,7 @@
 
                     </mat-tab>
 
-                    <mat-tab label="Pending Verification: {{pendingAdsCount}} Request(s)">
+                    <mat-tab label="Pending Verification: {{pendingAdsCount}} Ratings(s)">
                         <br/>
                                
                             <div class="table-responsive">
@@ -186,9 +148,9 @@
                                 <thead>
                                     <tr>
                                         <th scope="col">Business Name</th>
+                                        <th scope="col">Rating Awarded</th>
+                                        <th scope="col">Review</th>
                                         <th scope="col">Submitted By</th>
-                                        <th scope="col">Registration Date</th>
-                                        <th scope="col">Payment Status</th>
                                         <th scope="col">Update Details</th>
                                     </tr>
                                     </thead>
@@ -196,11 +158,11 @@
                                     <!-- <tr *ngFor="let res of adsList; index as i"> -->
                                     <tr>
                                         <td>Ready Bites</td>
-                                        <td>Mrs. Mary Matilda Mweu</td>
-                                        <td>Jan 18, 2023</td>
+                                        <td>4.5</td>
                                         <td>
-                                            <span class="badge badge-danger">Pending</span>
-                                        </td>                  
+                                            <span class="badge badge-danger">Not provided</span>
+                                        </td>                                          
+                                        <td>Johnstone Kimani</td>               
                                         <td>
                                             <div class="button_containers">   
                                                 <button type="button" [disabled] class="btn btn-sm btn-primary" (click)="openModal(viewPendingADModal, 'lg')"><i class="fa fa-edit"></i> Review</button> &nbsp; 
@@ -231,7 +193,7 @@
 
   <ng-template #viewAdModal let-modal>
     <div class="modal-header alert alert-success">
-      <h4 class="modal-title" id="modal-edit-title">Joska Hardware's Advertisement</h4>
+      <h4 class="modal-title" id="modal-edit-title">Joska Hardware's Rating</h4>
       <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
         <span aria-hidden="true">&times;</span>
       </button>
@@ -254,12 +216,11 @@
 							<div class="profile-details">
 								<div class="profile-name px-3 pt-2">
 									<h4 class="text-primary mb-0">Joska Hardware</h4>
-                                    <span class="badge badge-sm badge-success">Active</span>
 								</div>
 								<div class="profile-email px-2 pt-2">
-									<h4 class="text-muted mb-0">Advert Description</h4>
-									<p>"Mwanaume ni nyumba", drop by our warehouse in Joska or various store points in CBD to get the best rates on building material.
-                                        Usimalize mwaka bila kulay foundation!
+									<h4 class="text-muted mb-0">Business Review</h4>
+									<p>Dr. James was not available on phone. Upon reaching the store, the boy at the shop did not assist me accordingly; I was
+                                        left standing for 10 minutes waiting for him to finish up with another client. Not professional at all.
                                     </p>
 								</div>
 								
@@ -269,27 +230,29 @@
 
                     <!-- Advert Details -->
                     <div class="row">
-                        <div class="col-6">               
-                            <label class="text-muted mb-2">Advert Details</label>
+                        <div class="col-12">               
+                            <label class="text-muted mb-2">Rating Information</label>
                             <p class="fs-6">
-                                <b> Running Period: </b>1 Month
-                            </p>
-                            <p class="fs-6">
-                                <b> Payment Status: </b> <span class="badge badge-success">Paid</span>
-                            </p>
-                            <p class="fs-6">
-                                <b> Amount: </b>Ksh.1500
-                           </p>
-                            <p class="fs-6">
-                                <b> Expiry Date: </b>Feb 12, 2023
-                           </p>
-                        </div>
+                                <b> Rating Awarded: </b>
+                                
+                                <ng-template #t let-fill="fill">
+                                    <span class="star" [class.filled]="fill === 100">
+                                      <span class="half" [style.width.%]="fill">&#9733;</span>&#9733;
+                                    </span>
+                                  </ng-template>
+                                  
+                                <ngb-rating [(rate)]="rating1" [starTemplate]="t" [readonly]="true" [max]="5"></ngb-rating> (3.5)  
 
-                        <div class="col-6">
-                            <label class="text-muted mb-0">Advert Image</label>
-                            <div class="container image_container">
-                                <img src="assets/images/big/hardware.jpg" alt="advert image"/>
-                            </div>
+                            </p>
+                            <p class="fs-6">
+                                <b> Total Reviews: </b> 2 reviews
+                           </p>
+                           <p class="fs-6">
+                                <b> Rated By: </b>Pauline Mwamila
+                            </p>
+                            <p class="fs-6">
+                                <b> Verified By: </b>Victor Koitie
+                           </p>
                         </div>
                     </div>
 
@@ -307,7 +270,7 @@
 
   <ng-template #viewPendingADModal let-modal>
     <div class="modal-header alert alert-success">
-      <h4 class="modal-title" id="modal-edit-title">Ready Bites Advertisement</h4>
+      <h4 class="modal-title" id="modal-edit-title">Ready Bites Rating</h4>
       <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
         <span aria-hidden="true">&times;</span>
       </button>
@@ -330,11 +293,10 @@
 							<div class="profile-details">
 								<div class="profile-name px-3 pt-2">
 									<h4 class="text-primary mb-0">Ready Bites</h4>
-                                    <span class="badge badge-sm badge-warning">Inactive</span>
 								</div>
 								<div class="profile-email px-2 pt-2">
 									<h4 class="text-muted mb-0">Advert Description</h4>
-									<p>"There is no sincerer love than the love of food." Come down to Ready Bites and let us share our love with you</p>
+									<p>Not available</p>
 								</div>
 								
 							</div>
@@ -345,24 +307,22 @@
 
                     <!-- Advert Details -->
                     <div class="row">
-                        <div class="col-6">               
-                            <label class="text-muted mb-2">Advert Details</label>
+                        <div class="col-12">               
+                            <label class="text-muted mb-2">Rating Details</label>
                             <p class="fs-6">
-                                <b> Running Period: </b>1 Month
-                            </p>
-                            <p class="fs-6">
-                                <b> Payment Status: </b> <span class="badge badge-danger">Pending</span>
-                            </p>
-                            <p class="fs-6">
-                                <b> Amount: </b>Ksh.1500
-                           </p>
-                        </div>
+                                <b> Rating Awarded: </b>
 
-                        <div class="col-6">
-                            <label class="text-muted mb-0">Advert Image</label>
-                            <div class="container image_container">
-                                <img src="assets/images/product/fries.jpg" alt="advert image"/>
-                            </div>
+                                <ng-template #t let-fill="fill">
+                                    <span class="star" [class.filled]="fill === 100">
+                                      <span class="half" [style.width.%]="fill">&#9733;</span>&#9733;
+                                    </span>
+                                  </ng-template>
+                                  
+                                <ngb-rating [(rate)]="rating2" [starTemplate]="t" [readonly]="true" [max]="5"></ngb-rating> (4.5)  
+                            </p>
+                            <p class="fs-6">
+                                <b> Rated By: </b>Pauline Mwamila
+                            </p>
                         </div>
                     </div>
 
@@ -370,7 +330,7 @@
 			</div>
 		</div>
 
-        <p class="text-muted text-center">Review Advertisment</p>
+        <p class="text-muted text-center">Review Rating</p>
         <div class="button_row">
             <button type="button" class="btn btn-sm btn-success" (click)="modal.dismiss('Cross click')" (click)="openModal(verifyAd, 'md')"><i class="fa fa-check"></i> Verify</button> &nbsp;
             <button type="button" class="btn btn-sm btn-danger"  (click)="modal.dismiss('Cross click')"  (click)="openModal(rejectAd, 'md')"><i class="fa fa-close"></i> Reject</button>
@@ -386,7 +346,7 @@
 
   <ng-template #deactivateAd let-modal>
     <div class="modal-header alert alert-danger">
-      <h4 class="modal-title" id="modal-del-title">Deactivate Advertisement</h4>
+      <h4 class="modal-title" id="modal-del-title">Delete Rating</h4>
       <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
         <span aria-hidden="true">&times;</span>
       </button>
@@ -394,8 +354,7 @@
     <div class="modal-body default-calendar">
       <form #deactivForm="ngForm">        
         <input type="hidden" name="id" ngModel="{{businessModalData?.business.id}}" value="{{businessModalData?.business.id}}">
-        <p>Are you sure you want to deactivate <b>Joska Hardware's Advertisement</b>?</p>
-        <i class="text-muted fs-6">This will prevent the advertisement displaying to members</i>
+        <p>Are you sure you want to delete <b>Joska Hardware's Rating</b>?</p>
       </form>
 
        <!-- message -->
@@ -413,7 +372,7 @@
 
   <ng-template #verifyAd let-modal>
     <div class="modal-header alert alert-danger">
-      <h4 class="modal-title" id="modal-del-title">Verify Advertisement</h4>
+      <h4 class="modal-title" id="modal-del-title">Verify Rating</h4>
       <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
         <span aria-hidden="true">&times;</span>
       </button>
@@ -421,7 +380,7 @@
     <div class="modal-body default-calendar">
       <form #deactivForm="ngForm">        
         <input type="hidden" name="id" ngModel="{{businessModalData?.business.id}}" value="{{businessModalData?.business.id}}">
-        <p>Are you sure you want to verify <b>Ready Bites Advertisement</b>?</p>
+        <p>Are you sure you want to verify <b>Ready Bites Rating</b>?</p>
       </form>
 
        <!-- message -->
@@ -438,7 +397,7 @@
 
   <ng-template #rejectAd let-modal>
     <div class="modal-header alert alert-danger">
-      <h4 class="modal-title" id="modal-del-title">Reject Advertisement</h4>
+      <h4 class="modal-title" id="modal-del-title">Reject Rating</h4>
       <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
         <span aria-hidden="true">&times;</span>
       </button>
@@ -447,11 +406,11 @@
       <form #deactivForm="ngForm">       
         
         <input type="hidden" name="id" ngModel="{{businessModalData?.business.id}}" value="{{businessModalData?.business.id}}">
-        <p>Are you sure you want to reject <b>Ready Bites Advertisement</b>?</p>
+        <p>Are you sure you want to reject <b>Ready Bites Rating</b>?</p>
 
         <div class="form-group">
             <label>Reason for rejection</label> <span class="text-danger">*</span>
-            <textarea class="form-control" rows="4" required placeholder="Please specify why you want to reject this advertisement"></textarea>
+            <textarea class="form-control" rows="4" required placeholder="Please specify why you want to reject this rating"></textarea>
         </div>
         
       </form>

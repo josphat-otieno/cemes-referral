@@ -54,6 +54,9 @@ export class BusinessRatingComponent implements OnInit {
   ptOptions: any = {};
   ptTrigger: Subject<any> = new Subject<any>();
 
+  public rating1: any = 0
+  public rating2: any = 0
+
   constructor(
     private fb: FormBuilder,    
     private toaster: ToastService,
@@ -76,31 +79,10 @@ export class BusinessRatingComponent implements OnInit {
 
   ngOnInit(): void {
 
+    this.rating1 = 3.5
+    this.rating2 = 4.5
+
     // datatable
-    this.dtOptions = {
-      pagingType: 'full_numbers',
-      pageLength: 10,
-      processing: true,
-      buttons: [
-        'copy',
-        'print',
-        'csv',
-        'excel',
-        'pdf'
-      ]
-    };
-    this.ptOptions = {
-      pagingType: 'full_numbers',
-      pageLength: 10,
-      processing: true,
-      buttons: [
-        'copy',
-        'print',
-        'csv',
-        'excel',
-        'pdf'
-      ]
-    };
 
     this.pendingAdsCount = 1
     this.activeAdsCount = 1
