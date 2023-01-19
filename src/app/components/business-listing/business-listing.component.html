@@ -369,7 +369,15 @@
 								<div class="profile-name px-3 pt-2">
 									<h4 class="text-primary mb-0">{{businessModalData?.business.name}}</h4>
 									<p>
-                                        <ngb-rating [(rate)]="currentRate" [max]="5" [readonly]="true"></ngb-rating> {{currentRate}} <br/>
+                                        <!-- <ngb-rating [(rate)]="currentRate" [max]="5" [readonly]="true"></ngb-rating> {{currentRate}} <br/> -->
+
+                                        <ng-template #t let-fill="fill">
+                                            <span class="star" [class.filled]="fill === 100">
+                                              <span class="half" [style.width.%]="fill">&#9733;</span>&#9733;
+                                            </span>
+                                          </ng-template>
+                                          
+                                        <ngb-rating [(rate)]="currentRate" [starTemplate]="t" [readonly]="true" [max]="5"></ngb-rating> ({{currentRate}}) <br/>                                          
                                         {{businessModalData?.business.reviews}} reviews
                                     </p>
 								</div>

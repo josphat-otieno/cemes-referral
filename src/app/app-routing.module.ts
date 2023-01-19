@@ -281,6 +281,7 @@ const routes: Routes = [
               {path: 'forum-category', component: ForumCategoryComponent},
               {path: 'advertisement', component: AdvertisementsComponent},
               {path: 'awareness', component: OffersPromotionsAwarenessComponent},
+              {path: 'business-ratings', component: RatingComponent},
               {path: 'profile', component: ProfileComponent},
       
           ]
