@@ -1,1 +1,248 @@
-<p>profile works!</p>
+<!--**********************************
+	Content body start
+***********************************-->
+<div class="content-body">
+	<div class="container-fluid">
+        <div class="row page-titles mx-0">
+            <div class="col-sm-6 p-md-0">
+                <div class="welcome-text">
+                    <h4>Hi {{loginName}}!</h4>
+                    <p class="mb-0">Profile Management</p>
+                </div>
+            </div>
+            <div class="col-sm-6 p-md-0 justify-content-sm-end mt-2 mt-sm-0 d-flex">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="admin/dashboard">Home</a></li>
+                    <li class="breadcrumb-item active"><a href="javascript:void(0)">Profile</a></li>
+                </ol>
+            </div>
+        </div>
+		<!-- row -->
+		<div class="row">
+			<div class="col-lg-12">
+				<div class="profile card card-body px-3 pt-3 pb-0">
+					<div class="profile-head">
+						<div class="photo-content">
+							<div class="cover-photo"></div>
+						</div>
+						<div class="profile-info">
+							<div class="profile-photo">
+								<img src="{{profilePic}}" class="img-fluid rounded-circle" alt="">
+							</div>
+							<div class="profile-details">
+								<div class="profile-name px-3 pt-2">
+									<h4 class="text-primary mb-0">{{loginName}}</h4>
+									<p>System Admin</p>
+								</div>
+								
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-xl-4">
+				<div class="row">
+					
+					<div class="card stats">
+						<div class="card-body">
+							<div class="profile-statistics">
+								<div class="text-center">
+									<div class="row">
+										<div class="col">
+											<h3 class="m-b-0">0</h3><span>Businesses</span>
+										</div> 
+									</div> <br/><hr>
+									<div class="row">
+										<div class="col">
+											<h3 class="m-b-0">0</h3><span>Ratings</span>
+										</div>
+									</div> <br/><hr>
+									<div class="row">
+										<div class="col">
+											<h3 class="m-b-0">0</h3><span>Reviews</span>
+										</div>
+									</div>
+									
+								</div>
+							</div>
+						</div>
+					</div>	
+
+				</div>
+			</div>
+			<div class="col-xl-8">
+				<div class="card">
+					<div class="card-body">
+						<div class="profile-tab">
+							<div class="custom-tab-1">
+								<ul class="nav nav-tabs" ngbNav #nav="ngbNav" >
+									
+									<li class="nav-item" ngbNavItem="about-me"><a href="#about-me" data-toggle="tab" class="nav-link" ngbNavLink>About Me</a>
+										<ng-template ngbNavContent>
+											<div id="about-me" class="tab-pane">
+												<div class="profile-about-me">
+													<div class="pt-4 border-bottom-1 pb-3">
+														<h4 class="text-primary">Bio &nbsp; <i class="fa fa-edit" (click)="openModal(bioModal, 'md')"></i></h4> 
+														<p class="mb-2">A wonderful serenity has taken possession of my entire soul, like these sweet mornings of spring which I enjoy 
+															with my whole heart. I am alone, and feel the charm of existence was created for the bliss of souls like mine.I am so happy,
+															 my dear friend, so absorbed in the exquisite sense of mere tranquil existence, that I neglect my talents.</p>
+													</div>
+												</div>
+												
+												<div class="profile-personal-info">
+													<h4 class="text-primary mb-4">Personal Information</h4>
+													<div class="row mb-2">
+														<div class="col-sm-3 col-5">
+															<h5 class="f-w-500">Name <span class="pull-right">:</span>
+															</h5>
+														</div>
+														<div class="col-sm-9 col-7"><span>{{loginName}}</span>
+														</div>
+													</div>
+													<div class="row mb-2">
+														<div class="col-sm-3 col-5">
+															<h5 class="f-w-500">Email <span class="pull-right">:</span>
+															</h5>
+														</div>
+														<div class="col-sm-9 col-7"><span>{{loginEmail}}</span>
+														</div>
+													</div>
+													<div class="row mb-2">
+														<div class="col-sm-3 col-5">
+															<h5 class="f-w-500">Phone Number <span class="pull-right">:</span>
+															</h5>
+														</div>
+														<div class="col-sm-9 col-7"><span>{{loginPhone}}</span>
+														</div>
+													</div>
+													<div class="row mb-2">
+														<div class="col-sm-3 col-5">
+															<h5 class="f-w-500">Membership Status <span class="pull-right">:</span></h5>
+														</div>
+														<div class="col-sm-9 col-7">
+															<span *ngIf="memStatus === false" class="badge badge-warning">Non-Member</span>
+															<span *ngIf="memStatus === true" class="badge badge-success">Member</span>
+														</div>
+													</div>
+													<!-- <div class="row mb-2">
+														<div class="col-sm-3 col-5">
+															<h5 class="f-w-500">Year Experience <span class="pull-right">:</span></h5>
+														</div>
+														<div class="col-sm-9 col-7"><span>07 Year Experiences</span>
+														</div>
+													</div> -->
+												</div>
+											</div>
+										</ng-template>
+										
+									</li>
+									<li class="nav-item" ngbNavItem="profile-settings"><a href="#profile-settings" data-toggle="tab" class="nav-link" ngbNavLink>Setting</a>
+										<ng-template ngbNavContent>
+											<div id="profile-settings" class="tab-pane">
+                                                <div class="pt-3">
+                                                    <div class="settings-form">														
+														
+                                                        <h4 class="text-primary">Account Setting</h4>
+                                                        <form>
+															<div class="form-row">
+																<div class="form-group col-md-6">
+																	<div class="profile-photo sizing symbol symbol-50px me-5">
+																		<img src="{{profilePic}}" class="img-fluid rounded-circle" alt="">
+																	</div>
+																	<button class="btn btn-success btn-sm">
+																		<i class="fa fa-edit"></i> Change Picture
+																	</button>
+																</div>
+																
+															</div>
+                                                            <div class="form-row">
+                                                                <div class="form-group col-md-6">
+                                                                    <label>Email</label>
+                                                                    <input type="email" placeholder="Email" class="form-control" value="{{loginEmail}}">
+																</div>
+                                                                <div class="form-group col-md-6">
+                                                                    <label>Password</label>
+                                                                    <input type="password" placeholder="Password" class="form-control" value="qwertyuiop">
+																</div>
+															</div>
+                                                            <div class="form-group">
+                                                                <label>Name</label>
+                                                                <input type="text" placeholder="your name" class="form-control" value="{{loginName}}">
+															</div>
+                                                            <div class="form-group">
+                                                                <label>Phone Number</label>
+                                                                <input type="number" placeholder="your phone number" class="form-control" value="{{loginPhone}}">
+															</div>
+                                                            <button class="btn btn-primary" [disabled] type="submit">Submit Changes</button>
+														</form>
+													</div>
+												</div>
+											</div>
+										</ng-template>
+										
+										
+									</li>
+								</ul>
+								
+								<div [ngbNavOutlet]="nav" class=""></div>
+							</div>
+							<!-- Modal -->
+							<ng-template #replyModal let-modal>
+								
+								<div class="modal-header">
+									<h4 class="modal-title" id="modal-basic-title">Post Reply</h4>
+									<button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+										<span aria-hidden="true">&times;</span>
+									</button>
+								</div>
+								<div class="modal-body">
+									<form>
+										<div class="form-group">
+											<textarea class="form-control" rows="4">Message</textarea>
+										</div>
+										<div class="form-group">
+											<button type="button" class="btn btn-primary">Reply</button>
+										</div>
+									</form>
+								</div>
+							</ng-template>
+
+							<ng-template #bioModal let-modal>
+								
+								<div class="modal-header">
+									<h4 class="modal-title" id="modal-basic-title">Update Bio</h4>
+									<button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+										<span aria-hidden="true">&times;</span>
+									</button>
+								</div>
+								<div class="modal-body">
+									<form>
+										<div class="form-group row">
+											<label class="col-lg-4 col-form-label" for="bioEdit">Bio information
+											</label>
+											<div class="col-lg-8">
+												<textarea class="form-control" rows="6"  id="bioEdit" placeholder="Bio data entry">A wonderful serenity has taken possession of my entire soul, like these sweet mornings of spring which I enjoy with my whole heart.
+													I am alone, and feel the charm of existence was created for the bliss of souls like mine.I am so happy, my dear friend, 
+													 so absorbed in the exquisite sense of mere tranquil existence, that I neglect my talents.</textarea>
+											</div>                     
+										</div>										
+										
+									</form>
+									<div class="modal-footer">
+										<button type="button" class="btn btn-light" (click)="modal.dismiss('Cross click')">Cancel</button>
+										<button type="button" class="btn btn-primary">Update Changes</button>
+									</div>
+								</div>
+							</ng-template>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<!--**********************************
+	Content body end
+***********************************-->
