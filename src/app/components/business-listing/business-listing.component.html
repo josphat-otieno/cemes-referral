@@ -85,11 +85,11 @@
                     List of all businesses
                 </div>
 
-                <div class="col-6">
+                <!-- <div class="col-6">
                     <button class="btn btn-sm btn-primary rightBtns" type="button" (click)="openModal(addBusiness)">
                         <i class="fa fa-plus"></i>&nbsp;Add Business
                     </button>
-                </div>
+                </div> -->
             </div>
            
             <div class="card-body">
@@ -132,9 +132,9 @@
                                         <button type="button" class="btn btn-sm btn-info" (click)="reviewUpdateModal(viewBusinessModal, res)">
                                             <i class="fa fa-eye"></i> View Details
                                         </button> &nbsp;
-                                        <button type="button" class="btn btn-sm btn-success" (click)="reviewUpdateModal(editMember, res)">Edit</button> &nbsp;
-                                        <button type="button" *ngIf="res.business.status === true" class="btn btn-sm btn-danger" (click)="reviewModal(deactivateBusiness, res)">Deactivate</button>
-                                        <button type="button" *ngIf="res.business.status === false" class="btn btn-sm btn-success" (click)="reviewModal(activateBusiness, res)">Activate</button>
+                                        <button type="button" [disabled] class="btn btn-sm btn-success" (click)="reviewUpdateModal(editMember, res)"><i class="fa fa-edit"></i> Edit</button> &nbsp;
+                                        <button type="button" *ngIf="res.business.status === true" class="btn btn-sm btn-danger" (click)="reviewModal(deactivateBusiness, res)"><i class="fa fa-close"></i> Deactivate</button>
+                                        <button type="button" *ngIf="res.business.status === false" class="btn btn-sm btn-success" (click)="reviewModal(activateBusiness, res)"><i class="fa fa-refresh"></i> Activate</button>
                                     </div>
                                 </td>
                             </tr>
@@ -188,8 +188,8 @@
                                             <button type="button" class="btn btn-sm btn-info" (click)="reviewUpdateModal(viewBusinessModal, res)">
                                                 <i class="fa fa-eye"></i> View Details
                                             </button> &nbsp;
-                                            <button type="button" class="btn btn-sm btn-success" (click)="reviewModal(approveBusiness, res)">Approve</button>
-                                            <button type="button" [disabled]="res.deleteStatus === true" class="btn btn-sm btn-danger" (click)="reviewModal(rejectBusiness, res)">Reject</button>
+                                            <button type="button" class="btn btn-sm btn-success" (click)="reviewModal(approveBusiness, res)"><i class="fa fa-check"></i> Approve</button>
+                                            <button type="button" [disabled]="res.deleteStatus === true" class="btn btn-sm btn-danger" (click)="reviewModal(rejectBusiness, res)"><i class="fa fa-close"></i> Reject</button>
                                         </div>
                                     </td>
                                 </tr>
