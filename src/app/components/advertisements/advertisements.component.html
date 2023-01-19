@@ -1,1 +1,469 @@
-<p>advertisements works!</p>
+<div class="content-body">
+    <div class="container-fluid">
+        <div class="row page-titles mx-0">
+            <div class="col-sm-6 p-md-0">
+                <div class="welcome-text">
+                    <h4>Business Advertisement Management</h4>
+                </div>
+            </div>
+            <div class="col-sm-6 p-md-0 justify-content-sm-end mt-2 mt-sm-0 d-flex">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="admin/dashboard">Home</a></li>
+                    <li class="breadcrumb-item active"><a href="javascript:void(0)">Business Management</a></li>
+                </ol>
+            </div>
+        </div>
+
+        <!-- Parameters -->
+        <div class="row">
+            <div class="col-xl-3 col-xxl-4 col-lg-6 col-sm-6">
+                <div class="widget-stat card">
+                    <div class="card-body p-4">
+                        <div class="media ai-icon">
+                            <span class="mr-3 bgl-primary text-primary">
+                                <!-- <i class="ti-user"></i> -->
+                                <svg id="icon-customers" xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-user">
+                                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                                    <circle cx="12" cy="7" r="4"></circle>
+                                </svg>
+                            </span>
+                            <div class="media-body">
+                                <p class="mb-1">Total Advertisements</p>
+                                <h4 class="mb-0">{{AdsCount}}</h4>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-3 col-xxl-4 col-lg-6 col-sm-6">
+                <div class="widget-stat card">
+                    <div class="card-body p-4">
+                        <div class="media ai-icon">
+                            <span class="mr-3 bgl-warning text-warning">                    
+                                <svg id="icon-orders" xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text">
+                                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                    <polyline points="14 2 14 8 20 8"></polyline>
+                                    <line x1="16" y1="13" x2="8" y2="13"></line>
+                                    <line x1="16" y1="17" x2="8" y2="17"></line>
+                                    <polyline points="10 9 9 9 8 9"></polyline>
+                                </svg>
+                            </span>
+                            <div class="media-body">
+                                <p class="mb-1">Advertisments pending verification</p>
+                                <h4 class="mb-0">{{pendingAdsCount}}</h4> 
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-3 col-xxl-4 col-lg-6 col-sm-6">
+                <div class="widget-stat card">
+                    <div class="card-body  p-4">
+                        <div class="media ai-icon">
+                            <span class="mr-3 bgl-success text-success">
+                                <svg id="icon-database-widget" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-database">
+                                    <ellipse cx="12" cy="5" rx="9" ry="3"></ellipse>
+                                    <path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"></path>
+                                    <path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"></path>
+                                </svg> 
+                            </span>
+                            <div class="media-body">
+                                <p class="mb-1">Active Advertisements</p>
+                                <h4 class="mb-0">{{activeAdsCount}}</h4>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        
+        </div>
+
+        <!-- Main Content -->
+        <div class="card">
+            <div class="card-header">
+                <div class="col-6">
+                    List of all Advertisements
+                </div>
+
+                <!-- <div class="col-6">
+                    <button class="btn btn-sm btn-primary rightBtns" type="button" (click)="openModal(addBusiness)">
+                        <i class="fa fa-plus"></i>&nbsp;Add Business
+                    </button>
+                </div> -->
+            </div>
+           
+            <div class="card-body">
+
+                <mat-tab-group>
+                    <mat-tab label="Verified Advertisements"> 
+                    <br/>
+                           
+                        <div class="table-responsive">
+                            <table datatable class="table table-striped">
+                            <thead>
+                            <tr>
+                                <th scope="col">Business Logo</th>
+                                <th scope="col">Business Name</th>
+                                <th scope="col">Submitted By</th>
+                                <th scope="col">Registration Date</th>
+                                <th scope="col">Payment Status</th>
+                                <th scope="col">Status</th>
+                                <th scope="col">Expiry Date</th>
+                                <th scope="col">Update Details</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <!-- <tr *ngFor="let res of adsList; index as i"> -->
+                            <tr>
+                                <td>
+                                    <div class="circular_image_container symbol symbol-50px me-5">
+                                        <img src="assets/images/big/hardware.jpg" alt="business logo"/>
+                                    </div>
+                                </td>
+                                <td>Joska Hardware</td>
+                                <td>Dr. James Gachagua</td>
+                                <td>Jan 12, 2023</td>
+                                <td>
+                                    <span class="badge badge-success">Paid</span>
+                                </td>
+                                <td>
+                                    <span class="badge badge-success">Active</span>
+                                </td>                                
+                                <td>Feb 12, 2023</td>
+                                <td>
+                                    <div class="button_containers">   
+                                        <button type="button" [disabled] class="btn btn-sm btn-info" (click)="openModal(viewAdModal, 'lg')"><i class="fa fa-eye"></i> View Details</button> &nbsp;
+                                        <button type="button" class="btn btn-sm btn-danger" (click)="openModal(deactivateAd, 'md')"><i class="fa fa-close"></i> Deactivate</button>
+                                    </div>
+                                </td>
+                                <!-- <td>
+                                    <div class="circular_image_container symbol symbol-50px me-5">
+                                        <img src="{{res.business.logo}}" alt="business logo"/>
+                                    </div>
+                                </td>
+                                <td>{{res.business.name}}</td>
+                                <td>{{res.business.owner.name}}</td>
+                                <td>{{res.business.joinDate | date:'mediumDate'}}</td>
+                                <td>
+                                    <span *ngIf="res.business.payment_status === complete" class="badge badge-success">Paid</span>
+                                    <span *ngIf="res.business.payment_status === partial" class="badge badge-warning">Partially Paid</span>
+                                    <span *ngIf="res.business.payment_status === pending" class="badge badge-danger">Pending</span>
+                                </td>
+                                <td>
+                                    <span *ngIf="res.business.status === true" class="badge badge-success">Active</span>
+                                    <span *ngIf="res.business.status === false" class="badge badge-danger">Inactive</span>
+                                </td>                                
+                                <td>{{res.business.joinDate | date:'mediumDate'}}</td>
+                                <td>
+                                    <div class="button_containers">                                        
+                                        <button type="button" class="btn btn-sm btn-info" (click)="openModal(viewAdModal, res)">
+                                            <i class="fa fa-eye"></i> View Details
+                                        </button> &nbsp;
+                                        <button type="button" [disabled] class="btn btn-sm btn-success" (click)="openModal(editMember, res)"><i class="fa fa-edit"></i> Edit</button> &nbsp;
+                                        <button type="button" *ngIf="res.business.status === true" class="btn btn-sm btn-danger" (click)="reviewModal(deactivateAd, res)"><i class="fa fa-close"></i> Deactivate</button>
+                                        <button type="button" *ngIf="res.business.status === false" class="btn btn-sm btn-success" (click)="reviewModal(activateBusiness, res)"><i class="fa fa-refresh"></i> Activate</button>
+                                    </div>
+                                </td> -->
+                            </tr>
+
+                            <tr *ngIf="AdsCount == 0">
+                                <td colspan="7" class="no_data_display">
+                                    No data available for display
+                                </td>
+                            </tr>
+
+                            </tbody>
+                            </table>
+                        </div>
+
+                    </mat-tab>
+
+                    <mat-tab label="Pending Verification: {{pendingAdsCount}} Request(s)">
+                        <br/>
+                               
+                            <div class="table-responsive">
+                                <table datatable class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Business Name</th>
+                                        <th scope="col">Submitted By</th>
+                                        <th scope="col">Registration Date</th>
+                                        <th scope="col">Payment Status</th>
+                                        <th scope="col">Update Details</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <!-- <tr *ngFor="let res of adsList; index as i"> -->
+                                    <tr>
+                                        <td>Ready Bites</td>
+                                        <td>Mrs. Mary Matilda Mweu</td>
+                                        <td>Jan 18, 2023</td>
+                                        <td>
+                                            <span class="badge badge-danger">Pending</span>
+                                        </td>                  
+                                        <td>
+                                            <div class="button_containers">   
+                                                <button type="button" [disabled] class="btn btn-sm btn-primary" (click)="openModal(viewPendingADModal, 'lg')"><i class="fa fa-edit"></i> Review</button> &nbsp; 
+                                            </div>
+                                        </td>
+                                </tr>
+
+                                <tr *ngIf="pendingAdsCount == 0">
+                                    <td colspan="7" class="no_data_display">
+                                        No data available for display
+                                    </td>
+                                </tr>
+                                </tbody>
+                                </table>
+                            </div>
+    
+                    </mat-tab>
+
+                </mat-tab-group>
+               
+            </div>
+        </div>
+      
+	</div>
+</div>
+
+<!-- Modals -->
+
+  <ng-template #viewAdModal let-modal>
+    <div class="modal-header alert alert-success">
+      <h4 class="modal-title" id="modal-edit-title">Joska Hardware's Advertisement</h4>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+
+    <div class="modal-body default-calendar">
+
+        <!-- display profile -->
+        <div class="row">
+			<div class="col-lg-12">
+				<div class="profile card card-body px-3 pt-3 pb-0">
+					<div class="profile-head">
+						<div class="photo-content">
+							<div class="cover-photo"></div>
+						</div>
+						<div class="profile-info">
+							<div class="circular_business_image_container symbol symbol-50px me-5">
+								<img src="assets/images/big/hardware.jpg" class="img-fluid rounded-circle" alt="">
+							</div>
+							<div class="profile-details">
+								<div class="profile-name px-3 pt-2">
+									<h4 class="text-primary mb-0">Joska Hardware</h4>
+                                    <span class="badge badge-sm badge-success">Active</span>
+								</div>
+								<div class="profile-email px-2 pt-2">
+									<h4 class="text-muted mb-0">Advert Description</h4>
+									<p>"Mwanaume ni nyumba", drop by our warehouse in Joska or various store points in CBD to get the best rates on building material.
+                                        Usimalize mwaka bila kulay foundation!
+                                    </p>
+								</div>
+								
+							</div>
+						</div>
+					</div> <hr>
+
+                    <!-- Advert Details -->
+                    <div class="row">
+                        <div class="col-6">               
+                            <label class="text-muted mb-2">Advert Details</label>
+                            <p class="fs-6">
+                                <b> Running Period: </b>1 Month
+                            </p>
+                            <p class="fs-6">
+                                <b> Payment Status: </b> <span class="badge badge-success">Paid</span>
+                            </p>
+                            <p class="fs-6">
+                                <b> Amount: </b>Ksh.1500
+                           </p>
+                            <p class="fs-6">
+                                <b> Expiry Date: </b>Feb 12, 2023
+                           </p>
+                        </div>
+
+                        <div class="col-6">
+                            <label class="text-muted mb-0">Advert Image</label>
+                            <div class="container image_container">
+                                <img src="assets/images/big/hardware.jpg" alt="advert image"/>
+                            </div>
+                        </div>
+                    </div>
+
+				</div>
+			</div>
+		</div>
+        
+        <div class="modal-footer">
+            <button class="btn btn-block btn-md btn-primary" type="button" aria-label="Close" (click)="modal.dismiss('Cross click')">
+                Close
+            </button>
+        </div>
+    </div>
+  </ng-template>
+
+  <ng-template #viewPendingADModal let-modal>
+    <div class="modal-header alert alert-success">
+      <h4 class="modal-title" id="modal-edit-title">Ready Bites Advertisement</h4>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+
+    <div class="modal-body default-calendar">
+
+        <!-- display profile -->
+        <div class="row">
+			<div class="col-lg-12">
+				<div class="profile card card-body px-3 pt-3 pb-0">
+					<div class="profile-head">
+						<div class="photo-content">
+							<div class="cover-photo"></div>
+						</div>
+						<div class="profile-info">
+							<div class="circular_business_image_container symbol symbol-50px me-5">
+								<img src="assets/images/product/food.png" class="img-fluid rounded-circle" alt="">
+							</div>
+							<div class="profile-details">
+								<div class="profile-name px-3 pt-2">
+									<h4 class="text-primary mb-0">Ready Bites</h4>
+                                    <span class="badge badge-sm badge-warning">Inactive</span>
+								</div>
+								<div class="profile-email px-2 pt-2">
+									<h4 class="text-muted mb-0">Advert Description</h4>
+									<p>"There is no sincerer love than the love of food." Come down to Ready Bites and let us share our love with you</p>
+								</div>
+								
+							</div>
+						</div>
+					</div>
+
+                    <hr>
+
+                    <!-- Advert Details -->
+                    <div class="row">
+                        <div class="col-6">               
+                            <label class="text-muted mb-2">Advert Details</label>
+                            <p class="fs-6">
+                                <b> Running Period: </b>1 Month
+                            </p>
+                            <p class="fs-6">
+                                <b> Payment Status: </b> <span class="badge badge-danger">Pending</span>
+                            </p>
+                            <p class="fs-6">
+                                <b> Amount: </b>Ksh.1500
+                           </p>
+                        </div>
+
+                        <div class="col-6">
+                            <label class="text-muted mb-0">Advert Image</label>
+                            <div class="container image_container">
+                                <img src="assets/images/product/fries.jpg" alt="advert image"/>
+                            </div>
+                        </div>
+                    </div>
+
+				</div>
+			</div>
+		</div>
+
+        <p class="text-muted text-center">Review Advertisment</p>
+        <div class="button_row">
+            <button type="button" class="btn btn-sm btn-success" (click)="modal.dismiss('Cross click')" (click)="openModal(verifyAd, 'md')"><i class="fa fa-check"></i> Verify</button> &nbsp;
+            <button type="button" class="btn btn-sm btn-danger"  (click)="modal.dismiss('Cross click')"  (click)="openModal(rejectAd, 'md')"><i class="fa fa-close"></i> Reject</button>
+        </div>
+
+        <div class="modal-footer">
+            <button class="btn btn-block btn-md btn-primary" type="button" aria-label="Close" (click)="modal.dismiss('Cross click')">
+                Cancel
+            </button>
+        </div>
+    </div>
+  </ng-template>
+
+  <ng-template #deactivateAd let-modal>
+    <div class="modal-header alert alert-danger">
+      <h4 class="modal-title" id="modal-del-title">Deactivate Advertisement</h4>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body default-calendar">
+      <form #deactivForm="ngForm">        
+        <input type="hidden" name="id" ngModel="{{businessModalData?.business.id}}" value="{{businessModalData?.business.id}}">
+        <p>Are you sure you want to deactivate <b>Joska Hardware's Advertisement</b>?</p>
+        <i class="text-muted fs-6">This will prevent the advertisement displaying to members</i>
+      </form>
+
+       <!-- message -->
+       <div *ngIf="messageResponse" class="row alert alert-info">
+        <p><i class="fa fa-exclamation"></i> &nbsp;  {{messageResponse}}</p>
+        </div>
+
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-sm btn-light" (click)="modal.close('Close click')">No</button>
+        <button type="button" class="btn btn-sm btn-primary" (click)="featureComing()">Yes</button>
+    </div>
+  </ng-template>
+    
+
+  <ng-template #verifyAd let-modal>
+    <div class="modal-header alert alert-danger">
+      <h4 class="modal-title" id="modal-del-title">Verify Advertisement</h4>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body default-calendar">
+      <form #deactivForm="ngForm">        
+        <input type="hidden" name="id" ngModel="{{businessModalData?.business.id}}" value="{{businessModalData?.business.id}}">
+        <p>Are you sure you want to verify <b>Joska Hardware's Advertisement</b>?</p>
+      </form>
+
+       <!-- message -->
+       <div *ngIf="messageResponse" class="row alert alert-info">
+        <p><i class="fa fa-exclamation"></i> &nbsp;  {{messageResponse}}</p>
+        </div>
+
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-sm btn-light" (click)="modal.close('Close click')">No</button>
+        <button type="button" class="btn btn-sm btn-primary" (click)="featureComing()">Yes</button>
+    </div>
+  </ng-template>
+
+  <ng-template #rejectAd let-modal>
+    <div class="modal-header alert alert-danger">
+      <h4 class="modal-title" id="modal-del-title">Reject Advertisement</h4>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body default-calendar">
+      <form #deactivForm="ngForm">       
+        
+        <input type="hidden" name="id" ngModel="{{businessModalData?.business.id}}" value="{{businessModalData?.business.id}}">
+        <p>Are you sure you want to reject <b>Joska Hardware's Advertisement</b>?</p>
+
+        <div class="form-group">
+            <label>Reason for rejection</label> <span class="text-danger">*</span>
+            <textarea class="form-control" rows="4" required placeholder="Please specify why you want to reject this advertisement"></textarea>
+        </div>
+        
+      </form>
+
+       <!-- message -->
+       <div *ngIf="messageResponse" class="row alert alert-info">
+        <p><i class="fa fa-exclamation"></i> &nbsp;  {{messageResponse}}</p>
+        </div>
+
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-sm btn-light" (click)="modal.close('Close click')">No</button>
+        <button type="button" class="btn btn-sm btn-primary" (click)="featureComing()">Yes</button>
+    </div>
+  </ng-template>
