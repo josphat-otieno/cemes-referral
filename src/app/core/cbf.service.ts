@@ -2,7 +2,7 @@ import { HttpParams, HttpClient, HttpErrorResponse } from '@angular/common/http'
 import { Injectable, OnDestroy } from '@angular/core';
 import { Observable, throwError, BehaviorSubject, Subscription, of } from 'rxjs';
 import { map, catchError, switchMap, finalize } from 'rxjs/operators';
-import { UserModel } from '../models/user.model';
+import { NewPassword, UserModel } from '../models/user.model';
 import { ApiEndpointService } from './api-endpoint.service';
 import { CookieService } from 'ngx-cookie-service';
 import ls from 'localstorage-slim';
@@ -207,7 +207,6 @@ export class CbfService implements OnDestroy {
 
   }
 
-
   // Get Staff
   public getStaff(verificationStatus:string, access: string): Observable<any> {
     const url = ApiEndpointService.getEndpoint(ApiEndpointService.ENDPOINT.GET_ALL_STAFF);
@@ -298,6 +297,20 @@ export class CbfService implements OnDestroy {
       })
     )
   }
+
+  // reset Password
+  public resetPassword(passwordInfo: FormData): Observable<NewPassword> {
+    const url = ApiEndpointService.getEndpoint(ApiEndpointService.ENDPOINT.CHANGE_PASSWORD);
+    return this.http.patch<NewPassword>(url, passwordInfo).pipe(
+      map(function (response: any) {
+        return response;
+      }),
+      catchError((fault: HttpErrorResponse) => {
+        return throwError(() => fault);
+      })
+    )
+  }
+  
 
   /* ------------------------------------------------------------------- Membership Endpoints --------------------------------------------------------------------------------------------------- */
   

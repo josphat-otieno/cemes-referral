@@ -7,7 +7,7 @@
                         <div class="col-xl-12">
                             <div class="auth-form">
                                 <div class="text-center mb-3">
-                                    <a [routerLink]="['/admin/index']"><img class="home-logo" src="assets/images/cbf.png" alt=""></a>
+                                    <a [routerLink]="['/admin/index']"><img class="home-logo" src="assets/images/cbf.png" alt="logo"></a>
                                 </div>
 
                                 <div class="container alert alert-danger" *ngIf="msg != ''">
@@ -54,7 +54,8 @@
                                     </div>
                                 </form>
                                 <div class="new-account mt-3">
-                                    <p>Don't have an account? <a class="text-primary" [routerLink]="['/register']">Sign up</a></p>
+                                    <p>Forgot your password? <a class="text-primary" [routerLink]="['/forgot-password']">Reset Password</a></p>
+                                    <!-- <p>Don't have an account? <a class="text-primary" [routerLink]="['/register']">Sign up</a></p> -->
                                 </div>
                             </div>
                         </div>

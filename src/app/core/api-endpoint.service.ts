@@ -16,6 +16,7 @@ export class ApiEndpointService {
     REGISTER_USER: `${ApiEndpointService.MAIN_CONTEXT}/user/register/`, 
     LOGIN_USER: `${ApiEndpointService.MAIN_CONTEXT}/user/login/`, 
     EMAIL_REQUEST: `${ApiEndpointService.MAIN_CONTEXT}/user/request-reset-email/`,
+    CHANGE_PASSWORD: `${ApiEndpointService.MAIN_CONTEXT}/user/password-reset-complete`,
     GET_USER: `${ApiEndpointService.MAIN_CONTEXT}/user/get-profile/`,    
     GET_ALL_STAFF: `${ApiEndpointService.MAIN_CONTEXT}/user/get-staff-list/`,
     UPDATE_PROFILE: `${ApiEndpointService.MAIN_CONTEXT}/user/`,

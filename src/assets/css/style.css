@@ -33252,7 +33252,12 @@ html[dir="rtl"] [direction="rtl"][data-sidebar-style="compact"]:not([data-layout
   [data-theme-version="dark"] .doctor-list .accordion__header--indicator {
     opacity: 1; }
 
-  /* Custom Css */
+  /* --------------------------------------------------------------------- Custom Css -------------------------------------------------------------------- */
+
+  /* Home Logos */
+  .home-logo {
+    width: 20%;
+  }
 
   /* modals */
   .modal-header {
@@ -33289,7 +33294,8 @@ html[dir="rtl"] [direction="rtl"][data-sidebar-style="compact"]:not([data-layout
   }
 
   .circular_business_image_container {
-    max-width: 100px;
+    max-width: 200px;
+    width: 120px;
     height: 100px;
     border-radius: 50%;
     overflow: hidden;
@@ -33349,5 +33355,6 @@ html[dir="rtl"] [direction="rtl"][data-sidebar-style="compact"]:not([data-layout
       margin-bottom: 14px;
       margin-top: 8px;
   }
+  
 
 /*# sourceMappingURL=style.css.map */

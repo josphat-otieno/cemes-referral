@@ -28,3 +28,10 @@ export class UserModel extends AuthModel {
       // this.username = user.username || '';
     }
   }
+
+  export interface NewPassword {
+    password: string;
+    token: string;
+    uidb64: string;
+  }
+  

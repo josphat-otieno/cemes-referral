@@ -146,6 +146,7 @@ import { OffersPromotionsAwarenessComponent } from './components/offers-promotio
 import { ProfileComponent } from './components/profile/profile.component';
 import { BusinessRatingComponent } from './components/business-rating/business-rating.component';
 import { PaymentsComponent } from './components/payments/payments.component';
+import { ResetPasswordComponent } from './pages/reset-password/reset-password.component';
 
 
 
@@ -294,7 +295,8 @@ const routes: Routes = [
       {path: 'register', component: RegisterComponent},
       {path: 'login', component: LoginComponent},
       {path: 'page-lock-screen', component: LockScreenComponent},
-      {path: 'page-forgot-password', component: ForgotPasswordComponent},
+      {path: 'forgot-password', component: ForgotPasswordComponent},
+      {path: 'reset-password', component: ResetPasswordComponent},
       {path: 'page-error-400', component: Error400Component},
       {path: 'page-error-403', component: Error403Component},
       {path: 'error-404', component: Error404Component},
