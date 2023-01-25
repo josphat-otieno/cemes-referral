@@ -1,6 +1,7 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { CbfService } from 'src/app/core/cbf.service';
 
@@ -22,7 +23,8 @@ export class ForgotPasswordComponent implements OnInit {
 
   constructor(
     private cbfService: CbfService,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private router: Router
   ) { }
 
   ngOnInit(): void {
@@ -39,7 +41,7 @@ export class ForgotPasswordComponent implements OnInit {
 
     if(email == ''){
       this.validity = false
-    } else {
+    } else {      
       if(!email.match("^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$")){
         this.emailValidationMessage = true;
         this.validity = false;
@@ -79,7 +81,7 @@ export class ForgotPasswordComponent implements OnInit {
           this.successAlert = true
 
           setTimeout(() => {
-            window.location.reload()
+            this.router.navigate(['/login'])
           }, 1460);
 
         }

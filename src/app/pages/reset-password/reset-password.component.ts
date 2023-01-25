@@ -84,20 +84,25 @@ export class ResetPasswordComponent implements OnInit {
     })   
 
   }
+
+  // Password Toggle
+  toggleEye: boolean = true;
   
+  // toggle password
+  toggleEyeIcon(inputPassword:any) {
+		this.toggleEye = !this.toggleEye;		
+		inputPassword.type = inputPassword.type === 'password' ? 'text' : 'password';
+	}
+    
   // check Passwords
   checkPasswordEntry(passValue:any) {
 
     if(passValue != ''){
 
-      if(passValue.length >= 8){
-        
-        this.passwordLength = false       
-        this.validity = true;
-
+      if(passValue.length >= 8){        
+        this.passwordLength = false  
       } else {
-        this.passwordLength = true              
-        this.validity = false;
+        this.passwordLength = true   
       }
       
     } else {   
@@ -131,7 +136,7 @@ export class ResetPasswordComponent implements OnInit {
     this.hasError = false;
 
     const resetPassData:FormData = new FormData()
-    resetPassData.append('password', this.resetPasswordForm.get('password_confirm')?.value)
+    resetPassData.append('password', this.resetPasswordForm.get('password_confirmed')?.value)
     resetPassData.append('token', this.Token)
     resetPassData.append('uidb64', this.UiD.toString())
 
@@ -140,18 +145,18 @@ export class ResetPasswordComponent implements OnInit {
     .subscribe({
       next: (response: any) => {
         let results = response
-        console.log(results)
 
-        this.successAlert = true
+        if(results){
+          this.successAlert = true
 
-        setTimeout(() => {
-          this.router.navigate(['/login']);
-        }, 1460);
+          setTimeout(() => {
+            this.router.navigate(['/login']);
+          }, 1460);
+        }       
 
       },
       error: (e:HttpErrorResponse) =>  {
-        this.msg = 'Something went wrong, kindly try again'
-        this.alertMessage = this.msg
+        this.alertMessage = 'The reset link is invalid, kindly make another reset request'
       }    
     })
     

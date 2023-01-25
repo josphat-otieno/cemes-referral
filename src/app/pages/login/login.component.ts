@@ -62,6 +62,15 @@ export class LoginComponent implements OnInit {
 
   }
 
+  // Password Toggle
+  toggleEye: boolean = true;
+
+  // toggle password
+  toggleEyeIcon(inputPassword:any) {
+    this.toggleEye = !this.toggleEye;		
+    inputPassword.type = inputPassword.type === 'password' ? 'text' : 'password';
+  }
+
   loginUser() {
     this.hasError = false;
     const loginSubscr = this.cbfService.loginUser(this.signInForm.value)
