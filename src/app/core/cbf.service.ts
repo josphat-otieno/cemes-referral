@@ -473,7 +473,47 @@ export class CbfService implements OnDestroy {
   }
 
   /* ------------------------------------------------------------------- Business Management Endpoints --------------------------------------------------------------------------------------------------- */
-  
+    
+  // register business
+  public registerBusiness(businessData:FormData, access: string): Observable<any> {
+    const url = ApiEndpointService.getEndpoint(ApiEndpointService.ENDPOINT.REGISTER_BUSINESS);
+    return this.http.post<any>(url, businessData, {
+      headers: {
+        'Authorization': `Bearer ${access}`
+      }
+    }).pipe(
+      map(function (response: any) {
+        return response;
+      }),
+      catchError((fault: HttpErrorResponse) => {
+        return throwError(() => fault);
+
+      })
+    )
+
+  }
+
+  // get business Owners
+  public getBusinessOwnerList(access: string): Observable<any> {
+    const url = ApiEndpointService.getEndpoint(ApiEndpointService.ENDPOINT.GET_BUSINESS_OWNERS);
+    return this.http.get<any>(url, {
+      headers: {
+        'Content-Type': 'application/json; charset=utf-8',
+        'Accept': 'application/json',
+        'Authorization': `Bearer ${access}`
+      }
+    }).pipe(
+      map(function (response: any) {
+        return response;
+      }),
+      catchError((fault: HttpErrorResponse) => {
+        return throwError(() => fault);
+
+      })
+    )
+
+  }
+
   // Get business list
   public getVerifiedBusinesses(verification:boolean, assembly:number, businessOwner:number, businessCategory:number, access: string): Observable<any> {
     const url = ApiEndpointService.getEndpoint(ApiEndpointService.ENDPOINT.GET_BUSINESS_LIST);

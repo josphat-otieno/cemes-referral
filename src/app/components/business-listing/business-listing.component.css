@@ -25,3 +25,15 @@
     overflow: hidden;
     color: gold;
 }
+
+/* Upload Image */
+.image-upload > input
+{
+    display: none;
+}
+
+.image-upload img
+{
+    max-width: 100px;
+    cursor: pointer;
+}

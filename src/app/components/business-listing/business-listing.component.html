@@ -85,11 +85,11 @@
                     List of all businesses
                 </div>
 
-                <!-- <div class="col-6">
+                <div class="col-6">
                     <button class="btn btn-sm btn-primary rightBtns" type="button" (click)="openModal(addBusiness)">
                         <i class="fa fa-plus"></i>&nbsp;Add Business
                     </button>
-                </div> -->
+                </div>
             </div>
            
             <div class="card-body">
@@ -216,116 +216,144 @@
 <!-- Modals -->
 <ng-template #addBusiness let-modal>
     <div class="modal-header">
-      <h4 class="modal-title" id="modal-basic-title">Create Member</h4>
+      <h4 class="modal-title" id="modal-basic-title">Register Business</h4>
       <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
         <span aria-hidden="true">&times;</span>
       </button>
     </div>
     <div class="modal-body default-calendar">
         <div class="form-validation">
-            <form class="form-valide" action="#" method="post" [formGroup]="BusinessRegistration" novalidate>
+            <form [formGroup]="BusinessRegistration" novalidate>
                 <div class="row">
+
                     <div class="col-xl-6">
                         <div class="form-group row">
-                            <label class="col-lg-4 col-form-label" for="fullName">Member Name
+                            <label class="col-lg-4 col-form-label" for="name">Business Name
                                 <span class="text-danger">*</span>
                             </label>
                             <div class="col-lg-6">
-                                <input type="text" class="form-control" id="fullName" formControlName="fullName" placeholder="Enter full names..">
-                                <div *ngIf="BusinessRegistration.controls['fullName'].invalid && (BusinessRegistration.controls['fullName'].dirty || BusinessRegistration.controls['fullName'].touched)" class="text-danger fs-13 mt-1">
+                                <input required type="text" class="form-control" id="name" formControlName="name" placeholder="Enter business name...">
+                                <div *ngIf="BusinessRegistration.controls['name'].invalid && (BusinessRegistration.controls['name'].dirty || BusinessRegistration.controls['name'].touched)" class="text-danger fs-13 mt-1">
                                     
-                                    <div *ngIf="BusinessRegistration.controls['fullName'].errors.required">
-                                        Full name is required.
+                                    <div *ngIf="BusinessRegistration.controls['name'].errors.required">
+                                        A name is required for the business.
                                     </div>
                                 </div>
-                            </div>
-                            
+                            </div>                    
                         </div>
                         <div class="form-group row">
-                            <label class="col-lg-4 col-form-label" for="email">Email Address <span
-                                class="text-danger">*</span>
-                            </label>
+                            <label class="col-lg-4 col-form-label" for="natureAdd">Nature </label>
                             <div class="col-lg-6">
-                                <input type="text" class="form-control" id="email" formControlName="email" placeholder="Your valid email..">
-                                <div *ngIf="BusinessRegistration.controls['email'].invalid && (BusinessRegistration.controls['email'].dirty || BusinessRegistration.controls['email'].touched)" class="text-danger fs-13 mt-1">
-                                    <div *ngIf="BusinessRegistration.controls['email'].errors.required">
-                                        Email is required.
-                                    </div>
-                                    <div *ngIf="BusinessRegistration.controls['email'].errors.pattern">
-                                        Email must be a valid email address.
-                                    </div>
-                                </div>
+                                <input type="text" class="form-control" id="natureAdd" formControlName="nature" placeholder="The nature of the buiness ...">                               
                             </div>
-                        </div>
-                        <div class="form-group row">
-                            <label class="col-lg-4 col-form-label" for="assembly">Assembly
-                                <span class="text-danger">*</span>
-                            </label>
-                            <div class="col-lg-6">
-                                <select class="form-control default-select" id="assembly" formControlName="assembly" >
-                                    <option value="">Please select an assembly</option>
-                                    <option *ngFor="let res of assemblies" value="{{res.id}}">{{res.name}}</option>
-                                   
-                                </select>
-                                <div *ngIf="BusinessRegistration.controls['assembly'].invalid && (BusinessRegistration.controls['assembly'].dirty || BusinessRegistration.controls['assembly'].touched)" class="text-danger fs-13 mt-1">
-                                    
-                                    <div *ngIf="BusinessRegistration.controls['assembly'].errors.required">
-                                        Select at least one assembly.
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-xl-6">
-                      
-                        <div class="form-group row">
-                            <label class="col-lg-4 col-form-label" for="phoneNumber">Phone Number
-                                <span class="text-danger">*</span>
-                            </label>
-                            <div class="col-lg-6">
-                                <input type="text" class="form-control" id="phoneNumber" placeholder="07xxxxx" formControlName="phoneNumber">
-                                <div *ngIf="BusinessRegistration.controls['phoneNumber'].invalid && BusinessRegistration.controls['phoneNumber'].length > 10 || BusinessRegistration.controls['phoneNumber'].length < 10
-                                     && (BusinessRegistration.controls['phoneNumber'].dirty || BusinessRegistration.controls['phoneNumber'].touched)" class="text-danger fs-13 mt-1">
-                                    
-                                    <div *ngIf="BusinessRegistration.controls['phoneNumber'].errors.required">
-                                        Phone number is required.
-                                    </div>
-                                    
-                                    
-                                </div>
-                            </div>
-                        </div>                            
-                        
-                        <div class="form-group row">
-                            <label class="col-lg-4 col-form-label" for="val-password">Password
-                                <span class="text-danger">*</span>
-                            </label>
-                            <div class="col-lg-6">
-                                <div class="input-group">
-                                    <input #inputPassword type="password" class="form-control" formControlName="password"  id="password" placeholder="Choose a safe one..">
-                                    
-                                    <div class="input-group-append show-pass1 ">
-                                        <span class="input-group-text "> 
-                                            <i class="fa" [ngClass]="{'fa-eye-slash': toggleEye, 'fa-eye': !toggleEye}" (click)="toggleEyeIcon(inputPassword)"></i>
-                                        </span>
-                                    </div>
-                                </div>
-                                
-                                <div *ngIf="BusinessRegistration.controls['password'].invalid && (BusinessRegistration.controls['password'].dirty || BusinessRegistration.controls['password'].touched)" class="text-danger fs-13 mt-1">
-                                    
-                                    <div *ngIf="BusinessRegistration.controls['password'].errors.required">
-                                        Password is required.
-                                    </div>
-                                    <div *ngIf="BusinessRegistration.controls['password'].errors.minlength">
-                                        Password must be at least 8 characters.
-                                    </div>
-                                </div>	
-                            </div>
-                            
                         </div>
 
+                        <div class="form-group row">
+                            <label class="col-lg-4 col-form-label" for="businessCategory">Category
+                                <span class="text-danger">*</span>
+                            </label>
+                            <div class="col-lg-6">
+                                <select required class="form-control default-select" id="businessCategory" formControlName="business_category" >
+                                    <option value="">Please select a category</option>
+                                    <option *ngFor="let res of businessCategories" value="{{res.id}}">{{res.category}}</option>
+                                   
+                                </select>
+                                <div *ngIf="BusinessRegistration.controls['business_category'].invalid && (BusinessRegistration.controls['business_category'].dirty || BusinessRegistration.controls['business_category'].touched)" class="text-danger fs-13 mt-1">
+                                    
+                                    <div *ngIf="BusinessRegistration.controls['business_category'].errors.required">
+                                        Select at least one business category.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label class="col-lg-4 col-form-label" for="businessOwner">Business Owner
+                                <span class="text-danger">*</span>
+                            </label>
+                            <div class="col-lg-6">
+                                <select required class="form-control default-select" id="businessOwner" formControlName="business_owner" >
+                                    <option value="">Please select owner of this business...</option>
+                                    <option *ngFor="let owner of businessOwners" value="{{owner.id}}">{{owner.name}}</option>
+                                   
+                                </select>
+                                <div *ngIf="BusinessRegistration.controls['business_owner'].invalid && (BusinessRegistration.controls['business_owner'].dirty || BusinessRegistration.controls['business_owner'].touched)" class="text-danger fs-13 mt-1">
+                                    
+                                    <div *ngIf="BusinessRegistration.controls['business_owner'].errors.required">
+                                        Select owner of the business.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>                         
+                        
                     </div>
+
+                    <div class="col-xl-6">
+                         
+                        <div class="form-group row">
+                            <label class="col-lg-4 col-form-label" for="locData">Location</label>
+                            <div class="col-lg-6">
+                                <input type="text" class="form-control" id="locData" placeholder="Physical location ..." formControlName="physical_location">                                
+                            </div>
+                        </div>    
+                      
+                        <div class="form-group row">
+                            <label class="col-lg-4 col-form-label" for="BuildingNme">Building Name</label>
+                            <div class="col-lg-6">
+                                <input type="text" class="form-control" id="BuildingNme" placeholder="Business premises name" formControlName="building_name">                                
+                            </div>
+                        </div>                            
+                        <div class="form-group row">
+                            <label class="col-lg-4 col-form-label" for="floorNumber">Floor Number</label>
+                            <div class="col-lg-6">
+                                <input type="text" class="form-control" id="floorNumber" placeholder="Floor number..." formControlName="floor">                                
+                            </div>
+                        </div>                            
+                        <div class="form-group row">
+                            <label class="col-lg-4 col-form-label" for="officeNumber">Office Number</label>
+                            <div class="col-lg-6">
+                                <input type="text" class="form-control" id="officeNumber" placeholder="Office number..." formControlName="office_number">                                
+                            </div>
+                        </div> 
+
+                    </div>     
         
+                </div>
+                
+                <span class="fs-6 text-muted">Business Media</span><hr/>
+
+                <!-- Media -->
+                <div class="row">
+
+                    <div class="col-6">
+                         <!-- certificates -->
+                        <div class="form-group row">
+                            <label class="col-lg-4 col-form-label" for="certRegistration">Certicate of Registration</label>
+                            <div class="col-lg-6">
+                                <input type="file" class="form-control" id="certRegistration" placeholder="Certicate of Registration" formControlName="certificateOfRegistration">                                
+                            </div>
+                        </div>  
+
+                        <div class="form-group row">
+                            <label class="col-lg-4 col-form-label" for="kraCertificates">KRA Certicate</label>
+                            <div class="col-lg-6">
+                                <input type="file" class="form-control" id="kraCertificates" placeholder="KRA Certicate" formControlName="kraCertificate">                                
+                            </div>
+                        </div> 
+                    </div>
+
+                    <div class="col-6">
+                        <label for="file">Business Logo</label>
+
+                        <div class="image-upload">
+                            <label for="file-input">
+                              <img src="{{businessDefaultLogo}}"  alt="business logo" />
+                            </label>
+                          
+                            <input id="file-input" type="file" accept="image/*" #output (change)="onChange($event)">
+                        </div>
+                    </div>                   
+
                 </div>
             </form>
         </div>
@@ -334,12 +362,15 @@
         <div *ngIf="messageResponse" class="row alert alert-info">
             <p><i class="fa fa-exclamation"></i> &nbsp;  {{messageResponse}}</p>
         </div>
+        <div *ngIf="alertResponse != ''" class="row alert alert-warning">
+            <p><i class="fa fa-exclamation"></i> &nbsp;  {{alertResponse}}</p>
+        </div>
 
     </div>
 
     <div class="modal-footer">
         <button type="button" class="btn btn-light" (click)="modal.close('Close click')">Cancel</button>
-        <button type="button" class="btn btn-primary" [disabled]="BusinessRegistration.pristine || BusinessRegistration.invalid" (click)="saveMember()">Save</button>
+        <button type="button" class="btn btn-primary" [disabled]="BusinessRegistration.pristine || BusinessRegistration.invalid" (click)="saveBusiness()">Save</button>
     </div>
   </ng-template>
 
@@ -460,12 +491,12 @@
 
                 <div class="col-xl-6">
                     <div class="form-group row">
-                        <label class="col-lg-4 col-form-label" for="fullNameEdit">Business Name
+                        <label class="col-lg-4 col-form-label" for="nameEdit">Business Name
                             <span class="text-danger">*</span>
                         </label>
                         <div class="col-lg-6">
                             <input type="hidden" name="id" ngModel="{{businessModalData?.id}}" value="{{businessModalData?.id}}">
-                            <input type="text" class="form-control" id="fullNameEdit" name="full_name" ngModel="{{businessModalData?.business.name}}" value="{{businessModalData?.business.name}}">
+                            <input type="text" class="form-control" id="nameEdit" name="name" ngModel="{{businessModalData?.business.name}}" value="{{businessModalData?.business.name}}">
                         </div>                        
                     </div>
                     
@@ -476,7 +507,7 @@
                         <div class="col-lg-6">
                             <select class="form-control" name="assemblyUpdate" ngModel="{{businessModalData?.business.owner.assemblyId}}" value="{{businessModalData?.business.owner.assemblyId}}">                                
                                 <option value="">Please select an assembly</option>
-                                <option *ngFor="let res of assemblies" value="{{res.id}}">{{res.name}}</option>
+                                <option *ngFor="let res of businessCategories" value="{{res.id}}">{{res.name}}</option>
                             </select>                           
                         </div>
                     </div>

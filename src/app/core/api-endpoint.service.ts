@@ -42,7 +42,9 @@ export class ApiEndpointService {
     ACCOUNT_PACKAGES: `${ApiEndpointService.MAIN_CONTEXT}/management/account-package/`,
 
     // Businesses
+    REGISTER_BUSINESS: `${ApiEndpointService.MAIN_CONTEXT}/business/business/`,
     GET_BUSINESS_LIST: `${ApiEndpointService.MAIN_CONTEXT}/business/get-business-list/`,
+    GET_BUSINESS_OWNERS: `${ApiEndpointService.MAIN_CONTEXT}/business/get-business-owners/`,
     UPDATE_BUSINESS_DETAILS: `${ApiEndpointService.MAIN_CONTEXT}/business/business/`,
     BUSINESS_PRODUCT: `${ApiEndpointService.MAIN_CONTEXT}/business/business-product/`,
     BUSINESS_CATEGORY: `${ApiEndpointService.MAIN_CONTEXT}/business/business-category/`,

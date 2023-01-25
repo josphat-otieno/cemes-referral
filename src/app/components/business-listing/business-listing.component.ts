@@ -4,6 +4,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Subscription, Subject } from 'rxjs';
 import { ToastService } from 'src/app/bootstrap/toast/toast-global/toast-service';
+import { ApiEndpointService } from 'src/app/core/api-endpoint.service';
 import { CbfService } from 'src/app/core/cbf.service';
 
 @Component({
@@ -17,7 +18,8 @@ export class BusinessListingComponent implements OnInit {
   public user_id:number = 0
 
   public BusinessRegistration: FormGroup | any;
-  public assemblies:any = []
+  public businessCategories:any = []
+  public businessOwners:any = []
   private unsubscribe: Subscription[] = [];
   private msg:string = ''  
   public password:string =''
@@ -25,6 +27,11 @@ export class BusinessListingComponent implements OnInit {
 
   // response
   public messageResponse:string = ''
+  public alertResponse:string = ''
+
+  // Files  
+  public upload = 0;
+  public actualFile: File | any;
 
   // parameters
   public businesses:any = []
@@ -55,6 +62,10 @@ export class BusinessListingComponent implements OnInit {
   ptOptions: any = {};
   ptTrigger: Subject<any> = new Subject<any>();
 
+  // Logo holder
+  businessDefaultLogo: any = "";
+  public mediaUrl = ApiEndpointService.getEndpoint(ApiEndpointService.ENDPOINT.IMAGE_FOLDER);
+
   constructor(
     private fb: FormBuilder,    
     private toaster: ToastService,
@@ -66,11 +77,16 @@ export class BusinessListingComponent implements OnInit {
   
   createForm() {
     this.BusinessRegistration = this.fb.group({
-      fullName: ['', [Validators.required ]],
-      email: ['', [Validators.required ,  Validators.email, Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$")]],
-      password: ['', [Validators.required, Validators.minLength(6)] ],
-		  assembly: ['', [Validators.required] ],
-      phoneNumber: ['', [Validators.required] ],
+      name: ['', [Validators.required]],
+      nature: [''],
+      business_category: ['', [Validators.required]],
+		  business_owner: ['', [Validators.required] ],
+      physical_location: ['', [Validators.required]],
+      building_name: [''],
+      floor: [''],
+      office_number: [''],
+      certificateOfRegistration: [''],
+      kraCertificate: [''],
     })
   }
   
@@ -123,7 +139,15 @@ export class BusinessListingComponent implements OnInit {
     
     this.accessToken =  this.cbfService.AccessToken
     this.user_id = Number(this.cbfService.currentUserValue)
-    this.getAssemblies()
+    
+    //check Image
+    if (this.businessDefaultLogo == '') {
+      let b_url = this.mediaUrl+'default_business.png'
+      this.businessDefaultLogo = b_url;
+    }
+
+    this.getBusinessCategory()
+    this.getBusinessOwners()
     this.getProductCount()
     this.getBusinesses(this.assemblyId, this.businessOwnerId, this.businessCategory)
     this.getPendingbusinesses(this.assemblyId, this.businessOwnerId, this.businessCategory)
@@ -173,7 +197,7 @@ export class BusinessListingComponent implements OnInit {
     this.modalService.open(content, {
       centered: true,
       backdrop: 'static',
-      size: 'lg'
+      size: 'xl'
     });
 
 	}
@@ -210,21 +234,75 @@ export class BusinessListingComponent implements OnInit {
     this.currentRate = this.businessModalData.business.rating
   
   }
+
+  /* -------------------------------------------------------------------- File management ----------------------------------------------------------------- */
+    // On file Select
+  onChange(event: any) {
+    this.alertResponse = ''
+
+    const file = event.target.files[0];
+    console.log(file)
+
+    if (event.length === 0)
+      return;
+
+    var mimeType = file.type
+
+    if(mimeType.indexOf('image')> -1){
+
+      // check if size is 10MB Max
+
+
+      if (mimeType.match(/image\/*/) == null) {
+        this.alertResponse = "Not An Image, Only images are supported."
+        return;
+      } else {
+        this.upload = 1;        
+        this.actualFile = file;
+
+        const img_reader = new FileReader();
+        img_reader.onload = () => {
+          this.businessDefaultLogo = img_reader.result as string;
+        }
+        img_reader.readAsDataURL(file)
+      }
+
+    } else {
+      this.upload = 0;
+      this.alertResponse = "Not An Image, Only images are supported."
+      return;
+
+    }
+    
+  }
  
   // Endpoints Consumption
-  getAssemblies() {
-    const assemblySubscr = this.cbfService.getAssemblies(this.accessToken)
+  getBusinessCategory() {
+    const categorySubscr = this.cbfService.getBusinessCategories(this.accessToken)
 
     .subscribe({
       next: (response: any) => {
         let queryResults = response
-        this.assemblies = queryResults.results
-        
+        this.businessCategories = queryResults.results        
       },
       error: (e:HttpErrorResponse) =>  this.msg = 'Something went wrong, please try again'     
     })
     
-    this.unsubscribe.push(assemblySubscr);
+    this.unsubscribe.push(categorySubscr);
+  }
+
+  getBusinessOwners() {
+    const ownersSubscr = this.cbfService.getBusinessOwnerList(this.accessToken)
+
+    .subscribe({
+      next: (response: any) => {
+        let queryResults = response
+        this.businessOwners = queryResults.results        
+      },
+      error: (e:HttpErrorResponse) =>  this.msg = 'Something went wrong, please try again'     
+    })
+    
+    this.unsubscribe.push(ownersSubscr);
   }
 
   getProductCount() {
@@ -284,42 +362,51 @@ export class BusinessListingComponent implements OnInit {
 
   }
 
-  saveMember() {
+  saveBusiness() {
 
     const regData:FormData = new FormData()
-    regData.append('full_name', this.BusinessRegistration.get('fullName')?.value)
-    regData.append('email', this.BusinessRegistration.get('email')?.value)
-    regData.append('phone_number', this.BusinessRegistration.get('phoneNumber')?.value)
-    regData.append('password', this.BusinessRegistration.get('password')?.value)
-    regData.append('assembly', this.BusinessRegistration.get('assembly')?.value)
+
+    if (!this.actualFile) {
+
+      this.alertResponse = 'Caution, Kindly select an image to upload';
+      
+    } else {      
+
+      regData.append('logo', this.actualFile, this.actualFile.name);
+
+    }    
+
+    regData.append('name', this.BusinessRegistration.get('name')?.value)
+    regData.append('nature', this.BusinessRegistration.get('nature')?.value)
+    regData.append('physical_location', this.BusinessRegistration.get('physical_location')?.value)
+    regData.append('floor', this.BusinessRegistration.get('floor')?.value)
+    regData.append('building_name', this.BusinessRegistration.get('building_name')?.value)
+    regData.append('office_number', this.BusinessRegistration.get('office_number')?.value)
+    regData.append('business_owner', this.BusinessRegistration.get('business_owner')?.value)
+    regData.append('business_category', this.BusinessRegistration.get('business_category')?.value)
+    regData.append('is_active', true.toString())
+    regData.append('is_verified', true.toString())
     regData.append('user', this.user_id.toString())
 
-    const regsterSubscr = this.cbfService.registerMember(regData, this.accessToken)
+    const regsterSubscr = this.cbfService.registerBusiness(regData, this.accessToken)
 
     .subscribe({
       next: (response: any) => {
         let results = response
         
-        if(results.status){
+        if(results.id){
           
           this.messageResponse = results.message
 
-          if(results.status == 1){
-            this.toaster.show(results.message, { classname: 'bg-success text-light', delay: 10000 });
-            
-            setTimeout(() => {
-              window.location.reload()
-            }, 1200);
-
-          } else {
-            this.toaster.show(results.message, { classname: 'bg-warning text-light', delay: 10000 });
-          }
+          setTimeout(() => {
+            window.location.reload()
+          }, 1200);
           
         }
         
       },
       error: (e:HttpErrorResponse) =>  {
-        this.msg = 'Something went wrong, please try again'  
+        this.alertResponse = 'Something went wrong registering the business, please try again'  
         this.toaster.show(this.msg, { classname: 'bg-warning text-light', delay: 10000 });
       }   
     })
