@@ -328,16 +328,16 @@
                     <div class="col-6">
                          <!-- certificates -->
                         <div class="form-group row">
-                            <label class="col-lg-4 col-form-label" for="certRegistration">Certicate of Registration</label>
+                            <label class="col-lg-4 col-form-label" for="certRegistration">Certificate of Registration</label>
                             <div class="col-lg-6">
-                                <input type="file" class="form-control" id="certRegistration" placeholder="Certicate of Registration" formControlName="certificateOfRegistration">                                
+                                <input type="file" class="form-control" id="certRegistration" placeholder="Certificate of Registration" formControlName="certificateOfRegistration">                                
                             </div>
                         </div>  
 
                         <div class="form-group row">
-                            <label class="col-lg-4 col-form-label" for="kraCertificates">KRA Certicate</label>
+                            <label class="col-lg-4 col-form-label" for="kraCertificates">KRA Certificate</label>
                             <div class="col-lg-6">
-                                <input type="file" class="form-control" id="kraCertificates" placeholder="KRA Certicate" formControlName="kraCertificate">                                
+                                <input type="file" class="form-control" id="kraCertificates" placeholder="KRA Certificate" formControlName="kraCertificate">                                
                             </div>
                         </div> 
                     </div>
@@ -487,53 +487,153 @@
 
     <div class="modal-body default-calendar">
         <form class="form" #editForm="ngForm" autocomplete="on">
-            <div class="row g-3">
+            <input type="hidden" name="id" ngModel="{{businessModalData?.business.id}}" value="{{businessModalData?.business.id}}">
+
+            <div class="row">
 
                 <div class="col-xl-6">
                     <div class="form-group row">
-                        <label class="col-lg-4 col-form-label" for="nameEdit">Business Name
+                        <label class="col-lg-4 col-form-label" for="name">Business Name
                             <span class="text-danger">*</span>
                         </label>
                         <div class="col-lg-6">
-                            <input type="hidden" name="id" ngModel="{{businessModalData?.id}}" value="{{businessModalData?.id}}">
-                            <input type="text" class="form-control" id="nameEdit" name="name" ngModel="{{businessModalData?.business.name}}" value="{{businessModalData?.business.name}}">
-                        </div>                        
+                            <input required type="text" class="form-control" name="name" ngModel="{{businessModalData?.business.name}}" value="{{businessModalData?.business.name}}" placeholder="Enter business name...">
+                            <div *ngIf="emptyName">
+                                A name is required for the business.
+                            </div>
+                        </div>                    
                     </div>
-                    
                     <div class="form-group row">
-                        <label class="col-lg-4 col-form-label" for="assembly">Assembly
-                            <span class="text-danger">*</span>
-                        </label>
+                        <label class="col-lg-4 col-form-label" for="natureUpdate">Nature </label>
                         <div class="col-lg-6">
-                            <select class="form-control" name="assemblyUpdate" ngModel="{{businessModalData?.business.owner.assemblyId}}" value="{{businessModalData?.business.owner.assemblyId}}">                                
-                                <option value="">Please select an assembly</option>
-                                <option *ngFor="let res of businessCategories" value="{{res.id}}">{{res.name}}</option>
-                            </select>                           
+                            <input type="text" class="form-control" id="natureUpdate" name="nature" ngModel="{{businessModalData?.business.nature}}" value="{{businessModalData?.business.nature}}" placeholder="The nature of the buiness ...">                               
                         </div>
                     </div>
+
+                    <div class="form-group row">
+                        <label class="col-lg-4 col-form-label" for="businessCategoryUpdate">Category
+                            <span class="text-danger">*</span>
+                        </label>
+                        <div class="col-lg-6">
+                            <select required class="form-control default-select" id="businessCategoryUpdate" name="categoryId" ngModel="{{businessModalData?.business.categoryId}}" value="{{businessModalData?.business.categoryId}}" >
+                                <option value="0">Please select a category</option>
+                                <option *ngFor="let res of businessCategories" value="{{res.id}}">{{res.category}}</option>
+                               
+                            </select>
+                            <div *ngIf="emptyCategory">
+                                Select at least one business category.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label class="col-lg-4 col-form-label" for="businessOwnerUpdate">Business Owner
+                            <span class="text-danger">*</span>
+                        </label>
+                        <div class="col-lg-6">
+                            <select required class="form-control default-select" id="businessOwnerUpdate" name="ownerId" ngModel="{{businessModalData?.business.owner.ownerId}}" value="{{businessModalData?.business.owner.ownerId}}">
+                                <option value="0">Please select owner of this business...</option>
+                                <option *ngFor="let owner of businessOwners" value="{{owner.id}}">{{owner.name}}</option>
+                               
+                            </select>
+                            <div *ngIf="emptyOwner">
+                                Select owner of the business.
+                            </div>
+                        </div>
+                    </div>                         
+                    
                 </div>
+
                 <div class="col-xl-6">
+                     
+                    <div class="form-group row">
+                        <label class="col-lg-4 col-form-label" for="locUpdate">Location</label>
+                        <div class="col-lg-6">
+                            <input type="text" class="form-control" id="locUpdate" placeholder="Physical location ..." name="location" ngModel="{{businessModalData?.business.location}}" value="{{businessModalData?.business.location}}">                                
+                        </div>
+                    </div>    
                   
                     <div class="form-group row">
-                        <label class="col-lg-4 col-form-label" for="">Description
-                            <span class="text-danger">*</span>
-                        </label>
-                        <div class="col-lg-6">                           
-                            <textarea rows="4" class="form-control" name="nature" ngModel="{{businessModalData?.business.nature}}" value="{{businessModalData?.business.nature}}">{{businessModalData?.business.nature}}</textarea>
-                            <!-- <i *ngIf="phoneValidationMessage" style="color:red">The phone number entered is not valid, format is 0xxxx and maximum length of 10 numbers</i>  -->
+                        <label class="col-lg-4 col-form-label" for="BuildingNmeUpdate">Building Name</label>
+                        <div class="col-lg-6">
+                            <input type="text" class="form-control" id="BuildingNmeUpdate" placeholder="Business premises name" name="building" ngModel="{{businessModalData?.business.building}}" value="{{businessModalData?.business.building}}">                                
                         </div>
                     </div>                            
-                    
-                </div>
+                    <div class="form-group row">
+                        <label class="col-lg-4 col-form-label" for="floorNumberUpdate">Floor Number</label>
+                        <div class="col-lg-6">
+                            <input type="text" class="form-control" id="floorNumberUpdate" placeholder="Floor number..." name="floor" ngModel="{{businessModalData?.business.floor}}" value="{{businessModalData?.business.floor}}">                                
+                        </div>
+                    </div>                            
+                    <div class="form-group row">
+                        <label class="col-lg-4 col-form-label" for="officeNumberUpdate">Office Number</label>
+                        <div class="col-lg-6">
+                            <input type="text" class="form-control" id="officeNumberUpdate" placeholder="Office number..." name="office" ngModel="{{businessModalData?.business.office}}" value="{{businessModalData?.business.office}}">                                
+                        </div>
+                    </div> 
+
+                </div>     
+    
             </div>
+            
+            <span class="fs-6 text-muted">Business Media</span><hr/>
+
+            <!-- Media -->
+            <div class="row">
+
+                <div class="col-6">
+                    <!-- Current -->
+                    <label class="text-muted fs-6 current_label">Current Files</label><br/>
+
+                    <a class="text-muted fs-6" target="_blank" href="{{businessModalData?.business.kra}}" *ngIf="businessModalData?.business.kra != 'no_file'">KRA Certificate: <span class="badge badge-info badge-sm">Download</span></a>
+                    <a class="text-muted fs-6" target="_blank" *ngIf="businessModalData?.business.kra == 'no_file'">KRA Certificate: <span class="badge badge-danger badge-sm">No File</span> </a>
+                    <br/>
+                    <a class="text-muted fs-6" target="_blank" href="{{businessModalData?.business.certificate}}" *ngIf="businessModalData?.business.certificate != 'no_file'">Registration Certificate: <span class="badge badge-info badge-sm">Download</span></a>
+                    <a class="text-muted fs-6" target="_blank" *ngIf="businessModalData?.business.certificate == 'no_file'">Registration Certificate: <span class="badge badge-danger badge-sm">No File</span> </a>
+                    <br/>
+                    <br/>
+
+                    <!-- certificates -->
+                    <div class="form-group row">
+                        <label class="col-lg-4 col-form-label" for="certRegistrationUpd">Certificate of Registration</label>
+                        <div class="col-lg-6">
+                            <input type="file" class="form-control" id="certRegistrationUpd" placeholder="Certificate of Registration" name="certificate">                                
+                        </div>
+                    </div>  
+
+                    <div class="form-group row">
+                        <label class="col-lg-4 col-form-label" for="kraCertificatesUpd">KRA Certificate</label>
+                        <div class="col-lg-6">                           
+                            <input type="file" class="form-control" id="kraCertificates" placeholder="KRA Certificate" name="kra" >                                
+                        </div>
+                    </div> 
+                </div>
+
+                <div class="col-6">
+                    <label for="file">Business Logo</label>
+
+                    <div class="image-upload">
+                        <label for="file-input">
+                          <img src="{{businessLogo}}"  alt="business logo" />
+                        </label>
+                      
+                        <input id="file-input" type="file" accept="image/*" #output (change)="onUpdateChange($event)">
+                    </div>
+                </div>                   
+
+            </div>
+
             <!-- message -->
             <div *ngIf="messageResponse" class="row alert alert-info">
                 <p><i class="fa fa-exclamation"></i> &nbsp;  {{messageResponse}}</p>
             </div>
+            <div *ngIf="alertResponse != ''" class="row alert alert-warning">
+                <p><i class="fa fa-exclamation"></i> &nbsp;  {{alertResponse}}</p>
+            </div>
 
             <div class="modal-footer">
               <button type="button" class="btn btn-light" data-dismiss="modal" (click)="modal.dismiss('Cross click')">Cancel</button>
-              <button type="submit" [disabled]="validity" id="register" class="btn btn-primary" >Save</button>
+              <button type="submit" [disabled]="!updateValidity" (click)="updateBusiness(editForm.value)" class="btn btn-primary" >Save Changes</button>
             </div>
           </form>
     </div>

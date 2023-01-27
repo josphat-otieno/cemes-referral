@@ -557,7 +557,7 @@ export class CbfService implements OnDestroy {
   }
 
   // Update Business Details
-  public alterBusinessData(businessData:FormData, businessId:number, access: string): Observable<any> {
+  public updateBusiness(businessData:FormData, businessId:number, access: string): Observable<any> {
     const url = ApiEndpointService.getEndpoint(ApiEndpointService.ENDPOINT.UPDATE_BUSINESS_DETAILS);
     return this.http.patch<any>(url + businessId + '/', businessData, {
       headers: {

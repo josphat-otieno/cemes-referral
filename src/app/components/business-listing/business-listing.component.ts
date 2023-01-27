@@ -32,6 +32,7 @@ export class BusinessListingComponent implements OnInit {
   // Files  
   public upload = 0;
   public actualFile: File | any;
+  public updatedFile: File | any;
 
   // parameters
   public businesses:any = []
@@ -48,6 +49,12 @@ export class BusinessListingComponent implements OnInit {
 
   // validation parameters
   public validity:boolean = false
+
+  public updateValidity:boolean = true
+  public emptyName:boolean = false
+  public emptyCategory:boolean = false
+  public emptyOwner:boolean = false
+
   public phoneValidationMessage:boolean = false
   public emailValidationMessage:boolean = false
 
@@ -64,6 +71,7 @@ export class BusinessListingComponent implements OnInit {
 
   // Logo holder
   businessDefaultLogo: any = "";
+  businessLogo: any = "";
   public mediaUrl = ApiEndpointService.getEndpoint(ApiEndpointService.ENDPOINT.IMAGE_FOLDER);
 
   constructor(
@@ -220,15 +228,24 @@ export class BusinessListingComponent implements OnInit {
     this.businessModalData = data
   }
 
-  reviewUpdateModal(editStaff:any, staff:any) {
-    this.modalService.open(editStaff, {
+  reviewUpdateModal(editBiz:any, biz:any) {
+    this.modalService.open(editBiz, {
       centered: true,
       backdrop: 'static',
-      size: 'lg',
+      size: 'xl',
     });
     this.password = ''
-    let modalData = staff;
+    let modalData = biz;
+
     this.businessModalData = modalData
+  
+    if (this.businessLogo == 'no_file') {
+      let b_url = this.mediaUrl+'default_business.png'
+      this.businessLogo = b_url;
+    } else {      
+      this.businessLogo = modalData.business.logo
+      this.updatedFile = this.businessLogo
+    }
 
     // set rating
     this.currentRate = this.businessModalData.business.rating
@@ -241,7 +258,6 @@ export class BusinessListingComponent implements OnInit {
     this.alertResponse = ''
 
     const file = event.target.files[0];
-    console.log(file)
 
     if (event.length === 0)
       return;
@@ -263,6 +279,52 @@ export class BusinessListingComponent implements OnInit {
         const img_reader = new FileReader();
         img_reader.onload = () => {
           this.businessDefaultLogo = img_reader.result as string;
+        }
+        img_reader.readAsDataURL(file)
+      }
+
+    } else {
+      this.upload = 0;
+      this.alertResponse = "Not An Image, Only images are supported."
+      return;
+
+    }
+    
+  }
+ 
+  // Change image on Update
+  onUpdateChange(event: any) {
+    this.alertResponse = ''
+
+    const file = event.target.files[0];
+
+    if (event.length === 0)
+      return;
+
+    var mimeType = file.type
+
+    if(mimeType.indexOf('image')> -1){
+
+      // check if size is 10MB Max
+      let fileSize = file.size
+
+      if (fileSize >= 10000000) {
+        this.alertResponse = "Please select an image less than 10MB.";
+        this.updateValidity = false
+      } else {
+        this.updateValidity = true
+      }
+
+      if (mimeType.match(/image\/*/) == null) {
+        this.alertResponse = "Not An Image, Only images are supported."
+        return;
+      } else {
+        this.upload = 1;        
+        this.updatedFile = file;
+
+        const img_reader = new FileReader();
+        img_reader.onload = () => {
+          this.businessLogo = img_reader.result as string;
         }
         img_reader.readAsDataURL(file)
       }
@@ -414,53 +476,88 @@ export class BusinessListingComponent implements OnInit {
     this.unsubscribe.push(regsterSubscr);
   }
 
-  updateMember(data: any) {
+  updateBusiness (data: any) {
+    this.alertResponse = ''
 
-    let modalData = data
+    let editData = data
+    let businessId = editData.id
 
-    const updateData:FormData = new FormData()
-    updateData.append('full_name', modalData.full_name)
-    updateData.append('email', modalData.email)
-    updateData.append('phone_number', modalData.phone_number)
+    let businessName = editData.name
+    let businessCategory = editData.categoryId
+    let businessOwner = editData.ownerId
 
-    if(this.passwordValue != '' && modalData.password != ''){
-      updateData.append('password', modalData.password)
+    // validation fields
+    if(businessName == 0 || businessCategory == 0 || businessOwner == 0){
+      this.updateValidity = false
+
+      if(businessName == 0){
+        this.emptyName = true
+      } else {
+        this.emptyName = false
+      }
+      if(businessCategory == 0){
+        this.emptyCategory = true
+      } else {
+        this.emptyCategory = false
+      }
+      if(businessOwner == 0){
+        this.emptyOwner = true
+      } else {
+        this.emptyOwner = false
+      }
+
+    } else {
+      this.updateValidity = true
     }
 
-    updateData.append('assembly', modalData.assemblyUpdate)
-    updateData.append('businessOwner', modalData.id)
-    updateData.append('user', this.user_id.toString())
+    // Submit Form
+    if(this.updateValidity == true){
 
-    const regsterSubscr = this.cbfService.updateMember(updateData, this.accessToken)
+      const updateData:FormData = new FormData()
 
-    .subscribe({
-      next: (response: any) => {
-        
-        if(response.status){
+      if (!this.updatedFile) {
+        this.alertResponse = 'Caution, Kindly select an image to upload';      
+      } else {     
+        updateData.append('logo', this.updatedFile, this.updatedFile.name);
+      }    
+  
+      updateData.append('name', businessName)
+      updateData.append('nature', editData.nature)
+      updateData.append('physical_location', editData.location)
+      updateData.append('floor',editData.floor)
+      updateData.append('building_name', editData.building)
+      updateData.append('office_number', editData.office)
+      updateData.append('business_owner', businessOwner)
+      updateData.append('business_category', businessCategory)
+  
+      const updateSubscr = this.cbfService.updateBusiness(updateData, businessId, this.accessToken)
+  
+      .subscribe({
+        next: (response: any) => {
+          let results = response
           
-          this.messageResponse = response.message
-
-          if(response.status == 1){
-
-            this.toaster.show(response.message, { classname: 'bg-success text-light', delay: 10000 });
+          if(results.id){
             
+            this.messageResponse = 'Business successfully updated'
+  
             setTimeout(() => {
               window.location.reload()
             }, 1200);
-          } else {
-            this.toaster.show(response.message, { classname: 'bg-warning text-light', delay: 10000 });
+            
           }
           
-        }
-        
-      },
-      error: (e:HttpErrorResponse) =>  {
-        this.messageResponse = 'Something went wrong, please try again'  
-        this.toaster.show(this.messageResponse, { classname: 'bg-warning text-light', delay: 10000 });
-      }   
-    })
-    
-    this.unsubscribe.push(regsterSubscr);
+        },
+        error: (e:HttpErrorResponse) =>  {
+          this.alertResponse = 'Something went wrong registering the business, please try again'  
+          this.toaster.show(this.msg, { classname: 'bg-warning text-light', delay: 10000 });
+        }   
+      })
+      
+      this.unsubscribe.push(updateSubscr);
+      
+    } else {
+      this.alertResponse = 'Please ensure all required fields are filled'
+    }
 
   }
 
@@ -473,7 +570,7 @@ export class BusinessListingComponent implements OnInit {
     delData.append('is_active', 'false')
     delData.append('modified_by', this.user_id.toString())
 
-    const deactivSubscr = this.cbfService.alterBusinessData(delData, businessId, this.accessToken)
+    const deactivSubscr = this.cbfService.updateBusiness(delData, businessId, this.accessToken)
 
     .subscribe({
       next: (response: any) => {
@@ -512,7 +609,7 @@ export class BusinessListingComponent implements OnInit {
     activData.append('is_active', 'true')
     activData.append('modified_by', this.user_id.toString())
 
-    const activSubscr = this.cbfService.alterBusinessData(activData, businessId, this.accessToken)
+    const activSubscr = this.cbfService.updateBusiness(activData, businessId, this.accessToken)
 
     .subscribe({
       next: (response: any) => {
@@ -542,7 +639,7 @@ export class BusinessListingComponent implements OnInit {
 
   }
 
-  deleteMemberAction(data: any) {
+  deleteBusinessAction(data: any) {
 
     let modalData = data
 
@@ -591,7 +688,7 @@ export class BusinessListingComponent implements OnInit {
     approvData.append('is_verified', 'true')
     approvData.append('modified_by', this.user_id.toString())
 
-    const aprrovSubscr = this.cbfService.alterBusinessData(approvData, businessId, this.accessToken)
+    const aprrovSubscr = this.cbfService.updateBusiness(approvData, businessId, this.accessToken)
 
     .subscribe({
       next: (response: any) => {
@@ -630,7 +727,7 @@ export class BusinessListingComponent implements OnInit {
     revokeData.append('is_verified', 'false')
     revokeData.append('modified_by', this.user_id.toString())
 
-    const revokSubscr = this.cbfService.alterBusinessData(revokeData, businessId, this.accessToken)
+    const revokSubscr = this.cbfService.updateBusiness(revokeData, businessId, this.accessToken)
 
     .subscribe({
       next: (response: any) => {

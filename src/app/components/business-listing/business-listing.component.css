@@ -26,6 +26,10 @@
     color: gold;
 }
 
+.current_label {
+    text-decoration: underline;
+}
+
 /* Upload Image */
 .image-upload > input
 {
