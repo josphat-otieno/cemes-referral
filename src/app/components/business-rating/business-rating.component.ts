@@ -16,10 +16,8 @@ export class BusinessRatingComponent implements OnInit {
   public accessToken:string = ''  
   public user_id:number = 0
 
-  public BusinessRegistration: FormGroup | any;
   public assemblies:any = []
   private unsubscribe: Subscription[] = [];
-  private msg:string = ''  
   public password:string =''
   public passwordValue:string =''
 
@@ -27,17 +25,14 @@ export class BusinessRatingComponent implements OnInit {
   public messageResponse:string = ''
 
   // parameters
-  public adsList:any = []
-  public pendingadsList:any = []
-  public pendingAdsCount:number = 0
-  public activeAdsCount:number = 0
-  public AdsCount:number = 0
+  public ratingList:any = []
   public businessModalData:any = []
-
-  // business Def Parameters
-  public businessOwnerId:number = 0
-  public businessCategory:number = 0
-  public assemblyId:number = 0
+  public verifiedRatingCount:number = 0
+  public pendingRatingsList:any = []
+  public pendingRatingsCount:number = 0
+  public activeAdsCount:number = 0
+  public allRatingsCount:number = 0
+  public reviewCount:number = 0
 
   // validation parameters
   public validity:boolean = false
@@ -62,21 +57,8 @@ export class BusinessRatingComponent implements OnInit {
     private toaster: ToastService,
     private modalService: NgbModal,
     private cbfService: CbfService
-  ) {
-    this.createForm();
-  }
-  
-  createForm() {
-    this.BusinessRegistration = this.fb.group({
-      fullName: ['', [Validators.required ]],
-      email: ['', [Validators.required ,  Validators.email, Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$")]],
-      password: ['', [Validators.required, Validators.minLength(6)] ],
-		  assembly: ['', [Validators.required] ],
-      phoneNumber: ['', [Validators.required] ],
-    })
-  }
-  
-
+  ) {  }
+   
   ngOnInit(): void {
 
     this.rating1 = 3.5
@@ -84,13 +66,15 @@ export class BusinessRatingComponent implements OnInit {
 
     // datatable
 
-    this.pendingAdsCount = 1
+    this.pendingRatingsCount = 1
     this.activeAdsCount = 1
-    this.AdsCount = 2
+    this.reviewCount = 2
     
     this.accessToken =  this.cbfService.AccessToken
     this.user_id = Number(this.cbfService.currentUserValue)
    
+    this.getVerifiedRatings()
+    this.getPendingRatings()
   }
   
   // modal mgt
@@ -102,6 +86,44 @@ export class BusinessRatingComponent implements OnInit {
     });
 
 	}
+
+  // -------------------------------------------------------------------- Endpoints Consumption
+ 
+  // Verified Ratings
+  getVerifiedRatings() {
+    let status = true
+    const ratverSubscr = this.cbfService.getBusinessRatings(status, this.accessToken)
+
+    .subscribe({
+      next: (response: any) => {
+        let queryResults = response
+        this.allRatingsCount = queryResults.count.all
+        this.verifiedRatingCount = queryResults.count.total
+        this.reviewCount = queryResults.count.reviews
+        this.ratingList = queryResults.results    
+      },
+      error: (e:HttpErrorResponse) =>  console.log('Something went wrong, please try again')   
+    })
+    
+    this.unsubscribe.push(ratverSubscr);
+  }
+
+  // Pending Ratings
+  getPendingRatings() {
+    let status = false
+    const ratpenSubscr = this.cbfService.getBusinessRatings(status, this.accessToken)
+
+    .subscribe({
+      next: (response: any) => {
+        let queryResults = response
+        this.pendingRatingsCount = queryResults.count.total
+        this.pendingRatingsList = queryResults.results     
+      },
+      error: (e:HttpErrorResponse) =>  console.log('Something went wrong, please try again')   
+    })
+    
+    this.unsubscribe.push(ratpenSubscr);
+  }
   
   featureComing() {
     this.messageResponse = 'Feature coming soon, please bare with us. Thank you.'
