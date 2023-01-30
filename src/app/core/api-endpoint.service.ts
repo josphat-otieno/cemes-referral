@@ -45,6 +45,8 @@ export class ApiEndpointService {
     REGISTER_BUSINESS: `${ApiEndpointService.MAIN_CONTEXT}/business/business/`,
     GET_BUSINESS_LIST: `${ApiEndpointService.MAIN_CONTEXT}/business/get-business-list/`,
     GET_BUSINESS_RATINGS: `${ApiEndpointService.MAIN_CONTEXT}/business/get-business-rating-list/`,
+    GET_REJECTED_BUSINESS_RATINGS: `${ApiEndpointService.MAIN_CONTEXT}/business/get-rejected-business-rating-list/`,
+    BUSINESS_REVIEW: `${ApiEndpointService.MAIN_CONTEXT}/business/business-review/`,
     GET_BUSINESS_OWNERS: `${ApiEndpointService.MAIN_CONTEXT}/business/get-business-owners/`,
     UPDATE_BUSINESS_DETAILS: `${ApiEndpointService.MAIN_CONTEXT}/business/business/`,
     BUSINESS_PRODUCT: `${ApiEndpointService.MAIN_CONTEXT}/business/business-product/`,

@@ -99,13 +99,14 @@
                     <br/>
                            
                         <div class="table-responsive">
-                            <table datatable class="table table-striped">
+                            <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="table table-striped">
                             <thead>
                             <tr>
                                 <th scope="col">Business Logo</th>
                                 <th scope="col">Business Name</th>
                                 <th scope="col">Rating</th>
                                 <th scope="col">Rated By</th>
+                                <th scope="col">Status</th>
                                 <th scope="col">Update Details</th>
                             </tr>
                             </thead>
@@ -113,16 +114,20 @@
                             <tr *ngFor="let res of ratingList; index as i">
                                 <td>
                                     <div class="circular_image_container symbol symbol-50px me-5">
-                                        <img src="{{res.logo}}" alt="business logo"/>
+                                        <img src="{{res.business_logo}}" alt="business logo"/>
                                     </div>
                                 </td>
                                 <td>{{res.business_name}}</td>
-                                <td>{{res.rating}}</td>                
+                                <td>{{res.rating}} stars</td>                
                                 <td>{{res.submitted_by}}</td>
                                 <td>
+                                    <span class="badge badge-sm badge-success" *ngIf="res.status === false">Active</span>
+                                    <span class="badge badge-sm badge-danger" *ngIf="res.status === true">Deleted</span>
+                                </td>
+                                <td>
                                     <div class="button_containers">   
-                                        <button type="button" [disabled] class="btn btn-sm btn-info" (click)="openModal(viewAdModal, 'lg')"><i class="fa fa-eye"></i> View Details</button> &nbsp;
-                                        <button type="button" class="btn btn-sm btn-danger" (click)="openModal(deactivateAd, 'md')"><i class="fa fa-close"></i> Delete</button>
+                                        <button type="button" [disabled] class="btn btn-sm btn-info" (click)="openModal(viewRatingModal, 'lg', 'verified', res)"><i class="fa fa-eye"></i> View Details</button> &nbsp;
+                                        <button type="button" class="btn btn-sm btn-danger" *ngIf="res.status === false" (click)="openModal(deleteVerifiedRating, 'md', 'verified', res)"><i class="fa fa-close"></i> Delete</button>
                                     </div>
                                 </td>
                             </tr>
@@ -139,42 +144,89 @@
 
                     </mat-tab>
 
-                    <mat-tab label="Pending Verification: {{pendingRatingsCount}} Ratings(s)">
+                    <mat-tab label="Pending Verification: {{pendingRatingsCount}} Rating(s)">
                         <br/>
                                
                             <div class="table-responsive">
-                                <table datatable class="table table-striped">
+                                <table datatable [dtOptions]="ptOptions" [dtTrigger]="ptTrigger" class="table table-striped">
                                 <thead>
                                     <tr>
                                         <th scope="col">Business Name</th>
                                         <th scope="col">Rating Awarded</th>
                                         <th scope="col">Review</th>
                                         <th scope="col">Submitted By</th>
-                                        <th scope="col">Update Details</th>
+                                        <th scope="col">Action</th>
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    <!-- <tr *ngFor="let res of adsList; index as i"> -->
-                                    <tr>
-                                        <td>Ready Bites</td>
-                                        <td>4.5</td>
-                                        <td>
-                                            <span class="badge badge-danger">Not provided</span>
-                                        </td>                                          
-                                        <td>Johnstone Kimani</td>               
-                                        <td>
-                                            <div class="button_containers">   
-                                                <button type="button" [disabled] class="btn btn-sm btn-primary" (click)="openModal(viewPendingADModal, 'lg')"><i class="fa fa-edit"></i> Review</button> &nbsp; 
-                                            </div>
-                                        </td>
-                                </tr>
+                                        
+                                        <tr *ngFor="let res of pendingRatingsList; index as i">
+                                            <td>
+                                                <div class="circular_image_container symbol symbol-50px me-5">
+                                                    <img src="{{res.business_logo}}" alt="business logo"/>
+                                                </div>
+                                            </td>
+                                            <td>{{res.business_name}}</td>
+                                            <td>{{res.rating}} stars</td>                
+                                            <td>{{res.submitted_by}}</td>
+                                            <td>
+                                                <div class="button_containers">   
+                                                    <button type="button" class="btn btn-sm btn-primary" (click)="openModal(viewPendingReviewModal, 'lg', 'pending', res)"><i class="fa fa-edit"></i> Review</button> &nbsp; 
+                                                </div>
+                                            </td>
+                                        </tr>
 
-                                <tr *ngIf="pendingRatingsCount == 0">
-                                    <td colspan="7" class="no_data_display">
-                                        No data available for display
-                                    </td>
-                                </tr>
-                                </tbody>
+                                        <tr *ngIf="pendingRatingsCount == 0">
+                                            <td colspan="5" class="no_data_display">
+                                                No data available for display
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+    
+                    </mat-tab>
+
+                    <mat-tab label="Rejected: {{rejectedRatingsCount}} Rating(s)">
+                        <br/>
+                               
+                            <div class="table-responsive">
+                                <table datatable [dtOptions]="rtOptions" [dtTrigger]="rtTrigger" class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Business Name</th>
+                                        <th scope="col">Rating Awarded</th>
+                                        <th scope="col">Review</th>
+                                        <th scope="col">Submitted By</th>
+                                        <th scope="col">Rejected By</th>
+                                        <th scope="col">Review</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                        
+                                        <tr *ngFor="let res of rejectedRatingsList; index as i">
+                                            <td>
+                                                <div class="circular_image_container symbol symbol-50px me-5">
+                                                    <img src="{{res.business_logo}}" alt="business logo"/>
+                                                </div>
+                                            </td>
+                                            <td>{{res.business_name}}</td>
+                                            <td>{{res.rating}} stars</td>                
+                                            <td>{{res.submitted_by}}</td>
+                                            <td>{{res.verified_by}}</td>
+                                            <td>
+                                                <div class="button_containers">   
+                                                    <button type="button" [disabled] class="btn btn-sm btn-info" (click)="openModal(viewRatingModal, 'lg', 'rejected', res)"><i class="fa fa-eye"></i> View Details</button> &nbsp;
+                                                </div>
+                                            </td>
+                                        </tr>
+
+                                        <tr *ngIf="rejectedRatingsCount == 0">
+                                            <td colspan="6" class="no_data_display">
+                                                No data available for display
+                                            </td>
+                                        </tr>
+                                    </tbody>
                                 </table>
                             </div>
     
@@ -190,9 +242,10 @@
 
 <!-- Modals -->
 
-  <ng-template #viewAdModal let-modal>
+  <ng-template #viewRatingModal let-modal>
+
     <div class="modal-header alert alert-success">
-      <h4 class="modal-title" id="modal-edit-title">Joska Hardware's Rating</h4>
+      <h4 class="modal-title" id="modal-edit-title">{{ratingModalData?.business_name}}'s Rating</h4>
       <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
         <span aria-hidden="true">&times;</span>
       </button>
@@ -210,17 +263,15 @@
 						</div>
 						<div class="profile-info">
 							<div class="circular_business_image_container symbol symbol-50px me-5">
-								<img src="assets/images/big/hardware.jpg" class="img-fluid rounded-circle" alt="">
+								<img src="{{ratingModalData?.business_logo}}" class="img-fluid rounded-circle" alt="">
 							</div>
 							<div class="profile-details">
 								<div class="profile-name px-3 pt-2">
-									<h4 class="text-primary mb-0">Joska Hardware</h4>
+									<h4 class="text-primary mb-0">{{ratingModalData?.business_name}}</h4>
 								</div>
 								<div class="profile-email px-2 pt-2">
 									<h4 class="text-muted mb-0">Business Review</h4>
-									<p>Dr. James was not available on phone. Upon reaching the store, the boy at the shop did not assist me accordingly; I was
-                                        left standing for 10 minutes waiting for him to finish up with another client. Not professional at all.
-                                    </p>
+									<p>{{ratingModalData?.review}}</p>
 								</div>
 								
 							</div>
@@ -240,17 +291,24 @@
                                     </span>
                                   </ng-template>
                                   
-                                <ngb-rating [(rate)]="rating1" [starTemplate]="t" [readonly]="true" [max]="5"></ngb-rating> (3.5)  
+                                <ngb-rating [(rate)]="approvedRating" [starTemplate]="t" [readonly]="true" [max]="5"></ngb-rating> ({{ratingModalData?.rating}})  
 
                             </p>
-                            <p class="fs-6">
-                                <b> Total Reviews: </b> 2 reviews
+                            <p class="fs-6" *ngIf="ratingModalData?.rev_status != 'rejected'">
+                                <b> Total Reviews: </b> {{ratingModalData?.total_ratings}} reviews
                            </p>
                            <p class="fs-6">
-                                <b> Rated By: </b>Pauline Mwamila
+                                <b> Rated By: </b>{{ratingModalData?.submitted_by}}
                             </p>
-                            <p class="fs-6">
-                                <b> Verified By: </b>Victor Koitie
+                            <p class="fs-6" *ngIf="ratingModalData?.rev_status != 'rejected'">
+                                <b> Verified By: </b>{{ratingModalData?.verified_by}}
+                           </p>
+                            <p class="fs-6" *ngIf="ratingModalData?.rev_status == 'rejected'">
+                                <b> Rejected By: </b>{{ratingModalData?.verified_by}}
+                           </p>
+
+                            <p class="fs-6" *ngIf="ratingModalData?.rev_status == 'rejected'">
+                                <b> Reason for Rejection </b> <br/> {{ratingModalData?.reason}}
                            </p>
                         </div>
                     </div>
@@ -267,9 +325,9 @@
     </div>
   </ng-template>
 
-  <ng-template #viewPendingADModal let-modal>
+  <ng-template #viewPendingReviewModal let-modal>
     <div class="modal-header alert alert-success">
-      <h4 class="modal-title" id="modal-edit-title">Ready Bites Rating</h4>
+      <h4 class="modal-title" id="modal-edit-title">{{ratingModalData?.business_name}}'s Rating</h4>
       <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
         <span aria-hidden="true">&times;</span>
       </button>
@@ -287,15 +345,15 @@
 						</div>
 						<div class="profile-info">
 							<div class="circular_business_image_container symbol symbol-50px me-5">
-								<img src="assets/images/product/food.png" class="img-fluid rounded-circle" alt="">
+								<img src="{{ratingModalData?.business_logo}}" class="img-fluid rounded-circle" alt="">
 							</div>
 							<div class="profile-details">
 								<div class="profile-name px-3 pt-2">
-									<h4 class="text-primary mb-0">Ready Bites</h4>
+									<h4 class="text-primary mb-0">{{ratingModalData?.business_name}}</h4>
 								</div>
 								<div class="profile-email px-2 pt-2">
-									<h4 class="text-muted mb-0">Advert Description</h4>
-									<p>Not available</p>
+									<h4 class="text-muted mb-0">Business Review</h4>
+									<p>{{ratingModalData?.review}}</p>
 								</div>
 								
 							</div>
@@ -317,10 +375,10 @@
                                     </span>
                                   </ng-template>
                                   
-                                <ngb-rating [(rate)]="rating2" [starTemplate]="t" [readonly]="true" [max]="5"></ngb-rating> (4.5)  
+                                <ngb-rating [(rate)]="pendingRating" [starTemplate]="t" [readonly]="true" [max]="5"></ngb-rating> {{ratingModalData?.rating}}  
                             </p>
                             <p class="fs-6">
-                                <b> Rated By: </b>Pauline Mwamila
+                                <b> Rated By: </b>{{ratingModalData?.submitted_by}}
                             </p>
                         </div>
                     </div>
@@ -331,8 +389,8 @@
 
         <p class="text-muted text-center">Review Rating</p>
         <div class="button_row">
-            <button type="button" class="btn btn-sm btn-success" (click)="modal.dismiss('Cross click')" (click)="openModal(verifyAd, 'md')"><i class="fa fa-check"></i> Verify</button> &nbsp;
-            <button type="button" class="btn btn-sm btn-danger"  (click)="modal.dismiss('Cross click')"  (click)="openModal(rejectAd, 'md')"><i class="fa fa-close"></i> Reject</button>
+            <button type="button" class="btn btn-sm btn-success" (click)="modal.dismiss('Cross click')" (click)="reviewModal(verifyAd, ratingModalData)"><i class="fa fa-check"></i> Verify</button> &nbsp;
+            <button type="button" class="btn btn-sm btn-danger"  (click)="modal.dismiss('Cross click')"  (click)="reviewModal(rejectReviewModal, ratingModalData)"><i class="fa fa-close"></i> Reject</button>
         </div>
 
         <div class="modal-footer">
@@ -340,10 +398,11 @@
                 Cancel
             </button>
         </div>
+        
     </div>
   </ng-template>
 
-  <ng-template #deactivateAd let-modal>
+  <ng-template #deleteVerifiedRating let-modal>
     <div class="modal-header alert alert-danger">
       <h4 class="modal-title" id="modal-del-title">Delete Rating</h4>
       <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
@@ -352,8 +411,8 @@
     </div>
     <div class="modal-body default-calendar">
       <form #deactivForm="ngForm">        
-        <input type="hidden" name="id" ngModel="{{businessModalData?.business.id}}" value="{{businessModalData?.business.id}}">
-        <p>Are you sure you want to delete <b>Joska Hardware's Rating</b>?</p>
+        <input type="hidden" name="id" ngModel="{{ratingModalData?.id}}" value="{{ratingModalData?.id}}">
+        <p>Are you sure you want to delete <b>{{ratingModalData?.business_name}}'s Rating</b>?</p>
       </form>
 
        <!-- message -->
@@ -364,11 +423,10 @@
     </div>
     <div class="modal-footer">
         <button type="button" class="btn btn-sm btn-light" (click)="modal.close('Close click')">No</button>
-        <button type="button" class="btn btn-sm btn-primary" (click)="featureComing()">Yes</button>
+        <button type="button" class="btn btn-sm btn-primary" (click)="deleteRating(deactivForm.value)">Yes</button>
     </div>
   </ng-template>
     
-
   <ng-template #verifyAd let-modal>
     <div class="modal-header alert alert-danger">
       <h4 class="modal-title" id="modal-del-title">Verify Rating</h4>
@@ -377,9 +435,13 @@
       </button>
     </div>
     <div class="modal-body default-calendar">
-      <form #deactivForm="ngForm">        
-        <input type="hidden" name="id" ngModel="{{businessModalData?.business.id}}" value="{{businessModalData?.business.id}}">
-        <p>Are you sure you want to verify <b>Ready Bites Rating</b>?</p>
+      <form #verifyForm="ngForm">        
+        <input type="hidden" name="id" ngModel="{{ratingModalData?.id}}" value="{{ratingModalData?.id}}">
+        <p>Are you sure you want to verify {{ratingModalData?.rating}} stars for <b>{{ratingModalData?.business_name}}</b>?</p>
+
+        <label>
+           <b>Review:</b> "{{ratingModalData?.review}}"
+        </label>
       </form>
 
        <!-- message -->
@@ -390,11 +452,11 @@
     </div>
     <div class="modal-footer">
         <button type="button" class="btn btn-sm btn-light" (click)="modal.close('Close click')">No</button>
-        <button type="button" class="btn btn-sm btn-primary" (click)="featureComing()">Yes</button>
+        <button type="button" class="btn btn-sm btn-primary" (click)="verifyRating(verifyForm.value)">Yes</button>
     </div>
   </ng-template>
 
-  <ng-template #rejectAd let-modal>
+  <ng-template #rejectReviewModal let-modal>
     <div class="modal-header alert alert-danger">
       <h4 class="modal-title" id="modal-del-title">Reject Rating</h4>
       <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
@@ -402,14 +464,14 @@
       </button>
     </div>
     <div class="modal-body default-calendar">
-      <form #deactivForm="ngForm">       
+      <form #rejectForm="ngForm">       
         
-        <input type="hidden" name="id" ngModel="{{businessModalData?.business.id}}" value="{{businessModalData?.business.id}}">
-        <p>Are you sure you want to reject <b>Ready Bites Rating</b>?</p>
+        <input type="hidden" name="id" ngModel="{{ratingModalData?.id}}" value="{{ratingModalData?.id}}">
+        <p>Are you sure you want to reject <b>{{ratingModalData?.business_name}}'s</b> Rating of {{ratingModalData?.rating}} stars?</p>
 
         <div class="form-group">
-            <label>Reason for rejection</label> <span class="text-danger">*</span>
-            <textarea class="form-control" rows="4" required placeholder="Please specify why you want to reject this rating"></textarea>
+            <label>Reason for rejection</label>
+            <textarea class="form-control" rows="4" name="reason" ngModel placeholder="Please specify why you want to reject this rating"></textarea>
         </div>
         
       </form>
@@ -422,6 +484,6 @@
     </div>
     <div class="modal-footer">
         <button type="button" class="btn btn-sm btn-light" (click)="modal.close('Close click')">No</button>
-        <button type="button" class="btn btn-sm btn-primary" (click)="featureComing()">Yes</button>
+        <button type="button" class="btn btn-sm btn-primary" (click)="rejectRating(rejectForm.value)">Yes</button>
     </div>
   </ng-template>
