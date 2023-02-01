@@ -40,6 +40,7 @@ export class ApiEndpointService {
     // Management    
     ASSEMBLY_MGT: `${ApiEndpointService.MAIN_CONTEXT}/management/assembly/`,
     ACCOUNT_PACKAGES: `${ApiEndpointService.MAIN_CONTEXT}/management/account-package/`,
+    GET_ADVERTSIEMENTS: `${ApiEndpointService.MAIN_CONTEXT}/management/get-advertisement-list/`,
 
     // Businesses
     REGISTER_BUSINESS: `${ApiEndpointService.MAIN_CONTEXT}/business/business/`,

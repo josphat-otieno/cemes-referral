@@ -30,7 +30,7 @@
                                 <form class="form" [formGroup]="signInForm" (ngSubmit)="loginUser()"> 
                                     <div class="form-group">
                                         <label class="mb-1"><strong>Email</strong></label>
-                                        <input type="email" class="form-control" value="vickoweb@gmail.com"  name="email" formControlName="email" autocomplete="off"
+                                        <input type="email" class="form-control" name="email" formControlName="email" autocomplete="off"
                                         [ngClass]="{
                                           'is-invalid': signInForm.controls['email'].invalid,
                                           'is-valid': signInForm.controls['email'].valid

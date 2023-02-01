@@ -302,7 +302,9 @@
                             </p>
                             <p class="fs-6" *ngIf="ratingModalData?.rev_status != 'rejected'">
                                 <b> Verified By: </b>{{ratingModalData?.verified_by}}
-                           </p>
+                            </p>
+                            <i class="fs-3" *ngIf="ratingModalData?.verified_by == 'System Automated'">If a review is not given, the system automatically verifies the rating solely</i>
+                          
                             <p class="fs-6" *ngIf="ratingModalData?.rev_status == 'rejected'">
                                 <b> Rejected By: </b>{{ratingModalData?.verified_by}}
                            </p>

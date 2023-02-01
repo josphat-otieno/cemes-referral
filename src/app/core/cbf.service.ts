@@ -975,7 +975,6 @@ export class CbfService implements OnDestroy {
 
   }
 
-  
    // Get forum
    public getForumListing(access: string): Observable<any> {
     const url = ApiEndpointService.getEndpoint(ApiEndpointService.ENDPOINT.GET_FORUM_LIST);
@@ -1021,6 +1020,29 @@ export class CbfService implements OnDestroy {
     const url = ApiEndpointService.getEndpoint(ApiEndpointService.ENDPOINT.FORUM_MGT);
     return this.http.patch<any>(url+forumId+'/', forumData, {
       headers: {
+        'Authorization': `Bearer ${access}`
+      }
+    }).pipe(
+      map(function (response: any) {
+        return response;
+      }),
+      catchError((fault: HttpErrorResponse) => {
+        return throwError(() => fault);
+
+      })
+    )
+
+  }
+
+  /* ------------ ADVERTISEMENTS ------------------ */
+
+  // Get Advertisements
+  public getAdvertisements(verification:boolean, access: string): Observable<any> {
+    const url = ApiEndpointService.getEndpoint(ApiEndpointService.ENDPOINT.GET_ADVERTSIEMENTS);
+    return this.http.get<any>(url+'?verification='+verification, {
+      headers: {
+        'Content-Type': 'application/json; charset=utf-8',
+        'Accept': 'application/json',
         'Authorization': `Bearer ${access}`
       }
     }).pipe(
