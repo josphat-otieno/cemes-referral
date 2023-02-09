@@ -116,6 +116,24 @@
                         </div>
                     </div>
                 </div>
+                <div class="form-group row">
+                    <label class="col-lg-5 col-form-label" for="forumType">Forum Type
+                        <span class="text-danger">*</span>
+                    </label>
+                    <div class="col-lg-7">
+                        <select required class="form-control default-select" id="forumType" formControlName="type" >
+                            <option value="">Please select a type...</option>
+                            <option value="public">Public</option>
+                            <option value="private">Private</option>                           
+                        </select>
+                        <div *ngIf="forumRegistration.controls['type'].invalid && (forumRegistration.controls['type'].dirty || forumRegistration.controls['type'].touched)" class="text-danger fs-13 mt-1">
+                            
+                            <div *ngIf="forumRegistration.controls['type'].errors.required">
+                                Select at least one forum type.
+                            </div>
+                        </div>
+                    </div>
+                </div>
                     
                 <div class="form-group row">
                     <label class="col-lg-5 col-form-label" for="forumDesc">Description
@@ -176,6 +194,18 @@
                     <select class="form-control" id="catUpdate" name="categoryId" ngModel="{{forumModalData?.categoryId}}" value="{{forumModalData?.categoryId}}">                                
                         <option value="">Please select a category...</option>
                         <option *ngFor="let res of categoryList" value="{{res.id}}">{{res.name}}</option>
+                    </select>                           
+                </div>
+            </div>      
+            <div class="form-group row">
+                <label class="col-lg-5 col-form-label" for="typeUpdate">Forum Type
+                    <span class="text-danger">*</span>
+                </label>
+                <div class="col-lg-7">
+                    <select required class="form-control" id="typeUpdate" name="type" ngModel="{{forumModalData?.type}}" value="{{forumModalData?.type}}">                                
+                        <option value="">Please select a type...</option>
+                        <option value="public">Public</option>
+                        <option value="private">Private</option>
                     </select>                           
                 </div>
             </div>      

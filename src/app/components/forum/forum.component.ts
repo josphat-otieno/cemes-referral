@@ -67,6 +67,7 @@ export class ForumComponent implements OnInit {
       name: ['', [Validators.required ]],
       description: ['', [Validators.required ]],
       category: ['', [Validators.required ]],
+      type: ['', [Validators.required ]],
     })
   }
 
@@ -84,8 +85,6 @@ export class ForumComponent implements OnInit {
   reviewModal(content:any, data:any) {
     this.modalService.open(content)
     this.forumModalData = data
-
-    console.log(data)
   }
    
   // Endpoints Consumption  
@@ -137,6 +136,7 @@ export class ForumComponent implements OnInit {
     regData.append('name', this.forumRegistration.get('name')?.value)
     regData.append('description', this.forumRegistration.get('description')?.value)
     regData.append('category', this.forumRegistration.get('category')?.value)
+    regData.append('type', this.forumRegistration.get('type')?.value)
     regData.append('created_by', this.user_id.toString())
     regData.append('modified_by', this.user_id.toString())
 
@@ -175,6 +175,7 @@ export class ForumComponent implements OnInit {
     updateData.append('name', modalData.name)
     updateData.append('description', modalData.description)
     updateData.append('category', modalData.categoryId)
+    updateData.append('type', modalData.type)
     updateData.append('modified_by', this.user_id.toString())
 
     const updateSubscr = this.cbfService.updateForum(updateData, ForumId,  this.accessToken)
