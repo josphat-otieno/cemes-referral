@@ -15,11 +15,7 @@ export class BusinessRatingComponent implements OnInit {
 
   public accessToken:string = ''  
   public user_id:number = 0
-
-  public assemblies:any = []
   private unsubscribe: Subscription[] = [];
-  public password:string =''
-  public passwordValue:string =''
 
   // response
   public messageResponse:string = ''
@@ -34,14 +30,6 @@ export class BusinessRatingComponent implements OnInit {
   public rejectedRatingsCount:number = 0
   public allRatingsCount:number = 0
   public reviewCount:number = 0
-
-  // validation parameters
-  public validity:boolean = false
-  public phoneValidationMessage:boolean = false
-  public emailValidationMessage:boolean = false
-
-  // public business 
-  public currentRate:number = 0
 
   // Datatables
   dtOptions: any = {};
@@ -257,6 +245,7 @@ export class BusinessRatingComponent implements OnInit {
 
     const ratingData:FormData = new FormData()
     ratingData.append('is_verified', true.toString())
+    ratingData.append('review_status', 'verified')
     ratingData.append('verified_by', this.user_id.toString())
 
     const verSubscr = this.cbfService.updateBusinessRating(ratingId, ratingData, this.accessToken)
