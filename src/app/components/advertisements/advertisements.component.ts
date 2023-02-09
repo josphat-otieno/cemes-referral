@@ -16,32 +16,21 @@ export class AdvertisementsComponent implements OnInit {
   public accessToken:string = ''  
   public user_id:number = 0
 
-  public assemblies:any = []
   private unsubscribe: Subscription[] = [];
-  public password:string =''
-  public passwordValue:string =''
 
   // response
   public messageResponse:string = ''
 
   // parameters
-  public ratingList:any = []
-  public ratingModalData:any = []
-  public verifiedRatingCount:number = 0
+  public advertList:any = []
+  public advertModalData:any = []
+  public verifiedAdCount:number = 0
   public pendingAdsList:any = []
   public pendingAdsCount:number = 0
-  public rejectedRatingsList:any = []
-  public rejectedRatingsCount:number = 0
-  public allRatingsCount:number = 0
-  public reviewCount:number = 0
-
-  // validation parameters
-  public validity:boolean = false
-  public phoneValidationMessage:boolean = false
-  public emailValidationMessage:boolean = false
-
-  // public business 
-  public currentRate:number = 0
+  public rejectedAdvertsList:any = []
+  public rejectedAdvertsCount:number = 0
+  public allAdsCount:number = 0
+  public paidAdvertsCount:number = 0
 
   // Datatables
   dtOptions: any = {};
@@ -52,9 +41,6 @@ export class AdvertisementsComponent implements OnInit {
 
   rtOptions: any = {};
   rtTrigger: Subject<any> = new Subject<any>();
-
-  public approvedRating: any = 0
-  public pendingRating: any = 0
 
   constructor(
     private fb: FormBuilder,    
@@ -109,8 +95,8 @@ export class AdvertisementsComponent implements OnInit {
     this.user_id = Number(this.cbfService.currentUserValue)
    
     this.getVerifiedAds()
-    this.getPendingRatings()
-    this.getRejectedRatings()
+    this.getPendingAds()
+    this.getRejectedAds()
 
   }
   
@@ -122,17 +108,7 @@ export class AdvertisementsComponent implements OnInit {
       size: size
     });
 
-    this.ratingModalData = data
-
-    if(type == 'verified'){
-      this.approvedRating = this.ratingModalData?.rating
-    } else if(type == 'pending'){
-      // pending
-      this.pendingRating = this.ratingModalData?.rating      
-    } else if(type == 'rejected'){      
-      this.approvedRating = this.ratingModalData?.rating
-    }
-
+    this.advertModalData = data
 
 	}
 
@@ -143,40 +119,40 @@ export class AdvertisementsComponent implements OnInit {
     });
 
     // data
-    this.ratingModalData = data
+    this.advertModalData = data
 
 	}
 
   // -------------------------------------------------------------------- Endpoints Consumption
  
-  // Verified Ratings
+  // Verified Advertisements
   getVerifiedAds() {
     let status = true
-    const ratverSubscr = this.cbfService.getAdvertisements(status, this.accessToken)
+    const verAdSubscr = this.cbfService.getAdvertisements(status, this.accessToken)
 
     .subscribe({
       next: (response: any) => {
         let queryResults = response
-        this.allRatingsCount = queryResults.count.all
-        this.verifiedRatingCount = queryResults.count.total
-        this.reviewCount = queryResults.count.reviews
-        this.ratingList = queryResults.results  
+        this.allAdsCount = queryResults.count.all
+        this.verifiedAdCount = queryResults.count.total
+        this.paidAdvertsCount = queryResults.count.paid
+        this.advertList = queryResults.results  
 
-        if(this.verifiedRatingCount > 0){
-          this.dtTrigger.next(this.ratingList)
+        if(this.verifiedAdCount > 0){
+          this.dtTrigger.next(this.advertList)
         }
 
       },
       error: (e:HttpErrorResponse) =>  console.log('Something went wrong, please try again')   
     })
     
-    this.unsubscribe.push(ratverSubscr);
+    this.unsubscribe.push(verAdSubscr);
   }
 
-  // Pending Ratings
-  getPendingRatings() {
+  // Pending Advertisements
+  getPendingAds() {
     let status = false
-    const ratpenSubscr = this.cbfService.getAdvertisements(status, this.accessToken)
+    const pendingSubscr = this.cbfService.getAdvertisements(status, this.accessToken)
 
     .subscribe({
       next: (response: any) => {
@@ -192,47 +168,47 @@ export class AdvertisementsComponent implements OnInit {
       error: (e:HttpErrorResponse) =>  console.log('Something went wrong, please try again')   
     })
     
-    this.unsubscribe.push(ratpenSubscr);
+    this.unsubscribe.push(pendingSubscr);
   }
 
   // Get Rejected
-  getRejectedRatings() {
-    const rejRatSubscr = this.cbfService.getRejectedBusinessRatings(this.accessToken)
+  getRejectedAds() {
+    const rejAdSubscr = this.cbfService.getRejectedAdvertisements(this.accessToken)
 
     .subscribe({
       next: (response: any) => {
         let queryResults = response
-        this.rejectedRatingsCount = queryResults.count
-        this.rejectedRatingsList = queryResults.results 
+        this.rejectedAdvertsCount = queryResults.count
+        this.rejectedAdvertsList = queryResults.results 
 
-        if(this.rejectedRatingsCount > 0){
-          this.rtTrigger.next(this.rejectedRatingsList)
+        if(this.rejectedAdvertsCount > 0){
+          this.rtTrigger.next(this.rejectedAdvertsList)
         }
         
       },
       error: (e:HttpErrorResponse) =>  console.log('Something went wrong, please try again')   
     })
     
-    this.unsubscribe.push(rejRatSubscr);
+    this.unsubscribe.push(rejAdSubscr);
   }
 
-
-  deleteRating(data: any) {
+  deleteAdvert(data: any) {
 
     let modalData = data
-    let ratingId = modalData.id
+    let advertId = modalData.id
 
     const delData:FormData = new FormData()
+    delData.append('is_active', false.toString())
     delData.append('is_deleted', true.toString())
     delData.append('modified_by', this.user_id.toString())
 
-    const delSubscr = this.cbfService.updateBusinessRating(ratingId, delData, this.accessToken)
+    const delSubscr = this.cbfService.updateAdvertisement(advertId, delData, this.accessToken)
 
     .subscribe({
       next: (response: any) => {
         
         if(response.id){
-          this.messageResponse = 'Rating successfully deleted'
+          this.messageResponse = 'Advertisement successfully deleted'
 
           setTimeout(() => {
             window.location.reload()
@@ -250,22 +226,24 @@ export class AdvertisementsComponent implements OnInit {
 
   }
 
-  verifyRating(data: any) {
+  verifyAdvert(data: any) {
 
     let modalData = data
-    let ratingId = modalData.id
+    let advertId = modalData.id
 
-    const ratingData:FormData = new FormData()
-    ratingData.append('is_verified', true.toString())
-    ratingData.append('verified_by', this.user_id.toString())
+    const advertData:FormData = new FormData()
+    advertData.append('is_active', true.toString())
+    advertData.append('is_verified', true.toString())
+    advertData.append('review_status', 'verified')
+    advertData.append('verified_by', this.user_id.toString())
 
-    const verSubscr = this.cbfService.updateBusinessRating(ratingId, ratingData, this.accessToken)
+    const verSubscr = this.cbfService.updateAdvertisement(advertId, advertData, this.accessToken)
 
     .subscribe({
       next: (response: any) => {
         
         if(response.id){
-          this.messageResponse = 'Rating successfully verified'
+          this.messageResponse = 'Advertisement successfully verified'
 
           setTimeout(() => {
             window.location.reload()
@@ -283,23 +261,23 @@ export class AdvertisementsComponent implements OnInit {
 
   }
 
-  rejectRating(data: any) {
+  rejectAdvert(data: any) {
 
     let modalData = data
-    let ratingId = modalData.id
+    let ad_Id = modalData.id
 
-    const ratingData:FormData = new FormData()
-    ratingData.append('review_status', 'rejected')
-    ratingData.append('reason', modalData.reason)
-    ratingData.append('verified_by', this.user_id.toString())
+    const adData:FormData = new FormData()
+    adData.append('review_status', 'rejected')
+    adData.append('reason', modalData.reason)
+    adData.append('verified_by', this.user_id.toString())
 
-    const rejSubscr = this.cbfService.updateBusinessRating(ratingId, ratingData, this.accessToken)
+    const rejSubscr = this.cbfService.updateAdvertisement(ad_Id, adData, this.accessToken)
 
     .subscribe({
       next: (response: any) => {
         
         if(response.id){
-          this.messageResponse = 'Rating successfully rejected'
+          this.messageResponse = 'Advertisement successfully rejected'
 
           setTimeout(() => {
             window.location.reload()
@@ -315,10 +293,6 @@ export class AdvertisementsComponent implements OnInit {
     
     this.unsubscribe.push(rejSubscr);
 
-  }
-  
-  featureComing() {
-    this.messageResponse = 'Feature coming soon, please bare with us. Thank you.'
   }
 
   ngOnDestroy() {
