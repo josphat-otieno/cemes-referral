@@ -676,6 +676,7 @@ import { BusinessIntegrityRatingComponent } from './components/business-integrit
 import { PendingStaffListComponent } from './components/pending-staff-list/pending-staff-list.component';
 import { PaymentsComponent } from './components/payments/payments.component';
 import { ResetPasswordComponent } from './pages/reset-password/reset-password.component';
+import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 
 function appInitializer(authService: CbfService) {
   return () => {
@@ -1317,6 +1318,7 @@ function appInitializer(authService: CbfService) {
     DataTablesModule,
     NgxStarRatingModule,
     NgbRatingModule,
+    NgMultiSelectDropDownModule,
 
     MatListModule,
     MatAutocompleteModule,
