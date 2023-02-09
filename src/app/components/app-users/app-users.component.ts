@@ -23,8 +23,10 @@ export class AppUsersComponent implements OnInit {
   public messageResponse:string = ''
   public msg:string = ''
   public assemblies:any = []
+  public selectedAssembly:number = 0
 
   public validity:boolean = false
+  public conversionValidity:boolean = false
   public emailValidationMessage: boolean = false
   public phoneValidationMessage: boolean = false
   
@@ -111,8 +113,10 @@ export class AppUsersComponent implements OnInit {
         let result = response   
         this.userCount = result.count  
         this.appUsers = result.results 
-        
-        this.dtTrigger.next(this.appUsers)
+
+        if(this.userCount > 0){        
+          this.dtTrigger.next(this.appUsers)
+        }
         
       },      
       error: (err: HttpErrorResponse) => {
@@ -143,7 +147,7 @@ export class AppUsersComponent implements OnInit {
   activateUserAction(data: any) {
     
     let modalData = data
-
+   
     const apprvData:FormData = new FormData()
     apprvData.append('type', 'activate')
     apprvData.append('userId', modalData.id)
@@ -212,10 +216,61 @@ export class AppUsersComponent implements OnInit {
     this.unsubscribe.push(activSubscr);
   }
 
-  convertMemberAction(data: any) {
-    this.messageResponse = 'Feature coming soon'
-    this.messageResponse = ''
+  selectAssembly(assemblyId:any) {
+    if(assemblyId != 0){
+      this.conversionValidity = true
+      this.selectedAssembly = assemblyId
+    } else {
+      this.conversionValidity = false
+    }
+    
   }
 
+  convertMemberAction(data: any) {
+
+    if(this.selectedAssembly != 0){      
+
+      let modalData = data
+      let uniqueMemberIdentity = modalData.uniqueMemberId
+
+      const updateData:FormData = new FormData()
+      updateData.append('type', 'convert')
+      updateData.append('assembly', this.selectedAssembly.toString())
+      updateData.append('user', modalData.businessOwner)
+      updateData.append('national_id', uniqueMemberIdentity)
+      updateData.append('currentUser', this.user_id.toString())
+
+      const regsterSubscr = this.cbfService.convertAppUser(updateData, this.accessToken)
+
+      .subscribe({
+        next: (response: any) => {
+          
+          if(response.status){
+            
+            this.messageResponse = response.message
+
+            if(response.status == 1){
+              setTimeout(() => {
+                window.location.reload()
+              }, 1200);
+            } 
+            
+          }
+          
+        },
+        error: (e:HttpErrorResponse) =>  {
+          console.log(e)
+          this.messageResponse = 'Something went wrong, please try again'  
+        }   
+      })
+      
+      this.unsubscribe.push(regsterSubscr);
+
+    } else {
+      this.conversionValidity = false
+      this.messageResponse = 'Please select a valid assembly'
+    }  
+
+  }
 
 }

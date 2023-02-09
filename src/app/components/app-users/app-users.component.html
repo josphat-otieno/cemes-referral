@@ -83,14 +83,14 @@
 <!-- Modals -->
 <ng-template #convertToMember let-modal>
   <div class="modal-header alert alert-success">
-    <h4 class="modal-title" id="modal-edit-title">Convert user to a Member</h4>
+    <h4 class="modal-title" id="modal-edit-title">Convert app user to Member</h4>
     <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
       <span aria-hidden="true">&times;</span>
     </button>
   </div>
 
   <div class="modal-body default-calendar">
-      <form class="form" #editForm="ngForm" autocomplete="on">
+      <form class="form" #convertForm="ngForm" autocomplete="on">
         
         <p class="text-muted">Kindly select an assembly to confirm <b>{{userModalData?.name}}</b> </p> <hr/>
 
@@ -99,10 +99,19 @@
               <span class="text-danger">*</span>
           </label>
           <div class="col-lg-8">
-              <select required class="form-control" name="assemblyUpdate">                                
-                  <option value="">Please select an assembly</option>
+            <input type="hidden" readonly name="businessOwner" class="form-control" required ngModel="{{userModalData?.id}}" value="{{userModalData?.id}}" />
+              
+              <select #assemblySelectVal required class="form-control" name="assemblySelect" (change)="selectAssembly(assemblySelectVal.value)">                                
+                  <option value="0">Please select an assembly</option>
                   <option *ngFor="let res of assemblies" value="{{res.id}}">{{res.name}}</option>
               </select>                           
+          </div>         
+        </div>
+        <div class="form-group row">
+          <label class="col-lg-4 col-form-label" for="uniqueId">Member Identity</label>
+        
+          <div class="col-lg-8">
+            <input type="text" id="uniqueId" name="uniqueMemberId" class="form-control" ngModel placeholder="Please enter national ID / Passport / Social Security Number"/>                                 
           </div>
         </div>
 
@@ -113,7 +122,7 @@
 
           <div class="modal-footer">
             <button type="button" class="btn btn-light" data-dismiss="modal" (click)="modal.dismiss('Cross click')">Cancel</button>
-            <button type="submit" [disabled]="validity" id="register" class="btn btn-primary" (click)="convertMemberAction(editForm.value)"
+            <button type="submit" [disabled]="!conversionValidity" id="register" class="btn btn-primary" (click)="convertMemberAction(convertForm.value)"
              >Convert User</button>
           </div>
         </form>
