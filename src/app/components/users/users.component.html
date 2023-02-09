@@ -129,7 +129,7 @@
                                     <td>
                                         <span *ngIf="staff.userStatus === false && staff.deleteStatus === false" class="badge badge-danger">Inactive</span>
                                         <span *ngIf="staff.deleteStatus === true" class="badge badge-danger">Deleted</span>
-                                        <span *ngIf="staff.userStatus === true" class="badge badge-success">Active</span>
+                                        <span *ngIf="staff.userStatus === true && staff.deleteStatus === false" class="badge badge-success">Active</span>
                                     </td>
                                     <td>
                                         <div class="button_containers">
@@ -198,24 +198,26 @@
 <!-- Modals -->
 <ng-template #convertStaff let-modal>
     <div class="modal-header alert alert-success">
-      <h4 class="modal-title" id="modal-edit-title">Convert staff to Member</h4>
+      <h4 class="modal-title" id="modal-edit-title">Convert Member to Staff</h4>
       <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
         <span aria-hidden="true">&times;</span>
       </button>
     </div>
   
     <div class="modal-body default-calendar">
-        <form class="form" [formGroup]="conversionForm" autocomplete="on">
+        <form class="form" #conversionForm="ngForm" autocomplete="on">
           
           <p class="text-muted">Kindly select a member to convert them </p> <hr/>
   
           <div class="form-group row">
             <label class="col-lg-4 col-form-label" for="mem-select">Member Name</label>
-            <div class="col-lg-8">
-                <select required id="mem-select" class="form-control" formControlName="member">                                
-                    <option value="">Please select a member</option>
-                    <option *ngFor="let res of memberListing" value="{{res.id}}">{{res.name}}</option>
-                </select>                           
+            <div class="col-lg-8">             
+                <ng-multiselect-dropdown
+                    [placeholder]="'Select a member'"
+                    [settings]="dropdownSettings"
+                    [data]="membersArray"
+                    (onSelect)="onItemSelect($event)">
+                </ng-multiselect-dropdown>
             </div>
           </div>
   
@@ -226,7 +228,7 @@
   
             <div class="modal-footer">
               <button type="button" class="btn btn-light" data-dismiss="modal" (click)="modal.dismiss('Cross click')">Cancel</button>
-              <button type="submit" [disabled]="!conversionForm.valid" class="btn btn-primary" (click)="convertAction()">Convert to Staff</button>
+              <button type="submit" [disabled]="!conversionFormValidity" class="btn btn-primary" (click)="convertStaffAction()">Convert to Staff</button>
             </div>
           </form>
     </div>
@@ -264,13 +266,13 @@
                                 class="text-danger">*</span>
                             </label>
                             <div class="col-lg-6">
-                                <input type="text" class="form-control" id="email" formControlName="email" placeholder="Your valid email..">
+                                <input type="text" #emailEntryVal class="form-control" id="email" formControlName="email" placeholder="Your valid email.." (input)="validateEmail(emailEntryVal.value)">
                                 <div *ngIf="staffRegistration.controls['email'].invalid && (staffRegistration.controls['email'].dirty || staffRegistration.controls['email'].touched)" class="text-danger fs-13 mt-1">
                                     <div *ngIf="staffRegistration.controls['email'].errors.required">
                                         Email is required.
                                     </div>
-                                    <div *ngIf="staffRegistration.controls['email'].errors.pattern">
-                                        Email must be a valid email address.
+                                    <div *ngIf="staffRegistration.controls['email'].errors.pattern || emailValidationMessage">
+                                        Please enter a valid email address.
                                     </div>
                                 </div>
                             </div>
@@ -303,12 +305,15 @@
                                 <span class="text-danger">*</span>
                             </label>
                             <div class="col-lg-6">
-                                <input type="number" class="form-control" id="phoneNumber" placeholder="07xxxxx" formControlName="phoneNumber">
+                                <input type="number" #phoneEntryVal class="form-control" id="phoneNumber" placeholder="07xxxxx" formControlName="phoneNumber" (input)="validatePhone(phoneEntryVal.value)">
                                 <div *ngIf="staffRegistration.controls['phoneNumber'].invalid && staffRegistration.controls['phoneNumber'].length > 10 || staffRegistration.controls['phoneNumber'].length < 10
                                      && (staffRegistration.controls['phoneNumber'].dirty || staffRegistration.controls['phoneNumber'].touched)" class="text-danger fs-13 mt-1">
                                     
                                     <div *ngIf="staffRegistration.controls['phoneNumber'].errors.required">
                                         Phone number is required.
+                                    </div>
+                                    <div *ngIf="phoneValidationMessage">
+                                        Phone number format is incorrect. Should begin with 0 and have a maximum of 10 characters
                                     </div>
                                     
                                     

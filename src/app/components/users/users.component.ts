@@ -2,6 +2,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { IDropdownSettings } from 'ng-multiselect-dropdown';
 import { Subject, Subscription } from 'rxjs';
 import { CbfService } from 'src/app/core/cbf.service';
 
@@ -32,6 +33,7 @@ export class UsersComponent implements OnInit {
   public msg:string = ''
 
   public validity:boolean = false
+  public conversionFormValidity:boolean = false
   public emailValidationMessage: boolean = false
   public phoneValidationMessage: boolean = false
 
@@ -48,6 +50,12 @@ export class UsersComponent implements OnInit {
 
   ptOptions: any = {};
   ptTrigger: Subject<any> = new Subject<any>();
+
+  // Multi Select
+  public selectedItems = [];
+  public dropdownSettings:IDropdownSettings = {};
+  public membersArray:any = []
+  public selectedMember:number = 0
 
   constructor(
     private cbfService: CbfService,
@@ -82,7 +90,17 @@ export class UsersComponent implements OnInit {
         'excel',
         'pdf'
       ]
-    };    
+    };  
+
+    this.dropdownSettings = {
+      singleSelection: true,
+      idField: 'id',
+      textField: 'name',
+      selectAllText: 'Select All',
+      unSelectAllText: 'UnSelect All',
+      itemsShowLimit: 3,
+      allowSearchFilter: true
+    };  
 
     this.accessToken = this.cbfService.AccessToken
     this.user_id = Number(this.cbfService.currentUserValue)
@@ -90,6 +108,7 @@ export class UsersComponent implements OnInit {
     this.getAssemblies()
     this.getStaffList()
     this.getPendingStaffList()
+    this.getMembers()
   }
 
   createForm() {
@@ -196,6 +215,16 @@ export class UsersComponent implements OnInit {
   }
    
   // Endpoints Consumption  
+  onItemSelect(memberDetail: any) {
+
+    this.selectedMember = memberDetail.id
+    if(this.selectedMember != 0){
+      this.conversionFormValidity = true
+    } else {
+      this.conversionFormValidity = false
+    }
+  }
+
   getAssemblies() {
 
     const assemblySubscr = this.cbfService.getAssemblies(this.accessToken)
@@ -264,6 +293,33 @@ export class UsersComponent implements OnInit {
 
   }
 
+  getMembers() {
+    let assembly = 0
+
+    const memberSubscr = this.cbfService.getAllMembers(assembly, this.accessToken)
+
+    .subscribe({
+      next: (response: any) => {
+        let queryResults = response
+
+        this.memberListing = queryResults.results
+
+        this.memberListing.forEach((x:any) => {
+          let mem_id = x.user_id
+          let mem_name = x.name
+
+          let memberDict = {'id':mem_id, 'name':mem_name}
+          this.membersArray.push(memberDict)
+
+        });
+        
+      },
+      error: (e:HttpErrorResponse) =>  this.msg = 'Something went wrong, please try again'     
+    })
+    
+    this.unsubscribe.push(memberSubscr);
+
+  }
 
   activateUserAction(data: any) {
     
@@ -329,10 +385,6 @@ export class UsersComponent implements OnInit {
     this.unsubscribe.push(dactivSubscr);
   }
 
-  convertAction() {
-
-  }
-
   saveStaff() {
 
     const regData:FormData = new FormData()
@@ -365,12 +417,51 @@ export class UsersComponent implements OnInit {
         
       },
       error: (e:HttpErrorResponse) =>  {
-        this.msg = 'Something went wrong, please try again'  
+        this.msg = 'Either a user with this email already exists or an error has occured, please try again'  
         this.messageResponse = this.msg
       }   
     })
     
     this.unsubscribe.push(regsterSubscr);
+  }
+
+  convertStaffAction() {
+
+    let selectedMemberId = this.selectedMember
+
+    if(selectedMemberId != 0){
+
+      const updateData:FormData = new FormData()
+      updateData.append('is_staff', true.toString())
+      updateData.append('user', this.user_id.toString())
+      
+      const convMemberSubscr = this.cbfService.updateSpecificUser(updateData, selectedMemberId, this.accessToken)
+
+      .subscribe({
+        next: (response: any) => {
+          
+          if(response.id){
+         
+            this.messageResponse = 'Member successfuly converted to staff'
+              
+            setTimeout(() => {
+              window.location.reload()
+            }, 1200);
+            
+          }
+          
+        },
+        error: (e:HttpErrorResponse) =>  {
+          this.messageResponse = 'Something went wrong, please try again'  
+        }   
+      })
+      
+      this.unsubscribe.push(convMemberSubscr);
+ 
+    } else {
+      this.messageResponse = 'Please select a member'
+    }
+
   }
 
   updateStaff(data: any) {

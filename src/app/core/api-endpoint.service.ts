@@ -31,6 +31,7 @@ export class ApiEndpointService {
     REGISTER_MEMBER: `${ApiEndpointService.MAIN_CONTEXT}/user/register-member-admin/`,
     VERIFY_MEMBER: `${ApiEndpointService.MAIN_CONTEXT}/user/verify-member-admin/`,
     VERIFY_APP_USER: `${ApiEndpointService.MAIN_CONTEXT}/user/verify-app-user-admin/`,
+    CONVERT_APP_USER: `${ApiEndpointService.MAIN_CONTEXT}/user/convert-app-user/`,
     UPDATE_MEMBER: `${ApiEndpointService.MAIN_CONTEXT}/user/update-member-admin/`,
     DELETE_MEMBER: `${ApiEndpointService.MAIN_CONTEXT}/user/delete-member-admin/`,
     GET_ALL_MEMBERS: `${ApiEndpointService.MAIN_CONTEXT}/user/get-member-list/`,
@@ -41,6 +42,8 @@ export class ApiEndpointService {
     ASSEMBLY_MGT: `${ApiEndpointService.MAIN_CONTEXT}/management/assembly/`,
     ACCOUNT_PACKAGES: `${ApiEndpointService.MAIN_CONTEXT}/management/account-package/`,
     GET_ADVERTSIEMENTS: `${ApiEndpointService.MAIN_CONTEXT}/management/get-advertisement-list/`,
+    GET_REJECTED_ADVERTSIEMENTS: `${ApiEndpointService.MAIN_CONTEXT}/management/get-rejected-adverts-list/`,
+    ADVERTISEMENT: `${ApiEndpointService.MAIN_CONTEXT}/management/advertisement/`,
 
     // Businesses
     REGISTER_BUSINESS: `${ApiEndpointService.MAIN_CONTEXT}/business/business/`,
