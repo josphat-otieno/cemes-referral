@@ -41,3 +41,12 @@
     max-width: 100px;
     cursor: pointer;
 }
+
+.scrollable-element {
+    scrollbar-color: dark;
+}
+
+#lightgallery {
+    overflow: overlay;
+    height: 12rem;
+}

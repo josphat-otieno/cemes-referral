@@ -3,9 +3,10 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Subscription, Subject } from 'rxjs';
-import { ToastService } from 'src/app/bootstrap/toast/toast-global/toast-service';
 import { ApiEndpointService } from 'src/app/core/api-endpoint.service';
 import { CbfService } from 'src/app/core/cbf.service';
+import { LightboxConfig, Lightbox } from 'ngx-lightbox';
+import { ToastService } from 'src/app/bootstrap/toast/toast-global/toast-service';
 
 @Component({
   selector: 'app-business-listing',
@@ -41,6 +42,19 @@ export class BusinessListingComponent implements OnInit {
   public productsCount:number = 0
   public businessCount:number = 0
   public businessModalData:any = []
+
+    // Images Handler
+    public businessImages:any = []
+    public imagesCount:number = 0
+    public imagesExist: boolean = false
+
+    // Contact Handler
+    public mailContacts: any
+    public mobileContacts: any
+    public contactsCount:number = 0
+    public contactsExist: boolean = false
+    public mailCount: number = 0
+    public mobileCount: number = 0
 
   // business Def Parameters
   public businessOwnerId:number = 0
@@ -78,7 +92,9 @@ export class BusinessListingComponent implements OnInit {
     private fb: FormBuilder,    
     private toaster: ToastService,
     private modalService: NgbModal,
-    private cbfService: CbfService
+    private cbfService: CbfService,
+    private _lightboxConfig: LightboxConfig,
+    private _lightbox: Lightbox
   ) {
     this.createForm();
   }
@@ -100,6 +116,8 @@ export class BusinessListingComponent implements OnInit {
   
 
   ngOnInit(): void {
+
+    this.toaster.show('I am a success toast', { classname: 'bg-success text-light', delay: 10000 });
 
     // datatable
     this.dtOptions = {
@@ -126,24 +144,6 @@ export class BusinessListingComponent implements OnInit {
         'pdf'
       ]
     };
-
-    this.social_link = [
-      {
-        title:"instagram",
-        icon_class:"fa fa-instagram",
-        link:"#",
-      },
-      {
-        title:"twitter",
-        icon_class:"fa fa-twitter",
-        link:"#",
-      },
-      {
-        title:"facebook",
-        icon_class:"fa fa-facebook",
-        link:"#",
-      },
-    ]
     
     this.accessToken =  this.cbfService.AccessToken
     this.user_id = Number(this.cbfService.currentUserValue)
@@ -210,6 +210,16 @@ export class BusinessListingComponent implements OnInit {
 
 	}
 
+  // Image Management    
+  open(_albumsArray:any, index: number): void {
+    this._lightbox.open(_albumsArray, index, { showZoom: false, showImageNumberLabel: true, alwaysShowNavOnTouchDevices: true, fitImageInViewPort: true, disableScrolling: false, centerVertically: true });
+  }
+ 
+  close(): void {
+    this._lightbox.close();
+  }
+
+
   generatePassword() {
     function getRandomString(length:any) {
       var randomChars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
@@ -238,6 +248,44 @@ export class BusinessListingComponent implements OnInit {
     let modalData = biz;
 
     this.businessModalData = modalData
+
+    // get images
+    this.imagesCount = this.businessModalData.business.images.count
+    if(this.imagesCount > 0){
+      this.imagesExist = true
+      this.businessImages = this.businessModalData.business.images.list
+    } else {
+      this.imagesExist = false      
+    }
+
+    // Social Links
+    this.social_link = [
+      {
+        title:"instagram",
+        icon_class:"fa fa-instagram",
+        link:"#",
+      },
+      {
+        title:"twitter",
+        icon_class:"fa fa-twitter",
+        link:"#",
+      },
+      {
+        title:"facebook",
+        icon_class:"fa fa-facebook",
+        link:"#",
+      },
+    ]
+
+    // get contacts
+    this.contactsCount = this.businessModalData.business.contacts.count
+    if(this.contactsCount > 0){
+      this.contactsExist = true
+      this.mobileContacts = this.businessModalData.business.contacts.phone
+      this.mailContacts = this.businessModalData.business.contacts.email
+    } else {
+      this.contactsExist = false
+    }
   
     if (this.businessLogo == 'no_file') {
       let b_url = this.mediaUrl+'default_business.png'
@@ -245,7 +293,7 @@ export class BusinessListingComponent implements OnInit {
     } else {      
       this.businessLogo = modalData.business.logo
       this.updatedFile = this.businessLogo
-    }
+    }    
 
     // set rating
     this.currentRate = this.businessModalData.business.rating

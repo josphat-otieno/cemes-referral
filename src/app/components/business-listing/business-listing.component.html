@@ -382,7 +382,7 @@
       </button>
     </div>
 
-    <div class="modal-body default-calendar">
+    <div class="modal-body">
 
         <!-- display profile -->
         <div class="row profiler">
@@ -438,13 +438,22 @@
 
                         <div class="col-6">
                             <label class="text-muted mb-2">Contact Information</label>
-                           
-                            <p class="fs-3">
-                                <b> Phone Number(s)</b> <br/> 0722590563, 07265482822
-                            </p>
-                            <p class="fs-3">
-                                <b> Email(s)</b> <br/> business@biz.ke
-                            </p>
+
+                            <div class="container" *ngIf="contactsExist === true">
+                                <p class="fs-3">
+                                    <b> Phone Number(s)</b> <br/> {{mobileContacts}}
+                                </p> 
+                                <p class="fs-3">
+                                    <b> Email(s)</b> <br/> {{mailContacts}}
+                                </p>
+                            </div>
+
+                            <div class="container" *ngIf="contactsExist === false">
+                                <p class="fs-3 text-danger">
+                                    Business has no contacts
+                                </p>
+                            </div>
+
                             <p class="fs-3"><b>Social Links</b></p>
 
                                 <div class="social-media">
@@ -459,8 +468,17 @@
                     <div class="row">
                         <div class="col-12">
                             <label class="text-muted mb-2">Business Images</label>
-                            <div class="container image_container">
-                                <img src="assets/images/product/fries.jpg" alt="advert image"/>
+                            <div class="card-body pb-1">
+                                <div id="lightgallery" *ngIf="imagesExist === true" class="row">
+                                    <a class="col-lg-3 col-md-6 mb-4" href="javascript:void(0);" 
+                                        *ngFor="let item of businessImages; let key=index"><img class="rounded" [src]="item.thumb" 
+                                        (click)="open(businessImages, key)" style="width:60%;">
+                                    </a>
+                                </div>
+
+                                <div class="container" *ngIf="imagesExist === false">
+                                    <p class="text-danger"> Business has no images </p>
+                                </div>
                             </div>
                         </div>
                     </div>
