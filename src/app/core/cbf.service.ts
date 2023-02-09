@@ -149,7 +149,7 @@ export class CbfService implements OnDestroy {
     );
   }
 
-  // Register User
+  // Update User
   public updateSpecificUser(userDetails: FormData, userId:number, access:string): Observable<UserModel> {
     const url = ApiEndpointService.getEndpoint(ApiEndpointService.ENDPOINT.UPDATE_USER);
     return this.http.patch<UserModel>(url+userId, userDetails, {
@@ -400,6 +400,25 @@ export class CbfService implements OnDestroy {
   public updateMember(memberData:FormData, access: string): Observable<any> {
     const url = ApiEndpointService.getEndpoint(ApiEndpointService.ENDPOINT.UPDATE_MEMBER);
     return this.http.post<any>(url, memberData, {
+      headers: {
+        'Authorization': `Bearer ${access}`
+      }
+    }).pipe(
+      map(function (response: any) {
+        return response;
+      }),
+      catchError((fault: HttpErrorResponse) => {
+        return throwError(() => fault);
+
+      })
+    )
+
+  }
+
+  // Convert app user to member
+  public convertAppUser(appUserData:FormData, access: string): Observable<any> {
+    const url = ApiEndpointService.getEndpoint(ApiEndpointService.ENDPOINT.CONVERT_APP_USER);
+    return this.http.post<any>(url, appUserData, {
       headers: {
         'Authorization': `Bearer ${access}`
       }
@@ -1043,6 +1062,46 @@ export class CbfService implements OnDestroy {
       headers: {
         'Content-Type': 'application/json; charset=utf-8',
         'Accept': 'application/json',
+        'Authorization': `Bearer ${access}`
+      }
+    }).pipe(
+      map(function (response: any) {
+        return response;
+      }),
+      catchError((fault: HttpErrorResponse) => {
+        return throwError(() => fault);
+
+      })
+    )
+
+  }
+
+  // Get rejected Advertisements
+  public getRejectedAdvertisements(access: string): Observable<any> {
+    const url = ApiEndpointService.getEndpoint(ApiEndpointService.ENDPOINT.GET_REJECTED_ADVERTSIEMENTS);
+    return this.http.get<any>(url, {
+      headers: {
+        'Content-Type': 'application/json; charset=utf-8',
+        'Accept': 'application/json',
+        'Authorization': `Bearer ${access}`
+      }
+    }).pipe(
+      map(function (response: any) {
+        return response;
+      }),
+      catchError((fault: HttpErrorResponse) => {
+        return throwError(() => fault);
+
+      })
+    )
+
+  }
+
+  // Update Advertisement
+  public updateAdvertisement(advertId:number, advertData: FormData, access: string): Observable<any> {
+    const url = ApiEndpointService.getEndpoint(ApiEndpointService.ENDPOINT.ADVERTISEMENT);
+    return this.http.patch<any>(url+advertId+'/', advertData, {
+      headers: {
         'Authorization': `Bearer ${access}`
       }
     }).pipe(
