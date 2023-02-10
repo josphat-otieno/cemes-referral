@@ -677,6 +677,7 @@ import { PendingStaffListComponent } from './components/pending-staff-list/pendi
 import { PaymentsComponent } from './components/payments/payments.component';
 import { ResetPasswordComponent } from './pages/reset-password/reset-password.component';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
+import { BusinessProductsComponent } from './components/business-products/business-products.component';
 
 function appInitializer(authService: CbfService) {
   return () => {
@@ -1294,6 +1295,7 @@ function appInitializer(authService: CbfService) {
     PendingStaffListComponent,
     PaymentsComponent,
     ResetPasswordComponent,
+    BusinessProductsComponent,
     
     
   ],

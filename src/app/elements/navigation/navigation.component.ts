@@ -44,6 +44,7 @@ export class NavigationComponent implements OnInit {
     
   businessArray = [
     '/admin/business-list',
+    '/admin/business-products',
     '/admin/advertisement',
     // '/admin/awareness',
     '/admin/business-rating'

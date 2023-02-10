@@ -209,6 +209,7 @@
                 </a>
                 <ul aria-expanded="false" [ngClass]="{'mm-show': businessArray.indexOf(currentHref) > -1}">
                     <li><a [routerLink]="['/admin/business-list']" class="{{(currentHref == '/admin/admin/business-list') ? 'mm-active' : ''}}">Business List</a></li>
+                    <li><a [routerLink]="['/admin/business-products']" class="{{(currentHref == '/admin/admin/business-products') ? 'mm-active' : ''}}">Product List</a></li>
                     <!-- <li><a [routerLink]="['#']" class="{{(currentHref == '#') ? 'mm-active' : ''}}">Integrity Ratings</a></li> -->
                     <li><a [routerLink]="['/admin/business-rating']" class="{{(currentHref == '/admin/business-rating') ? 'mm-active' : ''}}">Business Ratings</a></li>                    
                     <li><a [routerLink]="['/admin/advertisement']" class="{{(currentHref == '/admin/advertisement') ? 'mm-active' : ''}}">Business Advertising</a></li>

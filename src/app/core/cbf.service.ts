@@ -554,6 +554,27 @@ export class CbfService implements OnDestroy {
 
   }
 
+  // Get Products list
+  public getVerifiedProducts(verification:boolean, assembly:number, business:number, businessOwner:number, businessCategory:number, access: string): Observable<any> {
+    const url = ApiEndpointService.getEndpoint(ApiEndpointService.ENDPOINT.GET_PRODUCTS_LIST);
+    return this.http.get<any>(url+'?assemblyId='+assembly+'&businessId='+business+'&businessOwner='+businessOwner+'&categoryId='+businessCategory+'&verification='+verification, {
+      headers: {
+        'Content-Type': 'application/json; charset=utf-8',
+        'Accept': 'application/json',
+        'Authorization': `Bearer ${access}`
+      }
+    }).pipe(
+      map(function (response: any) {
+        return response;
+      }),
+      catchError((fault: HttpErrorResponse) => {
+        return throwError(() => fault);
+
+      })
+    )
+
+  }
+
   // Get business Ratings
   public getBusinessRatings(verification:boolean, access: string): Observable<any> {
     const url = ApiEndpointService.getEndpoint(ApiEndpointService.ENDPOINT.GET_BUSINESS_RATINGS);

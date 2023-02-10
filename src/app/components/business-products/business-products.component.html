@@ -1,0 +1,372 @@
+<div class="content-body">
+    <div class="container-fluid">
+        <div class="row page-titles mx-0">
+            <div class="col-sm-6 p-md-0">
+                <div class="welcome-text">
+                    <h4>Business Management</h4>
+                </div>
+            </div>
+            <div class="col-sm-6 p-md-0 justify-content-sm-end mt-2 mt-sm-0 d-flex">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="admin/dashboard">Home</a></li>
+                    <li class="breadcrumb-item"><a href="admin/business-listing">Business Management</a></li>
+                    <li class="breadcrumb-item active"><a href="javascript:void(0)">Business Products</a></li>
+                </ol>
+            </div>
+        </div>
+
+        <!-- Parameters -->
+        <div class="row">
+            <div class="col-xl-4 col-xxl-6 col-lg-6 col-sm-6">
+                <div class="widget-stat card">
+                    <div class="card-body p-4">
+                        <div class="media ai-icon">
+                            <span class="mr-3 bgl-warning text-warning">                    
+                                <svg id="icon-orders" xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text">
+                                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                    <polyline points="14 2 14 8 20 8"></polyline>
+                                    <line x1="16" y1="13" x2="8" y2="13"></line>
+                                    <line x1="16" y1="17" x2="8" y2="17"></line>
+                                    <polyline points="10 9 9 9 8 9"></polyline>
+                                </svg>
+                            </span>
+                            <div class="media-body">
+                                <p class="mb-1">Products pending verification</p>
+                                <h4 class="mb-0">{{pendingProductsCount}}</h4> 
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-4 col-xxl-6 col-lg-6 col-sm-6">
+                <div class="widget-stat card">
+                    <div class="card-body  p-4">
+                        <div class="media ai-icon">
+                            <span class="mr-3 bgl-success text-success">
+                                <svg id="icon-database-widget" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-database">
+                                    <ellipse cx="12" cy="5" rx="9" ry="3"></ellipse>
+                                    <path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"></path>
+                                    <path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"></path>
+                                </svg> 
+                            </span>
+                            <div class="media-body">
+                                <p class="mb-1">Total Verified Products</p>
+                                <h4 class="mb-0">{{productsCount}}</h4>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        
+        </div>
+
+        <!-- Main Content -->
+        <div class="card">
+            <div class="card-header">
+                <div class="col-6">
+                    List of all products under {{businessName}}
+                </div>
+            </div>
+           
+            <div class="card-body">
+
+                <mat-tab-group>
+                    <mat-tab label="Verified Products"> 
+                    <br/>
+                           
+                        <div class="table-responsive">
+                            <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="table table-striped">
+                            <thead>
+                            <tr>
+                                <th scope="col">Name</th>
+                                <th scope="col">Business</th>
+                                <th scope="col">Owner</th>
+                                <th scope="col">Registration Date</th>
+                                <th scope="col">Status</th>
+                                <th scope="col">Update Details</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr *ngFor="let res of verifiedProducts; index as i">
+                                <td>{{res.product.name}}</td>
+                                <td>{{res.product.business}}</td>
+                                <td>{{res.product.owner.name}}</td>
+                                <td>{{res.product.joinDate | date:'mediumDate'}}</td>
+                                <td>
+                                    <span *ngIf="res.product.status === true" class="badge badge-success">Active</span>
+                                    <span *ngIf="res.product.status === false" class="badge badge-danger">Inactive</span>
+                                </td>
+                                <td>
+                                    <div class="button_containers">                                        
+                                        <button type="button" class="btn btn-sm btn-info" (click)="reviewUpdateModal(viewProductModal, res)">
+                                            <i class="fa fa-eye"></i> View Details
+                                        </button> &nbsp;
+                                        <button type="button" *ngIf="res.product.status === true" class="btn btn-sm btn-danger" (click)="reviewModal(deactivateProductModal, res)"><i class="fa fa-close"></i> Deactivate</button>
+                                        <button type="button" *ngIf="res.product.status === false" class="btn btn-sm btn-success" (click)="reviewModal(activateProductModal, res)"><i class="fa fa-refresh"></i> Activate</button>
+                                    </div>
+                                </td>
+                            </tr>
+
+                            <tr *ngIf="verifiedProductCount == 0">
+                                <td colspan="6" class="no_data_display">
+                                    No data available for display
+                                </td>
+                            </tr>
+
+                            </tbody>
+                            </table>
+                        </div>
+
+                    </mat-tab>
+
+                    <mat-tab label="Pending Verification: {{pendingProductsCount}} Request(s)">
+                        <br/>
+                               
+                            <div class="table-responsive">
+                                <table datatable [dtOptions]="ptOptions" [dtTrigger]="ptTrigger" class="table table-striped">
+                                <thead>
+                                <tr>
+                                    <th scope="col">Name</th>
+                                    <th scope="col">Business</th>
+                                    <th scope="col">Owner</th>
+                                    <th scope="col">Registration Date</th>
+                                    <th scope="col">Status</th>
+                                    <th scope="col">Update Details</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr *ngFor="let res of pendingProducts; index as i">
+                                    <td>{{res.product.name}}</td>
+                                    <td>{{res.product.business}}</td>
+                                    <td>{{res.product.owner.name}}</td>
+                                    <td>{{res.product.joinDate | date:'mediumDate'}}</td>
+                                    <td>
+                                        <span *ngIf="res.product.status === true" class="badge badge-success">Active</span>
+                                        <span *ngIf="res.product.status === false" class="badge badge-danger">Inactive</span>
+                                    </td>
+                                    <td>
+                                        <div class="button_containers">                                        
+                                            <button type="button" class="btn btn-sm btn-info" (click)="reviewUpdateModal(viewProductModal, res)">
+                                                <i class="fa fa-eye"></i> View Details
+                                            </button> &nbsp;
+                                            <button type="button" class="btn btn-sm btn-success" (click)="reviewModal(approveProductModal, res)"><i class="fa fa-check"></i> Approve</button> &nbsp;
+                                            <button type="button" [disabled]="res.deleteStatus === true" class="btn btn-sm btn-danger" (click)="reviewModal(rejectProductModal, res)"><i class="fa fa-close"></i> Reject</button>
+                                        </div>
+                                    </td>
+                                </tr>
+
+                                <tr *ngIf="pendingProductsCount == 0">
+                                    <td colspan="6" class="no_data_display">
+                                        No data available for display
+                                    </td>
+                                </tr>
+                                </tbody>
+                                </table>
+                            </div>
+    
+                    </mat-tab>
+
+                </mat-tab-group>
+               
+            </div>
+        </div>
+      
+	</div>
+</div>
+
+<!-- Modals -->
+
+  <ng-template #viewProductModal let-modal>
+    <div class="modal-header alert alert-success">
+      <h4 class="modal-title" id="modal-edit-title">{{productModalData.product.name}} 's Details</h4>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+
+    <div class="modal-body">
+
+        <!-- display profile -->
+        <div class="row profiler">
+			<div class="col-lg-12">
+				<div class="profile card card-body px-3 pt-3 pb-0">
+					<div class="profile-head">
+						<div class="photo-content">
+							<div class="cover-photo"></div>
+						</div>
+						<div class="profile-info">
+						
+							<div class="profile-details">
+								<div class="profile-name px-3 pt-2">
+									<h4 class="text-primary mb-0">{{productModalData?.product.name}}</h4>
+								</div>
+								<div class="profile-email px-2 pt-2">
+									<h4 class="text-muted mb-0">Description</h4>
+									<p>{{productModalData?.product.nature}}</p>
+								</div>
+								
+							</div>
+						</div>
+					</div> <hr/>
+
+                    <!-- Business Details -->
+                    <div class="row">
+                        <div class="col-6">               
+                            <label class="text-muted mb-2">Business Details</label>
+                            <p class="fs-6">
+                                <b> Business Name: </b>{{productModalData?.product.business}}
+                            </p>                            
+                            <p class="fs-6">
+                                <b> Owned By: </b>{{productModalData?.product.owner.name}}
+                            </p>
+                        </div>
+
+                        <div class="col-6">               
+                            <label class="text-muted mb-2">Product Details</label>
+                            <p class="fs-6">
+                                <b> Cost: </b> {{productModalData?.product.cost}}
+                            </p>
+                            <p class="fs-6">
+                                <b> Registration Date: </b>{{productModalData.product.joinDate | date:'longDate'}}
+                           </p>
+                            <p class="fs-6">
+                                <b> Status: </b>
+                                <span *ngIf="productModalData?.product.status === true" class="badge badge-success">Active</span>
+                                <span *ngIf="productModalData?.product.status === false" class="badge badge-danger">Inactive</span>
+                           </p>
+                        </div>
+                    </div>
+
+                    <!-- business images -->
+                    <div class="row">
+                        <div class="col-12">
+                            <label class="text-muted mb-2">Product Images</label>
+                            <div class="card-body pb-1">
+                                <div id="lightgallery" *ngIf="imagesExist === true" class="row">
+                                    <a class="col-lg-3 col-md-6 mb-4" href="javascript:void(0);" 
+                                        *ngFor="let item of productImages; let key=index"><img class="rounded" [src]="item.thumb" 
+                                        (click)="open(productImages, key)" style="width:60%;">
+                                    </a>
+                                </div>
+
+                                <div class="container" *ngIf="imagesExist === false">
+                                    <p class="text-danger"> Product has no images </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+				</div>
+			</div>
+		</div>
+        
+        <div class="modal-footer">
+            <button class="btn btn-block btn-md btn-primary" type="button" aria-label="Close" (click)="modal.dismiss('Cross click')">
+                Close
+            </button>
+        </div>
+    </div>
+  </ng-template>
+
+  <ng-template #deactivateProductModal let-modal>
+    <div class="modal-header alert alert-danger">
+      <h4 class="modal-title" id="modal-del-title">Deactivate Product</h4>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body default-calendar">
+      <form #deactivForm="ngForm">        
+        <input type="hidden" name="id" ngModel="{{productModalData?.product.id}}" value="{{productModalData?.product.id}}">
+        <p>Are you sure you want to deactivate <b>{{productModalData.product.name}}</b>?</p>
+      </form>
+
+       <!-- message -->
+       <div *ngIf="messageResponse" class="row alert alert-info">
+        <p><i class="fa fa-exclamation"></i> &nbsp;  {{messageResponse}}</p>
+        </div>
+
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-sm btn-light" (click)="modal.close('Close click')">No</button>
+        <button type="button" class="btn btn-sm btn-primary" (click)="deactivateProduct(deactivForm.value)">Yes</button>
+    </div>
+  </ng-template>
+
+  <ng-template #activateProductModal let-modal>
+    <div class="modal-header alert alert-success">
+      <h4 class="modal-title" id="modal-del-title">Activate Business</h4>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body default-calendar">
+      <form #activForm="ngForm">        
+        <input type="hidden" name="id" ngModel="{{productModalData?.product.id}}" value="{{productModalData?.product.id}}">
+        <p>Are you sure you want to activate <b>{{productModalData.product.name}}</b>?</p>
+      </form>
+
+      <!-- message -->
+      <div *ngIf="messageResponse" class="row alert alert-info">
+        <p><i class="fa fa-exclamation"></i> &nbsp;  {{messageResponse}}</p>
+        </div>
+
+    </div>
+
+    <div class="modal-footer">
+        <button type="button" class="btn btn-sm btn-light" (click)="modal.close('Close click')">No</button>
+        <button type="button" class="btn btn-sm btn-primary" (click)="activateProduct(activForm.value)">Yes</button>
+    </div>
+  </ng-template>
+  
+  <ng-template #approveProductModal let-modal>
+    <div class="modal-header alert alert-success">
+      <h4 class="modal-title" id="modal-del-title">Approve {{productModalData?.product.name}}</h4>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body default-calendar">
+      <form #approvalForm="ngForm">        
+        <input type="hidden" name="id" ngModel="{{productModalData?.product.id}}" value="{{productModalData?.product.id}}">
+        <p>Are you sure you want to approve <b>{{productModalData?.product.name}}</b>?</p>
+      </form>
+
+      <!-- message -->
+      <div *ngIf="messageResponse" class="row alert alert-info">
+        <p><i class="fa fa-exclamation"></i> &nbsp;  {{messageResponse}}</p>
+        </div>
+
+    </div>
+
+    <div class="modal-footer">
+        <button type="button" class="btn btn-sm btn-light" (click)="modal.close('Close click')">No</button>
+        <button type="button" class="btn btn-sm btn-primary" (click)="approveProduct(approvalForm.value)">Yes</button>
+    </div>
+  </ng-template>
+
+  <ng-template #rejectProductModal let-modal>
+    <div class="modal-header alert alert-danger">
+      <h4 class="modal-title" id="modal-del-title">Reject {{productModalData?.product.name}}</h4>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body default-calendar">
+      <form #rejectForm="ngForm">        
+        <input type="hidden" name="id" ngModel="{{productModalData?.product.id}}" value="{{productModalData?.product.id}}">
+        <p>Are you sure you want to reject <b>{{productModalData?.product.name}}</b>?</p>
+      </form>
+
+      <!-- message -->
+      <div *ngIf="messageResponse" class="row alert alert-info">
+        <p><i class="fa fa-exclamation"></i> &nbsp;  {{messageResponse}}</p>
+      </div>
+
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-sm btn-light" (click)="modal.close('Close click')">No</button>
+        <button type="button" class="btn btn-sm btn-primary" (click)="revokeProduct(rejectForm.value)">Yes</button>
+    </div>
+  </ng-template>
+    

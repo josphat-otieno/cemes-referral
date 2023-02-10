@@ -409,7 +409,8 @@
                                           </ng-template>
                                           
                                         <ngb-rating [(rate)]="currentRate" [starTemplate]="t" [readonly]="true" [max]="5"></ngb-rating> ({{currentRate}}) <br/>                                          
-                                        {{businessModalData?.business.reviews}} reviews
+                                        <a href="/admin/business-rating" class="badge badge-sm badge-info"><i class="fa fa-eye"></i> {{businessModalData?.business.reviews}} reviews(s)</a>  &nbsp;
+                                        <span (click)="goToProducts(businessModalData?.business.id)" class="badge badge-sm badge-success"><i class="fa fa-eye"></i> {{businessModalData?.business.productCount}} product(s)</span> 
                                     </p>
 								</div>
 								<div class="profile-email px-2 pt-2">

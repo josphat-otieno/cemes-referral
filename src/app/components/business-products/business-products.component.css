@@ -1,0 +1,52 @@
+.floating_logo {
+    margin: auto;
+    margin-left: 80%;
+    /* background-image: url($); */
+}
+
+.profiler {
+    max-height: 400px;
+    overflow-y: scroll;
+}
+
+/* Stars */
+.star {
+    position: relative;
+    display: inline-block;
+    font-size: 1rem;
+    color: #d3d3d3;
+  }
+.full {
+    color: gold;
+}
+.half {
+    position: absolute;
+    display: inline-block;
+    overflow: hidden;
+    color: gold;
+}
+
+.current_label {
+    text-decoration: underline;
+}
+
+/* Upload Image */
+.image-upload > input
+{
+    display: none;
+}
+
+.image-upload img
+{
+    max-width: 100px;
+    cursor: pointer;
+}
+
+.scrollable-element {
+    scrollbar-color: dark;
+}
+
+#lightgallery {
+    overflow: overlay;
+    height: 12rem;
+}

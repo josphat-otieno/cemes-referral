@@ -147,6 +147,7 @@ import { ProfileComponent } from './components/profile/profile.component';
 import { BusinessRatingComponent } from './components/business-rating/business-rating.component';
 import { PaymentsComponent } from './components/payments/payments.component';
 import { ResetPasswordComponent } from './pages/reset-password/reset-password.component';
+import { BusinessProductsComponent } from './components/business-products/business-products.component';
 
 
 
@@ -276,6 +277,7 @@ const routes: Routes = [
               {path: 'member-database', component: MembersComponent},
               {path: 'app-users', component: AppUsersComponent},
               {path: 'business-list', component: BusinessListingComponent},
+              {path: 'business-products', component: BusinessProductsComponent},
               {path: 'assembly', component: AssemblyComponent},
               {path: 'account-packages', component: AccountPackagesComponent},
               {path: 'business-category', component: BusinessCategoryComponent},
@@ -283,7 +285,7 @@ const routes: Routes = [
               {path: 'forum', component: ForumComponent},
               {path: 'forum-category', component: ForumCategoryComponent},
               {path: 'advertisement', component: AdvertisementsComponent},
-              {path: 'awareness', component: OffersPromotionsAwarenessComponent},
+              // {path: 'awareness', component: OffersPromotionsAwarenessComponent},
               {path: 'business-rating', component: BusinessRatingComponent},
               {path: 'profile', component: ProfileComponent},
               {path: 'payments', component: PaymentsComponent},

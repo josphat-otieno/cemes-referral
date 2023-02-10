@@ -7,15 +7,15 @@ import { ApiEndpointService } from 'src/app/core/api-endpoint.service';
 import { CbfService } from 'src/app/core/cbf.service';
 import { LightboxConfig, Lightbox } from 'ngx-lightbox';
 import { ToastService } from 'src/app/bootstrap/toast/toast-global/toast-service';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import ls from 'localstorage-slim';
 
 @Component({
-  selector: 'app-business-listing',
-  templateUrl: './business-listing.component.html',
-  styleUrls: ['./business-listing.component.css']
+  selector: 'app-business-products',
+  templateUrl: './business-products.component.html',
+  styleUrls: ['./business-products.component.css']
 })
-export class BusinessListingComponent implements OnInit {
+export class BusinessProductsComponent implements OnInit {
 
   public accessToken:string = ''  
   public user_id:number = 0
@@ -38,15 +38,18 @@ export class BusinessListingComponent implements OnInit {
   public updatedFile: File | any;
 
   // parameters
-  public businesses:any = []
-  public pendingBusinesses:any = []
-  public pendingbusinessCount:number = 0
+  public selectedBusiness:number = 0 
+  public businessName:string = ''
+  
+  public verifiedProducts:any = []
+  public pendingProducts:any = []
+  public pendingProductsCount:number = 0
   public productsCount:number = 0
-  public businessCount:number = 0
-  public businessModalData:any = []
+  public verifiedProductCount:number = 0
+  public productModalData:any = []
 
     // Images Handler
-    public businessImages:any = []
+    public productImages:any = []
     public imagesCount:number = 0
     public imagesExist: boolean = false
 
@@ -58,7 +61,7 @@ export class BusinessListingComponent implements OnInit {
     public mailCount: number = 0
     public mobileCount: number = 0
 
-  // business Def Parameters
+  // Product list Def Parameters
   public businessOwnerId:number = 0
   public businessCategory:number = 0
   public assemblyId:number = 0
@@ -93,6 +96,7 @@ export class BusinessListingComponent implements OnInit {
   constructor(
     private fb: FormBuilder,  
     private router: Router,  
+    private activatedRoute: ActivatedRoute,
     private toaster: ToastService,
     private modalService: NgbModal,
     private cbfService: CbfService,
@@ -120,9 +124,22 @@ export class BusinessListingComponent implements OnInit {
 
   ngOnInit(): void {
 
-    // remove bpd 
-    
+    this.activatedRoute.queryParams.subscribe(params => {
+      const bpd = params['bpd'];  
+      let encrypted_id = ls.get('bpd')
+      
+      // check if they're same
+      if(bpd == encrypted_id){
+        let decryptedId = ls.get('bpd', {decrypt: true, secret: 36});         
+        this.selectedBusiness = Number(decryptedId);
+
+      } else {
+        this.selectedBusiness = 0
         ls.remove('bpd')
+        this.router.navigate(['/admin/business-products'])
+      }
+      
+    });
 
     // datatable
     this.dtOptions = {
@@ -159,11 +176,8 @@ export class BusinessListingComponent implements OnInit {
       this.businessDefaultLogo = b_url;
     }
 
-    this.getBusinessCategory()
-    this.getBusinessOwners()
-    this.getProductCount()
-    this.getBusinesses(this.assemblyId, this.businessOwnerId, this.businessCategory)
-    this.getPendingbusinesses(this.assemblyId, this.businessOwnerId, this.businessCategory)
+    this.getVerifiedProductsList(this.assemblyId, this.selectedBusiness, this.businessOwnerId, this.businessCategory)
+    this.getPendingProductsList(this.assemblyId, this.selectedBusiness, this.businessOwnerId, this.businessCategory)
 
   }
   
@@ -240,7 +254,7 @@ export class BusinessListingComponent implements OnInit {
 
   reviewModal(content:any, data:any) {
     this.modalService.open(content)
-    this.businessModalData = data
+    this.productModalData = data
   }
 
   reviewUpdateModal(editBiz:any, biz:any) {
@@ -252,290 +266,63 @@ export class BusinessListingComponent implements OnInit {
     this.password = ''
     let modalData = biz;
 
-    this.businessModalData = modalData
+    this.productModalData = modalData
 
     // get images
-    this.imagesCount = this.businessModalData.business.images.count
+    this.imagesCount = this.productModalData.product.images.count
     if(this.imagesCount > 0){
       this.imagesExist = true
-      this.businessImages = this.businessModalData.business.images.list
+      this.productImages = this.productModalData.product.images.list
     } else {
       this.imagesExist = false      
     }
-
-    // Social Links
-    this.social_link = [
-      {
-        title:"instagram",
-        icon_class:"fa fa-instagram",
-        link:"#",
-      },
-      {
-        title:"twitter",
-        icon_class:"fa fa-twitter",
-        link:"#",
-      },
-      {
-        title:"facebook",
-        icon_class:"fa fa-facebook",
-        link:"#",
-      },
-    ]
-
-    // get contacts
-    this.contactsCount = this.businessModalData.business.contacts.count
-    if(this.contactsCount > 0){
-      this.contactsExist = true
-      this.mobileContacts = this.businessModalData.business.contacts.phone
-      this.mailContacts = this.businessModalData.business.contacts.email
-    } else {
-      this.contactsExist = false
-    }
   
-    if (this.businessLogo == 'no_file') {
-      let b_url = this.mediaUrl+'default_business.png'
-      this.businessLogo = b_url;
-    } else {      
-      this.businessLogo = modalData.business.logo
-      this.updatedFile = this.businessLogo
-    }    
-
-    // set rating
-    this.currentRate = this.businessModalData.business.rating
-  
-  }
-
-  /* -------------------------------------------------------------------- File management ----------------------------------------------------------------- */
-    // On file Select
-  onChange(event: any) {
-    this.alertResponse = ''
-
-    const file = event.target.files[0];
-
-    if (event.length === 0)
-      return;
-
-    var mimeType = file.type
-
-    if(mimeType.indexOf('image')> -1){
-
-      // check if size is 10MB Max
-
-
-      if (mimeType.match(/image\/*/) == null) {
-        this.alertResponse = "Not An Image, Only images are supported."
-        return;
-      } else {
-        this.upload = 1;        
-        this.actualFile = file;
-
-        const img_reader = new FileReader();
-        img_reader.onload = () => {
-          this.businessDefaultLogo = img_reader.result as string;
-        }
-        img_reader.readAsDataURL(file)
-      }
-
-    } else {
-      this.upload = 0;
-      this.alertResponse = "Not An Image, Only images are supported."
-      return;
-
-    }
-    
-  }
- 
-  // Change image on Update
-  onUpdateChange(event: any) {
-    this.alertResponse = ''
-
-    const file = event.target.files[0];
-
-    if (event.length === 0)
-      return;
-
-    var mimeType = file.type
-
-    if(mimeType.indexOf('image')> -1){
-
-      // check if size is 10MB Max
-      let fileSize = file.size
-
-      if (fileSize >= 10000000) {
-        this.alertResponse = "Please select an image less than 10MB.";
-        this.updateValidity = false
-      } else {
-        this.updateValidity = true
-      }
-
-      if (mimeType.match(/image\/*/) == null) {
-        this.alertResponse = "Not An Image, Only images are supported."
-        return;
-      } else {
-        this.upload = 1;        
-        this.updatedFile = file;
-
-        const img_reader = new FileReader();
-        img_reader.onload = () => {
-          this.businessLogo = img_reader.result as string;
-        }
-        img_reader.readAsDataURL(file)
-      }
-
-    } else {
-      this.upload = 0;
-      this.alertResponse = "Not An Image, Only images are supported."
-      return;
-
-    }
-    
-  }
-
-  goToProducts(businessId:number){
-    this.modalService.dismissAll()
-
-    ls.set('bpd', JSON.stringify(businessId), {encrypt: true, secret: 36});
-
-    let encryptedId = ls.get('bpd')
-    this.router.navigate(['/admin/business-products'], { queryParams: { bpd: encryptedId} })
   }
 
   // Endpoints Consumption
-  getBusinessCategory() {
-    const categorySubscr = this.cbfService.getBusinessCategories(this.accessToken)
-
-    .subscribe({
-      next: (response: any) => {
-        let queryResults = response
-        this.businessCategories = queryResults.results        
-      },
-      error: (e:HttpErrorResponse) =>  this.msg = 'Something went wrong, please try again'     
-    })
-    
-    this.unsubscribe.push(categorySubscr);
-  }
-
-  getBusinessOwners() {
-    const ownersSubscr = this.cbfService.getBusinessOwnerList(this.accessToken)
-
-    .subscribe({
-      next: (response: any) => {
-        let queryResults = response
-        this.businessOwners = queryResults.results        
-      },
-      error: (e:HttpErrorResponse) =>  this.msg = 'Something went wrong, please try again'     
-    })
-    
-    this.unsubscribe.push(ownersSubscr);
-  }
-
-  getProductCount() {
-    const productSubscr = this.cbfService.getProducts(this.accessToken)
-
-    .subscribe({
-      next: (response: any) => {
-        let queryResults = response
-        this.productsCount = queryResults.count
-        
-      },
-      error: (e:HttpErrorResponse) =>  this.msg = 'Something went wrong, please try again'     
-    })
-    
-    this.unsubscribe.push(productSubscr);
-  }
-
-  getBusinesses(assembly:number, businessOwner:number, category:number) {
+ 
+  getVerifiedProductsList(assembly:number, businessId:number, businessOwner:number, category:number) {
     let verificationStatus = true
-    const businessSubscr = this.cbfService.getVerifiedBusinesses(verificationStatus, assembly, businessOwner, category, this.accessToken)
+    const vprodSubscr = this.cbfService.getVerifiedProducts(verificationStatus, assembly, businessId, businessOwner, category, this.accessToken)
 
     .subscribe({
       next: (response: any) => {
         let queryResults = response
-        this.businessCount = queryResults.count
-        this.businesses = queryResults.results
+        this.verifiedProductCount = queryResults.count
+        this.verifiedProducts = queryResults.results
+        
+        this.productsCount = this.verifiedProductCount
 
-        this.dtTrigger.next(this.businesses)
+        this.dtTrigger.next(this.verifiedProducts)
         
       },
       error: (e:HttpErrorResponse) =>  this.msg = 'Something went wrong, please try again'     
     })
     
-    this.unsubscribe.push(businessSubscr);
+    this.unsubscribe.push(vprodSubscr);
 
   }
 
-  getPendingbusinesses(assembly:number, businessOwner:number, category:number) {
+  getPendingProductsList(assembly:number, businessId:number, businessOwner:number, category:number) {
     let verificationStatus = false
-    const businessSubscr = this.cbfService.getVerifiedBusinesses(verificationStatus, assembly, businessOwner, category, this.accessToken)
+    const pProdSubscr = this.cbfService.getVerifiedProducts(verificationStatus, assembly, businessId, businessOwner, category, this.accessToken)
 
     .subscribe({
       next: (response: any) => {
         let queryResults = response
-        this.pendingbusinessCount = queryResults.count
-        this.pendingBusinesses = queryResults.results
+        this.pendingProductsCount = queryResults.count
+        this.pendingProducts = queryResults.results
 
         if(queryResults.count > 0){
-          this.ptTrigger.next(this.pendingBusinesses)
+          this.ptTrigger.next(this.pendingProducts)
         }
         
       },
       error: (e:HttpErrorResponse) =>  this.msg = 'Something went wrong, please try again'     
     })
     
-    this.unsubscribe.push(businessSubscr);
+    this.unsubscribe.push(pProdSubscr);
 
-  }
-
-  saveBusiness() {
-
-    const regData:FormData = new FormData()
-
-    if (!this.actualFile) {
-
-      this.alertResponse = 'Caution, Kindly select an image to upload';
-      
-    } else {      
-
-      regData.append('logo', this.actualFile, this.actualFile.name);
-
-    }    
-
-    regData.append('name', this.BusinessRegistration.get('name')?.value)
-    regData.append('nature', this.BusinessRegistration.get('nature')?.value)
-    regData.append('physical_location', this.BusinessRegistration.get('physical_location')?.value)
-    regData.append('floor', this.BusinessRegistration.get('floor')?.value)
-    regData.append('building_name', this.BusinessRegistration.get('building_name')?.value)
-    regData.append('office_number', this.BusinessRegistration.get('office_number')?.value)
-    regData.append('business_owner', this.BusinessRegistration.get('business_owner')?.value)
-    regData.append('business_category', this.BusinessRegistration.get('business_category')?.value)
-    regData.append('is_active', true.toString())
-    regData.append('is_verified', true.toString())
-    regData.append('user', this.user_id.toString())
-
-    const regsterSubscr = this.cbfService.registerBusiness(regData, this.accessToken)
-
-    .subscribe({
-      next: (response: any) => {
-        let results = response
-        
-        if(results.id){
-          
-          this.messageResponse = results.message
-
-          setTimeout(() => {
-            window.location.reload()
-          }, 1200);
-          
-        }
-        
-      },
-      error: (e:HttpErrorResponse) =>  {
-        this.alertResponse = 'Something went wrong registering the business, please try again'  
-        this.toaster.show(this.msg, { classname: 'bg-warning text-light', delay: 10000 });
-      }   
-    })
-    
-    this.unsubscribe.push(regsterSubscr);
   }
 
   updateBusiness (data: any) {
@@ -623,7 +410,7 @@ export class BusinessListingComponent implements OnInit {
 
   }
 
-  deactivateBusinessAction(data: any) {
+  deactivateProduct(data: any) {
 
     let modalData = data
     let businessId = modalData.id
@@ -662,7 +449,7 @@ export class BusinessListingComponent implements OnInit {
 
   }
 
-  activateBusinessAction(data: any) {
+  activateProduct(data: any) {
 
     let modalData = data
     let businessId = modalData.id
@@ -701,7 +488,7 @@ export class BusinessListingComponent implements OnInit {
 
   }
 
-  deleteBusinessAction(data: any) {
+  deleteProduct(data: any) {
 
     let modalData = data
 
@@ -740,7 +527,7 @@ export class BusinessListingComponent implements OnInit {
 
   }
 
-  approveBusinessAction(data: any) {
+  approveProduct(data: any) {
 
     let modalData = data
     let businessId = modalData.id
@@ -780,7 +567,7 @@ export class BusinessListingComponent implements OnInit {
 
   }
 
-  revokeBusinessAction(data: any) {
+  revokeProduct(data: any) {
 
     let modalData = data
     let businessId = modalData.id
