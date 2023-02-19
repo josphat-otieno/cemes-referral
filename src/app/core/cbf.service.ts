@@ -167,10 +167,49 @@ export class CbfService implements OnDestroy {
     );
   }
 
+  // Update P.pic
+  public updateProfilePicture(userId: number, ImageData: FormData, access: string): Observable<any> {
+    const url = ApiEndpointService.getEndpoint(ApiEndpointService.ENDPOINT.UPDATE_PROFILE);
+    return this.http.patch<any>(url + userId + '/update-profile/', ImageData, {
+      headers: {
+        'Authorization': `Bearer ${access}`
+      }
+    }).pipe(
+      map(function (response: any) {
+        return response;
+      }),
+      catchError((fault: HttpErrorResponse) => {
+        return throwError(fault);
+      })
+    )
+
+  }
+
   // Get User Detail
   public getUser(user_id: number, access: string): Observable<any> {
     const url = ApiEndpointService.getEndpoint(ApiEndpointService.ENDPOINT.GET_USER);
     return this.http.get<any>(url + user_id, {
+      headers: {
+        'Content-Type': 'application/json; charset=utf-8',
+        'Accept': 'application/json',
+        'Authorization': `Bearer ${access}`
+      }
+    }).pipe(
+      map(function (response: any) {
+        return response;
+      }),
+      catchError((fault: HttpErrorResponse) => {
+        return throwError(() => fault);
+
+      })
+    )
+
+  }
+
+  // Get User Profile
+  public getUserProfile(user_id: number, access: string): Observable<any> {
+    const url = ApiEndpointService.getEndpoint(ApiEndpointService.ENDPOINT.GET_ADMIN_PROFILE);
+    return this.http.get<any>(url + '?user_id=' + user_id, {
       headers: {
         'Content-Type': 'application/json; charset=utf-8',
         'Accept': 'application/json',
@@ -661,6 +700,25 @@ export class CbfService implements OnDestroy {
   public updateBusiness(businessData:FormData, businessId:number, access: string): Observable<any> {
     const url = ApiEndpointService.getEndpoint(ApiEndpointService.ENDPOINT.UPDATE_BUSINESS_DETAILS);
     return this.http.patch<any>(url + businessId + '/', businessData, {
+      headers: {
+        'Authorization': `Bearer ${access}`
+      }
+    }).pipe(
+      map(function (response: any) {
+        return response;
+      }),
+      catchError((fault: HttpErrorResponse) => {
+        return throwError(() => fault);
+
+      })
+    )
+
+  }
+
+  // Update Product Details
+  public updateProduct(productData:FormData, productId:number, access: string): Observable<any> {
+    const url = ApiEndpointService.getEndpoint(ApiEndpointService.ENDPOINT.BUSINESS_PRODUCT);
+    return this.http.patch<any>(url + productId + '/', productData, {
       headers: {
         'Authorization': `Bearer ${access}`
       }

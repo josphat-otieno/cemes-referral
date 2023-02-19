@@ -180,44 +180,6 @@ export class BusinessProductsComponent implements OnInit {
     this.getPendingProductsList(this.assemblyId, this.selectedBusiness, this.businessOwnerId, this.businessCategory)
 
   }
-  
-  passwordInput(value:any){
-
-    this.passwordValue = ''
-    this.password =value
-  }
-
-  //Validate Phone Number
-  validatePhone(value: string) {
-    let phoneNumber = value;
-    if((phoneNumber.length > 10) || (phoneNumber.length < 10) && (phoneNumber.charAt(0) != '0')){
-      this.phoneValidationMessage = true;
-      this.validity = true;
-    } else {
-      this.phoneValidationMessage = false;
-      this.validity = false;
-    }
-  }
-
-  //validate Email
-  validateEmail(value: string) {
-    let email = value;
-    if(!email.match("^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$")){
-      this.emailValidationMessage = true;
-      this.validity = true;
-    } else {
-      this.emailValidationMessage = false;
-      this.validity = false;
-    }
-  }
-
-  toggleEye: boolean = true;
-  
-  // toggle password
-  toggleEyeIcon(inputPassword:any) {
-		this.toggleEye = !this.toggleEye;		
-		inputPassword.type = inputPassword.type === 'password' ? 'text' : 'password';
-	}
 
   // modal mgt
   openModal(content:any) {
@@ -413,19 +375,19 @@ export class BusinessProductsComponent implements OnInit {
   deactivateProduct(data: any) {
 
     let modalData = data
-    let businessId = modalData.id
+    let productId = modalData.id
 
     const delData:FormData = new FormData()
-    delData.append('is_active', 'false')
+    delData.append('is_deleted', 'false')
     delData.append('modified_by', this.user_id.toString())
 
-    const deactivSubscr = this.cbfService.updateBusiness(delData, businessId, this.accessToken)
+    const deactivSubscr = this.cbfService.updateProduct(delData, productId, this.accessToken)
 
     .subscribe({
       next: (response: any) => {
 
         if(response.id){
-          this.messageResponse = 'Business successfully deactivated'
+          this.messageResponse = 'Product successfully deactivated'
 
           this.toaster.show(this.messageResponse, { classname: 'bg-success text-light', delay: 10000 });
           
@@ -452,19 +414,19 @@ export class BusinessProductsComponent implements OnInit {
   activateProduct(data: any) {
 
     let modalData = data
-    let businessId = modalData.id
+    let productId = modalData.id
 
     const activData:FormData = new FormData()
-    activData.append('is_active', 'true')
+    activData.append('is_deleted', 'true')
     activData.append('modified_by', this.user_id.toString())
 
-    const activSubscr = this.cbfService.updateBusiness(activData, businessId, this.accessToken)
+    const activSubscr = this.cbfService.updateProduct(activData, productId, this.accessToken)
 
     .subscribe({
       next: (response: any) => {
 
         if(response.id){
-          this.messageResponse = 'Business successfully activated'
+          this.messageResponse = 'Product successfully activated'
 
           this.toaster.show(this.messageResponse, { classname: 'bg-success text-light', delay: 10000 });
           
@@ -488,62 +450,22 @@ export class BusinessProductsComponent implements OnInit {
 
   }
 
-  deleteProduct(data: any) {
-
-    let modalData = data
-
-    const delData:FormData = new FormData()
-    delData.append('businessOwner', modalData.id)
-    delData.append('user', this.user_id.toString())
-
-    const delSubscr = this.cbfService.deleteMember(delData, this.accessToken)
-
-    .subscribe({
-      next: (response: any) => {
-        
-        if(response.status){
-          this.messageResponse = response.message
-
-          if(response.status == 1){
-            this.toaster.show(response.message, { classname: 'bg-success text-light', delay: 10000 });
-            
-            setTimeout(() => {
-              window.location.reload()
-            }, 1200);
-          } else {
-            this.toaster.show(response.message, { classname: 'bg-warning text-light', delay: 10000 });
-          }
-          
-        }
-        
-      },
-      error: (e:HttpErrorResponse) =>  {        
-        this.messageResponse = 'Something went wrong, please try again' 
-        this.toaster.show(this.messageResponse, { classname: 'bg-warning text-light', delay: 10000 });
-      }   
-    })
-    
-    this.unsubscribe.push(delSubscr);
-
-  }
-
   approveProduct(data: any) {
 
     let modalData = data
-    let businessId = modalData.id
+    let productId = modalData.id
 
     const approvData:FormData = new FormData()
-    approvData.append('is_active', 'true')
     approvData.append('is_verified', 'true')
-    approvData.append('modified_by', this.user_id.toString())
+    approvData.append('verified_by', this.user_id.toString())
 
-    const aprrovSubscr = this.cbfService.updateBusiness(approvData, businessId, this.accessToken)
+    const aprrovSubscr = this.cbfService.updateProduct(approvData, productId, this.accessToken)
 
     .subscribe({
       next: (response: any) => {
 
         if(response.id){
-          this.messageResponse = 'Business successfully verified and activated'
+          this.messageResponse = 'Product successfully verified and activated'
 
           this.toaster.show(this.messageResponse, { classname: 'bg-success text-light', delay: 10000 });
           
@@ -570,19 +492,19 @@ export class BusinessProductsComponent implements OnInit {
   revokeProduct(data: any) {
 
     let modalData = data
-    let businessId = modalData.id
+    let productId = modalData.id
 
     const revokeData:FormData = new FormData()
     revokeData.append('is_verified', 'false')
     revokeData.append('modified_by', this.user_id.toString())
 
-    const revokSubscr = this.cbfService.updateBusiness(revokeData, businessId, this.accessToken)
+    const revokSubscr = this.cbfService.updateProduct(revokeData, productId, this.accessToken)
 
     .subscribe({
       next: (response: any) => {
 
         if(response.id){
-          this.messageResponse = 'Business successfully rejected'
+          this.messageResponse = 'Product successfully rejected'
 
           this.toaster.show(this.messageResponse, { classname: 'bg-success text-light', delay: 10000 });
           

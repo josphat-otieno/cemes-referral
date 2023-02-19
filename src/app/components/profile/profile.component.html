@@ -32,7 +32,7 @@
 							<div class="profile-details">
 								<div class="profile-name px-3 pt-2">
 									<h4 class="text-primary mb-0">{{loginName}}</h4>
-									<p>System Admin</p>
+									<p>{{role}}</p>
 								</div>
 								
 							</div>
@@ -51,17 +51,17 @@
 								<div class="text-center">
 									<div class="row">
 										<div class="col">
-											<h3 class="m-b-0">0</h3><span>Businesses</span>
+											<h3 class="m-b-0">{{biz_count}}</h3><span>Businesses</span>
 										</div> 
 									</div> <br/><hr>
 									<div class="row">
 										<div class="col">
-											<h3 class="m-b-0">0</h3><span>Ratings</span>
+											<h3 class="m-b-0">{{rating_count}}</h3><span>Ratings</span>
 										</div>
 									</div> <br/><hr>
 									<div class="row">
 										<div class="col">
-											<h3 class="m-b-0">0</h3><span>Reviews</span>
+											<h3 class="m-b-0">{{review_count}}</h3><span>Reviews</span>
 										</div>
 									</div>
 									
@@ -82,16 +82,14 @@
 									<li class="nav-item" ngbNavItem="about-me"><a href="#about-me" data-toggle="tab" class="nav-link" ngbNavLink>About Me</a>
 										<ng-template ngbNavContent>
 											<div id="about-me" class="tab-pane">
-												<div class="profile-about-me">
+												<br>
+												<div class="profile-about-me" *ngIf="userExists === false">
 													<div class="pt-4 border-bottom-1 pb-3">
-														<h4 class="text-primary">Bio &nbsp; <i class="fa fa-edit" (click)="openModal(bioModal, 'md')"></i></h4> 
-														<p class="mb-2">A wonderful serenity has taken possession of my entire soul, like these sweet mornings of spring which I enjoy 
-															with my whole heart. I am alone, and feel the charm of existence was created for the bliss of souls like mine.I am so happy,
-															 my dear friend, so absorbed in the exquisite sense of mere tranquil existence, that I neglect my talents.</p>
+														<p class="mb-2">{{userRespMsg}}</p>
 													</div>
 												</div>
 												
-												<div class="profile-personal-info">
+												<div class="profile-personal-info" *ngIf="userExists === true">
 													<h4 class="text-primary mb-4">Personal Information</h4>
 													<div class="row mb-2">
 														<div class="col-sm-3 col-5">
@@ -126,6 +124,15 @@
 															<span *ngIf="memStatus === true" class="badge badge-success">Member</span>
 														</div>
 													</div>
+													<div class="row mb-2">
+														<div class="col-sm-3 col-5">
+															<h5 class="f-w-500">Account Status <span class="pull-right">:</span></h5>
+														</div>
+														<div class="col-sm-9 col-7">
+															<span *ngIf="activeStatus === false" class="badge badge-warning">Inactive</span>
+															<span *ngIf="activeStatus === true" class="badge badge-success">Active</span>
+														</div>
+													</div>
 													<!-- <div class="row mb-2">
 														<div class="col-sm-3 col-5">
 															<h5 class="f-w-500">Year Experience <span class="pull-right">:</span></h5>
@@ -145,38 +152,59 @@
                                                     <div class="settings-form">														
 														
                                                         <h4 class="text-primary">Account Setting</h4>
-                                                        <form>
-															<div class="form-row">
-																<div class="form-group col-md-6">
-																	<div class="profile-photo sizing symbol symbol-50px me-5">
-																		<img src="{{profilePic}}" class="img-fluid rounded-circle" alt="">
-																	</div>
-																	<button class="btn btn-success btn-sm">
-																		<i class="fa fa-edit"></i> Change Picture
-																	</button>
-																</div>
+														
+														<div class="form-row">
+															<div class="form-group col-md-6">
+																<div class="image-upload">
+																	<label for="file-input">
+																	  <img src="{{profilePic}}"  alt="business logo" />
+																	</label>
+																  
+																	<input id="file-input" type="file" accept="image/*" #output (change)="onChange($event)">																		
+																</div>	
+																<i class="text-muted">Click on the image to change the picture and the update button</i>														
 																
+															</div>	
+															<div class="form-group col-md-3">
+																<button [disabled]="!picAltered" (click)="updateProfPicture()" class="btn btn-success btn-sm">
+																	<i class="fa fa-edit"></i> Update Picture
+																</button>
 															</div>
-                                                            <div class="form-row">
-                                                                <div class="form-group col-md-6">
-                                                                    <label>Email</label>
-                                                                    <input type="email" placeholder="Email" class="form-control" value="{{loginEmail}}">
-																</div>
-                                                                <div class="form-group col-md-6">
-                                                                    <label>Password</label>
-                                                                    <input type="password" placeholder="Password" class="form-control" value="qwertyuiop">
-																</div>
+
+															<div class="form-group col-md-3">
+																<button class="btn btn-sm btn-warning" (click)="resetPassword(loginEmail)">																	
+																	<i class="fa fa-refresh"></i> Reset Password
+																</button>																
+															</div>								
+														</div>
+
+														 <!-- message -->
+														<div *ngIf="messageResponse" class="row alert alert-info">
+															<p><i class="fa fa-exclamation"></i> &nbsp;  {{messageResponse}}</p>
+														</div>
+														<div *ngIf="alertResponse != ''" class="row alert alert-warning">
+															<p><i class="fa fa-exclamation"></i> &nbsp;  {{alertResponse}}</p>
+														</div>
+
+                                                        <form #profileManagement="ngForm" > 
+															<div class="form-group">
+																<label>Name</label>
+																<input type="hidden" readonly class="form-control" name="id" ngModel="{{loginId}}" value="{{loginId}}">
+																<input type="text" placeholder="enter your name" class="form-control" name="name" ngModel="{{loginName}}" value="{{loginName}}">
 															</div>
                                                             <div class="form-group">
-                                                                <label>Name</label>
-                                                                <input type="text" placeholder="your name" class="form-control" value="{{loginName}}">
-															</div>
+																<label>Email</label>
+																<input type="email" #emailVal class="form-control" placeholder="enter your email" name="email" ngModel="{{loginEmail}}" value="{{loginEmail}}"  (input)="validateEmail(emailVal.value)"> 
+																<i *ngIf="emailValidationMessage" style="color:red">The email address entered is not valid</i>
+															</div>                                                           
                                                             <div class="form-group">
                                                                 <label>Phone Number</label>
-                                                                <input type="number" placeholder="your phone number" class="form-control" value="{{loginPhone}}">
+                                                                <input type="number" #phoneVal placeholder="enter your phone number" class="form-control" name="login_phone" ngModel="{{loginPhone}}" value="{{loginPhone}}" (input)="validatePhone(phoneVal.value)">
+																<i *ngIf="phoneValidationMessage" style="color:red">The phone number entered is not valid, format is 0xxxx and maximum length of 10 numbers</i>                     
 															</div>
-                                                            <button class="btn btn-primary" [disabled] type="submit">Submit Changes</button>
+                                                            <button class="btn btn-primary" [disabled]="validity" type="submit" (click)="updateProfile(profileManagement.value)">Submit Changes</button>
 														</form>
+														
 													</div>
 												</div>
 											</div>
@@ -209,33 +237,6 @@
 								</div>
 							</ng-template>
 
-							<ng-template #bioModal let-modal>
-								
-								<div class="modal-header">
-									<h4 class="modal-title" id="modal-basic-title">Update Bio</h4>
-									<button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
-										<span aria-hidden="true">&times;</span>
-									</button>
-								</div>
-								<div class="modal-body">
-									<form>
-										<div class="form-group row">
-											<label class="col-lg-4 col-form-label" for="bioEdit">Bio information
-											</label>
-											<div class="col-lg-8">
-												<textarea class="form-control" rows="6"  id="bioEdit" placeholder="Bio data entry">A wonderful serenity has taken possession of my entire soul, like these sweet mornings of spring which I enjoy with my whole heart.
-													I am alone, and feel the charm of existence was created for the bliss of souls like mine.I am so happy, my dear friend, 
-													 so absorbed in the exquisite sense of mere tranquil existence, that I neglect my talents.</textarea>
-											</div>                     
-										</div>										
-										
-									</form>
-									<div class="modal-footer">
-										<button type="button" class="btn btn-light" (click)="modal.dismiss('Cross click')">Cancel</button>
-										<button type="button" class="btn btn-primary">Update Changes</button>
-									</div>
-								</div>
-							</ng-template>
 						</div>
 					</div>
 				</div>

@@ -5,3 +5,15 @@
 .sizing {
     max-width: 50%;
 }
+
+/* Upload Image */
+.image-upload > input
+{
+    display: none;
+}
+
+.image-upload img
+{
+    max-width: 100px;
+    cursor: pointer;
+}
