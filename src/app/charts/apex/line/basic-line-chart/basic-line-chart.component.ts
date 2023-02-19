@@ -35,8 +35,8 @@ export class BasicLineChartComponent implements OnInit {
     this.chartOptions = {
       series: [
         {
-          name: "Desktops",
-          data: [10, 41, 35, 51, 49, 62, 69, 91, 148]
+          name: "Paid Advertisements",
+          data: [113, 42, 35, 51, 49, 62, 69, 91, 148, 78, 90, 200]
         }
       ],
       chart: {
@@ -53,7 +53,7 @@ export class BasicLineChartComponent implements OnInit {
         curve: "straight"
       },
       title: {
-        text: "Product Trends by Month",
+        text: "Total Revenue across 2022",
         align: "left"
       },
       grid: {
@@ -72,7 +72,10 @@ export class BasicLineChartComponent implements OnInit {
           "Jun",
           "Jul",
           "Aug",
-          "Sep"
+          "Sep",
+          "Oct",
+          "Nov",
+          "Dec"
         ]
       }
     };
