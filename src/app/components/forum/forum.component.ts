@@ -2,7 +2,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { Subject, Subscription } from 'rxjs';
+import { Subject, Subscription, throwError } from 'rxjs';
 import { CbfService } from 'src/app/core/cbf.service';
 
 @Component({
@@ -22,6 +22,7 @@ export class ForumComponent implements OnInit {
   public forumCount:number = 0
 
   public forumModalData:any = []
+  public alertResponse:string = ''
   public messageResponse:string = ''
   public msg:string = ''
 
@@ -90,7 +91,7 @@ export class ForumComponent implements OnInit {
   // Endpoints Consumption  
   getCategories(){
 
-    const categorySubscr = this.cbfService.getActiveForumCategories(this.accessToken)
+    const categorySubscr = this.cbfService.getActiveBusinessCategories(this.accessToken)
     .subscribe({
       next: (response: any) => {
         let result = response   
@@ -154,6 +155,8 @@ export class ForumComponent implements OnInit {
             window.location.reload()
           }, 1200);
 
+        } else {
+          this.alertResponse = 'Forum not updated, your name or description may have been flagged for profanity'
         }
         
       },
@@ -191,12 +194,17 @@ export class ForumComponent implements OnInit {
             window.location.reload()
           }, 1200);
 
+        } else if(response.message) {
+          this.alertResponse = response.message
         }
         
       },
-      error: (e:HttpErrorResponse) =>  {
+              
+      error: (error) =>  {
+        console.log(error)       
+        // this.messageResponse = error
         this.messageResponse = 'Something went wrong, please try again'  
-      }   
+      }  
     })
     
     this.unsubscribe.push(updateSubscr);
