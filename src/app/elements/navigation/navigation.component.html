@@ -19,15 +19,14 @@
             
                 <ul aria-expanded="false"  [ngClass]="{'mm-show': systemParameterArray.indexOf(currentHref) > -1}">
                     <li><a class="{{(currentHref == '/admin/assembly') ? 'mm-active' : ''}}"  [routerLink]="['/admin/assembly']">Assembly Management</a></li>
-                    <li><a class="{{(currentHref == '/admin/account-packages') ? 'mm-active' : ''}}"  [routerLink]="['/admin/account-packages']">Account Packages</a></li>
+                    <!-- <li><a class="{{(currentHref == '/admin/account-packages') ? 'mm-active' : ''}}"  [routerLink]="['/admin/account-packages']">Account Packages</a></li> -->
                     <li><a class="{{(currentHref == '/admin/business-category') ? 'mm-active' : ''}}"  [routerLink]="['/admin/business-category']">Business Category</a></li>
                     <li><a class="{{(currentHref == '/admin/business-sub-category') ? 'mm-active' : ''}}"  [routerLink]="['/admin/business-sub-category']">Business Sub-Category</a></li>
-                    <li><a class="{{(currentHref == '/admin/forum-category') ? 'mm-active' : ''}}"  [routerLink]="['/admin/forum-category']">Forum Category</a></li>
+                    <!-- <li><a class="{{(currentHref == '/admin/forum-category') ? 'mm-active' : ''}}"  [routerLink]="['/admin/forum-category']">Forum Category</a></li> -->
                     <li><a class="{{(currentHref == '/admin/forum') ? 'mm-active' : ''}}"  [routerLink]="['/admin/forum']">Forum</a></li>
                 </ul> 
             
             </li>
-
 
             <!-- <li [ngClass]="{'mm-active': dashboardArray.indexOf(currentHref) > -1}"><a class="has-arrow ai-icon" href="javascript:void()" aria-expanded="false">
                 <i class="flaticon-381-networking"></i>

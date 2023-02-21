@@ -38,7 +38,7 @@ export class NavigationComponent implements OnInit {
     '/admin/account-packages',
     '/admin/business-category',
     '/admin/business-sub-category',
-    '/admin/forum-category',
+    // '/admin/forum-category',
     '/admin/forum',
   ]
     
