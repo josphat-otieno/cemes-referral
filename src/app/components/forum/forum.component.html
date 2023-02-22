@@ -53,7 +53,8 @@
                             </td>
                             <td>
                                 <div class="button_containers">
-                                    <button type="button" class="btn btn-sm btn-success" (click)="reviewModal(editForum, forum)"> <i class="fa fa-pencil"></i>Edit</button> &nbsp;
+                                    <button type="button" [disabled]="forum.is_deleted === true" class="btn btn-sm btn-primary" (click)="goToMembers(forum.id)"> <i class="fa fa-eye"></i>Members</button> &nbsp;
+                                    <button type="button" [disabled]="forum.is_deleted === true" class="btn btn-sm btn-success" (click)="reviewModal(editForum, forum)"> <i class="fa fa-pencil"></i>Edit</button> &nbsp;
                                     <button type="button" [disabled]="forum.is_deleted === true" class="btn btn-sm btn-danger" (click)="reviewModal(deleteForum, forum)"> <i class="fa fa-trash"></i>Delete</button> 
                                 </div>
                             </td>
@@ -253,7 +254,7 @@
 
        <!-- message -->
        <div *ngIf="messageResponse" class="row alert alert-info">
-        <p><i class="fa fa-exclamation"></i> &nbsp;  {{messageResponse}}</p>
+        <p><i class="fa fa-exclamation"></i> &nbsp; {{messageResponse}}</p>
         </div>
 
     </div>

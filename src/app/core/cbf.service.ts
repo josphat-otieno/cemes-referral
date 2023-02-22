@@ -1094,10 +1094,105 @@ export class CbfService implements OnDestroy {
 
   }
 
+  // Create forum Members
+  public saveForumMember(memberData:FormData, access: string): Observable<any> {
+    const url = ApiEndpointService.getEndpoint(ApiEndpointService.ENDPOINT.FORUM_MEMBER);
+    return this.http.post<any>(url, memberData, {
+      headers: {
+        'Authorization': `Bearer ${access}`
+      }
+    }).pipe(
+      map(function (response: any) {
+        return response;
+      }),
+      catchError((fault: HttpErrorResponse) => {
+        return throwError(() => fault);
+
+      })
+    )
+
+  }
+
+  // Remove forum Members
+  public revokeForumMember(memberId:number, access: string): Observable<any> {
+    const url = ApiEndpointService.getEndpoint(ApiEndpointService.ENDPOINT.FORUM_MEMBER);
+    return this.http.delete<any>(url + memberId + '/', {
+      headers: {
+        'Authorization': `Bearer ${access}`
+      }
+    }).pipe(
+      map(function (response: any) {
+        return response;
+      }),
+      catchError((fault: HttpErrorResponse) => {
+        return throwError(() => fault);
+
+      })
+    )
+
+  }
+
+  // Get forum Members - generic
+   public getForumMembers(forumId: number, isAdmin:boolean, status:boolean, access: string): Observable<any> {
+    const url = ApiEndpointService.getEndpoint(ApiEndpointService.ENDPOINT.FORUM_MEMBER);
+    return this.http.get<any>(url+'?forum_id='+forumId+'&is_admin='+isAdmin+'&accepted_invite='+status, {
+      headers: {
+        'Authorization': `Bearer ${access}`
+      }
+    }).pipe(
+      map(function (response: any) {
+        return response;
+      }),
+      catchError((fault: HttpErrorResponse) => {
+        return throwError(() => fault);
+
+      })
+    )
+
+  }
+
+  // Get forum Members - custom
+  public getForumUsers(forumId: number, membership_status:boolean, access: string): Observable<any> {
+    const url = ApiEndpointService.getEndpoint(ApiEndpointService.ENDPOINT.FORUM_USERS);
+    return this.http.get<any>(url+'?forum_id='+forumId+'&is_member='+membership_status, {
+      headers: {
+        'Authorization': `Bearer ${access}`
+      }
+    }).pipe(
+      map(function (response: any) {
+        return response;
+      }),
+      catchError((fault: HttpErrorResponse) => {
+        return throwError(() => fault);
+
+      })
+    )
+
+  }
+
   // create forum
   public registerForum(forumData:FormData, access: string): Observable<any> {
     const url = ApiEndpointService.getEndpoint(ApiEndpointService.ENDPOINT.FORUM_MGT);
     return this.http.post<any>(url, forumData, {
+      headers: {
+        'Authorization': `Bearer ${access}`
+      }
+    }).pipe(
+      map(function (response: any) {
+        return response;
+      }),
+      catchError((fault: HttpErrorResponse) => {
+        return throwError(() => fault);
+
+      })
+    )
+
+  }
+
+  // Get forum
+  public getForumDetails(forumId:Number, access: string): Observable<any> {
+    const url = ApiEndpointService.getEndpoint(ApiEndpointService.ENDPOINT.FORUM_MGT);
+    return this.http.get<any>(url + forumId + '/', {
       headers: {
         'Authorization': `Bearer ${access}`
       }
@@ -1125,7 +1220,19 @@ export class CbfService implements OnDestroy {
         return response;
       }),
       catchError((fault: HttpErrorResponse) => {
-        return throwError(() => fault);
+        // return throwError(() => fault);
+
+        let errorMessage = '';
+        if (fault.error instanceof ErrorEvent) {
+          // client-side error
+          errorMessage = `Error: ${fault.error.message}`;
+        } else {
+          // server-side error
+          errorMessage = `Error Code: ${fault.status}\nMessage: ${fault.message}`;
+        }
+        // console.log(errorMessage);
+
+        return throwError(`${errorMessage}`)
 
       })
     )

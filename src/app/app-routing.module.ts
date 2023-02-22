@@ -148,6 +148,7 @@ import { BusinessRatingComponent } from './components/business-rating/business-r
 import { PaymentsComponent } from './components/payments/payments.component';
 import { ResetPasswordComponent } from './pages/reset-password/reset-password.component';
 import { BusinessProductsComponent } from './components/business-products/business-products.component';
+import { ForumManagementComponent } from './components/forum-management/forum-management.component';
 
 
 
@@ -285,6 +286,7 @@ const routes: Routes = [
               {path: 'business-category', component: BusinessCategoryComponent},
               {path: 'business-sub-category', component: BusinessSubCategoryComponent},
               {path: 'forum', component: ForumComponent},
+              {path: 'forum-management', component: ForumManagementComponent},
               {path: 'advertisement', component: AdvertisementsComponent},
               {path: 'business-rating', component: BusinessRatingComponent},
               {path: 'profile', component: ProfileComponent},

@@ -1,7 +1,9 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import ls from 'localstorage-slim';
 import { Subject, Subscription, throwError } from 'rxjs';
 import { CbfService } from 'src/app/core/cbf.service';
 
@@ -36,7 +38,8 @@ export class ForumComponent implements OnInit {
   constructor(
     private cbfService: CbfService,
     private modalService: NgbModal,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private router: Router
   ) {  }
   
 
@@ -75,6 +78,11 @@ export class ForumComponent implements OnInit {
   
   // modals
   openModal(content:any, size:string) {
+
+    // reset messages
+    this.messageResponse = ''
+    this.alertResponse = ''
+    
     this.modalService.open(content, {
       centered: true,
       backdrop: 'static',
@@ -89,6 +97,16 @@ export class ForumComponent implements OnInit {
   }
    
   // Endpoints Consumption  
+  
+  goToMembers(forumId:number){
+    this.modalService.dismissAll()
+
+    ls.set('fpd', JSON.stringify(forumId), {encrypt: true, secret: 43});
+
+    let encryptedId = ls.get('fpd')
+    this.router.navigate(['/admin/forum-management'], { queryParams: { fpd: encryptedId} })
+  }
+
   getCategories(){
 
     const categorySubscr = this.cbfService.getActiveBusinessCategories(this.accessToken)
@@ -224,6 +242,8 @@ export class ForumComponent implements OnInit {
 
     .subscribe({
       next: (response: any) => {
+
+        console.log(response)
         
         if(response.id){
           

@@ -62,6 +62,8 @@ export class ApiEndpointService {
 
     // Communication
     GET_FORUM_LIST: `${ApiEndpointService.MAIN_CONTEXT}/communication/get-forum-list/`,
+    FORUM_MEMBER: `${ApiEndpointService.MAIN_CONTEXT}/communication/forum-member/`,
+    FORUM_USERS: `${ApiEndpointService.MAIN_CONTEXT}/communication/forum-user-listing/`,
     FORUM_MGT: `${ApiEndpointService.MAIN_CONTEXT}/communication/forum/`,
     FORUM_CATEGORY: `${ApiEndpointService.MAIN_CONTEXT}/communication/forum-category/`,
 
