@@ -64,7 +64,7 @@
         <div class="card">
             <div class="card-header">
                 <div class="col-6">
-                    List of all products under {{businessName}}
+                    List of all products {{businessName}}
                 </div>
             </div>
            
@@ -166,6 +166,48 @@
     
                     </mat-tab>
 
+                    <mat-tab label="Rejected Products: {{rejectedProductCount}}">
+                        <br/>
+                               
+                            <div class="table-responsive">
+                                <table datatable [dtOptions]="rjtOptions" [dtTrigger]="rjtTrigger" class="table table-striped">
+                                <thead>
+                                <tr>
+                                    <th scope="col">Name</th>
+                                    <th scope="col">Business</th>
+                                    <th scope="col">Owner</th>
+                                    <th scope="col">Rejection Date</th>
+                                    <th scope="col">Update Details</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr *ngFor="let res of rejectedProducts; index as i">
+                                    <td>{{res.product.name}}</td>
+                                    <td>{{res.product.business}}</td>
+                                    <td>{{res.product.owner.name}}</td>
+                                    <td>{{res.product.rejectionDate | date:'mediumDate'}}</td>                                   
+                                    <td>
+                                        <div class="button_containers">                                        
+                                            <button type="button" class="btn btn-sm btn-info" (click)="reviewUpdateModal(viewProductModal, res)">
+                                                <i class="fa fa-eye"></i> View Details
+                                            </button> &nbsp;
+                                            <button type="button" class="btn btn-sm btn-success" (click)="reviewModal(approveProductModal, res)"><i class="fa fa-check"></i> Approve</button> &nbsp;
+                                            <button type="button" [disabled]="res.deleteStatus === true" class="btn btn-sm btn-danger" (click)="reviewModal(rejectProductModal, res)"><i class="fa fa-close"></i> Reject</button>
+                                        </div>
+                                    </td>
+                                </tr>
+
+                                <tr *ngIf="rejectedProductCount == 0">
+                                    <td colspan="5" class="no_data_display">
+                                        No data available for display
+                                    </td>
+                                </tr>
+                                </tbody>
+                                </table>
+                            </div>
+    
+                    </mat-tab>
+
                 </mat-tab-group>
                
             </div>
@@ -226,13 +268,19 @@
                             <p class="fs-6">
                                 <b> Cost: </b> {{productModalData?.product.cost}}
                             </p>
-                            <p class="fs-6">
+                            <p class="fs-6" *ngIf="productModalData?.product.review_status != 'rejected'">
                                 <b> Registration Date: </b>{{productModalData.product.joinDate | date:'longDate'}}
                            </p>
-                            <p class="fs-6">
+                            <p class="fs-6" *ngIf="productModalData?.product.review_status == 'rejected'">
+                                <b> Rejection Date: </b>{{productModalData.product.rejectionDate | date:'longDate'}}
+                           </p>
+                            <p class="fs-6" *ngIf="productModalData?.product.review_status != 'rejected'">
                                 <b> Status: </b>
                                 <span *ngIf="productModalData?.product.status === true" class="badge badge-success">Active</span>
                                 <span *ngIf="productModalData?.product.status === false" class="badge badge-danger">Inactive</span>
+                           </p>
+                            <p class="fs-6" *ngIf="productModalData?.product.review_status == 'rejected'">
+                                <b> Rejection Reason: </b> {{productModalData?.product.reason}}
                            </p>
                         </div>
                     </div>
@@ -356,6 +404,12 @@
       <form #rejectForm="ngForm">        
         <input type="hidden" name="id" ngModel="{{productModalData?.product.id}}" value="{{productModalData?.product.id}}">
         <p>Are you sure you want to reject <b>{{productModalData?.product.name}}</b>?</p>
+
+        <div class="form-group">
+            <label>Reason for rejection</label>
+            <textarea class="form-control" rows="4" name="reason" ngModel placeholder="Please specify why you want to reject this product"></textarea>
+        </div>
+
       </form>
 
       <!-- message -->

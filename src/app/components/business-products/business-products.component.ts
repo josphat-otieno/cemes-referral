@@ -43,9 +43,11 @@ export class BusinessProductsComponent implements OnInit {
   
   public verifiedProducts:any = []
   public pendingProducts:any = []
+  public rejectedProducts:any = []
   public pendingProductsCount:number = 0
   public productsCount:number = 0
   public verifiedProductCount:number = 0
+  public rejectedProductCount:number = 0
   public productModalData:any = []
 
     // Images Handler
@@ -87,6 +89,9 @@ export class BusinessProductsComponent implements OnInit {
 
   ptOptions: any = {};
   ptTrigger: Subject<any> = new Subject<any>();
+
+  rjtOptions: any = {};
+  rjtTrigger: Subject<any> = new Subject<any>();
 
   // Logo holder
   businessDefaultLogo: any = "";
@@ -133,6 +138,9 @@ export class BusinessProductsComponent implements OnInit {
         let decryptedId = ls.get('bpd', {decrypt: true, secret: 36});         
         this.selectedBusiness = Number(decryptedId);
 
+        // get business details
+        // this.getBusinessDetails(this.selectedBusiness);
+
       } else {
         this.selectedBusiness = 0
         ls.remove('bpd')
@@ -166,6 +174,18 @@ export class BusinessProductsComponent implements OnInit {
         'pdf'
       ]
     };
+    this.rjtOptions = {
+      pagingType: 'full_numbers',
+      pageLength: 10,
+      processing: true,
+      buttons: [
+        'copy',
+        'print',
+        'csv',
+        'excel',
+        'pdf'
+      ]
+    };
     
     this.accessToken =  this.cbfService.AccessToken
     this.user_id = Number(this.cbfService.currentUserValue)
@@ -178,6 +198,7 @@ export class BusinessProductsComponent implements OnInit {
 
     this.getVerifiedProductsList(this.assemblyId, this.selectedBusiness, this.businessOwnerId, this.businessCategory)
     this.getPendingProductsList(this.assemblyId, this.selectedBusiness, this.businessOwnerId, this.businessCategory)
+    this.getRejectedProductsAction(this.assemblyId, this.selectedBusiness, this.businessOwnerId, this.businessCategory)
 
   }
 
@@ -242,6 +263,27 @@ export class BusinessProductsComponent implements OnInit {
   }
 
   // Endpoints Consumption
+
+  getBusinessDetails(businessId:number) {
+
+    let business_id = businessId
+
+    const bizSubscr = this.cbfService.getBusinessDetail(business_id, this.accessToken)
+
+    .subscribe({
+      next: (response: any) => {
+
+        let queryResults = response
+        this.businessName = 'under '+queryResults.name
+        
+      },
+      error: (e:HttpErrorResponse) =>  this.alertResponse = 'Something went wrong, please try again'     
+    })
+    
+    this.unsubscribe.push(bizSubscr);
+
+  }
+
  
   getVerifiedProductsList(assembly:number, businessId:number, businessOwner:number, category:number) {
     let verificationStatus = true
@@ -255,7 +297,9 @@ export class BusinessProductsComponent implements OnInit {
         
         this.productsCount = this.verifiedProductCount
 
-        this.dtTrigger.next(this.verifiedProducts)
+        if(queryResults.count > 0){
+          this.dtTrigger.next(this.verifiedProducts)
+        }
         
       },
       error: (e:HttpErrorResponse) =>  this.msg = 'Something went wrong, please try again'     
@@ -284,6 +328,28 @@ export class BusinessProductsComponent implements OnInit {
     })
     
     this.unsubscribe.push(pProdSubscr);
+
+  }
+
+  getRejectedProductsAction(assembly:number, businessId:number, businessOwner:number, category:number) {
+
+    const rProdSubscr = this.cbfService.getRejectedProductsList(assembly, businessId, businessOwner, category, this.accessToken)
+
+    .subscribe({
+      next: (response: any) => {
+        let queryResults = response
+        this.rejectedProductCount = queryResults.count
+        this.rejectedProducts = queryResults.results
+
+        if(queryResults.count > 0){
+          this.rjtTrigger.next(this.rejectedProducts)
+        }
+        
+      },
+      error: (e:HttpErrorResponse) =>  this.msg = 'Something went wrong, please try again'     
+    })
+    
+    this.unsubscribe.push(rProdSubscr);
 
   }
 
@@ -493,9 +559,12 @@ export class BusinessProductsComponent implements OnInit {
 
     let modalData = data
     let productId = modalData.id
+    let rejectionReason = modalData.reason
 
     const revokeData:FormData = new FormData()
     revokeData.append('is_verified', 'false')
+    revokeData.append('review_status', 'rejected')
+    revokeData.append('reason', rejectionReason)
     revokeData.append('modified_by', this.user_id.toString())
 
     const revokSubscr = this.cbfService.updateProduct(revokeData, productId, this.accessToken)
@@ -526,6 +595,12 @@ export class BusinessProductsComponent implements OnInit {
     
     this.unsubscribe.push(revokSubscr);
 
+  }
+
+  ngOnDestroy() {
+    this.dtTrigger.unsubscribe()
+    this.ptTrigger.unsubscribe()
+    this.rjtTrigger.unsubscribe()
   }
   
   

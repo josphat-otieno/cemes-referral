@@ -531,10 +531,29 @@ export class CbfService implements OnDestroy {
   }
 
   /* ------------------------------------------------------------------- Business Management Endpoints --------------------------------------------------------------------------------------------------- */
-    
+  
+  // Get business details
+  public getBusinessDetail(businessId:Number, access: string): Observable<any> {
+    const url = ApiEndpointService.getEndpoint(ApiEndpointService.ENDPOINT.BUSINESS_DETAIL);
+    return this.http.get<any>(url + businessId + '/', {
+      headers: {
+        'Authorization': `Bearer ${access}`
+      }
+    }).pipe(
+      map(function (response: any) {
+        return response;
+      }),
+      catchError((fault: HttpErrorResponse) => {
+        return throwError(() => fault);
+
+      })
+    )
+
+  }
+
   // register business
   public registerBusiness(businessData:FormData, access: string): Observable<any> {
-    const url = ApiEndpointService.getEndpoint(ApiEndpointService.ENDPOINT.REGISTER_BUSINESS);
+    const url = ApiEndpointService.getEndpoint(ApiEndpointService.ENDPOINT.BUSINESS_DETAIL);
     return this.http.post<any>(url, businessData, {
       headers: {
         'Authorization': `Bearer ${access}`
@@ -597,6 +616,27 @@ export class CbfService implements OnDestroy {
   public getVerifiedProducts(verification:boolean, assembly:number, business:number, businessOwner:number, businessCategory:number, access: string): Observable<any> {
     const url = ApiEndpointService.getEndpoint(ApiEndpointService.ENDPOINT.GET_PRODUCTS_LIST);
     return this.http.get<any>(url+'?assemblyId='+assembly+'&businessId='+business+'&businessOwner='+businessOwner+'&categoryId='+businessCategory+'&verification='+verification, {
+      headers: {
+        'Content-Type': 'application/json; charset=utf-8',
+        'Accept': 'application/json',
+        'Authorization': `Bearer ${access}`
+      }
+    }).pipe(
+      map(function (response: any) {
+        return response;
+      }),
+      catchError((fault: HttpErrorResponse) => {
+        return throwError(() => fault);
+
+      })
+    )
+
+  }
+
+  // Get Rejected Products list
+  public getRejectedProductsList(assembly:number, business:number, businessOwner:number, businessCategory:number, access: string): Observable<any> {
+    const url = ApiEndpointService.getEndpoint(ApiEndpointService.ENDPOINT.GET_REJECTED_PRODUCTS_LIST);
+    return this.http.get<any>(url+'?assemblyId='+assembly+'&businessId='+business+'&businessOwner='+businessOwner+'&categoryId='+businessCategory, {
       headers: {
         'Content-Type': 'application/json; charset=utf-8',
         'Accept': 'application/json',

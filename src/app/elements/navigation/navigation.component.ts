@@ -40,6 +40,7 @@ export class NavigationComponent implements OnInit {
     '/admin/business-sub-category',
     // '/admin/forum-category',
     '/admin/forum',
+    '/admin/forum-management',
   ]
     
   businessArray = [

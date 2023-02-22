@@ -47,9 +47,10 @@ export class ApiEndpointService {
     ADVERTISEMENT: `${ApiEndpointService.MAIN_CONTEXT}/management/advertisement/`,
 
     // Businesses
-    REGISTER_BUSINESS: `${ApiEndpointService.MAIN_CONTEXT}/business/business/`,
+    BUSINESS_DETAIL: `${ApiEndpointService.MAIN_CONTEXT}/business/business/`,
     GET_BUSINESS_LIST: `${ApiEndpointService.MAIN_CONTEXT}/business/get-business-list/`,
     GET_PRODUCTS_LIST: `${ApiEndpointService.MAIN_CONTEXT}/business/get-products-list/`,
+    GET_REJECTED_PRODUCTS_LIST: `${ApiEndpointService.MAIN_CONTEXT}/business/get-rejected-products-list/`,
     GET_BUSINESS_RATINGS: `${ApiEndpointService.MAIN_CONTEXT}/business/get-business-rating-list/`,
     GET_REJECTED_BUSINESS_RATINGS: `${ApiEndpointService.MAIN_CONTEXT}/business/get-rejected-business-rating-list/`,
     BUSINESS_REVIEW: `${ApiEndpointService.MAIN_CONTEXT}/business/business-review/`,
