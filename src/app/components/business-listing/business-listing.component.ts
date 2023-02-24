@@ -121,8 +121,7 @@ export class BusinessListingComponent implements OnInit {
   ngOnInit(): void {
 
     // remove bpd 
-    
-        ls.remove('bpd')
+    ls.remove('bpd')
 
     // datatable
     this.dtOptions = {
@@ -453,8 +452,10 @@ export class BusinessListingComponent implements OnInit {
         let queryResults = response
         this.businessCount = queryResults.count
         this.businesses = queryResults.results
-
-        this.dtTrigger.next(this.businesses)
+        
+        if(queryResults.count > 0){
+          this.dtTrigger.next(this.businesses)
+        }
         
       },
       error: (e:HttpErrorResponse) =>  this.msg = 'Something went wrong, please try again'     

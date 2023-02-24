@@ -8,15 +8,15 @@
                 <li *ngFor="let item of data; let i = index">
                     <div class="timeline-panel">
                         <div class="media mr-4">
-                            <img alt="image" width="90" src="{{item.image}}">
+                            <img alt="image" width="90" src="{{item.logo}}">
                             <div class="number">#{{i}}</div>
                         </div>
                         <div class="media-body">
                             <a routerLink="/{{item.url}}" ><h4 class="mb-2">{{item.name}}</h4></a>
-                            <p class="mb-2 text-primary">{{item.specialist}}</p>
+                            <p class="mb-2 text-primary">{{item.description}}</p>
                             <div class="star-review">
                                 <i *ngFor="let ratings of item.ratings_class " class="{{ratings.icon_class}}" ></i>
-                                <span class="ml-3">{{item.total_reviews}}</span>
+                                <span class="ml-3">{{item.rating}}</span>
                             </div>
                         </div>
                         <!-- <div class="social-media">
