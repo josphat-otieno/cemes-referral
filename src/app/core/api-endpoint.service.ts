@@ -12,6 +12,10 @@ export class ApiEndpointService {
   public static ENDPOINT = {
 
     //User    
+    DASHBOARD_METRICS: `${ApiEndpointService.MAIN_CONTEXT}/management/get-dashboard-metrics/`,
+    TOP_BUSINESSES: `${ApiEndpointService.MAIN_CONTEXT}/management/get-top-businesses/`,
+
+    //User    
     IMAGE_FOLDER: `${ApiEndpointService.CONTEXT}/media/`,
     REGISTER_USER: `${ApiEndpointService.MAIN_CONTEXT}/user/register/`, 
     LOGIN_USER: `${ApiEndpointService.MAIN_CONTEXT}/user/login/`, 

@@ -351,6 +351,50 @@ export class CbfService implements OnDestroy {
   }
   
 
+  /* ------------------------------------------------------------------- Dashboard Endpoints --------------------------------------------------------------------------------------------------- */
+  
+  // Get Dashboard metrics
+  public getDashboardMetrics(access: string): Observable<any> {
+    const url = ApiEndpointService.getEndpoint(ApiEndpointService.ENDPOINT.DASHBOARD_METRICS);
+    return this.http.get<any>(url, {
+      headers: {
+        'Content-Type': 'application/json; charset=utf-8',
+        'Accept': 'application/json',
+        'Authorization': `Bearer ${access}`
+      }
+    }).pipe(
+      map(function (response: any) {
+        return response;
+      }),
+      catchError((fault: HttpErrorResponse) => {
+        return throwError(() => fault);
+
+      })
+    )
+
+  }
+
+  // Get Dashboard Top Businesses
+  public getTopBusinesses(access: string): Observable<any> {
+    const url = ApiEndpointService.getEndpoint(ApiEndpointService.ENDPOINT.TOP_BUSINESSES);
+    return this.http.get<any>(url, {
+      headers: {
+        'Content-Type': 'application/json; charset=utf-8',
+        'Accept': 'application/json',
+        'Authorization': `Bearer ${access}`
+      }
+    }).pipe(
+      map(function (response: any) {
+        return response;
+      }),
+      catchError((fault: HttpErrorResponse) => {
+        return throwError(() => fault);
+
+      })
+    )
+
+  }
+
   /* ------------------------------------------------------------------- Membership Endpoints --------------------------------------------------------------------------------------------------- */
   
   // Get member list
