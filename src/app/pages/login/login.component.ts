@@ -6,6 +6,7 @@ import ls from 'localstorage-slim';
 import { CookieService } from 'ngx-cookie-service';
 import { Subscription } from 'rxjs';
 import { CbfService } from 'src/app/core/cbf.service';
+import { UserIdleService } from 'angular-user-idle';
 
 @Component({
   selector: 'app-login',
@@ -35,7 +36,8 @@ export class LoginComponent implements OnInit {
     private fb: FormBuilder,
     private cbfService: CbfService,
     private router: Router,
-    private cookieService: CookieService
+    private cookieService: CookieService,
+    private userIdle: UserIdleService
   ) { }
 
   ngOnInit(): void {
@@ -105,14 +107,24 @@ export class LoginComponent implements OnInit {
               this.cookieService.set('JTW', jwt); // To Set Cookie
     
               //store user id
-              ls.set('id', JSON.stringify(user_id), {encrypt: true, secret: 43});    
-              
+              ls.set('id', JSON.stringify(user_id), {encrypt: true, secret: 43}); 
+
               // set USer Id and Acstk
-              this.cbfService.getUserByToken().subscribe()
-              
+              this.cbfService.getUserByToken().subscribe()     
+                 
+                //Start watching for user inactivity.
+                this.userIdle.startWatching();
+                
+                // Start watching when user idle is starting.
+                // this.userIdle.onTimerStart().subscribe(count => console.log(count));   
+                
+                // Stop watch when time is up.                        
+                this.userIdle.onTimeout().subscribe(() => this.cbfService.logoutUser());
+
               setTimeout(() => {
                 this.router.navigate([this.returnUrl]);
               }, 2000);
+
             }
            
           }
@@ -126,6 +138,22 @@ export class LoginComponent implements OnInit {
     })
     
     this.unsubscribe.push(loginSubscr);
+  }
+
+  stop() {
+    this.userIdle.stopTimer();
+  }
+
+  stopWatching() {
+    this.userIdle.stopWatching();
+  }
+
+  startWatching() {
+    this.userIdle.startWatching();
+  }
+
+  restart() {
+    this.userIdle.resetTimer();
   }
 
   ngOnDestroy() {

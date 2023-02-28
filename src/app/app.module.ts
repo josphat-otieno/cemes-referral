@@ -679,6 +679,7 @@ import { ResetPasswordComponent } from './pages/reset-password/reset-password.co
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 import { BusinessProductsComponent } from './components/business-products/business-products.component';
 import { ForumManagementComponent } from './components/forum-management/forum-management.component';
+import { UserIdleModule } from 'angular-user-idle';
 
 function appInitializer(authService: CbfService) {
   return () => {
@@ -1360,7 +1361,10 @@ function appInitializer(authService: CbfService) {
     MatStepperModule,
     MatTableModule,
     MatTooltipModule,
-    MatTreeModule,
+    MatTreeModule,    
+
+    // Default values: `idle` is 600 (10 minutes), `timeout` is 300 (5 minutes) and `ping` is 120 (2 minutes).
+    UserIdleModule.forRoot({idle: 600, timeout: 300, ping: 120})
   ],
   providers: [
 		// SharedService,
