@@ -1,8 +1,8 @@
 export const environment = {
   production: true,
   appVersion: 'v1',
-  http: 'http://',
-  domain: '35.193.194.124:8000',
+  http: 'https://',
+  domain: 'citambf.app/',
   path_name: '/',
   apiUrl: 'api',
   context: '',

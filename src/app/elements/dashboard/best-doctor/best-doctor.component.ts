@@ -11,11 +11,13 @@ export class BestDoctorComponent implements OnInit {
   
   toggleLoadMore: boolean = false;
   responseDoc: boolean = false;
+  public rating: number = 0
   
   
   constructor(private sharedService: SharedService) { }
 
   ngOnInit(): void {
+    this.rating = 3
   }
   
   

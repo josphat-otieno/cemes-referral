@@ -118,7 +118,17 @@
                                     </div>
                                 </td>
                                 <td>{{res.business_name}}</td>
-                                <td>{{res.rating}} stars</td>                
+                                
+                                <td>
+                                    <ng-template #vr let-fill="fill">
+                                        <span class="star" [class.filled]="fill === 100">
+                                          <span class="half" [style.width.%]="fill">&#9733;</span>&#9733;
+                                        </span>
+                                      </ng-template>
+                                      
+                                    <ngb-rating [(ngModel)]="res.rating" [(rate)]="res.rating" [starTemplate]="vr" [readonly]="true" [max]="5"></ngb-rating> ({{res?.rating}})
+
+                                </td>
                                 <td>{{res.submitted_by}}</td>
                                 <td>
                                     <span class="badge badge-sm badge-success" *ngIf="res.status === false">Active</span>
@@ -166,8 +176,17 @@
                                                     <img src="{{res.business_logo}}" alt="business logo"/>
                                                 </div>
                                             </td>
-                                            <td>{{res.business_name}}</td>
-                                            <td>{{res.rating}} stars</td>                
+                                            <td>{{res.business_name}}</td> 
+
+                                            <td>
+                                                <ng-template #p let-fill="fill">
+                                                    <span class="star" [class.filled]="fill === 100">
+                                                      <span class="half" [style.width.%]="fill">&#9733;</span>&#9733;
+                                                    </span>
+                                                  </ng-template>
+                                                  
+                                                <ngb-rating [(ngModel)]="res.rating" [(rate)]="res.rating" [starTemplate]="p" [readonly]="true" [max]="5"></ngb-rating> ({{res?.rating}})
+                                            </td>
                                             <td>{{res.submitted_by}}</td>
                                             <td>
                                                 <div class="button_containers">   
@@ -211,7 +230,15 @@
                                                 </div>
                                             </td>
                                             <td>{{res.business_name}}</td>
-                                            <td>{{res.rating}} stars</td>                
+                                            <td>
+                                                <ng-template #rj let-fill="fill">
+                                                    <span class="star" [class.filled]="fill === 100">
+                                                      <span class="half" [style.width.%]="fill">&#9733;</span>&#9733;
+                                                    </span>
+                                                  </ng-template>
+                                                  
+                                                <ngb-rating [(ngModel)]="res.rating" [(rate)]="res.rating" [starTemplate]="rj" [readonly]="true" [max]="5"></ngb-rating> ({{res?.rating}})
+                                            </td>              
                                             <td>{{res.submitted_by}}</td>
                                             <td>{{res.verified_by}}</td>
                                             <td>

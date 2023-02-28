@@ -36,7 +36,7 @@ export class BasicLineChartComponent implements OnInit {
       series: [
         {
           name: "Paid Advertisements",
-          data: [113, 42, 35, 51, 49, 62, 69, 91, 148, 78, 90, 200]
+          data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
         }
       ],
       chart: {

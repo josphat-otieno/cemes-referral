@@ -1,6 +1,6 @@
 <div class="card" >
     <div class="card-header border-0 pb-0">
-        <h4 class="card-title">Top 5 Businesses for the month of <b>January</b></h4>
+        <h4 class="card-title">Top 5 Businesses for the month of <b>February</b></h4>
     </div>
     <div class="card-body">
         <div class="widget-media best-doctor">
@@ -9,14 +9,28 @@
                     <div class="timeline-panel">
                         <div class="media mr-4">
                             <img alt="image" width="90" src="{{item.logo}}">
-                            <div class="number">#{{i}}</div>
+                            <div class="number">#{{i+1}}</div>
                         </div>
                         <div class="media-body">
                             <a routerLink="/{{item.url}}" ><h4 class="mb-2">{{item.name}}</h4></a>
                             <p class="mb-2 text-primary">{{item.description}}</p>
                             <div class="star-review">
-                                <i *ngFor="let ratings of item.ratings_class " class="{{ratings.icon_class}}" ></i>
-                                <span class="ml-3">{{item.rating}}</span>
+                                <!-- <i *ngFor="let ratings of item.ratings_class " class="{{ratings.icon_class}}" ></i> -->
+                                <!-- <span class="ml-3">{{item.rating}}</span> -->
+                                
+                                <ng-template #t let-fill="fill">
+                                    <span class="star" [class.filled]="fill === 100">
+                                      <span class="half" [style.width.%]="fill">&#9733;</span>&#9733;
+                                    </span>
+                                  </ng-template>
+                                  
+                                <ngb-rating [(ngModel)]="item.rating" [(rate)]="item.rating" [starTemplate]="t" [readonly]="true" [max]="5"></ngb-rating> ({{item?.rating}})
+
+                                <!-- <ngb-rating name="{{item.rating}}" [(ngModel)]="item.rating" [max]="5" [(rate)]=item.rating >
+                                    <ng-template let-fill="fill" let-index="index" >
+                                      <span class="star" [class.filled]="fill === 100" >&#9733;</span>
+                                    </ng-template>
+                                  </ngb-rating> -->
                             </div>
                         </div>
                         <!-- <div class="social-media">
