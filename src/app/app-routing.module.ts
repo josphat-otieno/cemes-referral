@@ -150,6 +150,7 @@ import { ResetPasswordComponent } from './pages/reset-password/reset-password.co
 import { BusinessProductsComponent } from './components/business-products/business-products.component';
 import { ForumManagementComponent } from './components/forum-management/forum-management.component';
 import { MemberComplaintsComponent } from './components/member-complaints/member-complaints.component';
+import { ProfanityReportComponent } from './components/profanity-report/profanity-report.component';
 
 
 
@@ -293,6 +294,7 @@ const routes: Routes = [
               {path: 'business-rating', component: BusinessRatingComponent},
               {path: 'profile', component: ProfileComponent},
               {path: 'payments', component: PaymentsComponent},
+              {path: 'profanity-report', component: ProfanityReportComponent},
       
           ]
           

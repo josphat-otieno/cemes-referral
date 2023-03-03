@@ -681,6 +681,7 @@ import { BusinessProductsComponent } from './components/business-products/busine
 import { ForumManagementComponent } from './components/forum-management/forum-management.component';
 import { UserIdleModule } from 'angular-user-idle';
 import { MemberComplaintsComponent } from './components/member-complaints/member-complaints.component';
+import { ProfanityReportComponent } from './components/profanity-report/profanity-report.component';
 
 function appInitializer(authService: CbfService) {
   return () => {
@@ -1301,6 +1302,7 @@ function appInitializer(authService: CbfService) {
     BusinessProductsComponent,
     ForumManagementComponent,
     MemberComplaintsComponent,
+    ProfanityReportComponent,
     
     
   ],

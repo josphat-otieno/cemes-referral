@@ -1291,7 +1291,7 @@ export class CbfService implements OnDestroy {
     )
 
   }
-
+  
   // Update Forum
   public updateForum(forumData:FormData, forumId:number, access: string): Observable<any> {
     const url = ApiEndpointService.getEndpoint(ApiEndpointService.ENDPOINT.FORUM_MGT);
@@ -1322,6 +1322,26 @@ export class CbfService implements OnDestroy {
     )
 
   }
+
+  // Get Profanity list
+  public getProfanityListing(access: string): Observable<any> {
+    const url = ApiEndpointService.getEndpoint(ApiEndpointService.ENDPOINT.PROFANITY_LIST);
+    return this.http.get<any>(url, {
+      headers: {
+        'Authorization': `Bearer ${access}`
+      }
+    }).pipe(
+      map(function (response: any) {
+        return response;
+      }),
+      catchError((fault: HttpErrorResponse) => {
+        return throwError(() => fault);
+
+      })
+    )
+
+  }
+
 
   /* ------------ ADVERTISEMENTS ------------------ */
 

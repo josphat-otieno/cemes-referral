@@ -41,6 +41,7 @@ export class NavigationComponent implements OnInit {
     // '/admin/forum-category',
     '/admin/forum',
     '/admin/forum-management',
+    '/admin/profanity-report'
   ]
     
   businessArray = [

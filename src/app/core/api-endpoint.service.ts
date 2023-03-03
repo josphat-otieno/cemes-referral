@@ -49,6 +49,7 @@ export class ApiEndpointService {
     GET_ADVERTSIEMENTS: `${ApiEndpointService.MAIN_CONTEXT}/management/get-advertisement-list/`,
     GET_REJECTED_ADVERTSIEMENTS: `${ApiEndpointService.MAIN_CONTEXT}/management/get-rejected-adverts-list/`,
     ADVERTISEMENT: `${ApiEndpointService.MAIN_CONTEXT}/management/advertisement/`,
+    PROFANITY_LIST: `${ApiEndpointService.MAIN_CONTEXT}/management/get-profanity-list/`,
 
     // Businesses
     BUSINESS_DETAIL: `${ApiEndpointService.MAIN_CONTEXT}/business/business/`,

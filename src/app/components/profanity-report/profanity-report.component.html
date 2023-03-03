@@ -1,0 +1,66 @@
+<div class="content-body">
+    <div class="container-fluid">
+        <div class="row page-titles mx-0">
+            <div class="col-sm-6 p-md-0">
+                <div class="welcome-text">
+                    <h4>System Reported Profanity Instances</h4>
+                </div>
+            </div>
+            <div class="col-sm-6 p-md-0 justify-content-sm-end mt-2 mt-sm-0 d-flex">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="admin/dashboard">Home</a></li>
+                    <li class="breadcrumb-item active"><a href="javascript:void(0)">Profanity Report</a></li>
+                </ol>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="card">
+            <div class="card-header">
+                <div class="col-6">
+                    List of all reported profanities
+                </div>
+                
+                <p class="fs-10 text-muted">Total number of Instances: <b>{{profanityCount}}</b></p>
+
+            </div>
+           
+            <div class="card-body">
+
+                <div class="table-responsive">
+                    <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th scope="col">Flag Type</th>
+                        <th scope="col">Flagged Content</th>
+                        <th scope="col">Flagged Words</th>
+                        <th scope="col">Reason</th>
+                        <th scope="col">Report Date</th>
+                        <th scope="col">Submitted </th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let item of profanityList; index as i">
+                          <td>{{item.type}}</td>
+                          <td>{{item.content}}</td>
+                          <td>{{item.words}}</td>
+                          <td>{{item.reason}}</td>
+                          <td>{{item.date | date:'mediumDate'}}</td>                          
+                          <td>{{item.user}}</td>
+                      </tr>
+
+                      <tr *ngIf="profanityCount == 0">
+                        <td colspan="6" class="no_data_display">
+                            No data available for display
+                        </td>
+                    </tr>
+                    </tbody>
+                    </table>
+                </div>
+               
+            </div>
+        </div>
+      
+	</div>
+</div>
+
