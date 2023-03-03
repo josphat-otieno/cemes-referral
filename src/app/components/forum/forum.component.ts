@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import ls from 'localstorage-slim';
 import { Subject, Subscription, throwError } from 'rxjs';
+import { ApiEndpointService } from 'src/app/core/api-endpoint.service';
 import { CbfService } from 'src/app/core/cbf.service';
 
 @Component({
@@ -30,6 +31,20 @@ export class ForumComponent implements OnInit {
 
   public validity:boolean = false
   public forumRegistration: FormGroup | any
+  
+  // Files  
+  public upload = 0;
+
+  public actualLogoFile: File | any;
+  public actualCoverFile: File | any;
+
+  public updatedLogoFile: File | any;
+  public updatedCoverFile: File | any;
+  
+  // Logo holder
+  coverDefaultLogo: any = "assets/images/default/cover.jpg";
+  forumDefaultLogo: any = "assets/images/default/forum.png";
+  public mediaUrl = ApiEndpointService.getEndpoint(ApiEndpointService.ENDPOINT.IMAGE_FOLDER);
   
   // Datatables
   dtOptions: any = {};
@@ -92,8 +107,13 @@ export class ForumComponent implements OnInit {
 	}
 
   reviewModal(content:any, data:any) {
+
     this.modalService.open(content)
     this.forumModalData = data
+
+    // images
+    this.updatedCoverFile = this.forumModalData.cover
+    this.updatedLogoFile = this.forumModalData.logo
   }
    
   // Endpoints Consumption  
@@ -149,9 +169,182 @@ export class ForumComponent implements OnInit {
 
   }
 
+  /* ------------------------------------------ Image Handler --------------------------------------------------- */
+    // On file Select
+    onChange(event: any) {
+      this.alertResponse = ''
+  
+      const file = event.target.files[0];
+  
+      if (event.length === 0)
+        return;
+  
+      var mimeType = file.type
+  
+      if(mimeType.indexOf('image')> -1){
+  
+        // check if size is 10MB Max
+  
+  
+        if (mimeType.match(/image\/*/) == null) {
+          this.alertResponse = "Not An Image, Only images are supported."
+          return;
+        } else {
+          this.upload = 1;        
+          this.actualLogoFile = file;
+  
+          const img_reader = new FileReader();
+          img_reader.onload = () => {
+            this.forumDefaultLogo = img_reader.result as string;
+          }
+          img_reader.readAsDataURL(file)
+        }
+  
+      } else {
+        this.upload = 0;
+        this.alertResponse = "Not An Image, Only images are supported."
+        return;
+  
+      }
+      
+    }
+
+    onCoverChange(event: any) {
+      this.alertResponse = ''
+  
+      const file = event.target.files[0];
+  
+      if (event.length === 0)
+        return;
+  
+      var mimeType = file.type
+  
+      if(mimeType.indexOf('image')> -1){
+  
+        // check if size is 10MB Max
+  
+  
+        if (mimeType.match(/image\/*/) == null) {
+          this.alertResponse = "Not An Image, Only images are supported."
+          return;
+        } else {
+          this.upload = 1;        
+          this.actualCoverFile = file;
+  
+          const img_reader = new FileReader();
+          img_reader.onload = () => {
+            this.coverDefaultLogo = img_reader.result as string;
+          }
+          img_reader.readAsDataURL(file)
+        }
+  
+      } else {
+        this.upload = 0;
+        this.alertResponse = "Not An Image, Only images are supported."
+        return;
+  
+      }
+      
+    }
+
+  // Change image on Update
+  onUpdateChange(event: any) {
+    this.alertResponse = ''
+
+    const file = event.target.files[0];
+
+    if (event.length === 0)
+      return;
+
+    var mimeType = file.type
+
+    if(mimeType.indexOf('image')> -1){
+
+      // check if size is 10MB Max
+      let fileSize = file.size
+
+      if (fileSize >= 10000000) {
+        this.alertResponse = "Please select an image less than 10MB.";
+      }
+
+      if (mimeType.match(/image\/*/) == null) {
+        this.alertResponse = "Not An Image, Only images are supported."
+        return;
+      } else {
+        this.upload = 1;        
+        this.updatedLogoFile = file;
+
+        const img_reader = new FileReader();
+        img_reader.onload = () => {
+          this.updatedLogoFile = img_reader.result as string;
+        }
+        img_reader.readAsDataURL(file)
+      }
+
+    } else {
+      this.upload = 0;
+      this.alertResponse = "Not An Image, Only images are supported."
+      return;
+
+    }
+    
+  }
+
+  onCoverUpdateChange(event: any) {
+    this.alertResponse = ''
+
+    const file = event.target.files[0];
+
+    if (event.length === 0)
+      return;
+
+    var mimeType = file.type
+
+    if(mimeType.indexOf('image')> -1){
+
+      // check if size is 10MB Max
+      let fileSize = file.size
+
+      if (fileSize >= 10000000) {
+        this.alertResponse = "Please select an image less than 10MB.";
+      }
+
+      if (mimeType.match(/image\/*/) == null) {
+        this.alertResponse = "Not An Image, Only images are supported."
+        return;
+      } else {
+        this.upload = 1;        
+        this.updatedCoverFile = file;
+
+        const img_reader = new FileReader();
+        img_reader.onload = () => {
+          this.updatedCoverFile = img_reader.result as string;
+        }
+        img_reader.readAsDataURL(file)
+      }
+
+    } else {
+      this.upload = 0;
+      this.alertResponse = "Not An Image, Only images are supported."
+      return;
+
+    }
+    
+  }
+   
+  /* ------------------------------------------ Image Handler --------------------------------------------------- */
+
   saveForum() {
 
     const regData:FormData = new FormData()
+
+    if(this.actualCoverFile){
+      regData.append('cover_photo', this.actualCoverFile, this.actualCoverFile.name)
+    }
+    if(this.actualLogoFile){
+      regData.append('forum_image', this.actualLogoFile, this.actualLogoFile.name)
+    }
+
     regData.append('name', this.forumRegistration.get('name')?.value)
     regData.append('description', this.forumRegistration.get('description')?.value)
     regData.append('category', this.forumRegistration.get('category')?.value)
@@ -193,6 +386,14 @@ export class ForumComponent implements OnInit {
     let ForumId = modalData.id
 
     const updateData:FormData = new FormData()
+
+    if(this.updatedCoverFile){
+      updateData.append('cover_photo', this.updatedCoverFile, this.updatedCoverFile.name)
+    }
+    if(this.updatedLogoFile){
+      updateData.append('forum_image', this.updatedLogoFile, this.updatedLogoFile.name)
+    }
+
     updateData.append('name', modalData.name)
     updateData.append('description', modalData.description)
     updateData.append('category', modalData.categoryId)

@@ -32,7 +32,7 @@ export class GraphPatientsComponent implements OnInit {
 
   constructor() {
     this.chartOptions = {
-      series: [82, 0, 8],
+      series: [0, 0, 0],
         chart: {
             type: 'radialBar',
             //width:320,

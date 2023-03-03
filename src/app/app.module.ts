@@ -680,6 +680,7 @@ import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 import { BusinessProductsComponent } from './components/business-products/business-products.component';
 import { ForumManagementComponent } from './components/forum-management/forum-management.component';
 import { UserIdleModule } from 'angular-user-idle';
+import { MemberComplaintsComponent } from './components/member-complaints/member-complaints.component';
 
 function appInitializer(authService: CbfService) {
   return () => {
@@ -1299,6 +1300,7 @@ function appInitializer(authService: CbfService) {
     ResetPasswordComponent,
     BusinessProductsComponent,
     ForumManagementComponent,
+    MemberComplaintsComponent,
     
     
   ],

@@ -150,7 +150,39 @@
                         </div>
                     </div>                    
                 </div>
-               
+                
+                <i class="text-muted">Displaying default images</i>
+
+                <div class="row">
+                    <div class="col-8">
+                        <div class="form-group">
+                            <label>Cover Image</label>
+
+                            <div class="image-upload">
+                                <label for="file-input">
+                                  <img src="{{coverDefaultLogo}}"  alt="cover image" />
+                                </label>
+                              
+                                <input id="file-input" type="file" accept="image/*" #output (change)="onCoverChange($event)">
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <div class="form-group">
+                            <label>Forum Logo</label>
+
+                            <div class="image-upload">
+                                <label for="file-input">
+                                  <img src="{{forumDefaultLogo}}"  alt="forum logo" />
+                                </label>
+                              
+                                <input  type="file" accept="image/*" #output (change)="onChange($event)">
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
               
             </form>
         </div>
@@ -220,7 +252,37 @@
                 <div class="col-lg-7">
                     <textarea class="form-control" id="descUpdate" name="description" ngModel="{{forumModalData?.description}}" value="{{forumModalData?.description}}" placeholder="Enter forum description..."></textarea>                         
                 </div>
-            </div>      
+            </div>  
+            
+            <div class="row">
+                <div class="col-8">
+                   <div class="form-group">
+                        <label for="file">Cover Image</label>
+
+                        <div class="image-upload">
+                            <label for="file-input">
+                            <img src="{{updatedCoverFile}}"  alt="cover image" />
+                            </label>
+                        
+                            <input id="file-input" type="file" accept="image/*" #output (change)="onCoverUpdateChange($event)">
+                        </div>
+                   </div>
+                </div>
+                <div class="col-4">
+                    <div class="form-group">
+                        <label for="file">Forum Logo</label>
+
+                        <div class="image-upload">
+                            <label for="file-input">
+                              <img src="{{updatedLogoFile}}"  alt="forum logo" />
+                            </label>
+                          
+                            <input id="file-input" type="file" accept="image/*" #output (change)="onUpdateChange($event)">
+                        </div>
+                    </div>
+                </div>
+            </div>
+           
 
             <!-- message -->
             <div *ngIf="messageResponse" class="row alert alert-info">

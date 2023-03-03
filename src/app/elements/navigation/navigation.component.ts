@@ -55,6 +55,7 @@ export class NavigationComponent implements OnInit {
     '/admin/member-database',
     '/admin/app-users',
     '/admin/payments',
+    '/admin/member-complaints',
 	];
 
   staffArray = [

@@ -149,6 +149,7 @@ import { PaymentsComponent } from './components/payments/payments.component';
 import { ResetPasswordComponent } from './pages/reset-password/reset-password.component';
 import { BusinessProductsComponent } from './components/business-products/business-products.component';
 import { ForumManagementComponent } from './components/forum-management/forum-management.component';
+import { MemberComplaintsComponent } from './components/member-complaints/member-complaints.component';
 
 
 
@@ -276,6 +277,7 @@ const routes: Routes = [
               // CBF Components
               {path: 'users', component: UsersComponent},
               {path: 'member-database', component: MembersComponent},
+              {path: 'member-complaints', component: MemberComplaintsComponent},
               {path: 'app-users', component: AppUsersComponent},
               {path: 'business-list', component: BusinessListingComponent},
               {path: 'business-products', component: BusinessProductsComponent},
