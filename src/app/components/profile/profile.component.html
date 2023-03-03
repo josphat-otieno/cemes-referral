@@ -32,8 +32,11 @@
 							<div class="profile-details">
 								<div class="profile-name px-3 pt-2">
 									<h4 class="text-primary mb-0">{{loginName}}</h4>
-									<p *ngIf="role != 'Not Assigned">{{role}}</p>
-									<p *ngIf="role == 'Not Assigned">System Admin</p>
+									<p>
+										System Admin
+										<!-- <span *ngIf="role != 'Not Assigned">{{role}}</span>
+										<span *ngIf="role == 'Not Assigned">System Admin</span> -->
+									</p>
 								</div>
 								
 							</div>
