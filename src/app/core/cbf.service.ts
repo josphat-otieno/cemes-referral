@@ -1342,6 +1342,25 @@ export class CbfService implements OnDestroy {
 
   }
 
+  // get member Complaints
+  public getMemberComplaints(filter:string, access: string): Observable<any> {
+    const url = ApiEndpointService.getEndpoint(ApiEndpointService.ENDPOINT.MEMBER_COMPLAINTS);
+    return this.http.get<any>(url + '?fiter_type_string=' + filter, {
+      headers: {
+        'Authorization': `Bearer ${access}`
+      }
+    }).pipe(
+      map(function (response: any) {
+        return response;
+      }),
+      catchError((fault: HttpErrorResponse) => {
+        return throwError(() => fault);
+
+      })
+    )
+
+  }
+
 
   /* ------------ ADVERTISEMENTS ------------------ */
 

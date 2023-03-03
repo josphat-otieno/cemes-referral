@@ -1,1 +1,65 @@
-<p>member-complaints works!</p>
+<div class="content-body">
+    <div class="container-fluid">
+        <div class="row page-titles mx-0">
+            <div class="col-sm-6 p-md-0">
+                <div class="welcome-text">
+                    <h4>Member Complaints</h4>
+                </div>
+            </div>
+            <div class="col-sm-6 p-md-0 justify-content-sm-end mt-2 mt-sm-0 d-flex">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="admin/dashboard">Home</a></li>
+                    <li class="breadcrumb-item active"><a href="javascript:void(0)">Member Complaints</a></li>
+                </ol>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="card">
+            <div class="card-header">
+                <div class="col-6">
+                    List of all reported complaints
+                </div>
+                
+                <p class="fs-10 text-muted">Total number of Complaints: <b>{{complaintCount}}</b></p>
+
+            </div>
+           
+            <div class="card-body">
+
+                <div class="table-responsive">
+                    <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th scope="col">Complaint Type</th>
+                        <th scope="col">Subject</th>
+                        <th scope="col">Reason</th>
+                        <th scope="col">Report Date</th>
+                        <th scope="col">Submitted </th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let item of complaintList; index as i">
+                          <td>{{item.type}}</td>
+                          <td>{{item.subject}}</td>
+                          <td>{{item.content}}</td>
+                          <td>{{item.reason}}</td>
+                          <td>{{item.date | date:'mediumDate'}}</td>                          
+                          <td>{{item.user}}</td>
+                      </tr>
+
+                      <tr *ngIf="complaintCount == 0">
+                        <td colspan="5" class="no_data_display">
+                            No data available for display
+                        </td>
+                    </tr>
+                    </tbody>
+                    </table>
+                </div>
+               
+            </div>
+        </div>
+      
+	</div>
+</div>
+
