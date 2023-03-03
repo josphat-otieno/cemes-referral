@@ -4,6 +4,21 @@
     display: none;
 }
 
+.cover-upload > input
+{
+    display: none;
+}
+
+.cover-upload {
+    max-width: 50%;
+}
+
+.cover-upload img
+{
+    max-width: 150px;
+    cursor: pointer;
+}
+
 .image-upload img
 {
     max-width: 100px;

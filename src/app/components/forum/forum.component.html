@@ -158,7 +158,7 @@
                         <div class="form-group">
                             <label>Cover Image</label>
 
-                            <div class="image-upload">
+                            <div class="cover-upload">
                                 <label for="file-input">
                                   <img src="{{coverDefaultLogo}}"  alt="cover image" />
                                 </label>
@@ -173,11 +173,11 @@
                             <label>Forum Logo</label>
 
                             <div class="image-upload">
-                                <label for="file-input">
+                                <label for="logo-file-input">
                                   <img src="{{forumDefaultLogo}}"  alt="forum logo" />
                                 </label>
                               
-                                <input  type="file" accept="image/*" #output (change)="onChange($event)">
+                                <input id="logo-file-input" type="file" accept="image/*" (change)="onChange($event)">
                             </div>
 
                         </div>
@@ -259,12 +259,12 @@
                    <div class="form-group">
                         <label for="file">Cover Image</label>
 
-                        <div class="image-upload">
-                            <label for="file-input">
-                            <img src="{{updatedCoverFile}}"  alt="cover image" />
+                        <div class="cover-upload">
+                            <label for="cover-file-input">
+                            <img src="{{coverSavedLogo}}" (error)="handleMissingImage()" alt="cover image" />
                             </label>
                         
-                            <input id="file-input" type="file" accept="image/*" #output (change)="onCoverUpdateChange($event)">
+                            <input id="cover-file-input" type="file" accept="image/*" (change)="onCoverUpdateChange($event)">
                         </div>
                    </div>
                 </div>
@@ -273,11 +273,11 @@
                         <label for="file">Forum Logo</label>
 
                         <div class="image-upload">
-                            <label for="file-input">
-                              <img src="{{updatedLogoFile}}"  alt="forum logo" />
+                            <label for="upd_logo-file-input">
+                              <img src="{{forumSavedLogo}}" (error)="handleMissingImage()" alt="forum logo" />
                             </label>
                           
-                            <input id="file-input" type="file" accept="image/*" #output (change)="onUpdateChange($event)">
+                            <input id="upd_logo-file-input" type="file" accept="image/*" (change)="onUpdateChange($event)">
                         </div>
                     </div>
                 </div>

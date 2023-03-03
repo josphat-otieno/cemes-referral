@@ -42,8 +42,12 @@ export class ForumComponent implements OnInit {
   public updatedCoverFile: File | any;
   
   // Logo holder
-  coverDefaultLogo: any = "assets/images/default/cover.jpg";
-  forumDefaultLogo: any = "assets/images/default/forum.png";
+  public coverDefaultLogo: any = "assets/images/default/cover.jpg";
+  public forumDefaultLogo: any = "assets/images/default/forum.png";
+  
+  public coverSavedLogo: any = "assets/images/default/cover.jpg";
+  public forumSavedLogo: any = "assets/images/default/forum.png";
+
   public mediaUrl = ApiEndpointService.getEndpoint(ApiEndpointService.ENDPOINT.IMAGE_FOLDER);
   
   // Datatables
@@ -106,14 +110,19 @@ export class ForumComponent implements OnInit {
 
 	}
 
-  reviewModal(content:any, data:any) {
+  handleMissingImage() {
+    this.coverSavedLogo = this.coverDefaultLogo
+    this.forumSavedLogo = this.forumDefaultLogo
+  }
 
+  reviewModal(content:any, data:any) {
+    
     this.modalService.open(content)
     this.forumModalData = data
 
     // images
-    this.updatedCoverFile = this.forumModalData.cover
-    this.updatedLogoFile = this.forumModalData.logo
+    this.coverSavedLogo = this.forumModalData.cover
+    this.forumSavedLogo = this.forumModalData.logo
   }
    
   // Endpoints Consumption  
@@ -199,7 +208,7 @@ export class ForumComponent implements OnInit {
           }
           img_reader.readAsDataURL(file)
         }
-  
+        
       } else {
         this.upload = 0;
         this.alertResponse = "Not An Image, Only images are supported."
@@ -276,7 +285,7 @@ export class ForumComponent implements OnInit {
 
         const img_reader = new FileReader();
         img_reader.onload = () => {
-          this.updatedLogoFile = img_reader.result as string;
+          this.forumSavedLogo = img_reader.result as string;
         }
         img_reader.readAsDataURL(file)
       }
@@ -318,7 +327,7 @@ export class ForumComponent implements OnInit {
 
         const img_reader = new FileReader();
         img_reader.onload = () => {
-          this.updatedCoverFile = img_reader.result as string;
+          this.coverSavedLogo = img_reader.result as string;
         }
         img_reader.readAsDataURL(file)
       }
