@@ -633,7 +633,7 @@
 
                     <div class="image-upload">
                         <label for="file-input">
-                          <img src="{{businessLogo}}"  alt="business logo" />
+                          <img src="{{businessLogo}}" (error)="handleMissingImage()"  alt="business logo" />
                         </label>
                       
                         <input id="file-input" type="file" accept="image/*" #output (change)="onUpdateChange($event)">

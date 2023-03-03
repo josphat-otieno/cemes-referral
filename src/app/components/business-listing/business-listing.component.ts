@@ -86,8 +86,8 @@ export class BusinessListingComponent implements OnInit {
   ptTrigger: Subject<any> = new Subject<any>();
 
   // Logo holder
-  businessDefaultLogo: any = "";
-  businessLogo: any = "";
+  public businessDefaultLogo: any = "assets/images/default/default_business.png";
+  public businessLogo: any = "";
   public mediaUrl = ApiEndpointService.getEndpoint(ApiEndpointService.ENDPOINT.IMAGE_FOLDER);
 
   constructor(
@@ -344,6 +344,11 @@ export class BusinessListingComponent implements OnInit {
     
   }
  
+  // handle missing image
+  handleMissingImage() {
+    this.businessLogo = this.businessDefaultLogo
+  }
+
   // Change image on Update
   onUpdateChange(event: any) {
     this.alertResponse = ''
@@ -538,6 +543,7 @@ export class BusinessListingComponent implements OnInit {
     
     this.unsubscribe.push(regsterSubscr);
   }
+  
 
   updateBusiness (data: any) {
     this.alertResponse = ''
