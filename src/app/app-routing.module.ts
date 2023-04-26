@@ -151,8 +151,7 @@ import { BusinessProductsComponent } from './components/business-products/busine
 import { ForumManagementComponent } from './components/forum-management/forum-management.component';
 import { MemberComplaintsComponent } from './components/member-complaints/member-complaints.component';
 import { ProfanityReportComponent } from './components/profanity-report/profanity-report.component';
-
-
+import { EventsManagementComponent } from './components/events-management/events-management.component';
 
 
 const routes: Routes = [
@@ -289,6 +288,7 @@ const routes: Routes = [
               {path: 'business-category', component: BusinessCategoryComponent},
               {path: 'business-sub-category', component: BusinessSubCategoryComponent},
               {path: 'forum', component: ForumComponent},
+              {path: 'events-management', component: EventsManagementComponent},
               {path: 'forum-management', component: ForumManagementComponent},
               {path: 'advertisement', component: AdvertisementsComponent},
               {path: 'business-rating', component: BusinessRatingComponent},

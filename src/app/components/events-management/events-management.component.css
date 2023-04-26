@@ -1,0 +1,26 @@
+/* Upload Image */
+.image-upload > input
+{
+    display: none;
+}
+
+.cover-upload > input
+{
+    display: none;
+}
+
+.cover-upload {
+    max-width: 100%;
+}
+
+.cover-upload img
+{
+    max-width: 160px;
+    cursor: pointer;
+}
+
+.image-upload img
+{
+    max-width: 100px;
+    cursor: pointer;
+}
