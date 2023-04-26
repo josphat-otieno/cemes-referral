@@ -38,77 +38,70 @@
                         <th scope="col">Event Date</th>
                         <th scope="col">Start Time </th>
                         <th scope="col">End Time </th>
+                        <th scope="col">Registered By </th>
                         <th scope="col">Actions</th>
                     </tr>
                     </thead>
 
                     <tbody>
-                        <tr *ngFor="let event of eventsList">
+                      <tr *ngFor="let event of eventsList; index as i">
 
-                          <td class="text text-capitalize">{{event.eventName}}</td>
-                          <td class="text text-capitalize">
-                            <span *ngIf="event.eventType == ''">not Specified</span> 
-                            <span *ngIf="event.eventType != ''">{{event.eventType}}</span> 
-                            &nbsp; <i class="fa fa-money-bill"  mat-raised-button matTooltip="Paid Event" matTooltipPosition="below" *ngIf="event.is_paid === true"></i>
-                          </td>
-                          <td>
-                            <span *ngIf="event.eventDate == ''">Not Specified</span>
-                            <span *ngIf="event.eventDate != ''">{{event.eventDate}}</span>
-                          </td>
-                          <td>{{event.startTime}}</td>
-                          <td>{{event.endTime}}</td>
-                          <td>
-                            <span *ngIf="event.announcementButton == 'nope' || event.announcementButton == ''">
-                              <span class="badge badgeStatus" style="background-color: darkred">No Button</span>
-                            </span>
-                            <span *ngIf="event.announcementButton != null">
-                              <span *ngIf="(event.announcementButton | lowercase) == 'pledge'" class="badge badgeStatus"
-                                style="background-color: lightseagreen">Pledge</span>
-                              <span *ngIf="(event.announcementButton | lowercase) == 'give'" class="badge badgeStatus"
-                                style="background-color: skyblue">Give</span>
-                              <span *ngIf="(event.announcementButton| lowercase) == 'register'" class="badge badgeStatus"
-                                style="background-color: lightslategrey">Register</span>
-                              <span *ngIf="(event.announcementButton| lowercase) == 'apply'" class="badge badgeStatus"
-                                style="background-color: orange">Apply</span>
-                              <span *ngIf="(event.announcementButton| lowercase) == 'book'" class="badge badgeStatus"
-                                style="background-color: lime">Book</span>
-                            </span>
-                          </td>
-                          <td>
-                            <span>
-                              <i *ngIf="isChangeCustomFormAllowed === false" mat-raised-button matTooltip="View Form"
-                                matTooltipPosition="below" class="fa fa-eye fa-4px" data-toggle="modal"
-                                (click)="openPerm()"></i> &nbsp;
-                              <i *ngIf="isChangeCustomFormAllowed === true" mat-raised-button matTooltip="View Form"
-                                matTooltipPosition="below" class="fa fa-eye fa-4px" data-toggle="modal"
-                                (click)="previewModal('preview', event)"></i> &nbsp;
-        
-                              <i *ngIf="isChangeEventAllowed === true" class="fa fa-edit fa-4px"
-                                (click)="openModal(editEvent, event)"></i> &nbsp;
-                              <i *ngIf="isChangeEventAllowed === false" class="fa fa-edit fa-4px" (click)="openPerm()"></i>
-                              &nbsp;
-        
-                              <i *ngIf="isDeleteEventAllowed === true" class="fa fa-trash fa-4px"
-                                (click)="openModals('deleteEvent', event)"></i>
-                              <i *ngIf="isDeleteEventAllowed === false" class="fa fa-trash fa-4px" (click)="openPerm()"></i>
-                              <!-- <i class="fa fa-edit fa-4px" (click)="isChangeEventAllowed ? openModal(editEvent, event) : '' "></i> &nbsp;
-                                <i class="fa fa-trash fa-4px" (click)="isDeleteEventAllowed ? openModals(deleteEvent, event) : '' "></i> -->
-                            </span>
-                          </td>
-                        </tr>
+                        <td>
+                          <div class="circular_image_container symbol symbol-50px me-5">
+                              <img src="{{event.event_image}}" alt="event image preview"/>
+                          </div>
+                        </td>
 
-                        <tr *ngIf="eventsListCount == 0">
-                            <td colspan="6" class="no_data_display">
-                                No data available for display
-                            </td>
-                        </tr>
+                        <td class="text text-capitalize">{{event.event_name}}</td>                          
+                        <td>
+                          <span *ngIf="event.eventDate == ''">Not Specified</span>
+                          <span *ngIf="event.eventDate != ''">{{event.eventDate}}</span>
+                        </td>
+                        <td>{{event.startTime}}</td>
+                        <td>{{event.endTime}}</td>
+                        <td>{{event.created_by}}</td>
+                      
+                        <td>
 
-                    </tbody>
+                          <div class="button_containers">
+                            <button type="button" class="btn btn-sm btn-info" (click)="previewModal('preview', event)"> <i class="fa fa-eye"></i>Preview Form</button> &nbsp;
+                            <button type="button" class="btn btn-sm btn-success" (click)="openModal(editEvent, event)"> <i class="fa fa-pencil"></i>Edit</button> &nbsp;
+                            <button type="button" class="btn btn-sm btn-danger" (click)="openModal(deleteEvent, event)"> <i class="fa fa-trash"></i>Delete</button> 
+                          </div>
+                          <!-- <span>
+                            <i *ngIf="isChangeCustomFormAllowed === false" mat-raised-button matTooltip="View Form"
+                              matTooltipPosition="below" class="fa fa-eye fa-4px" data-toggle="modal"
+                              (click)="openPerm()"></i> &nbsp;
+                            <i *ngIf="isChangeCustomFormAllowed === true" mat-raised-button matTooltip="View Form"
+                              matTooltipPosition="below" class="fa fa-eye fa-4px" data-toggle="modal"
+                              (click)="previewModal('preview', event)"></i> &nbsp;
+      
+                            <i *ngIf="isChangeEventAllowed === true" class="fa fa-edit fa-4px"
+                              (click)="openModal(editEvent, event)"></i> &nbsp;
+                            <i *ngIf="isChangeEventAllowed === false" class="fa fa-edit fa-4px" (click)="openPerm()"></i>
+                            &nbsp;
+      
+                            <i *ngIf="isDeleteEventAllowed === true" class="fa fa-trash fa-4px"
+                              (click)="openModals('deleteEvent', event)"></i>
+                            <i *ngIf="isDeleteEventAllowed === false" class="fa fa-trash fa-4px" (click)="openPerm()"></i>
+                            <-- <i class="fa fa-edit fa-4px" (click)="isChangeEventAllowed ? openModal(editEvent, event) : '' "></i> &nbsp;
+                              <i class="fa fa-trash fa-4px" (click)="isDeleteEventAllowed ? openModals(deleteEvent, event) : '' "></i> --
+                          </span> -->
+                        </td>
+                      </tr>
 
-                    </table>
-                </div>
-            </div>
-        </div>
+                      <tr *ngIf="eventsListCount == 0">
+                          <td colspan="6" class="no_data_display">
+                              No data available for display
+                          </td>
+                      </tr>
+
+                  </tbody>
+
+                  </table>
+              </div>
+          </div>
+      </div>
       
 	</div>
 </div>
@@ -145,7 +138,7 @@
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label class="col-lg-5 col-form-label" for="eventDesc">Custom Form (optional) </label>
+                    <label class="col-lg-5 col-form-label">Custom Form (optional) </label>
                     <div class="col-lg-7">                         
                       <ng-multiselect-dropdown [placeholder]="'Select form...'" [settings]="dropdownSettings"
                         [data]="formList" (onSelect)="onItemSelect($event)" (onDeSelect)="onItemDeSelect($event)">
@@ -246,9 +239,9 @@
 
         <!-- spinner -->
         <div class="row">
-          <div id="loader" *ngIf="loading === true"> Registering event, please wait ... </div>
+          <div class="loader" *ngIf="loading === true"> Registering event, please wait ... </div>
         </div>
-        
+                
         <!-- Message -->
         <div *ngIf="messageResponse" class="row alert alert-info">
             <p><i class="fa fa-exclamation"></i> &nbsp;  {{messageResponse}}</p>
@@ -306,6 +299,138 @@
       </button>
     </div>
   
+      <div class="modal-body default-calendar">
+        
+        <form class="form" #editForm="ngForm" autocomplete="on">
+
+          <div class="form-group row">
+            <label class="col-lg-5 col-form-label" for="eventNameEdit">Event Name
+                <span class="text-danger">*</span>
+            </label>
+            <div class="col-lg-7">
+                <input type="hidden" name="id" ngModel="{{eventModalData?.id}}" value="{{eventModalData?.id}}">
+                <input type="text" class="form-control" id="eventNameEdit" name="name" ngModel="{{eventModalData?.event_name}}" value="{{eventModalData?.event_name}}" name="event_name">
+            </div>                        
+          </div>    
+        
+          <div class="form-group row">
+              <label class="col-lg-5 col-form-label" for="eventEditDesc">Event Description </label>
+              <div class="col-lg-7">                         
+                <textarea cols="2" rows="2" class="form-control" id="eventEditDesc" ngModel="{{eventModalData?.description}}" value="{{eventModalData?.description}}" name="description" placeholder="Event description ..."></textarea>
+              </div>
+          </div>
+          <div class="form-group row">
+              <label class="col-lg-5 col-form-label">Custom Form (optional) </label>
+              <div class="col-lg-7">                         
+                <ng-multiselect-dropdown [placeholder]="'Select form...'" name="customForm"
+                  [settings]="dropdownSettings" [data]="formList" (onSelect)="onItemSelect($event)"
+                  (onDeSelect)="onItemDeSelect($event)" [(ngModel)]="selectedForm">
+                </ng-multiselect-dropdown>
+              </div>
+          </div>
+
+          <div class="form-group row">
+              <label class="col-lg-5 col-form-label" for="seatRestrictionUpdate">Seats Restriction
+                  <span class="text-danger">*</span>
+              </label>
+              <div class="col-lg-7">
+                  <select class="form-control default-select" id="seatRestrictionUpdate" ngModel="{{eventModalData?.is_limited}}" value="{{eventModalData?.is_limited}}" name="is_limited" #seat_res_update (change)="selector(seat_res_update.value)">
+                      <option value="false">Unrestricted</option>
+                      <option value="true">Restricted</option>                           
+                  </select>
+
+              </div>
+          </div>
+
+          <div class="form-group row" *ngIf="seat_restricted">
+            <label class="col-lg-5 col-form-label" for="maxyUpdate">Maximum Seats</label>
+            <div class="col-lg-7">
+              <input type="number" class="form-control" id="maxyUpdate" ngModel="{{eventModalData?.maximumSeats}}" value="{{eventModalData?.maximumSeats}}" name="maximumSeats">
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label class="col-lg-5 col-form-label" for="reservedSeatUpdate">Reserved Seats</label>
+            <div class="col-lg-7">
+              <input type="number" class="form-control" id="reservedSeatUpdate" ngModel="{{eventModalData?.seatsReserved}}" value="{{eventModalData?.seatsReserved}}" name="seatsReserved" #rsvre (input)="validateEdit(rsvre.value)">
+            </div>
+
+            <i *ngIf="res_error">
+              <p style="color: red;">Reserved seats cannot be greater than maximum</p>
+            </i>
+
+          </div>
+
+          <div class="form-group row">
+              <label class="col-lg-5 col-form-label" for="evntdateUpdate">Event Date
+                  <span class="text-danger">*</span>
+              </label>
+              <div class="col-lg-7">
+                  <input type="date" min="{{current_date}}" ngModel="{{eventModalData?.eventDate}}" value="{{eventModalData?.eventDate}}" name="eventDate" class="form-control" id="evntdateUpdate" required placeholder="Enter event date">
+              </div>
+          </div>
+
+          <div class="form-group row">
+            <div class="col-6">
+              <label for="start_TimeUpdate">Start Time</label> 
+              <input type="time" class="form-control" id="start_TimeUpdate" ngModel="{{eventModalData?.startTime}}" value="{{eventModalData?.startTime}}" name="startTime">
+            </div>
+
+            <div class="col-6">
+              <label for="end_TimeUpdate">End Time</label>
+              <input type="time" class="form-control" id="end_TimeUpdate" ngModel="{{eventModalData?.endTime}}" value="{{eventModalData?.endTime}}" name="endTime">
+            </div>
+          </div>
+
+          <!-- Payment -->
+          <div class="form-group row">
+
+              <div class="col-6">
+                <label>Paid Event? &nbsp; <input type="checkbox" [checked]="eventModalData?.is_paid" #pay_chk_update required (change)="payCheckUpdate(pay_chk_update.checked)"/> </label> 
+              </div>
+
+              <!-- if form is selected -->
+              <div class="col-6" *ngIf="paidEvent">
+                <label>Ticket Amount</label>
+                  <input class="form-control" type="number" name="per_ticket_amount" ngModel="{{eventModalData?.per_ticket_amount}}" value="{{eventModalData?.per_ticket_amount}}" />
+              </div>
+
+          </div>
+          <!-- Payment -->
+
+          <div class="form-group row">
+            <label class="col-lg-5 col-form-label" for="evnt_image">Event Image</label>
+            <div class="col-lg-7">
+              <div class="cover-upload" id="evnt_image">
+                <label for="file-input">
+                  <img src="{{eventDefaultBannerEdit}}" alt="event image" />
+                </label>
+              
+                <input id="file-input" type="file" accept="image/*" #output (change)="onUpdateChange($event)">
+              </div>
+            </div>
+          </div>
+          
+          <div class="row">
+            <div class="loader" *ngIf="loadingEdit === true"> Registering event, please wait ... </div>
+          </div>
+      
+          <!-- message -->
+          <div *ngIf="messageResponse" class="row alert alert-info">
+              <p><i class="fa fa-exclamation"></i> &nbsp;  {{messageResponse}}</p>
+          </div>
+          <div *ngIf="alertResponse" class="row alert alert-danger">
+              <p><i class="fa fa-exclamation"></i> &nbsp;  {{alertResponse}}</p>
+          </div>
+
+          <div class="modal-footer">
+            <button type="button" class="btn btn-light" data-dismiss="modal" (click)="modal.dismiss('Cross click')">Cancel</button>
+            <button type="submit" [disabled]="disable || !editForm.valid" class="btn btn-primary" (click)="updateAction(editForm.value)"
+            >Save Changes</button>
+          </div>
+
+        </form>
+    </div>
   </ng-template>
   
   <ng-template #deleteEvent let-modal>
@@ -314,6 +439,23 @@
       <button type="button" class="close" (click)="modal.dismiss()" aria-label="Close">
         <span aria-hidden="true">&times;</span>
       </button>
+    </div>
+
+    <div class="modal-body default-calendar">
+      <form #deleteForm="ngForm">        
+        <input type="hidden" name="id" ngModel="{{eventModalData?.id}}" value="{{eventModalData?.id}}">
+        <p>Are you sure you want to delete <b>{{eventModalData?.event_name}}</b>?</p>
+      </form>
+
+       <!-- message -->
+       <div *ngIf="messageResponse" class="row alert alert-info">
+        <p><i class="fa fa-exclamation"></i> &nbsp; {{messageResponse}}</p>
+        </div>
+
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-sm btn-light" (click)="modal.close('Close click')">No</button>
+        <button type="button" class="btn btn-sm btn-primary" (click)="deleteAction(deleteForm.value)">Yes</button>
     </div>
   
   </ng-template>

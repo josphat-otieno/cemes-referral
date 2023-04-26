@@ -65,6 +65,7 @@ export class ApiEndpointService {
     BUSINESS_PRODUCT: `${ApiEndpointService.MAIN_CONTEXT}/business/business-product/`,
     BUSINESS_CATEGORY: `${ApiEndpointService.MAIN_CONTEXT}/business/business-category/`,
     CITAM_EVENT: `${ApiEndpointService.MAIN_CONTEXT}/business/events/`,
+    GET_EVENTS: `${ApiEndpointService.MAIN_CONTEXT}/business/get-events-listing/`,
     GET_CUSTOM_FORMS: `${ApiEndpointService.MAIN_CONTEXT}/business/get-custom-forms/`,
     BUSINESS_SUB_CATEGORY: `${ApiEndpointService.MAIN_CONTEXT}/business/business-sub-category/`,
     GET_BUSINESS_SUB_CATEGORIES: `${ApiEndpointService.MAIN_CONTEXT}/business/get-business-sub-category-list/`,

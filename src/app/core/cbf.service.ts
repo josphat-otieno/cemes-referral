@@ -1275,11 +1275,72 @@ export class CbfService implements OnDestroy {
 
   }
 
+          /* ------------------- EVENTS --------------------- */
+
   // create event
-  public registerEvent(forumData:FormData, access: string): Observable<any> {
+  public registerEvent(eventData:FormData, access: string): Observable<any> {
     const url = ApiEndpointService.getEndpoint(ApiEndpointService.ENDPOINT.CITAM_EVENT);
-    return this.http.post<any>(url, forumData, {
+    return this.http.post<any>(url, eventData, {
       headers: {
+        'Authorization': `Bearer ${access}`
+      }
+    }).pipe(
+      map(function (response: any) {
+        return response;
+      }),
+      catchError((fault: HttpErrorResponse) => {
+        return throwError(() => fault);
+
+      })
+    )
+
+  }
+  
+  // Update event
+  public updateEvent(eventID: number, eventData:FormData, access: string): Observable<any> {
+    const url = ApiEndpointService.getEndpoint(ApiEndpointService.ENDPOINT.CITAM_EVENT);
+    return this.http.patch<any>(url + eventID + '/', eventData, {
+      headers: {
+        'Authorization': `Bearer ${access}`
+      }
+    }).pipe(
+      map(function (response: any) {
+        return response;
+      }),
+      catchError((fault: HttpErrorResponse) => {
+        return throwError(() => fault);
+
+      })
+    )
+
+  }
+
+  // Delete event
+  public deleteEvent(eventID: number, access: string): Observable<any> {
+    const url = ApiEndpointService.getEndpoint(ApiEndpointService.ENDPOINT.CITAM_EVENT);
+    return this.http.delete<any>(url + eventID + '/', {
+      headers: {
+        'Authorization': `Bearer ${access}`
+      }
+    }).pipe(
+      map(function (response: any) {
+        return response;
+      }),
+      catchError((fault: HttpErrorResponse) => {
+        return throwError(() => fault);
+
+      })
+    )
+
+  }
+  
+  // Get Events
+  public getEventDetails(access: string): Observable<any> {
+    const url = ApiEndpointService.getEndpoint(ApiEndpointService.ENDPOINT.GET_EVENTS);
+    return this.http.get<any>(url, {
+      headers: {
+        'Content-Type': 'application/json; charset=utf-8',
+        'Accept': 'application/json',
         'Authorization': `Bearer ${access}`
       }
     }).pipe(

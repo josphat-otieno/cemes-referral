@@ -18,6 +18,7 @@ export class EventsManagementComponent implements OnInit {
   // public variables  
   public current_date:string = ""
   public loading:boolean = false
+  public loadingEdit:boolean = false
 
   public accessToken:string = ''
   public user_id:number = 0
@@ -50,6 +51,7 @@ export class EventsManagementComponent implements OnInit {
   public upload = 0;
 
   public actualFile: File | any;
+  public updatedFile: File | any;
   
   public eventDefaultBanner:any = "";
   public eventDefaultBannerEdit:any = "";
@@ -62,8 +64,10 @@ export class EventsManagementComponent implements OnInit {
   dropdownSettings!:IDropdownSettings;
 
   // Validation
+  public disable:boolean = false;
   public type: string = "";
   public res_serror: boolean = false;
+  public res_error: boolean = false;
 
   // Permissions  
   public isChangeEventAllowed: boolean = false
@@ -138,6 +142,7 @@ export class EventsManagementComponent implements OnInit {
     this.user_id = Number(this.cbfService.currentUserValue)
 
     this.getForms()
+    this.getEvents()
 
   }
 
@@ -187,7 +192,6 @@ export class EventsManagementComponent implements OnInit {
     this.modalService.open(PermissionComponent);
   }
 
-  
   openModals(targetModal: string, data: any) {
     this.modalService.open(targetModal, {
       centered: true,
@@ -221,7 +225,6 @@ export class EventsManagementComponent implements OnInit {
 
   }
   
-
   onChange(event: any) {
     
     this.alertResponse = ''
@@ -234,7 +237,6 @@ export class EventsManagementComponent implements OnInit {
 
     if (event.length === 0)
       return;
-
 
     var mimeType = file.type
     if (mimeType.match(/image\/*/) == null) {
@@ -265,6 +267,49 @@ export class EventsManagementComponent implements OnInit {
     }
     reader.readAsDataURL(file)
 
+  }
+
+  // Change image on Update
+  onUpdateChange(event: any) {
+    this.alertResponse = ''
+
+    const file = event.target.files[0];
+
+    if (event.length === 0)
+      return;
+
+    var mimeType = file.type
+
+    if(mimeType.indexOf('image')> -1){
+
+      // check if size is 10MB Max
+      let fileSize = file.size
+
+      if (fileSize >= 10000000) {
+        this.alertResponse = "Please select an image less than 10MB.";
+      }
+
+      if (mimeType.match(/image\/*/) == null) {
+        this.alertResponse = "Not An Image, Only images are supported."
+        return;
+      } else {
+        this.upload = 1;        
+        this.updatedFile = file;
+
+        const img_reader = new FileReader();
+        img_reader.onload = () => {
+          this.eventDefaultBannerEdit = img_reader.result as string;
+        }
+        img_reader.readAsDataURL(file)
+      }
+
+    } else {
+      this.upload = 0;
+      this.alertResponse = "Not An Image, Only images are supported."
+      return;
+
+    }
+    
   }
 
   payCheck(event: any){
@@ -304,8 +349,47 @@ export class EventsManagementComponent implements OnInit {
       this.res_serror = false;
     }
   }
+
+  validateEdit(value: any) {
+    let reserved_value = value;  
+    let max_seats_value = this.eventModalData.maximumSeats;
+    let is_limited_val = this.eventModalData.is_limited;
+
+    if((reserved_value > max_seats_value) && (is_limited_val == 'true')){
+      this.res_error = true;
+      this.disable = true
+    } else {
+      this.res_error = false;
+      this.disable = false;
+    }
+  }
   
-  //  Get custom form
+  //  Get Events
+  getEvents(){
+
+    const eventsSubscr = this.cbfService.getEventDetails(this.accessToken)
+    .subscribe({
+      next: (response: any) => {
+        let result = response   
+
+        this.eventsListCount = result.count
+        this.eventsList = result.results  
+
+        if(result.count > 0) {
+          this.dtTrigger.next(this.eventsList)
+        }
+        
+      },      
+      error: (err: HttpErrorResponse) => {
+        //  this.toaster.warning('Failure fetching user details, kindly refresh', 'Something went wrong')
+      }
+    })
+
+    this.unsubscribe.push(eventsSubscr);
+
+  }
+
+  // Get Custom Forms
   getForms(){
 
     const formSubscr = this.cbfService.getCustomForms(this.accessToken)
@@ -323,7 +407,6 @@ export class EventsManagementComponent implements OnInit {
     this.unsubscribe.push(formSubscr);
 
   }
-
 
   // Register event
   saveEvent() {
@@ -433,5 +516,139 @@ export class EventsManagementComponent implements OnInit {
     }
     
   } 
+
+  // Update Evenyt
+  updateAction(data: any) {
+
+    let formValidity:boolean = true
+
+      this.loadingEdit = true;
+
+      let modalData = data
+      let limited = modalData.is_limited
+      let eventId = modalData.id
+      let ticketAmount = modalData.per_ticket_amount
+
+      const updateData:FormData = new FormData()      
+
+      updateData.append('eventName', modalData.name)
+      updateData.append('eventDate', modalData.eventDate)
+      updateData.append('startTime', modalData.startTime)
+      updateData.append('endTime', modalData.endTime)
+      updateData.append('description', modalData.description)
+      updateData.append('seatsReserved', modalData.seatsReserved)
+
+      if(this.updatedFile){
+        updateData.append('eventImage', this.updatedFile, this.updatedFile.name)
+      }
+
+      if(limited == 'true'){
+        let limited_val:boolean = true
+
+        if(limited == 'true'){
+          limited_val = true
+        } else {
+          limited_val = false
+        }
+        
+        updateData.append('is_limited', limited_val.toString());
+        updateData.append('maximumSeats', modalData.maximumSeats)
+      }
+     
+      //Custom Form
+      if(modalData.customForm.length > 0){
+        updateData.append('customForm', modalData.customForm[0].id)
+      }
+
+      // check Payment
+      if(this.paidEventUpdate === true){
+
+        // check amount
+        if(ticketAmount == '' || ticketAmount == 0){ 
+          formValidity = false
+          
+          if(ticketAmount == ''){            
+            this.alertResponse = "Caution, please provide the amount for a single ticket";
+          }
+          if(ticketAmount == 0){
+            this.alertResponse = "Caution, a ticket cannot be Ksh.0, if so unselect the paid event checkbox";
+          }
+          
+        } else {
+          formValidity = true
+
+          // set value
+          updateData.append('is_paid', true.toString())
+          updateData.append('per_ticket_amount', ticketAmount)
+        }
+
+      }
+
+      if(formValidity === true){
+     
+        const updateEventSubscr = this.cbfService.updateEvent(eventId, updateData, this.accessToken)
+        .subscribe({
+          next: (response: any) => {
+            
+            if(response.id){
+          
+              this.messageResponse = 'Event updated successfully'
+                
+              setTimeout(() => {
+                window.location.reload()
+              }, 1200);
+    
+            } else if(response.message) {
+              this.loadingEdit = false
+              this.alertResponse = "Something went wrong, failure updating event, kindly try again"
+            }
+            
+          },      
+          error: (err: HttpErrorResponse) => {
+            this.loadingEdit = false
+            this.alertResponse = 'Something went wrong, failure updating event, kindly try again';
+          }
+        })
+
+        this.unsubscribe.push(updateEventSubscr);
+
+    } else {
+      this.loadingEdit = false;
+      this.alertResponse = "Invalid Submission, you have not filled all the required fields";
+    }
+
+
+  }
+
+  deleteAction(data: any) {
+
+    let modalData = data
+    let eventID = modalData.id
+
+    const delSubscr = this.cbfService.deleteEvent(eventID, this.accessToken)
+
+    .subscribe({
+      next: (response: any) => {
+        
+        if(response.id){
+          
+          this.messageResponse = 'Event deleted successfully'
+            
+          setTimeout(() => {
+            window.location.reload()
+          }, 1200);
+
+        }
+        
+      },
+      error: (e:HttpErrorResponse) =>  {        
+        this.messageResponse = 'Something went wrong, please try again' 
+      }   
+    })
+    
+    this.unsubscribe.push(delSubscr);
+
+  }
+
 
 }
