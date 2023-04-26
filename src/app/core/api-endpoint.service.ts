@@ -64,8 +64,17 @@ export class ApiEndpointService {
     UPDATE_BUSINESS_DETAILS: `${ApiEndpointService.MAIN_CONTEXT}/business/business/`,
     BUSINESS_PRODUCT: `${ApiEndpointService.MAIN_CONTEXT}/business/business-product/`,
     BUSINESS_CATEGORY: `${ApiEndpointService.MAIN_CONTEXT}/business/business-category/`,
+    CITAM_EVENT: `${ApiEndpointService.MAIN_CONTEXT}/business/events/`,
+    GET_EVENTS: `${ApiEndpointService.MAIN_CONTEXT}/business/get-events-listing/`,
+    GET_CUSTOM_FORMS: `${ApiEndpointService.MAIN_CONTEXT}/business/get-custom-forms/`,
     BUSINESS_SUB_CATEGORY: `${ApiEndpointService.MAIN_CONTEXT}/business/business-sub-category/`,
     GET_BUSINESS_SUB_CATEGORIES: `${ApiEndpointService.MAIN_CONTEXT}/business/get-business-sub-category-list/`,
+
+      // Custom Forms      
+      MANAGE_CUSTOMFORM_CUSTOMFORMITEM:`${ApiEndpointService.MAIN_CONTEXT}/business/custom-form_custom-form-items/`,
+      MANAGE_CUSTOM_FORM_ITEMS:`${ApiEndpointService.MAIN_CONTEXT}/business/custom-form-items/`,
+
+    
 
     // Communication
     GET_FORUM_LIST: `${ApiEndpointService.MAIN_CONTEXT}/communication/get-forum-list/`,

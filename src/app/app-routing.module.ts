@@ -154,8 +154,7 @@ import { ProfanityReportComponent } from './components/profanity-report/profanit
 import { CustomFormComponent } from './components/custom-form/custom-form.component';
 import { CustomFormItemsComponent } from './components/custom-form-items/custom-form-items.component';
 import { CustomFormFeedbacksComponent } from './components/custom-form-feedbacks/custom-form-feedbacks.component';
-
-
+import { EventsManagementComponent } from './components/events-management/events-management.component';
 
 
 const routes: Routes = [
@@ -292,6 +291,7 @@ const routes: Routes = [
               {path: 'business-category', component: BusinessCategoryComponent},
               {path: 'business-sub-category', component: BusinessSubCategoryComponent},
               {path: 'forum', component: ForumComponent},
+              {path: 'events-management', component: EventsManagementComponent},
               {path: 'forum-management', component: ForumManagementComponent},
               {path: 'advertisement', component: AdvertisementsComponent},
               {path: 'business-rating', component: BusinessRatingComponent},

@@ -1157,8 +1157,8 @@ export class CbfService implements OnDestroy {
 
   }
 
-   // Get forum
-   public getForumListing(access: string): Observable<any> {
+  // Get forum
+  public getForumListing(access: string): Observable<any> {
     const url = ApiEndpointService.getEndpoint(ApiEndpointService.ENDPOINT.GET_FORUM_LIST);
     return this.http.get<any>(url, {
       headers: {
@@ -1253,6 +1253,146 @@ export class CbfService implements OnDestroy {
     )
 
   }
+
+  // Get custom Forms - custom
+  public getCustomForms(access: string): Observable<any> {
+    const url = ApiEndpointService.getEndpoint(ApiEndpointService.ENDPOINT.GET_CUSTOM_FORMS);
+    return this.http.get<any>(url, {
+      headers: {
+        'Content-Type': 'application/json; charset=utf-8',
+        'Accept': 'application/json',
+        'Authorization': `Bearer ${access}`
+      }
+    }).pipe(
+      map(function (response: any) {
+        return response;
+      }),
+      catchError((fault: HttpErrorResponse) => {
+        return throwError(() => fault);
+
+      })
+    )
+
+  }
+
+          /* ------------------- EVENTS --------------------- */
+
+  // create event
+  public registerEvent(eventData:FormData, access: string): Observable<any> {
+    const url = ApiEndpointService.getEndpoint(ApiEndpointService.ENDPOINT.CITAM_EVENT);
+    return this.http.post<any>(url, eventData, {
+      headers: {
+        'Authorization': `Bearer ${access}`
+      }
+    }).pipe(
+      map(function (response: any) {
+        return response;
+      }),
+      catchError((fault: HttpErrorResponse) => {
+        return throwError(() => fault);
+
+      })
+    )
+
+  }
+  
+  // Update event
+  public updateEvent(eventID: number, eventData:FormData, access: string): Observable<any> {
+    const url = ApiEndpointService.getEndpoint(ApiEndpointService.ENDPOINT.CITAM_EVENT);
+    return this.http.patch<any>(url + eventID + '/', eventData, {
+      headers: {
+        'Authorization': `Bearer ${access}`
+      }
+    }).pipe(
+      map(function (response: any) {
+        return response;
+      }),
+      catchError((fault: HttpErrorResponse) => {
+        return throwError(() => fault);
+
+      })
+    )
+
+  }
+
+  // Delete event
+  public deleteEvent(eventID: number, access: string): Observable<any> {
+    const url = ApiEndpointService.getEndpoint(ApiEndpointService.ENDPOINT.CITAM_EVENT);
+    return this.http.delete<any>(url + eventID + '/', {
+      headers: {
+        'Authorization': `Bearer ${access}`
+      }
+    }).pipe(
+      map(function (response: any) {
+        return response;
+      }),
+      catchError((fault: HttpErrorResponse) => {
+        return throwError(() => fault);
+
+      })
+    )
+
+  }
+  
+  // Get Events
+  public getEventDetails(access: string): Observable<any> {
+    const url = ApiEndpointService.getEndpoint(ApiEndpointService.ENDPOINT.GET_EVENTS);
+    return this.http.get<any>(url, {
+      headers: {
+        'Content-Type': 'application/json; charset=utf-8',
+        'Accept': 'application/json',
+        'Authorization': `Bearer ${access}`
+      }
+    }).pipe(
+      map(function (response: any) {
+        return response;
+      }),
+      catchError((fault: HttpErrorResponse) => {
+        return throwError(() => fault);
+
+      })
+    )
+
+  }
+
+  //  get CustomFormCustomFormItems
+  public getCustomFormCustomFormItems(formId: number, access: string): Observable<any[]> {
+    const url = ApiEndpointService.getEndpoint(ApiEndpointService.ENDPOINT.MANAGE_CUSTOMFORM_CUSTOMFORMITEM);
+    return this.http.get<any[]>(url + '?custom_form_id=' + formId+'&ordering=id', {
+      headers: {
+        'Content-Type': 'application/json; charset=utf-8',
+        'Accept': 'application/json',
+        'Authorization': `Bearer ${access}`
+      }
+    }).pipe(
+      map((response: any) => {
+        return response;
+      }),
+      catchError((fault: HttpErrorResponse) => {
+        return throwError(fault);
+      })
+    )
+  }
+
+  // get custom form item
+  public getCustomFormItem(formId: number, access: string): Observable<any[]> {
+    const url = ApiEndpointService.getEndpoint(ApiEndpointService.ENDPOINT.MANAGE_CUSTOM_FORM_ITEMS);
+    return this.http.get<any[]>(url + formId , {
+      headers: {
+        'Content-Type': 'application/json; charset=utf-8',
+        'Accept': 'application/json',
+        'Authorization': `Bearer ${access}`
+      }
+    }).pipe(
+      map((response: any) => {
+        return response;
+      }),
+      catchError((fault: HttpErrorResponse) => {
+        return throwError(fault);
+      })
+    )
+  }
+
 
   // create forum
   public registerForum(forumData:FormData, access: string): Observable<any> {

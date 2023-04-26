@@ -1,0 +1,491 @@
+<div class="content-body">
+    <div class="container-fluid">
+        <div class="row page-titles mx-0">
+            <div class="col-sm-6 p-md-0">
+                <div class="welcome-text">
+                    <h4>Events Management</h4>
+                </div>
+            </div>
+            <div class="col-sm-6 p-md-0 justify-content-sm-end mt-2 mt-sm-0 d-flex">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="admin/dashboard">Home</a></li>
+                    <li class="breadcrumb-item active"><a href="javascript:void(0)">Events Listing</a></li>
+                </ol>
+            </div>
+        </div>
+
+         <!-- Main Content -->
+         <div class="card">
+            <div class="card-header">
+                <div class="col-6">
+                    List of all Events
+                </div>
+
+                <div class="col-6"> 
+                    <button class="btn btn-sm btn-primary rightBtns" type="button" (click)="openModal(addEventModal, 'lg')">
+                        <i class="fa fa-plus"></i>&nbsp;Add Event
+                    </button>                  
+                </div>
+            </div>
+           
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th scope="col">Event Image </th>
+                        <th scope="col">Event Name </th>
+                        <th scope="col">Event Date</th>
+                        <th scope="col">Start Time </th>
+                        <th scope="col">End Time </th>
+                        <th scope="col">Registered By </th>
+                        <th scope="col">Actions</th>
+                    </tr>
+                    </thead>
+
+                    <tbody>
+                      <tr *ngFor="let event of eventsList; index as i">
+
+                        <td>
+                          <div class="circular_image_container symbol symbol-50px me-5">
+                              <img src="{{event.eventImage}}" alt="event image preview"/>
+                          </div>
+                        </td>
+
+                        <td class="text text-capitalize">{{event.event_name}}</td>                          
+                        <td>
+                          <span *ngIf="event.eventDate == ''">Not Specified</span>
+                          <span *ngIf="event.eventDate != ''">{{event.eventDate}}</span>
+                        </td>
+                        <td>{{event.startTime}}</td>
+                        <td>{{event.endTime}}</td>
+                        <td>{{event.created_by}}</td>
+                      
+                        <td>
+
+                          <div class="button_containers">
+                            <button type="button" class="btn btn-sm btn-info" (click)="previewModal('preview', event)"> <i class="fa fa-eye"></i>Preview Form</button> &nbsp;
+                            <button type="button" class="btn btn-sm btn-success" (click)="reviewModal(editEvent, event, 'lg')"> <i class="fa fa-pencil"></i>Edit</button> &nbsp;
+                            <button type="button" class="btn btn-sm btn-danger" (click)="reviewModal(deleteEvent, event, 'md')"> <i class="fa fa-trash"></i>Delete</button> 
+                          </div>
+                          <!-- <span>
+                            <i *ngIf="isChangeCustomFormAllowed === false" mat-raised-button matTooltip="View Form"
+                              matTooltipPosition="below" class="fa fa-eye fa-4px" data-toggle="modal"
+                              (click)="openPerm()"></i> &nbsp;
+                            <i *ngIf="isChangeCustomFormAllowed === true" mat-raised-button matTooltip="View Form"
+                              matTooltipPosition="below" class="fa fa-eye fa-4px" data-toggle="modal"
+                              (click)="previewModal('preview', event)"></i> &nbsp;
+      
+                            <i *ngIf="isChangeEventAllowed === true" class="fa fa-edit fa-4px"
+                              (click)="openModal(editEvent, event)"></i> &nbsp;
+                            <i *ngIf="isChangeEventAllowed === false" class="fa fa-edit fa-4px" (click)="openPerm()"></i>
+                            &nbsp;
+      
+                            <i *ngIf="isDeleteEventAllowed === true" class="fa fa-trash fa-4px"
+                              (click)="openModals('deleteEvent', event)"></i>
+                            <i *ngIf="isDeleteEventAllowed === false" class="fa fa-trash fa-4px" (click)="openPerm()"></i>
+                            <-- <i class="fa fa-edit fa-4px" (click)="isChangeEventAllowed ? openModal(editEvent, event) : '' "></i> &nbsp;
+                              <i class="fa fa-trash fa-4px" (click)="isDeleteEventAllowed ? openModals(deleteEvent, event) : '' "></i> --
+                          </span> -->
+                        </td>
+                      </tr>
+
+                      <tr *ngIf="eventsListCount == 0">
+                          <td colspan="6" class="no_data_display">
+                              No data available for display
+                          </td>
+                      </tr>
+
+                  </tbody>
+
+                  </table>
+              </div>
+          </div>
+      </div>
+      
+	</div>
+</div>
+
+<!-- Modals -->
+<ng-template #addEventModal let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title">Register Event</h4>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body default-calendar">
+        <div class="form-validation">
+            <form class="form-valide" action="#" method="post" [formGroup]="eventRegistration" novalidate>
+                <div class="form-group row">
+                    <label class="col-lg-5 col-form-label" for="event_name">Event Name
+                        <span class="text-danger">*</span>
+                    </label>
+                    <div class="col-lg-7">
+                         <input type="text" class="form-control" id="event_name" formControlName="eventName" placeholder="Provide the event name...">
+                        <div *ngIf="eventRegistration.controls['eventName'].invalid && (eventRegistration.controls['eventName'].dirty || eventRegistration.controls['eventName'].touched)" class="text-danger fs-13 mt-1">
+                            
+                            <div *ngIf="eventRegistration.controls['eventName'].errors.required">
+                                Event name is required.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-lg-5 col-form-label" for="eventDesc">Event Description </label>
+                    <div class="col-lg-7">                         
+                      <textarea cols="2" rows="2" class="form-control" id="eventDesc" formControlName="description" placeholder="Event description ..."></textarea>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-lg-5 col-form-label">Custom Form (optional) </label>
+                    <div class="col-lg-7">                         
+                      <ng-multiselect-dropdown [placeholder]="'Select form...'" [settings]="dropdownSettings"
+                        [data]="formList" (onSelect)="onItemSelect($event)" (onDeSelect)="onItemDeSelect($event)">
+                      </ng-multiselect-dropdown>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-lg-5 col-form-label" for="forumCategory">Seats Restriction
+                        <span class="text-danger">*</span>
+                    </label>
+                    <div class="col-lg-7">
+                        <select class="form-control default-select" id="seatRestriction" formControlName="is_limited" #seat_res (change)="selector(seat_res.value)">
+                            <option value="false" selected>Unrestricted</option>
+                            <option value="true">Restricted</option>                           
+                        </select>
+
+                    </div>
+                </div>
+
+                <div class="form-group row" *ngIf="seat_restricted">
+                  <label class="col-lg-5 col-form-label" for="maxy">Maximum Seats</label>
+                  <div class="col-lg-7">
+                    <input type="number" class="form-control" id="maxy" formControlName="maximumSeats">
+                  </div>
+                </div>
+
+                <div class="form-group row">
+                  <label class="col-lg-5 col-form-label" for="reservedSeat">Reserved Seats</label>
+                  <div class="col-lg-7">
+                    <input type="number" class="form-control" id="reservedSeat" #reserve formControlName="seatsReserved" (input)="validate(reserve.value)">
+                  </div>
+
+                  <i *ngIf="res_serror">
+                    <p style="color: red;">Reserved seats cannot be greater than maximum</p>
+                  </i>
+
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-lg-5 col-form-label" for="evntdate">Event Date
+                        <span class="text-danger">*</span>
+                    </label>
+                    <div class="col-lg-7">
+                        <input type="date" min="{{current_date}}" formControlName="eventDate" class="form-control" id="evntdate" required placeholder="Enter event date">
+                        <div *ngIf="eventRegistration.controls['eventDate'].invalid && (eventRegistration.controls['eventDate'].dirty || eventRegistration.controls['eventDate'].touched)" class="text-danger fs-13 mt-1">
+                            
+                            <div *ngIf="eventRegistration.controls['eventDate'].errors.required">
+                              Your event must have a date, kindly provide this
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                  <div class="col-6">
+                    <label for="start_Time">Start Time</label>
+                    <input type="time" formControlName="startTime" class="form-control" id="start_Time">
+                  </div>
+
+                  <div class="col-6">
+                    <label for="end_Time">End Time</label>
+                    <input type="time" formControlName="endTime" class="form-control" id="end_Time">
+                  </div>
+                </div>
+
+                <!-- Payment -->
+                <div class="form-group row">
+
+                    <div class="col-6">
+                      <label>Paid Event? &nbsp; <input type="checkbox" #pay_chk required (change)="payCheck(pay_chk.checked)"/> </label> 
+                    </div>
+
+                    <!-- if form is selected -->
+                    <div class="col-6" *ngIf="paidEvent">
+                      <label>Ticket Amount</label>
+                        <input type="number" class="form-control" formControlName="per_ticket_amount"/>
+                    </div>
+
+                </div>
+                <!-- Payment -->
+
+                <div class="form-group row">
+                  <label class="col-lg-5 col-form-label" for="evnt_image">Event Image</label>
+                  <div class="col-lg-7">
+                    <div class="cover-upload" id="evnt_image">
+                      <label for="file-input">
+                        <img src="{{eventDefaultBanner}}" alt="event image" />
+                      </label>
+                    
+                      <input id="file-input" type="file" accept="image/*" #output (change)="onChange($event)">
+                    </div>
+                  </div>
+                </div>
+              
+            </form>
+        </div>
+
+        <!-- spinner -->
+        <div class="row">
+          <div class="loader" *ngIf="loading === true"> Registering event, please wait ... </div>
+        </div>
+                
+        <!-- Message -->
+        <div *ngIf="messageResponse" class="row alert alert-info">
+            <p><i class="fa fa-exclamation"></i> &nbsp;  {{messageResponse}}</p>
+        </div>        
+        <div *ngIf="alertResponse" class="row alert alert-danger">
+            <p><i class="fa fa-exclamation"></i> &nbsp;  {{alertResponse}}</p>
+        </div>
+
+    </div>
+
+    <div class="modal-footer">
+        <button type="button" class="btn btn-light" (click)="modal.close('Close click')">Cancel</button>
+        <button type="button" class="btn btn-primary" [disabled]="eventRegistration.pristine || eventRegistration.invalid" (click)="saveEvent()">Save</button>
+    </div>
+  </ng-template>
+
+  <ng-template #preview let-modal>
+    <div class="modal-header">
+      <h5 class="modal-title text-capitalize" id="">{{form_name}}</h5>
+      <button type="button" class="close" (click)="modal.dismiss()" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+  
+      <form class="form">
+        <div>
+          <div class="form-group" *ngFor="let item of customFormItemData">
+            <label for="">{{item.title}}</label>
+            <div>
+  
+              <input *ngIf="item.value == '' || item.title.indexOf('Birth') > -1 || item.title.indexOf('birth') > -1"
+                type="{{item.dataType}}" class="form-control" placeholder="{{item.hint}}" max="{{max_date}}">
+  
+              <select name="" id="" class="form-control" *ngIf="item.value != ''">
+                <option value="" selected disabled *ngIf="item.value !== ''">select {{item.title}}</option>
+                <option *ngFor="let value of item.value" value="">{{value.name}}</option>
+              </select>
+            </div>
+  
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-primary btn-md">Submit</button>
+        </div>
+      </form>
+    </div>
+  </ng-template>
+  
+  <ng-template #editEvent let-modal>
+    <div class="modal-header">
+      <h6 class="modal-title">Edit Event</h6>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+  
+      <div class="modal-body default-calendar">
+        
+        <form class="form" #editForm="ngForm" autocomplete="on">
+
+          <div class="form-group row">
+            <label class="col-lg-5 col-form-label" for="eventNameEdit">Event Name
+                <span class="text-danger">*</span>
+            </label>
+            <div class="col-lg-7">
+                <input type="hidden" name="id" ngModel="{{eventModalData?.id}}" value="{{eventModalData?.id}}">
+                <input type="text" class="form-control" id="eventNameEdit" name="event_name" ngModel="{{eventModalData?.event_name}}" value="{{eventModalData?.event_name}}">
+            </div>                        
+          </div>    
+        
+          <div class="form-group row">
+              <label class="col-lg-5 col-form-label" for="eventEditDesc">Event Description </label>
+              <div class="col-lg-7">                         
+                <textarea cols="2" rows="2" class="form-control" id="eventEditDesc" ngModel="{{eventModalData?.description}}" value="{{eventModalData?.description}}" name="description" placeholder="Event description ..."></textarea>
+              </div>
+          </div>
+          <div class="form-group row">
+              <label class="col-lg-5 col-form-label">Custom Form (optional) </label>
+              <div class="col-lg-7">                         
+                <ng-multiselect-dropdown [placeholder]="'Select form...'" name="customForm"
+                  [settings]="dropdownSettings" [data]="formList" (onSelect)="onItemSelect($event)"
+                  (onDeSelect)="onItemDeSelect($event)" [(ngModel)]="selectedForm">
+                </ng-multiselect-dropdown>
+              </div>
+          </div>
+
+          <div class="form-group row">
+              <label class="col-lg-5 col-form-label" for="seatRestrictionUpdate">Seats Restriction
+                  <span class="text-danger">*</span>
+              </label>
+              <div class="col-lg-7">
+                  <select class="form-control default-select" id="seatRestrictionUpdate" ngModel="{{eventModalData?.is_limited}}" value="{{eventModalData?.is_limited}}" name="is_limited" #seat_res_update (change)="selector(seat_res_update.value)">
+                      <option value="false">Unrestricted</option>
+                      <option value="true">Restricted</option>                           
+                  </select>
+
+              </div>
+          </div>
+
+          <div class="form-group row" *ngIf="seat_restricted">
+            <label class="col-lg-5 col-form-label" for="maxyUpdate">Maximum Seats</label>
+            <div class="col-lg-7">
+              <input type="number" class="form-control" id="maxyUpdate" ngModel="{{eventModalData?.maximumSeats}}" value="{{eventModalData?.maximumSeats}}" name="maximumSeats">
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label class="col-lg-5 col-form-label" for="reservedSeatUpdate">Reserved Seats</label>
+            <div class="col-lg-7">
+              <input type="number" class="form-control" id="reservedSeatUpdate" ngModel="{{eventModalData?.seatsReserved}}" value="{{eventModalData?.seatsReserved}}" name="seatsReserved" #rsvre (input)="validateEdit(rsvre.value)">
+            </div>
+
+            <i *ngIf="res_error">
+              <p style="color: red;">Reserved seats cannot be greater than maximum</p>
+            </i>
+
+          </div>
+
+          <div class="form-group row">
+              <label class="col-lg-5 col-form-label" for="evntdateUpdate">Event Date
+                  <span class="text-danger">*</span>
+              </label>
+              <div class="col-lg-7">
+                  <input type="date" min="{{current_date}}" ngModel="{{eventModalData?.eventDate}}" value="{{eventModalData?.eventDate}}" name="eventDate" class="form-control" id="evntdateUpdate" required placeholder="Enter event date">
+              </div>
+          </div>
+
+          <div class="form-group row">
+            <div class="col-6">
+              <label for="start_TimeUpdate">Start Time</label> 
+              <input type="time" class="form-control" id="start_TimeUpdate" ngModel="{{eventModalData?.startTime}}" value="{{eventModalData?.startTime}}" name="startTime">
+            </div>
+
+            <div class="col-6">
+              <label for="end_TimeUpdate">End Time</label>
+              <input type="time" class="form-control" id="end_TimeUpdate" ngModel="{{eventModalData?.endTime}}" value="{{eventModalData?.endTime}}" name="endTime">
+            </div>
+          </div>
+
+          <!-- Payment -->
+          <div class="form-group row">
+
+              <div class="col-6">
+                <label>Paid Event? &nbsp; <input type="checkbox" [checked]="eventModalData?.is_paid" #pay_chk_update required (change)="payCheckUpdate(pay_chk_update.checked)"/> </label> 
+              </div>
+
+              <!-- if form is selected -->
+              <div class="col-6" *ngIf="paidEventUpdate">
+                <label>Ticket Amount</label>
+                  <input class="form-control" type="number" name="per_ticket_amount" ngModel="{{eventModalData?.per_ticket_amount}}" value="{{eventModalData?.per_ticket_amount}}" />
+              </div>
+
+          </div>
+          <!-- Payment -->
+
+          <div class="form-group row">
+            <label class="col-lg-5 col-form-label" for="evnt_image">Event Image</label>
+            <div class="col-lg-7">
+              <div class="cover-upload" id="evnt_image">
+                <label for="file-input">
+                  <img src="{{eventDefaultBannerEdit}}" alt="event image" />
+                </label>
+              
+                <input id="file-input" type="file" accept="image/*" #output (change)="onUpdateChange($event)">
+              </div>
+            </div>
+          </div>
+          
+          <div class="row">
+            <div class="loader" *ngIf="loadingEdit === true"> Registering event, please wait ... </div>
+          </div>
+      
+          <!-- message -->
+          <div *ngIf="messageResponse" class="row alert alert-info">
+              <p><i class="fa fa-exclamation"></i> &nbsp;  {{messageResponse}}</p>
+          </div>
+          <div *ngIf="alertResponse" class="row alert alert-danger">
+              <p><i class="fa fa-exclamation"></i> &nbsp;  {{alertResponse}}</p>
+          </div>
+
+          <div class="modal-footer">
+            <button type="button" class="btn btn-light" data-dismiss="modal" (click)="modal.dismiss('Cross click')">Cancel</button>
+            <button type="submit" [disabled]="disable || !editForm.valid" class="btn btn-primary" (click)="updateAction(editForm.value)"
+            >Save Changes</button>
+          </div>
+
+        </form>
+    </div>
+  </ng-template>
+  
+  <ng-template #deleteEvent let-modal>
+    <div class="modal-header">
+      <h5 class="modal-title">Delete Event</h5>
+      <button type="button" class="close" (click)="modal.dismiss()" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+
+    <div class="modal-body default-calendar">
+      <form #deleteForm="ngForm">        
+        <input type="hidden" name="id" ngModel="{{eventModalData?.id}}" value="{{eventModalData?.id}}">
+        <p>Are you sure you want to delete <b>{{eventModalData?.event_name}}</b>?</p>
+      </form>
+
+       <!-- message -->
+       <div *ngIf="messageResponse" class="row alert alert-info">
+        <p><i class="fa fa-exclamation"></i> &nbsp; {{messageResponse}}</p>
+        </div>
+
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-sm btn-light" (click)="modal.close('Close click')">No</button>
+        <button type="button" class="btn btn-sm btn-primary" (click)="deleteAction(deleteForm.value)">Yes</button>
+    </div>
+  
+  </ng-template>
+  
+  <ng-template #permissionDenied>
+  
+  
+    <div class="container-fluid ">
+      <div class="col d-flex justify-content-center">
+        <div class="card mt-5 " style="width: 50%;">
+          <div class="card-header">
+  
+            <div class="text text-center">
+              <img src="/assets/img/photos/unauthorized.png" class="" alt="">
+  
+            </div>
+            <h4 class="text-center">You are not authorized to access this feature</h4>
+  
+          </div>
+  
+          <div class="card-body ">
+            <p class="text text-muted tx-15">
+              You are seeing this error message because you do not have the required permissions to access this feature.
+              If you require to access this feature, kindly raise this concern with your church's system admin to assign
+              you the permissions.
+            </p>
+          </div>
+        </div>
+      </div>
+  
+    </div>
+  </ng-template>
+    

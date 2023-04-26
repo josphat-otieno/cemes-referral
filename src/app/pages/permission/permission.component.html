@@ -1,0 +1,25 @@
+<div class="modal-header bg-danger">
+    <h5 class="modal-title modal-white" style="color: white;">Permission Denied</h5>
+    <button type="button" class="close" (click)="closeModal()" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+<div class="modal-body">
+
+    <div class="col d-flex justify-content-center">
+        <div >
+            <div class="text text-center">
+                <img src="/assets/img/photos/unauthorized.png" class="" alt="">
+            
+            </div>
+            <h4 class="text-center">You are not authorized to perform this action </h4> 
+
+        </div>
+    </div>
+
+</div>
+<div class="modal-footer">
+    <button class="btn btn-block btn-secondary" type="button" (click)="closeModal()">
+        Close
+    </button>
+</div>

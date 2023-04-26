@@ -685,6 +685,8 @@ import { ProfanityReportComponent } from './components/profanity-report/profanit
 import { CustomFormComponent } from './components/custom-form/custom-form.component';
 import { CustomFormItemsComponent } from './components/custom-form-items/custom-form-items.component';
 import { CustomFormFeedbacksComponent } from './components/custom-form-feedbacks/custom-form-feedbacks.component';
+import { EventsManagementComponent } from './components/events-management/events-management.component';
+import { PermissionComponent } from './pages/permission/permission.component';
 
 function appInitializer(authService: CbfService) {
   return () => {
@@ -1306,6 +1308,8 @@ function appInitializer(authService: CbfService) {
     ForumManagementComponent,
     MemberComplaintsComponent,
     ProfanityReportComponent,
+    EventsManagementComponent,
+    PermissionComponent,
     CustomFormComponent,
     CustomFormItemsComponent,
     CustomFormFeedbacksComponent,

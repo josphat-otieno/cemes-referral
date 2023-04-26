@@ -376,7 +376,7 @@ export class ForumComponent implements OnInit {
           }, 1200);
 
         } else {
-          this.alertResponse = 'Forum not updated, your name or description may have been flagged for profanity'
+          this.alertResponse = 'Forum not created, your name or description may have been flagged for profanity'
         }
         
       },

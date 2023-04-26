@@ -68,6 +68,10 @@ export class NavigationComponent implements OnInit {
   staffArray = [
     '/admin/users'
   ];
+
+  eventsArray = [
+    '/admin/events-management'
+  ];
     
   formsArray = [
     '/admin/form-element',
