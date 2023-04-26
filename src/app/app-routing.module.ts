@@ -151,6 +151,9 @@ import { BusinessProductsComponent } from './components/business-products/busine
 import { ForumManagementComponent } from './components/forum-management/forum-management.component';
 import { MemberComplaintsComponent } from './components/member-complaints/member-complaints.component';
 import { ProfanityReportComponent } from './components/profanity-report/profanity-report.component';
+import { CustomFormComponent } from './components/custom-form/custom-form.component';
+import { CustomFormItemsComponent } from './components/custom-form-items/custom-form-items.component';
+import { CustomFormFeedbacksComponent } from './components/custom-form-feedbacks/custom-form-feedbacks.component';
 
 
 
@@ -295,7 +298,10 @@ const routes: Routes = [
               {path: 'profile', component: ProfileComponent},
               {path: 'payments', component: PaymentsComponent},
               {path: 'profanity-report', component: ProfanityReportComponent},
-      
+              {path: 'event-custom-forms', component: CustomFormComponent},
+              {path: 'custom-form-items', component: CustomFormItemsComponent},
+              {path: 'events-custom-form-feedbacks', component: CustomFormFeedbacksComponent},
+
           ]
           
       },                        

@@ -59,6 +59,12 @@ export class NavigationComponent implements OnInit {
     '/admin/member-complaints',
 	];
 
+ customFormArray = [
+    '/admin/event-custom-forms',
+    '/admin/custom-form-items',
+    '/admin/events-custom-form-feedbacks',
+
+	];
   staffArray = [
     '/admin/users'
   ];

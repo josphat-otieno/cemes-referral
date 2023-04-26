@@ -682,6 +682,9 @@ import { ForumManagementComponent } from './components/forum-management/forum-ma
 import { UserIdleModule } from 'angular-user-idle';
 import { MemberComplaintsComponent } from './components/member-complaints/member-complaints.component';
 import { ProfanityReportComponent } from './components/profanity-report/profanity-report.component';
+import { CustomFormComponent } from './components/custom-form/custom-form.component';
+import { CustomFormItemsComponent } from './components/custom-form-items/custom-form-items.component';
+import { CustomFormFeedbacksComponent } from './components/custom-form-feedbacks/custom-form-feedbacks.component';
 
 function appInitializer(authService: CbfService) {
   return () => {
@@ -1303,6 +1306,9 @@ function appInitializer(authService: CbfService) {
     ForumManagementComponent,
     MemberComplaintsComponent,
     ProfanityReportComponent,
+    CustomFormComponent,
+    CustomFormItemsComponent,
+    CustomFormFeedbacksComponent,
     
     
   ],

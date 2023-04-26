@@ -74,6 +74,17 @@ export class ApiEndpointService {
     FORUM_MGT: `${ApiEndpointService.MAIN_CONTEXT}/communication/forum/`,
     FORUM_CATEGORY: `${ApiEndpointService.MAIN_CONTEXT}/communication/forum-category/`,
 
+    // custom forms
+    MANAGE_CUSTOM_FORMS:`${ApiEndpointService.MAIN_CONTEXT}/business/custormforms/`,
+    MANAGE_CUSTOM_FORM_ITEMS:`${ApiEndpointService.MAIN_CONTEXT}/business/custormformsItems/`,
+    MANAGE_CUSTOM_FORM_FEEDBACK:`${ApiEndpointService.MAIN_CONTEXT}/business/customformfeedback/`,
+    MANAGE_CUSTOMFORM_CUSTOMFORMITEM:`${ApiEndpointService.MAIN_CONTEXT}/business/customform-customform-item/`,
+    MANAGE_CUSTOM_CUSTOMFORMITEM:`${ApiEndpointService.MAIN_CONTEXT}/business/custom-custom-items/`,
+    MANAGE_USERS_EVENTS_CUSTOMFORM_FEEDBACKS_LIST:`${ApiEndpointService.MAIN_CONTEXT}/business/members-custom-form-feedback-details/`,
+    MANAGE_USER_EVENTS_CUSTOMFORM_FEEDBACKS_LIST:`${ApiEndpointService.MAIN_CONTEXT}/business/user-feedback-details/`,
+    GET_CUSTOM_FORMS:`${ApiEndpointService.MAIN_CONTEXT}/business/ get-custom-forms/`,
+    GET_CUSTOM_FORM_ITEMS:`${ApiEndpointService.MAIN_CONTEXT}/business/get-custom-form-items/`,
+
   }
 
   constructor() { }
