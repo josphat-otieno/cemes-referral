@@ -160,6 +160,27 @@ export class EventsManagementComponent implements OnInit {
 
 	}
 
+  reviewModal(content:any, data:any, size:string) {
+    
+    this.openModal(content, size)
+    this.eventModalData = data
+    
+    this.formId = data.customForm
+    this.form_name = data.customFormName
+
+    if (this.eventDefaultBannerEdit == null) {
+      this.eventDefaultBannerEdit = "assets/images/default/cover.jpg";
+    } else {      
+      this.eventDefaultBannerEdit = this.eventModalData.eventImage
+    }
+
+    if(this.formId != ''){
+      this.selectedForm.push({'id': this.formId, 'name': this.form_name})
+    }
+
+  }
+   
+
   previewModal(targetModal:string, data:any) {
     // this.spinner.show();
 
@@ -178,7 +199,7 @@ export class EventsManagementComponent implements OnInit {
           backdrop: 'static'
         });
     
-        this.getForms()
+        this.getFormItems()
   
         setTimeout(() => {
           // this.spinner.hide()
@@ -408,6 +429,68 @@ export class EventsManagementComponent implements OnInit {
 
   }
 
+  getFormItems() {
+   
+      const formerSubscr = this.cbfService.getCustomFormCustomFormItems(this.formId, this.accessToken)
+      .subscribe({
+        next: (res: any) => {
+
+          let formItems = (res['results'])
+          let result = formItems.map((custom_form_item_id:any) => custom_form_item_id.custom_form_item_id)
+          let itemReturnedArray : any = []
+          result.forEach((x: number) => {
+  
+            let itemId = x
+            this.cbfService.getCustomFormItem(itemId, this.accessToken).subscribe((resp: any) => {
+            //  let itemReturned = resp
+              let id = resp['id']
+              let title = resp['title']
+              let dataType = resp['dataType']
+              let formValue = resp['value']
+              let hint = resp['hint']
+              let  value: any = []
+  
+              let valueItems = formValue.split(',')
+              let valueArray : any = []
+  
+              valueItems.forEach((x :any )=> {
+  
+                let item= {'name': x }
+                valueArray.push(item)
+              })
+              if (formValue ==''){
+                value = ''
+              }else{
+                value = valueArray
+              }
+  
+              let date:string = ''
+              if((title.indexOf('Birth') > -1) || (title.indexOf('birth') > -1)){
+                date = this.max_date
+              } else{
+                // get date
+                var today = new Date();
+                date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+                this.max_date = date
+              }
+  
+              let itemReturned = {'id': id, 'title': title, 'date':date, 'dataType': dataType, 'value': value, 'hint': hint}
+              itemReturnedArray.push(itemReturned)
+          
+            })
+  
+          })
+          this.customFormItemData = itemReturnedArray
+          // console.log(this.customFormItemData)
+        },
+        error: (err: HttpErrorResponse) => {
+          this.msg = 'Something went wrong, cannot fetch form details.';
+        }
+      });
+        
+      this.unsubscribe.push(formerSubscr)
+  }
+
   // Register event
   saveEvent() {
 
@@ -531,7 +614,7 @@ export class EventsManagementComponent implements OnInit {
 
       const updateData:FormData = new FormData()      
 
-      updateData.append('eventName', modalData.name)
+      updateData.append('eventName', modalData.event_name)
       updateData.append('eventDate', modalData.eventDate)
       updateData.append('startTime', modalData.startTime)
       updateData.append('endTime', modalData.endTime)
@@ -591,7 +674,8 @@ export class EventsManagementComponent implements OnInit {
           next: (response: any) => {
             
             if(response.id){
-          
+
+              this.loadingEdit = false          
               this.messageResponse = 'Event updated successfully'
                 
               setTimeout(() => {

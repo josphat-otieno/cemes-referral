@@ -48,7 +48,7 @@
 
                         <td>
                           <div class="circular_image_container symbol symbol-50px me-5">
-                              <img src="{{event.event_image}}" alt="event image preview"/>
+                              <img src="{{event.eventImage}}" alt="event image preview"/>
                           </div>
                         </td>
 
@@ -65,8 +65,8 @@
 
                           <div class="button_containers">
                             <button type="button" class="btn btn-sm btn-info" (click)="previewModal('preview', event)"> <i class="fa fa-eye"></i>Preview Form</button> &nbsp;
-                            <button type="button" class="btn btn-sm btn-success" (click)="openModal(editEvent, event)"> <i class="fa fa-pencil"></i>Edit</button> &nbsp;
-                            <button type="button" class="btn btn-sm btn-danger" (click)="openModal(deleteEvent, event)"> <i class="fa fa-trash"></i>Delete</button> 
+                            <button type="button" class="btn btn-sm btn-success" (click)="reviewModal(editEvent, event, 'lg')"> <i class="fa fa-pencil"></i>Edit</button> &nbsp;
+                            <button type="button" class="btn btn-sm btn-danger" (click)="reviewModal(deleteEvent, event, 'md')"> <i class="fa fa-trash"></i>Delete</button> 
                           </div>
                           <!-- <span>
                             <i *ngIf="isChangeCustomFormAllowed === false" mat-raised-button matTooltip="View Form"
@@ -309,7 +309,7 @@
             </label>
             <div class="col-lg-7">
                 <input type="hidden" name="id" ngModel="{{eventModalData?.id}}" value="{{eventModalData?.id}}">
-                <input type="text" class="form-control" id="eventNameEdit" name="name" ngModel="{{eventModalData?.event_name}}" value="{{eventModalData?.event_name}}" name="event_name">
+                <input type="text" class="form-control" id="eventNameEdit" name="event_name" ngModel="{{eventModalData?.event_name}}" value="{{eventModalData?.event_name}}">
             </div>                        
           </div>    
         

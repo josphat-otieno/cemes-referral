@@ -1355,6 +1355,45 @@ export class CbfService implements OnDestroy {
 
   }
 
+  //  get CustomFormCustomFormItems
+  public getCustomFormCustomFormItems(formId: number, access: string): Observable<any[]> {
+    const url = ApiEndpointService.getEndpoint(ApiEndpointService.ENDPOINT.MANAGE_CUSTOMFORM_CUSTOMFORMITEM);
+    return this.http.get<any[]>(url + '?custom_form_id=' + formId+'&ordering=id', {
+      headers: {
+        'Content-Type': 'application/json; charset=utf-8',
+        'Accept': 'application/json',
+        'Authorization': `Bearer ${access}`
+      }
+    }).pipe(
+      map((response: any) => {
+        return response;
+      }),
+      catchError((fault: HttpErrorResponse) => {
+        return throwError(fault);
+      })
+    )
+  }
+
+  // get custom form item
+  public getCustomFormItem(formId: number, access: string): Observable<any[]> {
+    const url = ApiEndpointService.getEndpoint(ApiEndpointService.ENDPOINT.MANAGE_CUSTOM_FORM_ITEMS);
+    return this.http.get<any[]>(url + formId , {
+      headers: {
+        'Content-Type': 'application/json; charset=utf-8',
+        'Accept': 'application/json',
+        'Authorization': `Bearer ${access}`
+      }
+    }).pipe(
+      map((response: any) => {
+        return response;
+      }),
+      catchError((fault: HttpErrorResponse) => {
+        return throwError(fault);
+      })
+    )
+  }
+
+
   // create forum
   public registerForum(forumData:FormData, access: string): Observable<any> {
     const url = ApiEndpointService.getEndpoint(ApiEndpointService.ENDPOINT.FORUM_MGT);

@@ -70,6 +70,12 @@ export class ApiEndpointService {
     BUSINESS_SUB_CATEGORY: `${ApiEndpointService.MAIN_CONTEXT}/business/business-sub-category/`,
     GET_BUSINESS_SUB_CATEGORIES: `${ApiEndpointService.MAIN_CONTEXT}/business/get-business-sub-category-list/`,
 
+      // Custom Forms      
+      MANAGE_CUSTOMFORM_CUSTOMFORMITEM:`${ApiEndpointService.MAIN_CONTEXT}/business/custom-form_custom-form-items/`,
+      MANAGE_CUSTOM_FORM_ITEMS:`${ApiEndpointService.MAIN_CONTEXT}/business/custom-form-items/`,
+
+    
+
     // Communication
     GET_FORUM_LIST: `${ApiEndpointService.MAIN_CONTEXT}/communication/get-forum-list/`,
     FORUM_MEMBER: `${ApiEndpointService.MAIN_CONTEXT}/communication/forum-member/`,
