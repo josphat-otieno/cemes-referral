@@ -1157,8 +1157,8 @@ export class CbfService implements OnDestroy {
 
   }
 
-   // Get forum
-   public getForumListing(access: string): Observable<any> {
+  // Get forum
+  public getForumListing(access: string): Observable<any> {
     const url = ApiEndpointService.getEndpoint(ApiEndpointService.ENDPOINT.GET_FORUM_LIST);
     return this.http.get<any>(url, {
       headers: {
@@ -1239,6 +1239,46 @@ export class CbfService implements OnDestroy {
   public getForumUsers(forumId: number, membership_status:boolean, access: string): Observable<any> {
     const url = ApiEndpointService.getEndpoint(ApiEndpointService.ENDPOINT.FORUM_USERS);
     return this.http.get<any>(url+'?forum_id='+forumId+'&is_member='+membership_status, {
+      headers: {
+        'Authorization': `Bearer ${access}`
+      }
+    }).pipe(
+      map(function (response: any) {
+        return response;
+      }),
+      catchError((fault: HttpErrorResponse) => {
+        return throwError(() => fault);
+
+      })
+    )
+
+  }
+
+  // Get custom Forms - custom
+  public getCustomForms(access: string): Observable<any> {
+    const url = ApiEndpointService.getEndpoint(ApiEndpointService.ENDPOINT.GET_CUSTOM_FORMS);
+    return this.http.get<any>(url, {
+      headers: {
+        'Content-Type': 'application/json; charset=utf-8',
+        'Accept': 'application/json',
+        'Authorization': `Bearer ${access}`
+      }
+    }).pipe(
+      map(function (response: any) {
+        return response;
+      }),
+      catchError((fault: HttpErrorResponse) => {
+        return throwError(() => fault);
+
+      })
+    )
+
+  }
+
+  // create event
+  public registerEvent(forumData:FormData, access: string): Observable<any> {
+    const url = ApiEndpointService.getEndpoint(ApiEndpointService.ENDPOINT.CITAM_EVENT);
+    return this.http.post<any>(url, forumData, {
       headers: {
         'Authorization': `Bearer ${access}`
       }

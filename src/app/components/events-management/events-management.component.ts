@@ -2,6 +2,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import * as moment from 'moment';
 import { IDropdownSettings } from 'ng-multiselect-dropdown';
 import { Subject, Subscription } from 'rxjs';
 import { CbfService } from 'src/app/core/cbf.service';
@@ -14,7 +15,10 @@ import { PermissionComponent } from 'src/app/pages/permission/permission.compone
 })
 export class EventsManagementComponent implements OnInit {
 
-  // public variables
+  // public variables  
+  public current_date:string = ""
+  public loading:boolean = false
+
   public accessToken:string = ''
   public user_id:number = 0
   private unsubscribe: Subscription[] = [];
@@ -81,8 +85,13 @@ export class EventsManagementComponent implements OnInit {
 
   ngOnInit(): void {
 
-     // datatable
-     this.dtOptions = {
+    // Limit previous dates
+    let date = Date();
+    var dateString = moment(date).format('YYYY-MM-DD');
+    this.current_date = dateString
+
+    // datatable
+    this.dtOptions = {
       pagingType: 'full_numbers',
       pageLength: 10,
       processing: true,
@@ -94,6 +103,14 @@ export class EventsManagementComponent implements OnInit {
         'pdf'
       ]
     }; 
+
+    this.dropdownSettings = {
+      singleSelection: true,
+      idField: 'id',
+      textField: 'name',
+      allowSearchFilter: true,
+      closeDropDownOnSelection: true
+    };
     
     this.eventRegistration = this.fb.group({
       eventName: ['',Validators.required],
@@ -119,6 +136,8 @@ export class EventsManagementComponent implements OnInit {
 
     this.accessToken = this.cbfService.AccessToken
     this.user_id = Number(this.cbfService.currentUserValue)
+
+    this.getForms()
 
   }
 
@@ -154,7 +173,7 @@ export class EventsManagementComponent implements OnInit {
           backdrop: 'static'
         });
     
-        this.getFormItems()
+        this.getForms()
   
         setTimeout(() => {
           // this.spinner.hide()
@@ -200,8 +219,6 @@ export class EventsManagementComponent implements OnInit {
       this.seat_restricted = false;
     }
 
-    
-    alert(this.seat_restricted)
   }
   
 
@@ -276,23 +293,26 @@ export class EventsManagementComponent implements OnInit {
     let reserved_seat = this.eventRegistration.get('seatsReserved');
 
     let max_seats_value = this.eventRegistration.get('maximumSeats')?.value;
-    if(reserved_value > max_seats_value){
+    let is_limited_val = this.eventRegistration.get('is_limited')?.value;
+
+    if((reserved_value > max_seats_value) && (is_limited_val == 'true')){
+
       this.res_serror = true;
       reserved_seat?.patchValue('');
+
     } else {
       this.res_serror = false;
     }
   }
   
-  //  Get custom form Items
-  getFormItems(){
+  //  Get custom form
+  getForms(){
 
-    const categorySubscr = this.cbfService.getActiveBusinessCategories(this.accessToken)
+    const formSubscr = this.cbfService.getCustomForms(this.accessToken)
     .subscribe({
       next: (response: any) => {
         let result = response   
-
-        // this.categoryList = result.results  
+        this.formList = result.results  
         
       },      
       error: (err: HttpErrorResponse) => {
@@ -300,74 +320,118 @@ export class EventsManagementComponent implements OnInit {
       }
     })
 
-    this.unsubscribe.push(categorySubscr);
+    this.unsubscribe.push(formSubscr);
 
   }
 
-  // getFormItems() {
-  //   let jwt = this.cookieService.get('JTW')
-  //   this.jumuishaService.getAccess(jwt).subscribe(response => {
-  //     let access = response.access
-  //     this.jumuishaService.getCustomFormCustomFormItems(this.formId, access).subscribe(res => {
-  //       let formItems = (res['results'])
-  //       let result = formItems.map((custom_form_item_id) => custom_form_item_id.custom_form_item_id)
-  //       let itemReturnedArray : any = []
-  //       result.forEach((x: number) => {
-  //         let itemId = x
-  //         this.jumuishaService.getCustomFormItem(itemId, access).subscribe((resp: any) => {
-  //         //  let itemReturned = resp
-  //           let id = resp['id']
-  //           let title = resp['title']
-  //           let dataType = resp['dataType']
-  //           let formValue = resp['value']
-  //           let hint = resp['hint']
-  //           let  value: any = []
 
-  //           let valueItems = formValue.split(',')
-  //           let valueArray : any = []
+  // Register event
+  saveEvent() {
 
-  //           valueItems.forEach((x :any )=> {
+    let formValidity:boolean = true
 
-  //             let item= {'name': x }
-  //             valueArray.push(item)
-  //           })
-  //           if (formValue ==''){
-  //             value = ''
-  //           }else{
-  //             value = valueArray
-  //           }
+      this.loading = true;
 
-  //           let date:string = ''
-  //           if((title.indexOf('Birth') > -1) || (title.indexOf('birth') > -1)){
-  //             date = this.max_date
-  //           } else{
-  //             // get date
-  //             var today = new Date();
-  //             date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
-  //             this.max_date = date
-  //           }
+      var eventDate = this.eventRegistration.controls['eventDate'].value
+      let startTime = this.eventRegistration.controls['startTime'].value
+      let endTime = this.eventRegistration.controls['endTime'].value
+      var limited = this.eventRegistration.controls['is_limited'].value
+      var content = this.eventRegistration.controls['description'].value;
+      var ticketAmount = this.eventRegistration.controls['per_ticket_amount'].value;
 
-  //           let itemReturned = {'id': id, 'title': title, 'date':date, 'dataType': dataType, 'value': value, 'hint': hint}
-  //           itemReturnedArray.push(itemReturned)
+      const formData: FormData = new FormData()
+
+      if(this.actualFile){        
+        formData.append('eventImage', this.actualFile, this.actualFile.name);
+      }
+      formData.append('eventName', this.eventRegistration.controls['eventName'].value);
+      formData.append('seatsReserved', this.eventRegistration.controls['seatsReserved'].value);
+
+      if(limited == 'true'){
+        let limited_val:boolean = true
+
+        if(limited == 'true'){
+          limited_val = true
+        } else {
+          limited_val = false
+        }
         
-  //         })
+        formData.append('is_limited', limited_val.toString());
+        formData.append('maximumSeats', this.eventRegistration.controls['maximumSeats'].value)
+      }
+      
+      formData.append('eventDate', eventDate);
+      formData.append('startTime', startTime);
+      formData.append('endTime', endTime);
+      formData.append('description', content);
+      formData.append('event_creator', this.user_id.toString());
 
-  //       })
-  //       this.customFormItemData = itemReturnedArray
-  //       // console.log(this.customFormItemData)
+      //Custom Form
+      var custom_form = this.selected_form
+      if(custom_form != 0){
+        let selected_form_id = custom_form
+        formData.append('customForm', selected_form_id.toString())
 
-  //     },
-  //     (error: HttpErrorResponse) => {
-  //       this.msg = 'Something is wrong, cannot fetch form.';
-  //       this.toaster.warning(this.msg, 'An Error occured');
-  //       this.spinner.hide();
-  //     })
+        formValidity = true
 
-  //   })
-  // }
+      }
 
-  saveEvent () {
+      // check Payment
+      if(this.paidEvent === true){
+        // check amount
+        if(ticketAmount == '' || ticketAmount == 0){ 
+          formValidity = false
+          
+          if(ticketAmount == ''){            
+            this.alertResponse = "Caution, please provide the amount for a single ticket";
+          }
+          if(ticketAmount == 0){
+            this.alertResponse = "Caution, a ticket cannot be Ksh.0, if so unselect the paid event checkbox";
+          }
+          
+        } else {
+          formValidity = true
 
-  }
+          // set value
+          formData.append('is_paid', true.toString())
+          formData.append('per_ticket_amount', ticketAmount)
+        }
+
+      }
+
+    if(formValidity === true){
+     
+        const eventSubscr = this.cbfService.registerEvent(formData, this.accessToken)
+        .subscribe({
+          next: (response: any) => {
+            let results = response
+            
+            if(results.id){
+
+              this.eventRegistration.reset();          
+              this.messageResponse = 'Event registered successfully'
+                
+              setTimeout(() => {
+                window.location.reload()
+              }, 1400);
+    
+            } else {
+              this.alertResponse = 'Event not created, please try again'
+            }
+            
+          },      
+          error: (err: HttpErrorResponse) => {
+            this.alertResponse = 'Something went wrong, failure creating event, kindly try again';
+          }
+        })
+
+        this.unsubscribe.push(eventSubscr);
+
+    } else {
+      this.loading = false;
+      this.alertResponse = "Invalid Submission, you have not filled all the required fields";
+    }
+    
+  } 
 
 }
