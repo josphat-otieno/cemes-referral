@@ -178,6 +178,10 @@ export class EventsManagementComponent implements OnInit {
       this.selectedForm.push({'id': this.formId, 'name': this.form_name})
     }
 
+    if(data.is_paid) {
+      this.paidEventUpdate = true;
+    }
+
   }
    
 
@@ -237,6 +241,7 @@ export class EventsManagementComponent implements OnInit {
   // display groups
   selector(val:string){
     this.type = val;
+    alert(val)
 
     if(val == 'true'){
       this.seat_restricted = true;
@@ -714,7 +719,7 @@ export class EventsManagementComponent implements OnInit {
     .subscribe({
       next: (response: any) => {
         
-        if(response.id){
+        if(response){
           
           this.messageResponse = 'Event deleted successfully'
             
