@@ -249,8 +249,8 @@
 
         </div>
         <div class="card-body">
-            <div class="table-responsive">
-                <table  class="row-border hover">
+            <div class="table-responsive" >
+                <table datatable [dtOptions]="formOptions" [dtTrigger]="formTrigger" class="table table-striped" >
                     <thead>
                         <tr>
                             <th  scope="col">Name</th>
