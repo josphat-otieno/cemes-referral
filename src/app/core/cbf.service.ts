@@ -1255,25 +1255,25 @@ export class CbfService implements OnDestroy {
   }
 
   // Get custom Forms - custom
-  public getCustomForms(access: string): Observable<any> {
-    const url = ApiEndpointService.getEndpoint(ApiEndpointService.ENDPOINT.GET_CUSTOM_FORMS);
-    return this.http.get<any>(url, {
-      headers: {
-        'Content-Type': 'application/json; charset=utf-8',
-        'Accept': 'application/json',
-        'Authorization': `Bearer ${access}`
-      }
-    }).pipe(
-      map(function (response: any) {
-        return response;
-      }),
-      catchError((fault: HttpErrorResponse) => {
-        return throwError(() => fault);
+  // public getCustomForms(access: string): Observable<any> {
+  //   const url = ApiEndpointService.getEndpoint(ApiEndpointService.ENDPOINT.GET_CUSTOM_FORMS);
+  //   return this.http.get<any>(url, {
+  //     headers: {
+  //       'Content-Type': 'application/json; charset=utf-8',
+  //       'Accept': 'application/json',
+  //       'Authorization': `Bearer ${access}`
+  //     }
+  //   }).pipe(
+  //     map(function (response: any) {
+  //       return response;
+  //     }),
+  //     catchError((fault: HttpErrorResponse) => {
+  //       return throwError(() => fault);
 
-      })
-    )
+  //     })
+  //   )
 
-  }
+  // }
 
           /* ------------------- EVENTS --------------------- */
 
@@ -1574,8 +1574,7 @@ export class CbfService implements OnDestroy {
     const url = ApiEndpointService.getEndpoint(ApiEndpointService.ENDPOINT.MANAGE_CUSTOM_FORMS);
     return this.http.post<any>(url, customForm, {
       params, headers: {
-        'Content-Type': 'application/json; charset=utf-8',
-        'Accept': 'application/json',
+    
         'Authorization': `Bearer ${access}`
       }
     }).pipe(
@@ -1592,7 +1591,7 @@ export class CbfService implements OnDestroy {
 // get custom form
   public getCustomForms( access: string): Observable<any[]> {
     const url = ApiEndpointService.getEndpoint(ApiEndpointService.ENDPOINT.MANAGE_CUSTOM_FORMS);
-    return this.http.get<any[]>(url +  {
+    return this.http.get<any[]>(url,  {
       headers: {
         'Content-Type': 'application/json; charset=utf-8',
         'Accept': 'application/json',
@@ -1631,7 +1630,7 @@ export class CbfService implements OnDestroy {
 // update custom custom form
   public updateCustomForm(formId: number, customData: FormData, access: string): Observable<any[]> {
     const url = ApiEndpointService.getEndpoint(ApiEndpointService.ENDPOINT.MANAGE_CUSTOM_FORMS);
-    return this.http.patch<any[]>(url + formId, customData, {
+    return this.http.patch<any[]>(url + formId+'/', customData, {
       headers: {
         'Authorization': `Bearer ${access}`
       }
@@ -1692,7 +1691,7 @@ export class CbfService implements OnDestroy {
   // get custom form items
   public getCustomFormsItems( access: string): Observable<any[]> {
     const url = ApiEndpointService.getEndpoint(ApiEndpointService.ENDPOINT.MANAGE_CUSTOM_FORM_ITEMS);
-    return this.http.get<any[]>(url + '&ordering=id', {
+    return this.http.get<any[]>(url, {
       headers: {
         'Content-Type': 'application/json; charset=utf-8',
         'Accept': 'application/json',
@@ -1709,25 +1708,25 @@ export class CbfService implements OnDestroy {
     )
   }
 
-// get custom form item
-  public getCustomFormItem(formId: number, access: string): Observable<any[]> {
-    const url = ApiEndpointService.getEndpoint(ApiEndpointService.ENDPOINT.MANAGE_CUSTOM_FORM_ITEMS);
-    return this.http.get<any[]>(url + formId , {
-      headers: {
-        'Content-Type': 'application/json; charset=utf-8',
-        'Accept': 'application/json',
-        'Authorization': `Bearer ${access}`
-      }
-    }).pipe(
-      map((response: any) => {
-        return response;
-      }),
-            catchError((fault: HttpErrorResponse) => {
-        return throwError(() => fault);
+// // get custom form item
+//   public getCustomFormItem(formId: number, access: string): Observable<any[]> {
+//     const url = ApiEndpointService.getEndpoint(ApiEndpointService.ENDPOINT.MANAGE_CUSTOM_FORM_ITEMS);
+//     return this.http.get<any[]>(url + formId , {
+//       headers: {
+//         'Content-Type': 'application/json; charset=utf-8',
+//         'Accept': 'application/json',
+//         'Authorization': `Bearer ${access}`
+//       }
+//     }).pipe(
+//       map((response: any) => {
+//         return response;
+//       }),
+//             catchError((fault: HttpErrorResponse) => {
+//         return throwError(() => fault);
 
-      })
-    )
-  }
+//       })
+//     )
+//   }
 
 
 // update custom form item
@@ -1814,24 +1813,24 @@ public createCustomCustomFormItem(customForm: FormData, access: string): Observa
 
 
   //  get CustomFormCustomFormItems
-  public getCustomFormCustomFormItems(formId: number, access: string): Observable<any[]> {
-    const url = ApiEndpointService.getEndpoint(ApiEndpointService.ENDPOINT.MANAGE_CUSTOMFORM_CUSTOMFORMITEM);
-    return this.http.get<any[]>(url + '?custom_form_id=' + formId+'&ordering=id', {
-      headers: {
-        'Content-Type': 'application/json; charset=utf-8',
-        'Accept': 'application/json',
-        'Authorization': `Bearer ${access}`
-      }
-    }).pipe(
-      map((response: any) => {
-        return response;
-      }),
-            catchError((fault: HttpErrorResponse) => {
-        return throwError(() => fault);
+  // public getCustomFormCustomFormItems(formId: number, access: string): Observable<any[]> {
+  //   const url = ApiEndpointService.getEndpoint(ApiEndpointService.ENDPOINT.MANAGE_CUSTOMFORM_CUSTOMFORMITEM);
+  //   return this.http.get<any[]>(url + '?custom_form_id=' + formId+'&ordering=id', {
+  //     headers: {
+  //       'Content-Type': 'application/json; charset=utf-8',
+  //       'Accept': 'application/json',
+  //       'Authorization': `Bearer ${access}`
+  //     }
+  //   }).pipe(
+  //     map((response: any) => {
+  //       return response;
+  //     }),
+  //           catchError((fault: HttpErrorResponse) => {
+  //       return throwError(() => fault);
 
-      })
-    )
-  }
+  //     })
+  //   )
+  // }
 
 
   public getEventsCustomFormFeedbackList(custom_form_id: number, access: string): Observable<any[]> {
@@ -2038,7 +2037,7 @@ public getCustomFormCustomFormItem_Id(custom_form_id: number,custom_form_item_id
   }
 
 
-  public getForms(formId: number, access: string): Observable<any[]> {
+  public getForms( access: string): Observable<any[]> {
     const url = ApiEndpointService.getEndpoint(ApiEndpointService.ENDPOINT.GET_CUSTOM_FORMS);
     return this.http.get<any[]>(url,{
       headers: {
@@ -2076,7 +2075,32 @@ public getCustomFormCustomFormItem_Id(custom_form_id: number,custom_form_item_id
   
         })
       )
+
     }
+
+    public addFormItems(formData: FormData, access: string): Observable<any> {
+      const params = new HttpParams();
+      const url = ApiEndpointService.getEndpoint(ApiEndpointService.ENDPOINT.ADD_FORM_ITEMS);
+      return this.http.post<any>(url, formData, {
+        params, headers: {
+    
+          'Authorization': `Bearer ${access}`
+        }
+      }).pipe(
+        map((response: any) => {
+          return response;
+        }),
+              catchError((fault: HttpErrorResponse) => {
+            return throwError(() => fault);
+    
+          })
+      )
+    }
+
+
+
+
+
   ngOnDestroy() {
     this.unsubscribe.forEach((sb) => sb.unsubscribe());
   }

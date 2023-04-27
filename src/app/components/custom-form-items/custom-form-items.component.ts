@@ -31,7 +31,7 @@ export class CustomFormItemsComponent implements OnInit {
     choice: boolean = false;
     editChoice: boolean = false;
   customItemModalData: any;
-    
+
   constructor(
     private cbfService: CbfService,
     private modalService: NgbModal,
@@ -55,6 +55,9 @@ export class CustomFormItemsComponent implements OnInit {
 
   this.accessToken = this.cbfService.AccessToken
   this.user_id = Number(this.cbfService.currentUserValue)
+
+  this.customFormItem()
+  this.getCustomFormItems()
 
   }
 
@@ -82,7 +85,6 @@ export class CustomFormItemsComponent implements OnInit {
   
     }
   
-
 
     customFormItem() {
       this.customForm = this.fb.group({
