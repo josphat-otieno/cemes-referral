@@ -52,7 +52,7 @@ export class CustomFormFeedbacksComponent implements OnInit {
     this.accessToken = this.cbfService.AccessToken
     this.user_id = Number(this.cbfService.currentUserValue)
 
-    
+    this.getCustomFormFeedbacks()
   }
 
   getCustomFormFeedbacks(){
@@ -61,7 +61,7 @@ export class CustomFormFeedbacksComponent implements OnInit {
       next: (response:any)=>{
           let data = response.results
           let count = response.count;
-
+          this.forms_count = count
           this.customFeedbacks = data
 
         if(this.forms_count > 0){

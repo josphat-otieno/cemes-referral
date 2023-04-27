@@ -1,3 +1,4 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -69,7 +70,7 @@ export class UserResponsesComponent implements OnInit {
       };
       this.accessToken =  this.cbfService.AccessToken
       this.user_id = Number(this.cbfService.currentUserValue)
-      
+      this.getUsersResponses()
   }
 
   openModal(targetModal:any, form:any) {
@@ -112,6 +113,15 @@ export class UserResponsesComponent implements OnInit {
         })
         this.customFormResponses = usersDataArray
         this.tableHeaders  = this.customFormResponses[0]['response']
+
+
+        if(this.customFormResponses.length > 0){
+          this.dtTrigger.next(this.customFormResponses)
+        }        
+        
+      },      
+      error: (err: HttpErrorResponse) => {
+        //  this.toaster.warning('Failure fetching user details, kindly refresh', 'Something went wrong')
       }
     })
   }
