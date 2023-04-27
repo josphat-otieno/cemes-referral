@@ -18,7 +18,7 @@
         <div class="card">
             <div class="card-header">
                 <div class="col-6">
-                    List of all
+                    List of Form Items
                 </div>
 
                 <div class="col-6">
@@ -50,8 +50,13 @@
                                 <td>
                                     <span>
 
-                                        <i class="fa fa-edit fa-4px" (click)="openModal(editItem, item)"></i> &nbsp;
-                                        <i class="fa fa-trash fa-4px" (click)="openModal(deleteItem, item) "></i>
+                                        <!-- <i class="fa fa-edit fa-4px" (click)="openModal(editItem, item)"></i> &nbsp;
+                                        <i class="fa fa-trash fa-4px" (click)="openModal(deleteItem, item) "></i> -->
+                                        <button type="button" class="btn btn-success btn-sm mg-b-0 " data-toggle="modal"
+                                        (click)="openModal(editItem, item)"><i class="fa fa-pencil"></i> edit</button>
+                                    <button type="button" class="btn btn-danger btn-sm mg-b-0 ml-1"
+                                        data-toggle="modal"
+                                        (click)="openModal(deleteItem, item)"><i class="fa fa-trash"> </i>delete</button>
                                     </span>
 
                                 </td>

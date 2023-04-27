@@ -1,0 +1,112 @@
+
+<div class="content-body">
+    <div class="container-fluid">
+        <div class="row page-titles mx-0">
+            <div class="col-sm-6 p-md-0">
+                <div class="welcome-text">
+                    <h4>Custom Form Responses</h4>
+                </div>
+            </div>
+            <div class="col-sm-6 p-md-0 justify-content-sm-end mt-2 mt-sm-0 d-flex">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="admin/dashboard">Home</a></li>
+                    <li class="breadcrumb-item active"><a href="javascript:void(0)">Custom Form Responses</li>
+                </ol>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="card">
+            <div class="card-header">
+                <div class="col-6">
+                    List of all user responses
+                </div>
+
+                <!-- <div class="col-6">
+                    <button class="btn btn-sm btn-primary rightBtns" type="button"
+                        (click)="createItemModal(addFormItem)">
+                        <i class="fa fa-plus"></i>&nbsp;Add Form Item
+                    </button>
+                </div> -->
+            </div>
+
+            <div class="card-body">
+                <div class="table-responsive">
+                  <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class=" table table-stripped">
+                    <thead>
+                      <!-- <tr>
+                        <th>Full Name</th>
+                        <th *ngFor="let columnName of columnNames">{{columnName.custom_form_item_title}}</th>
+                      </tr> -->
+                      
+                      <tr>
+                        <th>Full Name</th>
+                        <th *ngFor="let headTitle of tableHeaders">
+                          {{headTitle.title}}
+                        </th>
+                        <th>Actions</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let item of customFormResponses">
+                        <td>{{item.full_name}}</td>
+                        <td *ngFor="let resp of item.response">{{resp.response}}</td>
+      
+                        <td>
+                          <div class="d-flex flex-row">
+                            <a> <button type="button" class="btn btn-info btn-sm" data-toggle="modal"
+                                (click)="openModal(response, item)">view details </button></a>
+                          </div>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+        </div>
+
+    </div>
+</div>
+
+
+
+<ng-template #response let-modal>
+
+    <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">Users Responses</h4>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+  
+    <div class="modal-body default-calendar">
+      <div class="card">
+  
+        <div class="card-body">
+          <div class="row">
+       
+            <div class="">
+              <!-- <h4 class="text text-center text-capitalize">{{userName}}</h4> -->
+              <form>
+                <div class="form-group" *ngFor="let data of userResponses">
+  
+                  <div class="row align-items-center">
+                    <label class="col-sm-2 text-capitalize">{{data.title}}:</label>
+                    <div class="col-sm-10">
+                      <input type="text" value="{{data.response}}" readonly class="form-control">
+                    </div>
+                  </div>
+                </div>
+  
+              </form>
+            </div>
+            <!-- <div class=""></div> -->
+          </div>
+  
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-secondary btn-md" (click)="modal.dismiss()">Close</button>
+    </div>
+  </ng-template>

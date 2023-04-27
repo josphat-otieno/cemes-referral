@@ -94,6 +94,9 @@ export class ApiEndpointService {
     GET_CUSTOM_FORMS:`${ApiEndpointService.MAIN_CONTEXT}/business/get-custom-forms/`,
     GET_CUSTOM_FORM_ITEMS:`${ApiEndpointService.MAIN_CONTEXT}/business/get-custom-form-items/`,
     ADD_FORM_ITEMS:`${ApiEndpointService.MAIN_CONTEXT}/business/add-form-items/`,
+    GET_FEEDBACKS: `${ApiEndpointService.MAIN_CONTEXT}/business/get-feedbacks/`,
+    DELETE_FEEDBACK_FORM: `${ApiEndpointService.MAIN_CONTEXT}/business/delete-custom-form-feedback/`
+
   }
 
   constructor() { }

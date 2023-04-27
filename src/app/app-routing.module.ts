@@ -155,6 +155,7 @@ import { CustomFormComponent } from './components/custom-form/custom-form.compon
 import { CustomFormItemsComponent } from './components/custom-form-items/custom-form-items.component';
 import { CustomFormFeedbacksComponent } from './components/custom-form-feedbacks/custom-form-feedbacks.component';
 import { EventsManagementComponent } from './components/events-management/events-management.component';
+import { UserResponsesComponent } from './components/user-responses/user-responses.component';
 
 
 const routes: Routes = [
@@ -301,6 +302,9 @@ const routes: Routes = [
               {path: 'event-custom-forms', component: CustomFormComponent},
               {path: 'custom-form-items', component: CustomFormItemsComponent},
               {path: 'events-custom-form-feedbacks', component: CustomFormFeedbacksComponent},
+              {path: 'user-responses', component: UserResponsesComponent},
+
+
 
           ]
           
