@@ -238,20 +238,11 @@
                     <span class="nav-text">Events Management</span>
                 </a>
                 <ul aria-expanded="false" [ngClass]="{'mm-show': eventsArray.indexOf(currentHref) > -1}">
-                    <li><a [routerLink]="['/admin/events-management']" class="{{(currentHref == '/admin/events-management') ? 'mm-active' : ''}}">Events Listing</a></li>
-                </ul>
-            </li>
-
-            <li [ngClass]="{'mm-active': customFormArray.indexOf(currentHref) > -1}">
-                <a class="has-arrow ai-icon" href="javascript:void()" aria-expanded="false">
-                    <i class="flaticon-381-user-9"></i>
-                    <span class="nav-text">Events Custom Forms</span>
-                </a>
-                <ul aria-expanded="false" [ngClass]="{'mm-show': customFormArray.indexOf(currentHref) > -1}">
                     <li><a [routerLink]="['/admin/event-custom-forms']" class="{{(currentHref == '/admin/event-custom-forms') ? 'mm-active' : ''}}">Custom Forms</a></li>
                     <li><a [routerLink]="['/admin/custom-form-items']" class="{{(currentHref == '/admin/app-users') ? 'mm-active' : ''}}">Custom Form Items</a></li>
                     <li><a [routerLink]="['/admin/events-custom-form-feedbacks']" class="{{(currentHref == '/admin/events-custom-form-feedbacks') ? 'mm-active' : ''}}">Custom Form Feedbacks</a></li>
 
+                    <li><a [routerLink]="['/admin/events-management']" class="{{(currentHref == '/admin/events-management') ? 'mm-active' : ''}}">Events Listing</a></li>
                 </ul>
             </li>
 

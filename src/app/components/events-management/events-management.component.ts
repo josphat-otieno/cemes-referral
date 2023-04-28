@@ -241,7 +241,6 @@ export class EventsManagementComponent implements OnInit {
   // display groups
   selector(val:string){
     this.type = val;
-    alert(val)
 
     if(val == 'true'){
       this.seat_restricted = true;

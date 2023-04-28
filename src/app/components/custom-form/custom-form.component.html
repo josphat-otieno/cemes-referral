@@ -53,18 +53,19 @@
 
                                     <div class="button_containers">
                                         <button type="button" class="btn btn-success btn-sm mg-b-0 " data-toggle="modal"
-                                            (click)="openModal(editForm, customForm)">edit</button>
+                                            (click)="openModal(editForm, customForm)"> <i class="fa fa-pencil"></i> Edit</button>
+
                                         <button type="button" class="btn btn-secondary btn-sm mg-b-0 ml-1"
-                                            data-toggle="modal" (click)="openModalItems(addFormItem, customForm)">add
-                                            form items</button>
+                                            data-toggle="modal" (click)="openModalItems(addFormItem, customForm)">
+                                            <i class="fa fa-plus"></i> Add form items</button>
 
                                         <button type="button" class="btn btn-info btn-sm mg-b-0 ml-1"
                                             data-toggle="modal"
-                                            (click)=" openModal(preview,customForm)">preview</button>
+                                            (click)=" openModal(preview,customForm)"><i class="fa fa-eye"></i> Preview</button>
 
                                         <button type="button" class="btn btn-danger btn-sm mg-b-0 ml-1"
                                             data-toggle="modal"
-                                            (click)="openModal(deleteForm, customForm)">delete</button>
+                                            (click)="openModal(deleteForm, customForm)"><i class="fa fa-trash"></i> Delete</button>
                                     </div>
                                 </td>
                             </tr>
@@ -95,35 +96,33 @@
         </button>
     </div>
     <div class="modal-body default-calendar">
-        <div class="row row-sm">
+        <form [formGroup]="customForm" (ngSubmit)="saveCustomForm()">
 
-            <form [formGroup]="customForm" (ngSubmit)="saveCustomForm()">
-
-                <div class="form-group">
-                    <div class="row align-items-center">
-                        <div class="col-sm-12">
-                            <label for="name">Name</label>
-                            <input type="text" class="form-control" formControlName="name" required
-                                placeholder="Enter custom form name">
-                        </div>
-                    </div>
+            <div class="form-group row">
+                <div class="col-5">
+                    <label for="name">Name</label>
                 </div>
-                <div class="form-group">
-                    <div class="row align-items-center">
-                        <div class="col-sm-12">
-                            <label for="name">Form Description</label>
-                            <textarea name="description" id="" class="form-control" cols="30" rows="3"
-                                formControlName="description"
-                                placeholder="briefly describe the purpose of the form"></textarea>
-                        </div>
-                    </div>
+                
+                <div class="col-7">
+                    <input type="text" class="form-control" formControlName="name" required
+                        placeholder="Enter custom form name">
                 </div>
-                <div class="modal-footer">
-                    <button type="submit" class="btn btn-md  btn-primary">Save</button>
-                    <button type="button" class="btn  btn-secondary" (click)="modal.dismiss()">Close</button>
+            </div>
+            <div class="form-group row">
+                <div class="col-5">
+                    <label for="desc">Form Description</label>
                 </div>
-            </form>
-        </div>
+                
+                <div class="col-7">
+                    <textarea name="description" id="desc" class="form-control" cols="10" rows="3"
+                    formControlName="description" placeholder="Briefly describe the purpose of the form"></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-md btn-primary">Save</button>
+                <button type="button" class="btn  btn-secondary" (click)="modal.dismiss()">Close</button>
+            </div>
+        </form>
     </div>
 </ng-template>
 
@@ -138,31 +137,32 @@
     <div class="modal-body">
         <div class="row row-sm">
             <form #editForm="ngForm">
-                <div class="form-group">
+                <div class="form-group row">
                     <input type="hidden" class="form-control" name="id" ngModel="{{customModalData?.id}}"
                         value="{{customModalData?.id}}">
-                    <div class="row align-items-center">
-                        <div class="col-sm-12">
-                            <label for="bk-category">Name</label>
-                            <input type="text" id="bk-category" class="form-control" name="name"
+                        
+                        <div class="col-5">
+                            <label for="bk-name">Name</label>
+                        </div>
+                        <div class="col-7">
+                            <input type="text" id="bk-name" class="form-control" name="name"
                                 ngModel="{{customModalData?.name}}" value="{{customModalData?.name}}">
                         </div>
-                    </div>
                 </div>
-                <div class="form-group">
-                    <div class="row align-items-center">
-                        <div class="col-sm-12">
-                            <label for="bk-category">Form Description</label>
-                            <input type="text" id="description" class="form-control" name="description"
+                <div class="form-group row">
+
+                    <div class="col-5">
+                        <label for="bk-desc">Form Description</label>
+                    </div>
+                    <div class="col-7">
+                        <input type="text" id="bk-desc" class="form-control" name="description"
                                 ngModel="{{customModalData?.description}}" value="{{customModalData?.description}}">
-                        </div>
                     </div>
                 </div>
 
                 <div class="modal-footer">
-                    <button type="submit" class="btn  btn-primary" (click)="updateCustomForm(editForm.value)">Save
-                        changes</button>
-                    <button type="button" class="btn  btn-secondary" (click)="modal.close('Save click')">Close</button>
+                    <button type="submit" class="btn  btn-primary" (click)="updateCustomForm(editForm.value)">Save Changes</button>
+                    <button type="button" class="btn  btn-secondary" (click)="modal.close('Save click')">Cancel</button>
                 </div>
             </form>
 
@@ -173,7 +173,7 @@
 <!-- delete custom form -->
 <ng-template #deleteForm let-modal>
     <div class="modal-header">
-        <h4 class="modal-title" id="modal-basic-title">Delete Form</h4>
+        <h4 class="modal-title" id="modal-basic-title">Delete Custom Form</h4>
         <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
             <span aria-hidden="true">&times;</span>
         </button>
@@ -228,6 +228,7 @@
         </form>
     </div>
 </ng-template>
+
 <!-- add form items to custom forms -->
 <ng-template #addFormItem let-modal>
     <div class="modal-header ">
