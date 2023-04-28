@@ -687,6 +687,7 @@ import { CustomFormItemsComponent } from './components/custom-form-items/custom-
 import { CustomFormFeedbacksComponent } from './components/custom-form-feedbacks/custom-form-feedbacks.component';
 import { EventsManagementComponent } from './components/events-management/events-management.component';
 import { PermissionComponent } from './pages/permission/permission.component';
+import { UserResponsesComponent } from './components/user-responses/user-responses.component';
 
 function appInitializer(authService: CbfService) {
   return () => {
@@ -1313,6 +1314,7 @@ function appInitializer(authService: CbfService) {
     CustomFormComponent,
     CustomFormItemsComponent,
     CustomFormFeedbacksComponent,
+    UserResponsesComponent,
     
     
   ],

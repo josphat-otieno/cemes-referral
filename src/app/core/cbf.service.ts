@@ -1958,7 +1958,7 @@ public getCustomFormCustomFormItem_Id(custom_form_id: number,custom_form_item_id
 
   // manage custom form feedback
   // get custom form feedback by church
-  public getCustomFormFeedByChurch( access: string): Observable<any[]> {
+  public getCustomFormFeed( access: string): Observable<any[]> {
     const url = ApiEndpointService.getEndpoint(ApiEndpointService.ENDPOINT.MANAGE_CUSTOM_FORM_FEEDBACK);
     return this.http.get<any[]>(url + '?ordering=-id', {
       headers: {
@@ -2095,8 +2095,49 @@ public getCustomFormCustomFormItem_Id(custom_form_id: number,custom_form_item_id
     
           })
       )
+
     }
 
+
+    public getFeedbacks( access: string): Observable<any[]> {
+      const url = ApiEndpointService.getEndpoint(ApiEndpointService.ENDPOINT.GET_FEEDBACKS);
+      return this.http.get<any[]>(url, {
+        headers: {
+          'Content-Type': 'application/json; charset=utf-8',
+          'Accept': 'application/json',
+          'Authorization': `Bearer ${access}`
+        }
+      }).pipe(
+        map((response: any) => {
+          return response;
+        }),
+              catchError((fault: HttpErrorResponse) => {
+          return throwError(() => fault);
+  
+        })
+      )
+
+    }
+
+    public deleteFormFeedback(form_id:any, access: string): Observable<any> {
+      const params = new HttpParams();
+      const url = ApiEndpointService.getEndpoint(ApiEndpointService.ENDPOINT.ADD_FORM_ITEMS);
+      return this.http.post<any>(url+'?custom_form_id='+form_id, {
+        params, headers: {
+    
+          'Authorization': `Bearer ${access}`
+        }
+      }).pipe(
+        map((response: any) => {
+          return response;
+        }),
+              catchError((fault: HttpErrorResponse) => {
+            return throwError(() => fault);
+    
+          })
+      )
+
+    }
 
 
 
