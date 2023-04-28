@@ -64,7 +64,7 @@
                         <td>
 
                           <div class="button_containers">
-                            <button type="button" class="btn btn-sm btn-info" (click)="previewModal('preview', event)"> <i class="fa fa-eye"></i>Preview Form</button> &nbsp;
+                            <button type="button" class="btn btn-sm btn-info" (click)="previewModal(previewForm, event)"> <i class="fa fa-eye"></i>Preview Form</button> &nbsp;
                             <button type="button" class="btn btn-sm btn-success" (click)="reviewModal(editEvent, event, 'lg')"> <i class="fa fa-pencil"></i>Edit</button> &nbsp;
                             <button type="button" class="btn btn-sm btn-danger" (click)="reviewModal(deleteEvent, event, 'md')"> <i class="fa fa-trash"></i>Delete</button> 
                           </div>
@@ -258,16 +258,21 @@
     </div>
   </ng-template>
 
-  <ng-template #preview let-modal>
+  <ng-template #previewForm let-modal>
     <div class="modal-header">
       <h5 class="modal-title text-capitalize" id="">{{form_name}}</h5>
-      <button type="button" class="close" (click)="modal.dismiss()" aria-label="Close">
+      <button type="button" class="close" (click)="modal.dismiss('Cross click')" aria-label="Close">
         <span aria-hidden="true">&times;</span>
       </button>
     </div>
     <div class="modal-body">
+
+      <!-- spinner -->
+      <div class="row">
+        <div class="loader text-center" *ngIf="form_data_loading"> Loading form preview, please wait ... </div>
+      </div>
   
-      <form class="form">
+      <form class="form" *ngIf="form_data_loading === false">
         <div>
           <div class="form-group" *ngFor="let item of customFormItemData">
             <label for="">{{item.title}}</label>
@@ -288,6 +293,11 @@
           <button type="submit" class="btn btn-primary btn-md">Submit</button>
         </div>
       </form>
+
+      <div *ngIf="formResponse" class="row alert alert-danger">
+        <p><i class="fa fa-exclamation"></i> &nbsp;  {{formResponse}}</p>
+      </div>
+
     </div>
   </ng-template>
   
@@ -412,7 +422,7 @@
           </div>
           
           <div class="row">
-            <div class="loader" *ngIf="loadingEdit === true"> Registering event, please wait ... </div>
+            <div class="loader" *ngIf="loadingEdit === true"> Updating event, please wait ... </div>
           </div>
       
           <!-- message -->
