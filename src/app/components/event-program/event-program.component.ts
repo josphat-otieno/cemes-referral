@@ -532,8 +532,6 @@ export class EventProgramComponent implements OnInit {
     var event_id:Number = 0;
     event_id = this.selected_event
 
-    console.log(event_id)
-
     if(event_id != 0) {
       formValidity = true
     }
