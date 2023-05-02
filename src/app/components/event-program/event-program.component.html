@@ -1,0 +1,566 @@
+<div class="content-body">
+    <div class="container-fluid">
+        <div class="row page-titles mx-0">
+            <div class="col-sm-6 p-md-0">
+                <div class="welcome-text">
+                    <h4>Events Management</h4>
+                </div>
+            </div>
+            <div class="col-sm-6 p-md-0 justify-content-sm-end mt-2 mt-sm-0 d-flex">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="admin/dashboard">Home</a></li>
+                    <li class="breadcrumb-item active"><a href="javascript:void(0)">Event Program</a></li>
+                </ol>
+            </div>
+        </div>
+
+         <!-- Main Content -->
+         <div class="card">
+            <div class="card-header">
+                <div class="col-6">
+                    List of Event Programs
+                </div>
+
+                <div class="col-6"> 
+                    <button class="btn btn-sm btn-primary rightBtns" type="button" (click)="openModal(addProgramModal, 'lg')">
+                        <i class="fa fa-plus"></i>&nbsp;Add Program
+                    </button>                  
+                </div>
+            </div>
+           
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th scope="col">Program Name</th>
+                        <th scope="col">Event Name</th>
+                        <th scope="col">Date Created </th>
+                        <th scope="col">Actions</th>
+                    </tr>
+                    </thead>
+
+                    <tbody>
+                      <tr *ngFor="let program of programList; index as i">
+
+                        <td class="text text-capitalize">{{program.name}}</td>                          
+                        <td class="text text-capitalize">{{program.event_name}}</td>                          
+                        <td>
+                          <span *ngIf="program.date_created == ''">Not Specified</span>
+                          <span *ngIf="program.date_created != ''">{{program.date_created | date:'mediumDate'}}</span>
+                        </td>
+                        <td>
+
+                          <div class="button_containers">
+                            <!-- <button type="button" class="btn btn-sm btn-info" (click)="previewModal(previewProgram, program)"> <i class="fa fa-eye"></i>Preview Event</button> &nbsp; -->
+                            <button type="button" class="btn btn-sm btn-primary" (click)="reviewModal(editItemsModal, program, 'lg')"> <i class="fa fa-pencil"></i>&nbsp;Manage Program Items </button> &nbsp;
+                            <button type="button" class="btn btn-sm btn-success" (click)="reviewModal(editProgramModal, program, 'lg')"> <i class="fa fa-pencil"></i>&nbsp;Edit </button> &nbsp;
+                            <button type="button" class="btn btn-sm btn-danger" (click)="reviewModal(deleteProgramModal, program, 'md')"> <i class="fa fa-trash"></i>&nbsp;Delete</button> 
+                          </div>
+                          <!-- <span>
+                            <i *ngIf="isChangeCustomFormAllowed === false" mat-raised-button matTooltip="View Form"
+                              matTooltipPosition="below" class="fa fa-eye fa-4px" data-toggle="modal"
+                              (click)="openPerm()"></i> &nbsp;
+                            <i *ngIf="isChangeCustomFormAllowed === true" mat-raised-button matTooltip="View Form"
+                              matTooltipPosition="below" class="fa fa-eye fa-4px" data-toggle="modal"
+                              (click)="previewModal('preview', event)"></i> &nbsp;
+      
+                            <i *ngIf="isChangeEventAllowed === true" class="fa fa-edit fa-4px"
+                              (click)="openModal(editProgramModal, event)"></i> &nbsp;
+                            <i *ngIf="isChangeEventAllowed === false" class="fa fa-edit fa-4px" (click)="openPerm()"></i>
+                            &nbsp;
+      
+                            <i *ngIf="isdeleteProgramModalAllowed === true" class="fa fa-trash fa-4px"
+                              (click)="openModals('deleteProgramModal', event)"></i>
+                            <i *ngIf="isdeleteProgramModalAllowed === false" class="fa fa-trash fa-4px" (click)="openPerm()"></i>
+                            <-- <i class="fa fa-edit fa-4px" (click)="isChangeEventAllowed ? openModal(editProgramModal, event) : '' "></i> &nbsp;
+                              <i class="fa fa-trash fa-4px" (click)="isdeleteProgramModalAllowed ? openModals(deleteProgramModal, event) : '' "></i> --
+                          </span> -->
+                        </td>
+                      </tr>
+
+                      <tr *ngIf="programListCount == 0">
+                          <td colspan="4" class="no_data_display">
+                              No data available for display
+                          </td>
+                      </tr>
+
+                  </tbody>
+
+                  </table>
+              </div>
+          </div>
+      </div>
+      
+	</div>
+</div>
+
+<!-- Modals -->
+<ng-template #addProgramModal let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title">Register Event Program</h4>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body default-calendar">
+        <div class="form-validation">
+            <form class="form-valide" action="#" method="post" [formGroup]="programRegistration" novalidate>
+                
+                <div class="form-group row">
+                    <label class="col-lg-5 col-form-label" for="eventID">Select an Event </label>
+                    <div class="col-lg-7">                         
+                        <ng-multiselect-dropdown [placeholder]="'Select an event...'" formControlName="event"
+                            [settings]="dropdownSettings" [data]="eventList" (onSelect)="onItemSelect($event)"
+                            (onDeSelect)="onItemDeSelect($event)">
+                        </ng-multiselect-dropdown>
+                    </div>
+
+                    <div *ngIf="programRegistration.controls['event'].invalid && (programRegistration.controls['event'].dirty || programRegistration.controls['event'].touched)" class="text-danger fs-13 mt-1">
+                            
+                        <div *ngIf="programRegistration.controls['event'].errors.required">
+                            You have to select an Event.
+                        </div>
+                    </div>
+                </div>
+              
+            </form>
+        </div>
+
+        <!-- spinner -->
+        <div class="row">
+          <div class="loader" *ngIf="loading === true"> Registering program, please wait ... </div>
+        </div>
+                
+        <!-- Message -->
+        <div *ngIf="messageResponse" class="row alert alert-info">
+            <p><i class="fa fa-exclamation"></i> &nbsp;  {{messageResponse}}</p>
+        </div>        
+        <div *ngIf="alertResponse" class="row alert alert-danger">
+            <p><i class="fa fa-exclamation"></i> &nbsp;  {{alertResponse}}</p>
+        </div>
+
+    </div>
+
+    <div class="modal-footer">
+        <button type="button" class="btn btn-light" (click)="modal.close('Close click')">Cancel</button>
+        <button type="button" class="btn btn-primary" [disabled]="programRegistration.pristine || programRegistration.invalid" (click)="saveProgram()">Save</button>
+    </div>
+  </ng-template>
+
+  <ng-template #previewProgram let-modal>
+    <div class="modal-header">
+      <h5 class="modal-title text-capitalize" id="">{{program_name}}</h5>
+      <button type="button" class="close" (click)="modal.dismiss('Cross click')" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+
+      <!-- spinner -->
+      <div class="row">
+        <div class="loader text-center" *ngIf="form_data_loading"> Loading program preview, please wait ... </div>
+      </div>
+  
+      <form class="form" *ngIf="form_data_loading === false">
+        <div>
+          <div class="form-group" *ngFor="let item of programList.items">
+            <label for="">{{item.title}}</label>
+            <div>
+  
+              <input *ngIf="item.value == '' || item.title.indexOf('Birth') > -1 || item.title.indexOf('birth') > -1"
+                type="{{item.dataType}}" class="form-control" placeholder="{{item.hint}}" max="{{max_date}}">
+  
+              <select name="" id="" class="form-control" *ngIf="item.value != ''">
+                <option value="" selected disabled *ngIf="item.value !== ''">select {{item.title}}</option>
+                <option *ngFor="let value of item.value" value="">{{value.name}}</option>
+              </select>
+            </div>
+  
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-primary btn-md">Submit</button>
+        </div>
+      </form>
+
+      <div *ngIf="formResponse" class="row alert alert-danger">
+        <p><i class="fa fa-exclamation"></i> &nbsp;  {{formResponse}}</p>
+      </div>
+
+    </div>
+  </ng-template>
+  
+  <ng-template #editItemsModal let-modal>
+    <div class="modal-header">
+      <h6 class="modal-title">Manage Program Items</h6>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+  
+      <div class="modal-body default-calendar">
+
+        <div class="col-12">
+            <p><b>Program Name:</b> {{eventModalData.name}}</p>
+            <p><b>Event Name:</b> {{eventModalData.event_name}} &nbsp; 
+                <a href="/admin/events-management/?ev={{eventModalData.event_id}}" class="btn btn-info btn-sm"> 
+                    <i class="fa fa-eye"></i> View Event </a> 
+            </p> <hr>
+        </div>
+        
+        <mat-tab-group>
+            <mat-tab label="Program Items">
+
+                <div class="card-body">
+                    <p>List of program Items</p>
+                    
+                    <div *ngIf="eventModalData.items.count > 0" class="table-responsive">
+                        <table datatable class="table table-striped">
+                        <thead>
+                        <tr>
+                            <th scope="col">Item Name </th>
+                            <th scope="col">Youtube Link </th>
+                            <th scope="col">Speaker </th>
+                            <th scope="col">Start Time </th>
+                            <th scope="col">End Time </th>
+                            <th scope="col">Actions </th>
+                        </tr>
+                        </thead>
+
+                        <tbody>
+                        <tr *ngFor="let program of eventModalData.items.results; index as i">
+
+                            <td>{{program.item_name}}</td>                          
+                            <td>
+                                <span *ngIf="program?.youtube_link == ''">Not Provided</span>
+                                <span *ngIf="program?.youtube_link != ''">{{program.youtube_link}}</span>
+                            </td>
+                            <td>{{program.speaker}}</td>
+                            <td>{{program.startTime}}</td>
+                            <td>{{program.endTime}}</td>
+                            <td>
+                                <div class="button_containers">
+                                    <button type="button" class="btn btn-sm btn-success" (click)="itemModal(editProgramItemModal, program)"> <i class="fa fa-pencil"></i>Edit </button> &nbsp;
+                                    <button type="button" class="btn btn-sm btn-danger" (click)="itemModal(deleteProgramItemModal, program)"> <i class="fa fa-trash"></i>Delete</button> 
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                    </table>
+                    </div>
+
+                    <div *ngIf="eventModalData.items.count == 0">
+
+                      <table class="table table-striped">
+                        <thead>
+                        <tr>
+                            <th scope="col">Item Name </th>
+                            <th scope="col">Youtube Link </th>
+                            <th scope="col">Speaker </th>
+                            <th scope="col">Start Time </th>
+                            <th scope="col">End Time </th>
+                            <th scope="col">Actions </th>
+                        </tr>
+                        </thead>
+
+                        <tbody>
+                          <tr>
+                            <td colspan="6" class="no_data_display">
+                              No data available for display
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                      
+                    </div>
+                </div>
+            </mat-tab>
+
+            <mat-tab label="Add Program Item">
+
+              <div class="card-body">
+
+                <form [formGroup]="programItemRegistration" novalidate>
+
+                  <div class="form-group row">
+                      <label class="col-lg-4 col-form-label" for="itemName">Item Name</label>
+                      <div class="col-lg-6">
+
+                          <input type="hidden" readonly class="form-control" formControlName="program" value="{{selectedProgram}}">                                
+                          <input type="text" class="form-control" id="itemName" placeholder="program item name ..." formControlName="item_name">  
+                          
+                          <div *ngIf="programItemRegistration.controls['item_name'].invalid && (programItemRegistration.controls['item_name'].dirty || programItemRegistration.controls['item_name'].touched)" class="text-danger fs-13 mt-1">
+                          
+                              <div *ngIf="programItemRegistration.controls['item_name'].errors.required">
+                                  You need to provide the item name
+                              </div>
+                          </div>
+                      </div>
+                  </div>    
+              
+                  <div class="form-group row">
+                      <label class="col-lg-4 col-form-label" for="speakerName">Speaker</label>
+                      <div class="col-lg-6">
+                          <input type="text" class="form-control" id="speakerName" placeholder="program item speaker" formControlName="speaker">                                
+                      </div>
+                      
+                  </div>  
+
+                  <div class="form-group row">
+                      <label class="col-lg-4 col-form-label" for="start_time">Start Time</label>
+                      <div class="col-lg-6">
+                          <input type="time" class="form-control" id="start_time" placeholder="start time..." formControlName="startTime">                                
+                      </div>
+
+                      <div *ngIf="programItemRegistration.controls['startTime'].invalid && (programItemRegistration.controls['startTime'].dirty || programItemRegistration.controls['startTime'].touched)" class="text-danger fs-13 mt-1">
+                          
+                          <div *ngIf="programItemRegistration.controls['startTime'].errors.required">
+                              You need to provide the start time
+                          </div>
+                      </div>
+                  </div>  
+
+                  <div class="form-group row">
+                      <label class="col-lg-4 col-form-label" for="end_time">End Time</label>
+                      <div class="col-lg-6">
+                          <input type="time" class="form-control" id="end_time" placeholder="end time..." formControlName="endTime">                                
+                      </div>
+
+                      <div *ngIf="programItemRegistration.controls['endTime'].invalid && (programItemRegistration.controls['endTime'].dirty || programItemRegistration.controls['endTime'].touched)" class="text-danger fs-13 mt-1">
+                          
+                          <div *ngIf="programItemRegistration.controls['endTime'].errors.required">
+                              You need to provide the end time
+                          </div>
+                      </div>
+                  </div>                            
+                  <div class="form-group row">
+                      <label class="col-lg-4 col-form-label" for="youtubeLink">Youtube Link (optional) </label>
+                      <div class="col-lg-6">
+                          <input type="text" class="form-control" id="youtubeLink" placeholder="item Youtube link ..." formControlName="youtube_link">                                
+                      </div>
+                  </div> 
+
+              </form>
+
+              <div *ngIf="messageResponse" class="row alert alert-info">
+                  <p><i class="fa fa-exclamation"></i> &nbsp;  {{messageResponse}}</p>
+              </div>
+              <div *ngIf="alertResponse != ''" class="row alert alert-warning">
+                  <p><i class="fa fa-exclamation"></i> &nbsp;  {{alertResponse}}</p>
+              </div>
+
+              <button type="button" class="btn btn-primary" [disabled]="!programItemRegistration.valid" (click)="saveProgramItem()">Save Item</button>
+
+
+              </div>
+
+            </mat-tab>
+
+        </mat-tab-group>        
+        
+    </div>
+  </ng-template>
+
+  <ng-template #editProgramModal let-modal>
+    <div class="modal-header">
+      <h6 class="modal-title">Edit Event Program</h6>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+  
+      <div class="modal-body default-calendar">
+        
+        <form class="form" #editItemForm="ngForm" autocomplete="on">
+          
+            <input type="hidden" name="id" ngModel="{{eventModalData?.id}}" value="{{eventModalData?.id}}">    
+
+            <div class="form-group row">
+                <label class="col-lg-5 col-form-label"> Selected Event </label>
+                <div class="col-lg-7">                         
+                    <ng-multiselect-dropdown [placeholder]="'Select an event...'" name="event"
+                    [settings]="dropdownSettings" [data]="eventList" (onSelect)="onItemSelect($event)"
+                    (onDeSelect)="onItemDeSelect($event)" [(ngModel)]="selectedEvent">
+                    </ng-multiselect-dropdown>
+                </div>
+            </div>
+          
+          <div class="row">
+            <div class="loader" *ngIf="loadingEdit === true"> Updating event program, please wait ... </div>
+          </div>
+      
+          <!-- message -->
+          <div *ngIf="messageResponse" class="row alert alert-info">
+              <p><i class="fa fa-exclamation"></i> &nbsp;  {{messageResponse}}</p>
+          </div>
+          <div *ngIf="alertResponse" class="row alert alert-danger">
+              <p><i class="fa fa-exclamation"></i> &nbsp;  {{alertResponse}}</p>
+          </div>
+
+          <div class="modal-footer">
+            <button type="button" class="btn btn-light" data-dismiss="modal" (click)="modal.dismiss('Cross click')">Cancel</button>
+            <button type="submit" [disabled]="disable || !editItemForm.valid" class="btn btn-primary" (click)="updateAction(editItemForm.value)"
+            >Save Changes</button>
+          </div>
+
+        </form>
+    </div>
+  </ng-template>
+
+  <ng-template #editProgramItemModal let-modal>
+    <div class="modal-header">
+      <h6 class="modal-title">Edit Program Item</h6>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+  
+      <div class="modal-body default-calendar">
+        
+        <form class="form" #editItemForm="ngForm" autocomplete="on">
+
+            <div class="form-group row">
+                <label class="col-lg-4 col-form-label" for="itemName">Item Name</label>
+                <div class="col-lg-6">
+
+                    <input type="hidden" readonly class="form-control" name="id" ngModel="{{itemData?.id}}" value="{{itemData?.id}}">                                
+                    <input type="hidden" readonly class="form-control" name="program" ngModel="{{selectedProgram}}" value="{{selectedProgram}}">                                
+                    <input type="text" class="form-control" id="itemName" placeholder="program item name ..." name="item_name" ngModel="{{itemData?.item_name}}" value="{{itemData?.item_name}}">  
+ 
+                </div>
+            </div>    
+        
+            <div class="form-group row">
+                <label class="col-lg-4 col-form-label" for="speakerEditName">Speaker</label>
+                <div class="col-lg-6">
+                    <input type="text" class="form-control" id="speakerEditName" placeholder="program item speaker" name="speaker" ngModel="{{itemData?.speaker}}" value="{{itemData?.speaker}}">                                
+                </div>
+                
+            </div>  
+
+            <div class="form-group row">
+                <label class="col-lg-4 col-form-label" for="start_Updatetime">Start Time</label>
+                <div class="col-lg-6">
+                    <input type="time" class="form-control" id="start_Updatetime" placeholder="start time..." name="startTime" ngModel="{{itemData?.startTime}}" value="{{itemData?.startTime}}">                                
+                </div>
+
+            </div>                            
+            <div class="form-group row">
+                <label class="col-lg-4 col-form-label" for="end_Updatetime">End Time</label>
+                <div class="col-lg-6">
+                    <input type="time" class="form-control" id="end_Updatetime" placeholder="end time..." name="endTime" ngModel="{{itemData?.endTime}}" value="{{itemData?.endTime}}">                               
+                </div>
+            </div>                            
+            <div class="form-group row">
+                <label class="col-lg-4 col-form-label" for="youtubeLink">Youtube Link (optional) </label>
+                <div class="col-lg-6">
+                    <input type="text" class="form-control" id="youtubeLink" placeholder="item Youtube link ..." name="youtube_link" ngModel="{{itemData?.youtube_link}}" value="{{itemData?.youtube_link}}">                                
+                </div>
+            </div> 
+          
+          <div class="row">
+            <div class="loader" *ngIf="loadingItemEdit === true"> Updating program item, please wait ... </div>
+          </div>
+      
+          <!-- message -->
+          <div *ngIf="messageResponse" class="row alert alert-info">
+              <p><i class="fa fa-exclamation"></i> &nbsp;  {{messageResponse}}</p>
+          </div>
+          <div *ngIf="alertResponse" class="row alert alert-danger">
+              <p><i class="fa fa-exclamation"></i> &nbsp;  {{alertResponse}}</p>
+          </div>
+
+          <div class="modal-footer">
+            <button type="button" class="btn btn-light" data-dismiss="modal" (click)="modal.dismiss('Cross click')">Cancel</button>
+            <button type="submit" [disabled]="disable || !editItemForm.valid" class="btn btn-primary" (click)="updateItem(editItemForm.value)"
+            >Save Changes</button>
+          </div>
+
+        </form>
+    </div>
+  </ng-template>
+  
+  <ng-template #deleteProgramItemModal let-modal>
+    <div class="modal-header">
+      <h5 class="modal-title">Delete Program Item</h5>
+      <button type="button" class="close" (click)="modal.dismiss()" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+
+    <div class="modal-body default-calendar">
+      <form #deleteItemForm="ngForm">        
+        <input type="hidden" name="id" ngModel="{{itemData?.id}}" value="{{itemData?.id}}">
+        <p>Are you sure you want to delete <b>{{itemData?.item_name}}</b>?</p>
+      </form>
+
+       <!-- message -->
+       <div *ngIf="messageResponse" class="row alert alert-info">
+        <p><i class="fa fa-exclamation"></i> &nbsp; {{messageResponse}}</p>
+        </div>
+
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-sm btn-light" (click)="modal.close('Close click')">No</button>
+        <button type="button" class="btn btn-sm btn-primary" (click)="deleteItem(deleteItemForm.value)">Yes</button>
+    </div>
+  
+  </ng-template>
+
+  <ng-template #deleteProgramModal let-modal>
+    <div class="modal-header">
+      <h5 class="modal-title">Delete Program</h5>
+      <button type="button" class="close" (click)="modal.dismiss()" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+
+    <div class="modal-body default-calendar">
+      <form #deleteForm="ngForm">        
+        <input type="hidden" name="id" ngModel="{{eventModalData?.id}}" value="{{eventModalData?.id}}">
+        <p>Are you sure you want to delete <b>{{eventModalData?.name}}</b>?</p>
+      </form>
+
+       <!-- message -->
+       <div *ngIf="messageResponse" class="row alert alert-info">
+        <p><i class="fa fa-exclamation"></i> &nbsp; {{messageResponse}}</p>
+        </div>
+
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-sm btn-light" (click)="modal.close('Close click')">No</button>
+        <button type="button" class="btn btn-sm btn-primary" (click)="deleteAction(deleteForm.value)">Yes</button>
+    </div>
+  
+  </ng-template>
+  
+  <ng-template #permissionDenied>
+  
+  
+    <div class="container-fluid ">
+      <div class="col d-flex justify-content-center">
+        <div class="card mt-5 " style="width: 50%;">
+          <div class="card-header">
+  
+            <div class="text text-center">
+              <img src="/assets/img/photos/unauthorized.png" class="" alt="">
+  
+            </div>
+            <h4 class="text-center">You are not authorized to access this feature</h4>
+  
+          </div>
+  
+          <div class="card-body ">
+            <p class="text text-muted tx-15">
+              You are seeing this error message because you do not have the required permissions to access this feature.
+              If you require to access this feature, kindly raise this concern with your church's system admin to assign
+              you the permissions.
+            </p>
+          </div>
+        </div>
+      </div>
+  
+    </div>
+  </ng-template>
+    

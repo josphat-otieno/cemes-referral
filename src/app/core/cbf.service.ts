@@ -1335,12 +1335,147 @@ export class CbfService implements OnDestroy {
   }
   
   // Get Events
-  public getEventDetails(access: string): Observable<any> {
+  public getEventDetails(filteredEvent:number , access: string): Observable<any> {
     const url = ApiEndpointService.getEndpoint(ApiEndpointService.ENDPOINT.GET_EVENTS);
+    return this.http.get<any>(url + '?event_id=' + filteredEvent, {
+      headers: {
+        'Content-Type': 'application/json; charset=utf-8',
+        'Accept': 'application/json',
+        'Authorization': `Bearer ${access}`
+      }
+    }).pipe(
+      map(function (response: any) {
+        return response;
+      }),
+      catchError((fault: HttpErrorResponse) => {
+        return throwError(() => fault);
+
+      })
+    )
+
+  }
+
+  // Save event programs
+  public createProgram(programData:FormData, access: string): Observable<any> {
+    const url = ApiEndpointService.getEndpoint(ApiEndpointService.ENDPOINT.PROGRAMS);
+    return this.http.post<any>(url, programData, {
+      headers: {
+        'Authorization': `Bearer ${access}`
+      }
+    }).pipe(
+      map(function (response: any) {
+        return response;
+      }),
+      catchError((fault: HttpErrorResponse) => {
+        return throwError(() => fault);
+
+      })
+    )
+
+  }
+  
+  // Get Event Programs
+  public getProgramDetails(access: string): Observable<any> {
+    const url = ApiEndpointService.getEndpoint(ApiEndpointService.ENDPOINT.GET_PROGRAMS);
     return this.http.get<any>(url, {
       headers: {
         'Content-Type': 'application/json; charset=utf-8',
         'Accept': 'application/json',
+        'Authorization': `Bearer ${access}`
+      }
+    }).pipe(
+      map(function (response: any) {
+        return response;
+      }),
+      catchError((fault: HttpErrorResponse) => {
+        return throwError(() => fault);
+
+      })
+    )
+
+  }
+
+  // Update event Program
+  public updateEventProgram(programId: number, programData:FormData, access: string): Observable<any> {
+    const url = ApiEndpointService.getEndpoint(ApiEndpointService.ENDPOINT.PROGRAMS);
+    return this.http.patch<any>(url + programId + '/', programData, {
+      headers: {
+        'Authorization': `Bearer ${access}`
+      }
+    }).pipe(
+      map(function (response: any) {
+        return response;
+      }),
+      catchError((fault: HttpErrorResponse) => {
+        return throwError(() => fault);
+
+      })
+    )
+
+  }
+
+  // Delete event Program
+  public deleteEventProgram(programId: number, access: string): Observable<any> {
+    const url = ApiEndpointService.getEndpoint(ApiEndpointService.ENDPOINT.PROGRAMS);
+    return this.http.delete<any>(url + programId + '/', {
+      headers: {
+        'Authorization': `Bearer ${access}`
+      }
+    }).pipe(
+      map(function (response: any) {
+        return response;
+      }),
+      catchError((fault: HttpErrorResponse) => {
+        return throwError(() => fault);
+
+      })
+    )
+
+  }
+  
+  // Create Event Program Item
+  public createProgramItem(prData: FormData, access: string): Observable<any> {
+    const url = ApiEndpointService.getEndpoint(ApiEndpointService.ENDPOINT.PROGRAM_ITEMS);
+    return this.http.post<any>(url, prData, {
+      headers: {
+        'Authorization': `Bearer ${access}`
+      }
+    }).pipe(
+      map(function (response: any) {
+        return response;
+      }),
+      catchError((fault: HttpErrorResponse) => {
+        return throwError(() => fault);
+
+      })
+    )
+
+  }
+
+  // Update event Program Item
+  public updateProgramItem(programItemId: number, programData:FormData, access: string): Observable<any> {
+    const url = ApiEndpointService.getEndpoint(ApiEndpointService.ENDPOINT.PROGRAM_ITEMS);
+    return this.http.patch<any>(url + programItemId + '/', programData, {
+      headers: {
+        'Authorization': `Bearer ${access}`
+      }
+    }).pipe(
+      map(function (response: any) {
+        return response;
+      }),
+      catchError((fault: HttpErrorResponse) => {
+        return throwError(() => fault);
+
+      })
+    )
+
+  }
+
+  // Delete event Program Item
+  public deleteProgramItem(programItemId: number, access: string): Observable<any> {
+    const url = ApiEndpointService.getEndpoint(ApiEndpointService.ENDPOINT.PROGRAM_ITEMS);
+    return this.http.delete<any>(url + programItemId + '/', {
+      headers: {
         'Authorization': `Bearer ${access}`
       }
     }).pipe(

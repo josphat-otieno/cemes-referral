@@ -1,6 +1,7 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import * as moment from 'moment';
 import { IDropdownSettings } from 'ng-multiselect-dropdown';
@@ -66,6 +67,10 @@ export class EventsManagementComponent implements OnInit {
   public form_name:string = ''
   dropdownSettings!:IDropdownSettings;
 
+  public filtered_event_id:number = 0;
+
+  public title:string = "List of all Events"
+
   // Validation
   public disable:boolean = false;
   public type: string = "";
@@ -87,10 +92,20 @@ export class EventsManagementComponent implements OnInit {
   constructor(
     private modalService: NgbModal,
     private cbfService: CbfService,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private activatedRoute: ActivatedRoute
   ) { }
 
-  ngOnInit(): void {
+  ngOnInit(): void {    
+
+    this.activatedRoute.queryParams.subscribe(params => {
+      const uid = params['ev']; 
+
+      if (uid != undefined) {       
+        this.filtered_event_id = uid;
+        this.title = "Showing one event"
+      }
+    });
 
     // Limit previous dates
     let date = Date();
@@ -394,7 +409,7 @@ export class EventsManagementComponent implements OnInit {
   //  Get Events
   getEvents(){
 
-    const eventsSubscr = this.cbfService.getEventDetails(this.accessToken)
+    const eventsSubscr = this.cbfService.getEventDetails(this.filtered_event_id, this.accessToken)
     .subscribe({
       next: (response: any) => {
         let result = response   
@@ -502,7 +517,7 @@ export class EventsManagementComponent implements OnInit {
   }
 
   // Register event
-  saveEvent() {
+  saveEvent() { 
 
     let formValidity:boolean = true
 
@@ -598,6 +613,7 @@ export class EventsManagementComponent implements OnInit {
                 
               },      
               error: (err: HttpErrorResponse) => {
+                this.loading = false;
                 this.alertResponse = 'Something went wrong, failure creating event, kindly try again';
               }
             })
@@ -610,6 +626,7 @@ export class EventsManagementComponent implements OnInit {
         }
 
       } else {
+        this.loading = false;
         this.alertResponse = "Please upload an image to proceed"
       }
     

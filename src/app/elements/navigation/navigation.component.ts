@@ -65,6 +65,7 @@ export class NavigationComponent implements OnInit {
 
   eventsArray = [
     '/admin/events-management',
+    '/admin/event-program-management',
     '/admin/event-custom-forms',
     '/admin/custom-form-items',
     '/admin/events-custom-form-feedbacks',
