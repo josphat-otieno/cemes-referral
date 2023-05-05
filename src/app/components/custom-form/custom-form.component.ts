@@ -24,6 +24,7 @@ export class CustomFormComponent implements OnInit {
   checkedFormItems: any = []
   isChecked: boolean = false
   customFormItems:any = []
+  items_count:number = 0
 
 
   // parameters
@@ -93,6 +94,7 @@ export class CustomFormComponent implements OnInit {
     this.customModalData = modal_data;
 
     this.customFormItems = this.customModalData.form_items
+    this.items_count=this.customFormItems.length;
 
 
     // // this.getFormItems()
@@ -127,7 +129,7 @@ export class CustomFormComponent implements OnInit {
     })
   }
 
-  openModalItems(targetModal: any, data: any) {
+  openModalItems(targetModal: any, data: any, ) {
 
     this.modalService.open(targetModal, {
       centered: true,

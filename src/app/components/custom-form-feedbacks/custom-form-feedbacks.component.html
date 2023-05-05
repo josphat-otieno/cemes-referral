@@ -53,7 +53,7 @@
           
                             <td>
                               <div class="d-flex flex-row">
-                                  <a href="/admin/user-responses?gidb64={{item.id}}"><button type="button" class="btn btn-info btn-sm">view </button></a>
+                                  <a href="/cbf/admin/user-responses?gidb64={{item.id}}"><button type="button" class="btn btn-info btn-sm">view </button></a>
           
                               </div>
           
@@ -63,102 +63,13 @@
                       </table>
                     </div>
                   </div>
-
-
         </div>
 
     </div>
 </div>
 
 
-<!-- <ng-template #viewForm let-modal>
-    <div class="modal-header bg-info">
-        <h5 class="modal-title" id="">{{customFormName}} Form</h5>
-        <button type="button" class="close" (click)="modal.dismiss()" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div >
 
-      <div class="modal-body">
-        <div class="row row-sm">
-            <div class="col-xl-12 col-lg-6 col-md-6 col-xm-12">
-              <div class="card">
-                <div class="container">
-                <div class="card-header pb-0">
-                  <div class="d-flex justify-content-between">
-                    <h3 class="card-title mg-b-0">Form Responses</h3>
-                  </div>
-                  <p class="tx-12 tx-gray-500 mb-2">List of all responses</p>
-                </div>
-                <div class="card-body">
-                  <div class="table-responsive" >
-                    <table datatable [cfOptions]="cfOptions" [cfTrigger]="cfTrigger" class="row-border hover">
-                      <thead>
-                        <tr>
-                            <th>Full Name</th>
-                            <th *ngFor="let detail of responses">
-                                {{detail.title}}
-                            </th>
-                            <th>Actions</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-
-                       <tr *ngFor="let item of customFormDetails">
-
-                          <td>{{item.full_name}}</td>
-                          <td *ngFor="let resp of item.response">{{resp.response}}</td>
-
-                          <td>
-                            <div class="d-flex flex-row">
-                               <a> <button type="button" class="btn btn-info btn-sm" data-toggle="modal">view </button></a>
-                              </div>
-                          </td>
-                        </tr>
-                        <tr *ngIf="forms_count == 0">
-                          <td colspan="6" class="no_data_display">
-                              No data available for display
-                          </td>
-                      </tr>
-                      </tbody>
-                    </table>
-                  </div>
-                </div>
-                <div>
-                </div>
-              </div>
-              </div>
-            </div>
-          </div>
-      </div>
-  </ng-template> -->
-
-
-  <!-- <ng-template #deleteItem let-modal>
-    <div class="modal-header">
-      <h5 class="modal-title" id="viewThemeDelLabel">Delete Form Item</h5>
-      <button type="button" class="close" (click)="modal.dismiss()" aria-label="Close">
-        <span aria-hidden="true">&times;</span>
-      </button>
-    </div>
-  
-    <div class="modal-body default-calendar">
-      <form #deleteForm="ngForm">
-        <div class="form-group row">
-          <div class="col-sm-12">
-            <input type="hidden" name="id" ngModel="{{customItemModalData?.id}}" value="{{customItemModalData?.id}}">
-            <p>Are you sure you want to delete this form item </p>
-          </div>
-        </div>
-  
-        <div class="modal-footer">
-          <button type="submit" class="btn btn-primary btn-md" (click)="deleteData(deleteForm.value)"
-            data-dismiss="modal">Yes</button>
-          <button type="button" class="btn btn-secondary btn-md" (click)="modal.dismiss()">No</button>
-        </div>
-      </form>
-    </div>
-  </ng-template> -->
 
 
   

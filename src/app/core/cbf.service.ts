@@ -1732,7 +1732,7 @@ export class CbfService implements OnDestroy {
 // update custom form item
   public updateCustomFormItem(formId: number, customData: FormData, access: string): Observable<any[]> {
     const url = ApiEndpointService.getEndpoint(ApiEndpointService.ENDPOINT.MANAGE_CUSTOM_FORM_ITEMS);
-    return this.http.patch<any[]>(url + formId, customData, {
+    return this.http.patch<any[]>(url + formId+'/', customData, {
       headers: {
         'Authorization': `Bearer ${access}`
       }

@@ -232,14 +232,14 @@ export class CustomFormItemsComponent implements OnInit {
         
         if(response.id){
           
-          this.messageResponse = 'Custom Form  deleted successfully'
+          this.messageResponse = 'Custom Form Item  deleted successfully'
             
           setTimeout(() => {
             window.location.reload()
           }, 1200);
-  
+
         }
-        
+         
       },
       error: (e:HttpErrorResponse) =>  {        
         this.messageResponse = 'Something went wrong, please try again' 
