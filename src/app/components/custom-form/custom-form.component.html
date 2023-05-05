@@ -56,8 +56,8 @@
                                             (click)="openModal(editForm, customForm)"> <i class="fa fa-pencil"></i> Edit</button>
 
                                         <button type="button" class="btn btn-secondary btn-sm mg-b-0 ml-1"
-                                            data-toggle="modal" (click)="openModalItems(addFormItem, customForm)">
-                                            <i class="fa fa-plus"></i> Add form items</button>
+                                            data-toggle="modal" (click)="openModalItems(addFormItem, customForm)"><i class="fa fa-plus"></i> add
+                                            form items</button>
 
                                         <button type="button" class="btn btn-info btn-sm mg-b-0 ml-1"
                                             data-toggle="modal"
@@ -65,7 +65,7 @@
 
                                         <button type="button" class="btn btn-danger btn-sm mg-b-0 ml-1"
                                             data-toggle="modal"
-                                            (click)="openModal(deleteForm, customForm)"><i class="fa fa-trash"></i> Delete</button>
+                                            (click)="openModal(deleteForm, customForm)"><i class="fa fa-trash"></i> delete</button>
                                     </div>
                                 </td>
                             </tr>
@@ -205,7 +205,7 @@
             <span aria-hidden="true">&times;</span>
         </button>
     </div>
-    <div class="modal-body default-calendar">
+    <div *ngIf="items_count > 0" class="modal-body default-calendar">
 
         <form class="form">
             <div>
@@ -227,13 +227,28 @@
             </div>
         </form>
     </div>
+    <div *ngIf="items_count === 0" class="modal-body default-calendar">
+
+        <form class="form">
+            <div>
+                <p class="">No form items added</p>
+
+            </div>
+           
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary btn-md" data-toggle="modal" (click)="openModalItems(addFormItem, customForm)"><i class="fa fa-plus"></i>Add Items</button>
+            </div>
+        </form>
+    </div>
+
 </ng-template>
 
 <!-- add form items to custom forms -->
 <ng-template #addFormItem let-modal>
-    <div class="modal-header ">
-        <h5 class="modal-title text-capitalize" id="">{{customModalData.name}}</h5>
-        <button type="button" class="close" (click)="modal.dismiss()" aria-label="Close">
+
+    <div class="modal-header">
+        <h4 class="modal-title text-capitalize" id="modal-basic-title">{{customModalData.name}}</h4>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
             <span aria-hidden="true">&times;</span>
         </button>
     </div>

@@ -125,7 +125,7 @@
                     <label for="hint">Hint</label>
                 </div>
                 <div class="col-lg-7">
-                    <input type="text" id="hint" class="form-control" placeholder="form item value" id="value"  formControlName="value">
+                    <input type="text" id="hint" class="form-control" placeholder="form item value" id="value"  formControlName="hint">
                 </div>
             </div>
 
@@ -140,14 +140,15 @@
 
 
 <ng-template #editItem let-modal>
-    <div class="modal-header bg-info">
-        <h5 class="modal-title text tex-white">Edit Form Item</h5>
-        <button type="button" class="close" (click)="modal.dismiss()" aria-label="Close">
+
+    <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">Edit Form Item</h4>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
             <span aria-hidden="true">&times;</span>
         </button>
     </div>
 
-    <div class="modal-body">
+    <div class="modal-body default-calendar">
         <form #editForm="ngForm">
             <div class="form-group row">
                 <div class="col-lg-5">
@@ -209,14 +210,16 @@
 </ng-template>
 
 <ng-template #deleteItem let-modal>
+ 
     <div class="modal-header">
-        <h5 class="modal-title" id="viewThemeDelLabel">Delete Form Item</h5>
-        <button type="button" class="close" (click)="modal.dismiss()" aria-label="Close">
+        <h4 class="modal-title" id="modal-basic-title">Delete Form Item</h4>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
             <span aria-hidden="true">&times;</span>
         </button>
     </div>
 
-    <div class="modal-body">
+
+    <div class="modal-body default-calendar">
         <form #deleteForm="ngForm">
             <div class="form-group row">
                 <div class="col-sm-12">
