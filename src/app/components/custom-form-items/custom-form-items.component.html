@@ -48,17 +48,14 @@
                                 <td>{{item.dataType}}</td>
                                 <td>{{item.value ? item.value : '_____'}}</td>
                                 <td>
-                                    <span>
-
-                                        <!-- <i class="fa fa-edit fa-4px" (click)="openModal(editItem, item)"></i> &nbsp;
-                                        <i class="fa fa-trash fa-4px" (click)="openModal(deleteItem, item) "></i> -->
+                                    <div class="button_containers">
                                         <button type="button" class="btn btn-success btn-sm mg-b-0 " data-toggle="modal"
-                                        (click)="openModal(editItem, item)"><i class="fa fa-pencil"></i> edit</button>
-                                    <button type="button" class="btn btn-danger btn-sm mg-b-0 ml-1"
-                                        data-toggle="modal"
-                                        (click)="openModal(deleteItem, item)"><i class="fa fa-trash"> </i>delete</button>
-                                    </span>
+                                            (click)="openModal(editItem, item)"> <i class="fa fa-pencil"></i> Edit</button>
 
+                                        <button type="button" class="btn btn-danger btn-sm mg-b-0 ml-1"
+                                            data-toggle="modal"
+                                            (click)="openModal(deleteItem, item)"> <i class="fa fa-trash"></i> Delete</button>
+                                    </div>
                                 </td>
                             </tr>
 
@@ -84,80 +81,60 @@
         </button>
     </div>
     <div class="modal-body default-calendar">
-        <div class="row row-sm">
-            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
 
-                <form [formGroup]="customForm" (ngSubmit)="saveCustomFormItem()">
-                    <div class="form-group">
-                        <div class="row align-items-center">
+        <form [formGroup]="customForm" (ngSubmit)="saveCustomFormItem()">
 
-                            <div class="col-md-12">
-                                <div class="form-group">
-                                    <div class="row align-items-center">
-                                        <label for="bk-space-name">Form Item Title:</label>
-                                        <div class="col-sm-12">
-                                            <input type="text" class="form-control" id="title" required
-                                                placeholder="Enter form item title" formControlName="title">
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="row align-items-center">
-                            <div class="col-sm-12">
-                                <label>Data Type</label>
-                                <select class="form-control" name="status" #dataType formControlName="dataType"
-                                    (change)="selector(dataType.value)">
-                                    <option value="" selected disabled>Select Status...</option>
-                                    <option value="text">Text</option>
-                                    <option value="number">number</option>
-                                    <option value="date">date</option>
-                                    <option value="email">email</option>
-                                    <option value="choice">choice</option>
-                                </select>
-                            </div>
+            <div class="form-group row">
+                <div class="col-lg-5">
+                    <label for="bk-space-name">Form Item Title</label>
+                </div>
 
-                        </div>
-                    </div>
-                    <div class="form-group" *ngIf="choice">
-                        <div class="row align-items-center">
-                            <div class="col-md-12">
-                                <div class="form-group">
-                                    <div class="row align-items-center">
-                                        <label for="value">Value(enter values sepereated by a comma)</label>
-                                        <div class="col-sm-12">
-                                            <input type="text" class="form-control" placeholder="form item value"
-                                                formControlName="value">
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="row align-items-center">
-                            <label for="bk-space-name">Hint</label>
-                            <div class="col-sm-12">
-                                <input type="text" class="form-control" id="title" placeholder="Enter form item title"
-                                    formControlName="hint">
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <div class="row align-items-center">
-                            <div class="col-sm-12">
-                                <button type="submit" class="btn btn-primary btn-rounded">
-                                    <i class="fa fa-check"></i> Save</button>
-                            </div>
-                        </div>
-                    </div>
-                </form>
+                <div class="col-lg-7">
+                    <input type="text" class="form-control" id="title" required placeholder="Enter form item title" formControlName="title">
+                </div>
             </div>
-        </div>
+
+            <div class="form-group row">
+                <div class="col-lg-5">
+                    <label for="type">Data Type</label>
+                </div>
+                <div class="col-lg-7">
+                    <select class="form-control" id="type" name="status" #dataType formControlName="dataType"
+                        (change)="selector(dataType.value)">
+                        <option value="" selected disabled>Select a type...</option>
+                        <option value="text">Text</option>
+                        <option value="number">Number</option>
+                        <option value="date">Date</option>
+                        <option value="email">Email</option>
+                        <option value="choice">Choice</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group row" *ngIf="choice">
+                <div class="col-lg-5">
+                    <label for="value">Value (enter values sepereated by a comma)</label>
+                </div>
+                <div class="col-lg-7">
+                    <input type="text" class="form-control" placeholder="form item value" id="value"  formControlName="value">
+                </div>
+            </div>
+
+            <div class="form-group row">
+
+                <div class="col-lg-5">
+                    <label for="hint">Hint</label>
+                </div>
+                <div class="col-lg-7">
+                    <input type="text" id="hint" class="form-control" placeholder="form item value" id="value"  formControlName="value">
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-md  btn-primary">Save</button>
+                <button type="button" class="btn  btn-secondary" (click)="modal.dismiss()">Close</button>
+            </div>
+        </form>
+           
     </div>
 </ng-template>
 
@@ -173,67 +150,57 @@
 
     <div class="modal-body default-calendar">
         <form #editForm="ngForm">
-            <div class="form-group">
-                <div class="row align-items-center">
-                    <div class="col-md-12">
-                        <div class="form-group">
-                            <input type="hidden" name="id" id="" ngModel="{{customItemModalData?.id}}"
-                                value="{{customItemModalData?.id}}">
-                            <div class="row align-items-center">
-                                <label for="bk-space-name">Form Item Title:</label>
-                                <div class="col-sm-12">
-                                    <input type="text" class="form-control" id="title" name="title"
-                                        ngModel="{{customItemModalData?.title}}" value="{{customItemModalData?.title}}">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+            <div class="form-group row">
+                <div class="col-lg-5">
+                    <input type="hidden" name="id" id="" ngModel="{{customItemModalData?.id}}"
+                        value="{{customItemModalData?.id}}">
+                        
+                    <label for="bk-space-name">Form Item Title</label>
                 </div>
+                <div class="col-lg-7">
+                    <input type="text" class="form-control" id="title" name="title"
+                        ngModel="{{customItemModalData?.title}}" value="{{customItemModalData?.title}}">
+                </div>                       
             </div>
 
-            <div class="form-group">
-                <div class="row align-items-center">
-                    <div class="col-sm-12">
-                        <label>Data Type</label>
-                        <select class="form-control" name="dataType" #dataType
-                            ngModel="{{customItemModalData?.dataType}}" (change)="selectorEdit(dataType.value)">
-                            <option value="text">Text</option>
-                            <option value="number">Number</option>
-                            <option value="date">Date</option>
-                            <option value="email">Email</option>
-                            <option value="choice">Choices</option>
-                        </select>
-                    </div>
+            <div class="form-group row">
+                <div class="col-lg-5">
+                    <label>Data Type</label>
                 </div>
+                <div class="col-lg-7">
+                    <select class="form-control" name="dataType" #dataType
+                        ngModel="{{customItemModalData?.dataType}}" (change)="selectorEdit(dataType.value)">
+                        <option value="text">Text</option>
+                        <option value="number">Number</option>
+                        <option value="date">Date</option>
+                        <option value="email">Email</option>
+                        <option value="choice">Choices</option>
+                    </select>
+                </div>                       
             </div>
-            <div class="form-group" *ngIf="editChoice">
-                <div class="row align-items-center">
-                    <div class="col-md-12">
-                        <div class="form-group">
-                            <div class="row align-items-center">
-                                <label for="bk-capacity">Value(enter values sepereated by a comma)</label>
-                                <div class="col-sm-12">
-                                    <input type="text" class="form-control" name="value"
-                                        ngModel="{{customItemModalData?.value}}" value="{{customItemModalData?.value}}">
 
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+            <div class="form-group row" *ngIf="editChoice">
+                <div class="col-lg-5">
+                    <label>Value(enter values sepereated by a comma)</label>
+                </div>
+                <div class="col-lg-7">
+                    <input type="text" class="form-control" name="value"
+                    ngModel="{{customItemModalData?.value}}" value="{{customItemModalData?.value}}">
                 </div>
             </div>
-            <div class="form-group">
-                <div class="row align-items-center">
-                    <label for="bk-space-name">Hint</label>
-                    <div class="col-sm-12">
-                        <input type="text" class="form-control" id="title" name="hint"
-                            ngModel="{{customItemModalData?.hint}}" value="{{customItemModalData?.hint}}" name="hint">
-                    </div>
+            <div class="form-group row">
+                <div class="col-lg-5">
+                    <label>Hint</label>
+                </div>
+                <div class="col-lg-7">
+                    <input type="text" class="form-control" id="title" name="hint"
+                    ngModel="{{customItemModalData?.hint}}" value="{{customItemModalData?.hint}}" name="hint">
                 </div>
             </div>
+        
             <div class="modal-footer">
                 <button type="submit" class="btn btn-primary btn-md" (click)="updateCustomFormItem(editForm.value)">
-                    Save</button>
+                    Save Changes</button>
                 <button type="button" class="btn btn-secondary btn-md" (click)="modal.dismiss()">Cancel</button>
             </div>
 

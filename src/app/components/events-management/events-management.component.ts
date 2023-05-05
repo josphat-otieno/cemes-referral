@@ -1,6 +1,7 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import * as moment from 'moment';
 import { IDropdownSettings } from 'ng-multiselect-dropdown';
@@ -19,6 +20,7 @@ export class EventsManagementComponent implements OnInit {
   public current_date:string = ""
   public loading:boolean = false
   public loadingEdit:boolean = false
+  public form_data_loading:boolean = true
 
   public accessToken:string = ''
   public user_id:number = 0
@@ -36,6 +38,7 @@ export class EventsManagementComponent implements OnInit {
 
   public alertResponse: string = ""
   public messageResponse:string = ""
+  public formResponse:string = ""
   public msg:string = ""
 
   // Announcement Buttons
@@ -49,6 +52,7 @@ export class EventsManagementComponent implements OnInit {
 
   // Files  
   public upload = 0;
+  public editUpload = 1;
 
   public actualFile: File | any;
   public updatedFile: File | any;
@@ -62,6 +66,10 @@ export class EventsManagementComponent implements OnInit {
   public selectedForm:any = []
   public form_name:string = ''
   dropdownSettings!:IDropdownSettings;
+
+  public filtered_event_id:number = 0;
+
+  public title:string = "List of all Events"
 
   // Validation
   public disable:boolean = false;
@@ -84,10 +92,20 @@ export class EventsManagementComponent implements OnInit {
   constructor(
     private modalService: NgbModal,
     private cbfService: CbfService,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private activatedRoute: ActivatedRoute
   ) { }
 
-  ngOnInit(): void {
+  ngOnInit(): void {    
+
+    this.activatedRoute.queryParams.subscribe(params => {
+      const uid = params['ev']; 
+
+      if (uid != undefined) {       
+        this.filtered_event_id = uid;
+        this.title = "Showing one event"
+      }
+    });
 
     // Limit previous dates
     let date = Date();
@@ -134,7 +152,7 @@ export class EventsManagementComponent implements OnInit {
     
     // get default image
     if(this.eventDefaultBanner == ''){
-      let b_url = "assets/images/default/cover.jpg"
+      let b_url = "assets/images/big/event2.jpg"
       this.eventDefaultBanner = b_url;
     }
 
@@ -184,14 +202,13 @@ export class EventsManagementComponent implements OnInit {
 
   }
    
-
-  previewModal(targetModal:string, data:any) {
+  // preview form design
+  previewModal(targetModal:any, data:any) {
     // this.spinner.show();
 
     if(data.customForm == null || data.customForm == ''){
-      // this.spinner.hide();
-      this.msg = 'No custom form attached to this event'
-      // this.toaster.info(this.msg, 'Caution');
+      this.form_data_loading = false
+      this.formResponse = 'No custom form attached to this event';
 
     } else {      
 
@@ -206,8 +223,8 @@ export class EventsManagementComponent implements OnInit {
         this.getFormItems()
   
         setTimeout(() => {
-          // this.spinner.hide()
-        }, 1400);
+          this.form_data_loading = false
+        }, 1600);
    
     }   
 
@@ -241,7 +258,6 @@ export class EventsManagementComponent implements OnInit {
   // display groups
   selector(val:string){
     this.type = val;
-    alert(val)
 
     if(val == 'true'){
       this.seat_restricted = true;
@@ -319,7 +335,7 @@ export class EventsManagementComponent implements OnInit {
         this.alertResponse = "Not An Image, Only images are supported."
         return;
       } else {
-        this.upload = 1;        
+        this.editUpload = 1;        
         this.updatedFile = file;
 
         const img_reader = new FileReader();
@@ -330,7 +346,7 @@ export class EventsManagementComponent implements OnInit {
       }
 
     } else {
-      this.upload = 0;
+      this.editUpload = 0;
       this.alertResponse = "Not An Image, Only images are supported."
       return;
 
@@ -393,7 +409,7 @@ export class EventsManagementComponent implements OnInit {
   //  Get Events
   getEvents(){
 
-    const eventsSubscr = this.cbfService.getEventDetails(this.accessToken)
+    const eventsSubscr = this.cbfService.getEventDetails(this.filtered_event_id, this.accessToken)
     .subscribe({
       next: (response: any) => {
         let result = response   
@@ -442,11 +458,13 @@ export class EventsManagementComponent implements OnInit {
 
           let formItems = (res['results'])
           let result = formItems.map((custom_form_item_id:any) => custom_form_item_id.custom_form_item_id)
+
           let itemReturnedArray : any = []
           result.forEach((x: number) => {
-  
+
             let itemId = x
             this.cbfService.getCustomFormItem(itemId, this.accessToken).subscribe((resp: any) => {
+
             //  let itemReturned = resp
               let id = resp['id']
               let title = resp['title']
@@ -454,20 +472,22 @@ export class EventsManagementComponent implements OnInit {
               let formValue = resp['value']
               let hint = resp['hint']
               let  value: any = []
-  
-              let valueItems = formValue.split(',')
-              let valueArray : any = []
-  
-              valueItems.forEach((x :any )=> {
-  
-                let item= {'name': x }
-                valueArray.push(item)
-              })
-              if (formValue ==''){
-                value = ''
-              }else{
-                value = valueArray
-              }
+
+              if(formValue != null) {
+                let valueItems = formValue.split(',')
+                let valueArray : any = []
+    
+                valueItems.forEach((x :any )=> {
+    
+                  let item= {'name': x }
+                  valueArray.push(item)
+                })
+                if (formValue ==''){
+                  value = ''
+                }else{
+                  value = valueArray
+                }
+              } 
   
               let date:string = ''
               if((title.indexOf('Birth') > -1) || (title.indexOf('birth') > -1)){
@@ -486,10 +506,10 @@ export class EventsManagementComponent implements OnInit {
   
           })
           this.customFormItemData = itemReturnedArray
-          // console.log(this.customFormItemData)
+          
         },
         error: (err: HttpErrorResponse) => {
-          this.msg = 'Something went wrong, cannot fetch form details.';
+          this.formResponse = 'Something went wrong fetching the form preview, please try again later';
         }
       });
         
@@ -497,7 +517,7 @@ export class EventsManagementComponent implements OnInit {
   }
 
   // Register event
-  saveEvent() {
+  saveEvent() { 
 
     let formValidity:boolean = true
 
@@ -512,96 +532,103 @@ export class EventsManagementComponent implements OnInit {
 
       const formData: FormData = new FormData()
 
-      if(this.actualFile){        
+      if(this.upload == 1){        
         formData.append('eventImage', this.actualFile, this.actualFile.name);
-      }
-      formData.append('eventName', this.eventRegistration.controls['eventName'].value);
-      formData.append('seatsReserved', this.eventRegistration.controls['seatsReserved'].value);
 
-      if(limited == 'true'){
-        let limited_val:boolean = true
+        formData.append('eventName', this.eventRegistration.controls['eventName'].value);
+        formData.append('seatsReserved', this.eventRegistration.controls['seatsReserved'].value);
 
         if(limited == 'true'){
-          limited_val = true
-        } else {
-          limited_val = false
+          let limited_val:boolean = true
+
+          if(limited == 'true'){
+            limited_val = true
+          } else {
+            limited_val = false
+          }
+          
+          formData.append('is_limited', limited_val.toString());
+          formData.append('maximumSeats', this.eventRegistration.controls['maximumSeats'].value)
         }
         
-        formData.append('is_limited', limited_val.toString());
-        formData.append('maximumSeats', this.eventRegistration.controls['maximumSeats'].value)
-      }
-      
-      formData.append('eventDate', eventDate);
-      formData.append('startTime', startTime);
-      formData.append('endTime', endTime);
-      formData.append('description', content);
-      formData.append('event_creator', this.user_id.toString());
+        formData.append('eventDate', eventDate);
+        formData.append('startTime', startTime);
+        formData.append('endTime', endTime);
+        formData.append('description', content);
+        formData.append('event_creator', this.user_id.toString());
 
-      //Custom Form
-      var custom_form = this.selected_form
-      if(custom_form != 0){
-        let selected_form_id = custom_form
-        formData.append('customForm', selected_form_id.toString())
+        //Custom Form
+        var custom_form = this.selected_form
+        if(custom_form != 0){
+          let selected_form_id = custom_form
+          formData.append('customForm', selected_form_id.toString())
 
-        formValidity = true
-
-      }
-
-      // check Payment
-      if(this.paidEvent === true){
-        // check amount
-        if(ticketAmount == '' || ticketAmount == 0){ 
-          formValidity = false
-          
-          if(ticketAmount == ''){            
-            this.alertResponse = "Caution, please provide the amount for a single ticket";
-          }
-          if(ticketAmount == 0){
-            this.alertResponse = "Caution, a ticket cannot be Ksh.0, if so unselect the paid event checkbox";
-          }
-          
-        } else {
           formValidity = true
 
-          // set value
-          formData.append('is_paid', true.toString())
-          formData.append('per_ticket_amount', ticketAmount)
         }
 
-      }
-
-    if(formValidity === true){
-     
-        const eventSubscr = this.cbfService.registerEvent(formData, this.accessToken)
-        .subscribe({
-          next: (response: any) => {
-            let results = response
+        // check Payment
+        if(this.paidEvent === true){
+          // check amount
+          if(ticketAmount == '' || ticketAmount == 0){ 
+            formValidity = false
             
-            if(results.id){
-
-              this.eventRegistration.reset();          
-              this.messageResponse = 'Event registered successfully'
-                
-              setTimeout(() => {
-                window.location.reload()
-              }, 1400);
-    
-            } else {
-              this.alertResponse = 'Event not created, please try again'
+            if(ticketAmount == ''){            
+              this.alertResponse = "Caution, please provide the amount for a single ticket";
+            }
+            if(ticketAmount == 0){
+              this.alertResponse = "Caution, a ticket cannot be Ksh.0, if so unselect the paid event checkbox";
             }
             
-          },      
-          error: (err: HttpErrorResponse) => {
-            this.alertResponse = 'Something went wrong, failure creating event, kindly try again';
+          } else {
+            formValidity = true
+
+            // set value
+            formData.append('is_paid', true.toString())
+            formData.append('per_ticket_amount', ticketAmount)
           }
-        })
 
-        this.unsubscribe.push(eventSubscr);
+        }
 
-    } else {
-      this.loading = false;
-      this.alertResponse = "Invalid Submission, you have not filled all the required fields";
-    }
+            
+        if(formValidity === true){
+          
+            const eventSubscr = this.cbfService.registerEvent(formData, this.accessToken)
+            .subscribe({
+              next: (response: any) => {
+                let results = response
+                
+                if(results.id){
+
+                  this.eventRegistration.reset();          
+                  this.messageResponse = 'Event registered successfully'
+                    
+                  setTimeout(() => {
+                    window.location.reload()
+                  }, 1400);
+        
+                } else {
+                  this.alertResponse = 'Event not created, please try again'
+                }
+                
+              },      
+              error: (err: HttpErrorResponse) => {
+                this.loading = false;
+                this.alertResponse = 'Something went wrong, failure creating event, kindly try again';
+              }
+            })
+
+            this.unsubscribe.push(eventSubscr);
+
+        } else {
+          this.loading = false;
+          this.alertResponse = "Invalid Submission, you have not filled all the required fields";
+        }
+
+      } else {
+        this.loading = false;
+        this.alertResponse = "Please upload an image to proceed"
+      }
     
   } 
 
@@ -626,86 +653,91 @@ export class EventsManagementComponent implements OnInit {
       updateData.append('description', modalData.description)
       updateData.append('seatsReserved', modalData.seatsReserved)
 
-      if(this.updatedFile){
-        updateData.append('eventImage', this.updatedFile, this.updatedFile.name)
-      }
+      if(this.editUpload == 1) {
 
-      if(limited == 'true'){
-        let limited_val:boolean = true
-
+        if(this.updatedFile){
+          updateData.append('eventImage', this.updatedFile, this.updatedFile.name)
+        }
+  
         if(limited == 'true'){
-          limited_val = true
-        } else {
-          limited_val = false
-        }
-        
-        updateData.append('is_limited', limited_val.toString());
-        updateData.append('maximumSeats', modalData.maximumSeats)
-      }
-     
-      //Custom Form
-      if(modalData.customForm.length > 0){
-        updateData.append('customForm', modalData.customForm[0].id)
-      }
-
-      // check Payment
-      if(this.paidEventUpdate === true){
-
-        // check amount
-        if(ticketAmount == '' || ticketAmount == 0){ 
-          formValidity = false
-          
-          if(ticketAmount == ''){            
-            this.alertResponse = "Caution, please provide the amount for a single ticket";
-          }
-          if(ticketAmount == 0){
-            this.alertResponse = "Caution, a ticket cannot be Ksh.0, if so unselect the paid event checkbox";
+          let limited_val:boolean = true
+  
+          if(limited == 'true'){
+            limited_val = true
+          } else {
+            limited_val = false
           }
           
-        } else {
-          formValidity = true
-
-          // set value
-          updateData.append('is_paid', true.toString())
-          updateData.append('per_ticket_amount', ticketAmount)
+          updateData.append('is_limited', limited_val.toString());
+          updateData.append('maximumSeats', modalData.maximumSeats)
         }
-
-      }
-
-      if(formValidity === true){
-     
-        const updateEventSubscr = this.cbfService.updateEvent(eventId, updateData, this.accessToken)
-        .subscribe({
-          next: (response: any) => {
+       
+        //Custom Form
+        if(modalData.customForm.length > 0){
+          updateData.append('customForm', modalData.customForm[0].id)
+        }
+  
+        // check Payment
+        if(this.paidEventUpdate === true){
+  
+          // check amount
+          if(ticketAmount == '' || ticketAmount == 0){ 
+            formValidity = false
             
-            if(response.id){
-
-              this.loadingEdit = false          
-              this.messageResponse = 'Event updated successfully'
-                
-              setTimeout(() => {
-                window.location.reload()
-              }, 1200);
-    
-            } else if(response.message) {
-              this.loadingEdit = false
-              this.alertResponse = "Something went wrong, failure updating event, kindly try again"
+            if(ticketAmount == ''){            
+              this.alertResponse = "Caution, please provide the amount for a single ticket";
+            }
+            if(ticketAmount == 0){
+              this.alertResponse = "Caution, a ticket cannot be Ksh.0, if so unselect the paid event checkbox";
             }
             
-          },      
-          error: (err: HttpErrorResponse) => {
-            this.loadingEdit = false
-            this.alertResponse = 'Something went wrong, failure updating event, kindly try again';
+          } else {
+            formValidity = true
+  
+            // set value
+            updateData.append('is_paid', true.toString())
+            updateData.append('per_ticket_amount', ticketAmount)
           }
-        })
+  
+        }
+  
+        if(formValidity === true){
+       
+          const updateEventSubscr = this.cbfService.updateEvent(eventId, updateData, this.accessToken)
+          .subscribe({
+            next: (response: any) => {
+              
+              if(response.id){
+  
+                this.loadingEdit = false          
+                this.messageResponse = 'Event updated successfully'
+                  
+                setTimeout(() => {
+                  window.location.reload()
+                }, 1200);
+      
+              } else if(response.message) {
+                this.loadingEdit = false
+                this.alertResponse = "Something went wrong, failure updating event, kindly try again"
+              }
+              
+            },      
+            error: (err: HttpErrorResponse) => {
+              this.loadingEdit = false
+              this.alertResponse = 'Something went wrong, failure updating event, kindly try again';
+            }
+          })
+  
+          this.unsubscribe.push(updateEventSubscr);
+  
+        } else {
+          this.loadingEdit = false;
+          this.alertResponse = "Invalid Submission, you have not filled all the required fields";
+        }
 
-        this.unsubscribe.push(updateEventSubscr);
-
-    } else {
-      this.loadingEdit = false;
-      this.alertResponse = "Invalid Submission, you have not filled all the required fields";
-    }
-
+      } else {
+        this.alertResponse = "Please upload an image to proceed";
+      }
 
   }
 
