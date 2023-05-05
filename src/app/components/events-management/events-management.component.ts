@@ -372,6 +372,7 @@ export class EventsManagementComponent implements OnInit {
     } else {
       this.paidEventUpdate = false
     }
+    
   }
 
   //validate seats
@@ -677,6 +678,9 @@ export class EventsManagementComponent implements OnInit {
           updateData.append('customForm', modalData.customForm[0].id)
         }
   
+        let paid_value = 0;
+        let paid_status = false;
+
         // check Payment
         if(this.paidEventUpdate === true){
   
@@ -693,13 +697,19 @@ export class EventsManagementComponent implements OnInit {
             
           } else {
             formValidity = true
-  
-            // set value
-            updateData.append('is_paid', true.toString())
-            updateData.append('per_ticket_amount', ticketAmount)
           }
+
+          paid_value = ticketAmount
+          paid_status = true;
   
+        } else {
+          paid_status = false;
+          paid_value = 0;
         }
+
+        // set value
+        updateData.append('is_paid', paid_status.toString())
+        updateData.append('per_ticket_amount', paid_value.toString())
   
         if(formValidity === true){
        
