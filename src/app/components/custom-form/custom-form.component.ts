@@ -94,6 +94,7 @@ export class CustomFormComponent implements OnInit {
     this.customModalData = modal_data;
 
     this.customFormItems = this.customModalData.form_items
+    console.log(this.customFormItems)
     this.items_count=this.customFormItems.length;
 
 

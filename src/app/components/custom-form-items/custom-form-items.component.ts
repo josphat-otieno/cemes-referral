@@ -129,7 +129,7 @@ export class CustomFormItemsComponent implements OnInit {
   
   
   
-      const regsterSubscr = this.cbfService.createCustomCustomFormItem(regData, this.accessToken)
+      const regsterSubscr = this.cbfService.createCustomFormItem(regData, this.accessToken)
   
       .subscribe({
         next: (response: any) => {
@@ -181,17 +181,17 @@ export class CustomFormItemsComponent implements OnInit {
   }
 
   updateCustomFormItem(data: any) {
-
+    console.log(data)
     let modalData = data
     let cFormId = modalData.id
   
     const updateData:FormData = new FormData()
 
-    updateData.append('title', this.customForm.get('title')?.value)
-    updateData.append('dataType', this.customForm.get('dataType')?.value)
-    updateData.append('value', this.customForm.get('value')?.value)
-    updateData.append('hint', this.customForm.get('hint')?.value)
-    updateData.append('user', this.customForm.get('user')?.value)
+    updateData.append('title', modalData.title)
+    updateData.append('dataType', modalData.dataType)
+    updateData.append('value', modalData.value)
+    updateData.append('hint', modalData.hint)
+    updateData.append('user',this.user_id.toString())
 
     const updateSubscr = this.cbfService.updateCustomFormItem( cFormId, updateData, this.accessToken)
   
@@ -230,15 +230,13 @@ export class CustomFormItemsComponent implements OnInit {
     .subscribe({
       next: (response: any) => {
         
-        if(response.id){
+       
           
           this.messageResponse = 'Custom Form Item  deleted successfully'
             
-          setTimeout(() => {
+          
             window.location.reload()
-          }, 1200);
-
-        }
+   
          
       },
       error: (e:HttpErrorResponse) =>  {        

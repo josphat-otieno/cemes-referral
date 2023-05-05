@@ -1806,8 +1806,7 @@ export class CbfService implements OnDestroy {
     const url = ApiEndpointService.getEndpoint(ApiEndpointService.ENDPOINT.MANAGE_CUSTOM_FORM_ITEMS);
     return this.http.post<any>(url, customForm, {
       params, headers: {
-        'Content-Type': 'application/json; charset=utf-8',
-        'Accept': 'application/json',
+ 
         'Authorization': `Bearer ${access}`
       }
     }).pipe(
@@ -1842,26 +1841,6 @@ export class CbfService implements OnDestroy {
       })
     )
   }
-
-// // get custom form item
-//   public getCustomFormItem(formId: number, access: string): Observable<any[]> {
-//     const url = ApiEndpointService.getEndpoint(ApiEndpointService.ENDPOINT.MANAGE_CUSTOM_FORM_ITEMS);
-//     return this.http.get<any[]>(url + formId , {
-//       headers: {
-//         'Content-Type': 'application/json; charset=utf-8',
-//         'Accept': 'application/json',
-//         'Authorization': `Bearer ${access}`
-//       }
-//     }).pipe(
-//       map((response: any) => {
-//         return response;
-//       }),
-//             catchError((fault: HttpErrorResponse) => {
-//         return throwError(() => fault);
-
-//       })
-//     )
-//   }
 
 
 // update custom form item
