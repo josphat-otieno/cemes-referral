@@ -85,6 +85,7 @@ export class ApiEndpointService {
     FORUM_USERS: `${ApiEndpointService.MAIN_CONTEXT}/communication/forum-user-listing/`,
     FORUM_MGT: `${ApiEndpointService.MAIN_CONTEXT}/communication/forum/`,
     FORUM_CATEGORY: `${ApiEndpointService.MAIN_CONTEXT}/communication/forum-category/`,
+    NOTIFICATION_MESSAGE: `${ApiEndpointService.MAIN_CONTEXT}/communication/notification-message/`,
 
     // custom forms
     MANAGE_CUSTOM_FORMS:`${ApiEndpointService.MAIN_CONTEXT}/business/custom-forms/`,

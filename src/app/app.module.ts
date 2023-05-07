@@ -689,6 +689,7 @@ import { EventsManagementComponent } from './components/events-management/events
 import { PermissionComponent } from './pages/permission/permission.component';
 import { UserResponsesComponent } from './components/user-responses/user-responses.component';
 import { EventProgramComponent } from './components/event-program/event-program.component';
+import { NotificationMessageComponent } from './components/notification-message/notification-message.component';
 
 function appInitializer(authService: CbfService) {
   return () => {
@@ -1317,6 +1318,7 @@ function appInitializer(authService: CbfService) {
     CustomFormItemsComponent,
     CustomFormFeedbacksComponent,
     UserResponsesComponent,
+    NotificationMessageComponent,
     
     
   ],

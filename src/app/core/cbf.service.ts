@@ -1254,6 +1254,82 @@ export class CbfService implements OnDestroy {
 
   }
 
+  // Get Notification Messages
+  public getNotificationMessages(access: string): Observable<any> {
+    const url = ApiEndpointService.getEndpoint(ApiEndpointService.ENDPOINT.NOTIFICATION_MESSAGE);
+    return this.http.get<any>(url, {
+      headers: {
+        'Authorization': `Bearer ${access}`
+      }
+    }).pipe(
+      map(function (response: any) {
+        return response;
+      }),
+      catchError((fault: HttpErrorResponse) => {
+        return throwError(() => fault);
+
+      })
+    )
+
+  }
+
+  // Create Notification Messages
+  public saveNotificationMessage(formData: FormData, access: string): Observable<any> {
+    const url = ApiEndpointService.getEndpoint(ApiEndpointService.ENDPOINT.NOTIFICATION_MESSAGE);
+    return this.http.post<any>(url, formData, {
+      headers: {
+        'Authorization': `Bearer ${access}`
+      }
+    }).pipe(
+      map(function (response: any) {
+        return response;
+      }),
+      catchError((fault: HttpErrorResponse) => {
+        return throwError(() => fault);
+
+      })
+    )
+
+  }
+
+  // Update Message
+  public updateMessage(msg_id: number, msgData:FormData, access: string): Observable<any> {
+    const url = ApiEndpointService.getEndpoint(ApiEndpointService.ENDPOINT.NOTIFICATION_MESSAGE);
+    return this.http.patch<any>(url + msg_id + '/', msgData, {
+      headers: {
+        'Authorization': `Bearer ${access}`
+      }
+    }).pipe(
+      map(function (response: any) {
+        return response;
+      }),
+      catchError((fault: HttpErrorResponse) => {
+        return throwError(() => fault);
+
+      })
+    )
+
+  }
+
+  // Delete Message
+  public deleteMessage(msgID: number, access: string): Observable<any> {
+    const url = ApiEndpointService.getEndpoint(ApiEndpointService.ENDPOINT.NOTIFICATION_MESSAGE);
+    return this.http.delete<any>(url + msgID + '/', {
+      headers: {
+        'Authorization': `Bearer ${access}`
+      }
+    }).pipe(
+      map(function (response: any) {
+        return response;
+      }),
+      catchError((fault: HttpErrorResponse) => {
+        return throwError(() => fault);
+
+      })
+    )
+
+  }
+
   // Get custom Forms - custom
   // public getCustomForms(access: string): Observable<any> {
   //   const url = ApiEndpointService.getEndpoint(ApiEndpointService.ENDPOINT.GET_CUSTOM_FORMS);
