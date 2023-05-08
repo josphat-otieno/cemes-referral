@@ -158,6 +158,7 @@ import { EventsManagementComponent } from './components/events-management/events
 import { UserResponsesComponent } from './components/user-responses/user-responses.component';
 import { EventProgramComponent } from './components/event-program/event-program.component';
 import { NotificationMessageComponent } from './components/notification-message/notification-message.component';
+import { EventNotificationsComponent } from './components/event-notifications/event-notifications.component';
 
 
 const routes: Routes = [
@@ -295,6 +296,7 @@ const routes: Routes = [
               {path: 'business-sub-category', component: BusinessSubCategoryComponent},
               {path: 'forum', component: ForumComponent},
               {path: 'events-management', component: EventsManagementComponent},
+              {path: 'event_notifications', component: EventNotificationsComponent},
               {path: 'notification-messages', component: NotificationMessageComponent},
               {path: 'event-program-management', component: EventProgramComponent},
               {path: 'forum-management', component: ForumManagementComponent},

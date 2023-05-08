@@ -1,0 +1,209 @@
+<div class="content-body">
+    <div class="container-fluid">
+        <div class="row page-titles mx-0">
+            <div class="col-sm-6 p-md-0">
+                <div class="welcome-text">
+                    <h4>Event Notifications</h4>
+                </div>
+            </div>
+            <div class="col-sm-6 p-md-0 justify-content-sm-end mt-2 mt-sm-0 d-flex">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="admin/dashboard">Home</a></li>
+                    <li class="breadcrumb-item active"><a href="javascript:void(0)">Events Management</a></li>
+                </ol>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="card">
+            <div class="card-header">
+                <div class="col-6">
+                    {{title}}
+                </div>
+
+                <div class="col-6"> 
+                    <button class="btn btn-sm btn-primary rightBtns" type="button" (click)="openModal(addReminder, 'md')">
+                        <i class="fa fa-plus"></i>&nbsp;Add Notification Reminder
+                    </button>                  
+                </div>
+            </div>
+           
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th scope="col">Message</th>
+                        <th scope="col">Reminder Date</th>
+                        <th scope="col">Date Created</th>
+                        <th scope="col">Status</th>
+                        <th scope="col">Update Details</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let reminder of reminderList; index as i">
+                            <td>{{reminder.message  | slice:0:20}} ...</td>
+                            <td>{{reminder.reminder_date | date:'mediumDate'}}</td>
+                            <td>{{reminder.created_date | date:'mediumDate'}}</td>
+                            <td>{{reminder.status}}</td>
+                            
+                            <td>
+                                <div class="button_containers">
+                                    <button type="button" class="btn btn-sm btn-success" (click)="reviewModal(editMessageModal, reminder)"> <i class="fa fa-pencil"></i>&nbsp;Edit</button> &nbsp;
+                                    <button type="button" class="btn btn-sm btn-danger" (click)="reviewModal(deleteNotificationModal, reminder)"> <i class="fa fa-trash"></i>&nbsp;Delete</button> 
+                                </div>
+                            </td>
+                        </tr>
+
+                        <tr *ngIf="reminderCount == 0">
+                            <td colspan="5" class="no_data_display">
+                                {{dataErrorMsg}}
+                            </td>
+                        </tr>
+                    </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+      
+	</div>
+</div>
+
+<ng-template #addReminder let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title">Create Notification Reminder</h4>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body default-calendar">
+        <div class="form-validation">
+            <form class="form-valide" action="#" method="post" [formGroup]="notificationRegistration" novalidate>
+
+                <div class="form-group row">
+                    <label class="col-lg-5 col-form-label" for="eventID">Select a message </label>
+                    <div class="col-lg-7">                         
+                        <ng-multiselect-dropdown [placeholder]="'Select a reminder...'" formControlName="message"
+                            [settings]="dropdownSettings" [data]="messageList" (onSelect)="onItemSelect($event)"
+                            (onDeSelect)="onItemDeSelect($event)">
+                        </ng-multiselect-dropdown>
+                    </div>
+
+                    <div *ngIf="notificationRegistration.controls['message'].invalid && (notificationRegistration.controls['message'].dirty || notificationRegistration.controls['message'].touched)" class="text-danger fs-13 mt-1">
+                            
+                        <div *ngIf="notificationRegistration.controls['message'].errors.required">
+                            You have to select a reminder.
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-group row">
+                    <label class="col-lg-5 col-form-label" for="remDate">Reminder Date</label>
+
+                    <div class="col-lg-7">                        
+                        <input type="date" class="form-control" required formControlName="notification_date" id="remDate">
+                    </div>
+
+                    <div *ngIf="notificationRegistration.controls['notification_date'].invalid && (notificationRegistration.controls['notification_date'].dirty || notificationRegistration.controls['notification_date'].touched)" class="text-danger fs-13 mt-1">
+                            
+                        <div *ngIf="notificationRegistration.controls['notification_date'].errors.required">
+                            You have to select a date for the reminder.
+                        </div>
+                    </div>
+
+                </div>
+              
+            </form>
+        </div>
+        
+        <!-- message -->
+        <div *ngIf="messageResponse" class="row alert alert-info">
+            <p><i class="fa fa-exclamation"></i> &nbsp;  {{messageResponse}}</p>
+        </div>        
+        <div *ngIf="alertResponse" class="row alert alert-danger">
+            <p><i class="fa fa-exclamation"></i> &nbsp;  {{alertResponse}}</p>
+        </div>
+
+    </div>
+
+    <div class="modal-footer">
+        <button type="button" class="btn btn-light" (click)="modal.close('Close click')">Cancel</button>
+        <button type="button" class="btn btn-primary" [disabled]="notificationRegistration.pristine || notificationRegistration.invalid" (click)="saveNotification()">Save</button>
+    </div>
+  </ng-template>
+
+<ng-template #editMessageModal let-modal>
+    <div class="modal-header alert alert-success">
+      <h4 class="modal-title" id="modal-edit-title">Edit Notification Reminder</h4>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+
+    <div class="modal-body default-calendar">
+        <form class="form" #editForm="ngForm" autocomplete="on">  
+            
+            <input type="hidden" name="id" ngModel="{{notificationModalData?.id}}" value="{{notificationModalData?.id}}">             
+            <input type="hidden" name="event_id" ngModel="{{notificationModalData?.event_id}}" value="{{notificationModalData?.event_id}}"> 
+            
+            <div class="form-group row">
+                <label class="col-lg-5 col-form-label"> Selected Message </label>
+                <div class="col-lg-7">                         
+                    <ng-multiselect-dropdown [placeholder]="'Select an event...'" name="message"
+                    [settings]="dropdownSettings" [data]="messageList" (onSelect)="onItemSelect($event)"
+                    (onDeSelect)="onItemDeSelect($event)" [(ngModel)]="selected_message">
+                    </ng-multiselect-dropdown>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label class="col-lg-5 col-form-label" for="remDateUpdate">Reminder Date</label>
+
+                <div class="col-lg-7">                        
+                    <input type="date" class="form-control" required ngModel="{{notificationModalData?.notification_date}}" value="{{notificationModalData?.notification_date}}" 
+                    name="notification_date" id="remDateUpdate">
+                </div>
+
+            </div>
+
+            <!-- message -->
+            <div *ngIf="messageResponse" class="row alert alert-info">
+                <p><i class="fa fa-exclamation"></i> &nbsp;  {{messageResponse}}</p>
+            </div>
+            <div *ngIf="alertResponse" class="row alert alert-danger">
+                <p><i class="fa fa-exclamation"></i> &nbsp;  {{alertResponse}}</p>
+            </div>
+
+            <div class="modal-footer">
+              <button type="button" class="btn btn-light" data-dismiss="modal" (click)="modal.dismiss('Cross click')">Cancel</button>
+              <button type="submit" [disabled]="!editForm.valid" class="btn btn-primary" (click)="updateAction(editForm.value)"
+               >Save Changes</button>
+            </div>
+          </form>
+    </div>
+  </ng-template>
+
+  <ng-template #deleteNotificationModal let-modal>
+    <div class="modal-header alert alert-danger">
+      <h4 class="modal-title" id="modal-del-title">Delete Notification Reminder</h4>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body default-calendar">
+      <form #deleteForm="ngForm">        
+        <input type="hidden" name="id" ngModel="{{notificationModalData?.id}}" value="{{notificationModalData?.id}}">
+        <p>Are you sure you want to delete this reminder?</p>
+      </form>
+
+       <!-- message -->
+       <div *ngIf="messageResponse" class="row alert alert-info">
+        <p><i class="fa fa-exclamation"></i> &nbsp; {{messageResponse}}</p>
+        </div>
+
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-sm btn-light" (click)="modal.close('Close click')">No</button>
+        <button type="button" class="btn btn-sm btn-primary" (click)="deleteAction(deleteForm.value)">Yes</button>
+    </div>
+  </ng-template>

@@ -1273,6 +1273,25 @@ export class CbfService implements OnDestroy {
 
   }
 
+  // Get Event Notification Reminders
+  public getEventReminders(eventID:number, access: string): Observable<any> {
+    const url = ApiEndpointService.getEndpoint(ApiEndpointService.ENDPOINT.EVENT_REMINDERS);
+    return this.http.get<any>(url + '?eventID=' + eventID, {
+      headers: {
+        'Authorization': `Bearer ${access}`
+      }
+    }).pipe(
+      map(function (response: any) {
+        return response;
+      }),
+      catchError((fault: HttpErrorResponse) => {
+        return throwError(() => fault);
+
+      })
+    )
+
+  }
+
   // Create Notification Messages
   public saveNotificationMessage(formData: FormData, access: string): Observable<any> {
     const url = ApiEndpointService.getEndpoint(ApiEndpointService.ENDPOINT.NOTIFICATION_MESSAGE);
@@ -1417,6 +1436,25 @@ export class CbfService implements OnDestroy {
       headers: {
         'Content-Type': 'application/json; charset=utf-8',
         'Accept': 'application/json',
+        'Authorization': `Bearer ${access}`
+      }
+    }).pipe(
+      map(function (response: any) {
+        return response;
+      }),
+      catchError((fault: HttpErrorResponse) => {
+        return throwError(() => fault);
+
+      })
+    )
+
+  }
+
+  // Create Custom Notification
+  public createCustomNotification(notificationData:FormData, access: string): Observable<any> {
+    const url = ApiEndpointService.getEndpoint(ApiEndpointService.ENDPOINT.CUSTOM_NOTIFICATION);
+    return this.http.post<any>(url, notificationData, {
+      headers: {
         'Authorization': `Bearer ${access}`
       }
     }).pipe(

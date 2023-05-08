@@ -1,44 +1,56 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import ls from 'localstorage-slim';
+import { IDropdownSettings } from 'ng-multiselect-dropdown';
 import { Subject, Subscription, throwError } from 'rxjs';
 import { ApiEndpointService } from 'src/app/core/api-endpoint.service';
 import { CbfService } from 'src/app/core/cbf.service';
 
 @Component({
-  selector: 'app-notification-message',
-  templateUrl: './notification-message.component.html',
-  styleUrls: ['./notification-message.component.css']
+  selector: 'app-event-notifications',
+  templateUrl: './event-notifications.component.html',
+  styleUrls: ['./event-notifications.component.css']
 })
-export class NotificationMessageComponent implements OnInit {
+export class EventNotificationsComponent implements OnInit {
   
   public accessToken:string = ''
   public user_id:number = 0
   private unsubscribe: Subscription[] = [];
 
+  public dataErrorMsg:string = "No data available for display"
+
   // parameters
   public messageList:any = []
-  public messagesCount:number = 0
+  public reminderList:any = []
+  public reminderCount:number = 0
 
-  public msgModalData:any = []
+  public notificationModalData:any = []
   public alertResponse:string = ''
   public messageResponse:string = ''
   public msg:string = ''
 
+  public selected_message:number = 0
+  dropdownSettings!:IDropdownSettings;
+
   public validity:boolean = false
-  public msgRegistration: FormGroup | any
+  public notificationRegistration: FormGroup | any
+
+  // Event Title
+  public eventName:string = ""
+  public filtered_event_id:number = 0;
+  public title:string = ""
   
   // Files  
   public upload = 0;
+
+  public actualLogoFile: File | any;
   public actualCoverFile: File | any;
+
+  public updatedLogoFile: File | any;
   public updatedCoverFile: File | any;
-  
-  // Logo holder
-  public coverDefaultLogo: any = "assets/images/default/cover.jpg";  
-  public coverSavedLogo: any = "assets/images/default/cover.jpg";
 
   public mediaUrl = ApiEndpointService.getEndpoint(ApiEndpointService.ENDPOINT.IMAGE_FOLDER);
   
@@ -50,11 +62,33 @@ export class NotificationMessageComponent implements OnInit {
     private cbfService: CbfService,
     private modalService: NgbModal,
     private fb: FormBuilder,
-    private router: Router
+    private router: Router,
+    private activatedRoute: ActivatedRoute
   ) {  }
   
 
   ngOnInit(): void {
+    
+    this.accessToken = this.cbfService.AccessToken
+    this.user_id = Number(this.cbfService.currentUserValue)
+
+    this.dropdownSettings = {
+      singleSelection: true,
+      idField: 'id',
+      textField: 'message',
+      allowSearchFilter: true,
+      closeDropDownOnSelection: true
+    };
+
+    this.activatedRoute.queryParams.subscribe(params => {
+      const uid = params['evn']; 
+
+      if (uid != undefined) {       
+        this.filtered_event_id = uid;
+      } else {
+        this.router.navigate(['/admin/events-management'])
+      }
+    });
 
      // datatable
      this.dtOptions = {
@@ -70,14 +104,15 @@ export class NotificationMessageComponent implements OnInit {
       ]
     };    
 
-    this.accessToken = this.cbfService.AccessToken
-    this.user_id = Number(this.cbfService.currentUserValue)
+    this.getEventDetail()
     this.createForm()
     this.getmessageList()
+
+    this.getreminderList()
   }
 
   createForm() {
-    this.msgRegistration = this.fb.group({
+    this.notificationRegistration = this.fb.group({
       message: ['', [Validators.required ]],
     })
   }
@@ -98,34 +133,67 @@ export class NotificationMessageComponent implements OnInit {
 
 	}
 
-  handleMissingImage() {
-    this.coverSavedLogo = this.coverDefaultLogo
-  }
-
   reviewModal(content:any, data:any) {
     
     this.modalService.open(content)
-    this.msgModalData = data
+    this.notificationModalData = data
 
-    // images
-    this.coverSavedLogo = this.msgModalData.image
   }
+
+  onItemSelect(item: any) {
+
+    let selected_message_id = item.id;
+    this.selected_message = selected_message_id
+
+  }
+
+  onItemDeSelect(event: any) {
+    this.selected_message = 0
+  }
+  
    
-  // Endpoints Consumption  
+  /* ------------------------------------------ Endpoints Consumption --------------------------------------------------- */
 
-  getmessageList(){
+  getEventDetail() {
 
-    const categorySubscr = this.cbfService.getNotificationMessages(this.accessToken)
+    const eventsSubscr = this.cbfService.getEventDetails(this.filtered_event_id, this.accessToken)
+    .subscribe({
+      next: (response: any) => {
+        let result = response.result
+
+        this.eventName = result.eventName        
+        this.title = "Showing "+ this.eventName + " notification reminders"
+        
+      },      
+      error: (err: HttpErrorResponse) => {
+        //  this.toaster.warning('Failure fetching user details, kindly refresh', 'Something went wrong')
+      }
+    })
+
+    this.unsubscribe.push(eventsSubscr)
+
+  }
+
+  getreminderList(){
+
+    const categorySubscr = this.cbfService.getEventReminders(this.filtered_event_id, this.accessToken)
     .subscribe({
       next: (response: any) => {
         let result = response 
         
-        this.messagesCount = result.count
-        this.messageList = result.results 
+        let eventMessage = result.message
+        if(eventMessage == 'pass') {
 
-        if(this.messagesCount > 0){
-          this.dtTrigger.next(this.messageList)
-        }        
+          this.reminderCount = result.count
+          this.reminderList = result.results 
+
+          if(this.reminderCount > 0){
+            this.dtTrigger.next(this.reminderList)
+          }     
+
+        } else {
+          this.dataErrorMsg = eventMessage
+        }            
         
       },      
       error: (err: HttpErrorResponse) => {
@@ -137,111 +205,48 @@ export class NotificationMessageComponent implements OnInit {
 
   }
 
-  /* ------------------------------------------ Image Handler --------------------------------------------------- */
-    // On file Select
-    onCoverChange(event: any) {
-      this.alertResponse = ''
-  
-      const file = event.target.files[0];
-  
-      if (event.length === 0)
-        return;
-  
-      var mimeType = file.type
-  
-      if(mimeType.indexOf('image')> -1){
-  
-        // check if size is 10MB Max
-        let fileSize = file.size
+  getmessageList(){
 
-        if (fileSize >= 10000000) {
-          this.alertResponse = "Please select an image less than 10MB.";
-        }
-  
-  
-        if (mimeType.match(/image\/*/) == null) {
-          this.alertResponse = "Not An Image, Only images are supported."
-          return;
-        } else {
-          this.upload = 1;        
-          this.actualCoverFile = file;
-  
-          const img_reader = new FileReader();
-          img_reader.onload = () => {
-            this.coverDefaultLogo = img_reader.result as string;
-          }
-          img_reader.readAsDataURL(file)
-        }
-  
-      } else {
-        this.upload = 0;
-        this.alertResponse = "Not An Image, Only images are supported."
-        return;
-  
+    const msgSubscr = this.cbfService.getNotificationMessages(this.accessToken)
+    .subscribe({
+      next: (response: any) => {
+        let result = response 
+
+        let msgArray:any = []
+        msgArray.push(result.results)
+
+        msgArray.forEach((x:any) => {
+          let msg_id = x.id
+          let msg_truncated = x.message.substring(0,10);
+
+          let msg_object = {'id':msg_id, 'message':msg_truncated}           
+          this.messageList.push(msg_object) 
+
+        })
+        
+      },      
+      error: (err: HttpErrorResponse) => {
+        //  this.toaster.warning('Failure fetching user details, kindly refresh', 'Something went wrong')
       }
-      
-    }
+    })
 
-  // Change image on Update
-  onCoverUpdateChange(event: any) {
-    this.alertResponse = ''
+    this.unsubscribe.push(msgSubscr);
 
-    const file = event.target.files[0];
-
-    if (event.length === 0)
-      return;
-
-    var mimeType = file.type
-
-    if(mimeType.indexOf('image')> -1){
-
-      // check if size is 10MB Max
-      let fileSize = file.size
-
-      if (fileSize >= 10000000) {
-        this.alertResponse = "Please select an image less than 10MB.";
-      }
-
-      if (mimeType.match(/image\/*/) == null) {
-        this.alertResponse = "Not An Image, Only images are supported."
-        return;
-      } else {
-        this.upload = 1;        
-        this.updatedCoverFile = file;
-
-        const img_reader = new FileReader();
-        img_reader.onload = () => {
-          this.coverSavedLogo = img_reader.result as string;
-        }
-        img_reader.readAsDataURL(file)
-      }
-
-    } else {
-      this.upload = 0;
-      this.alertResponse = "Not An Image, Only images are supported."
-      return;
-
-    }
-    
   }
-   
-  /* ------------------------------------------ Image Handler --------------------------------------------------- */
 
-  saveMessage() {
+  saveNotification() {
 
     const regData:FormData = new FormData()
     let message_content = ""
-    message_content = this.msgRegistration.get('message')?.value
+    message_content = this.notificationRegistration.get('message')?.value
 
     if(message_content != "") {
-
-      if(this.actualCoverFile){
-        regData.append('image', this.actualCoverFile, this.actualCoverFile.name)
-      }
   
-      regData.append('message', message_content)
+      regData.append('event_id', message_content)
+      regData.append('message_id', message_content)
+      regData.append('notification_date', message_content)
   
-      const regsterSubscr = this.cbfService.saveNotificationMessage(regData, this.accessToken)
+      const regsterSubscr = this.cbfService.createCustomNotification(regData, this.accessToken)
   
       .subscribe({
         next: (response: any) => {
@@ -249,14 +254,14 @@ export class NotificationMessageComponent implements OnInit {
           
           if(results.id){
             
-            this.messageResponse = 'Message created successfully'
+            this.messageResponse = 'Notification reminder created successfully'
               
             setTimeout(() => {
               window.location.reload()
             }, 1200);
   
           } else {
-            this.alertResponse = 'Message not created, please try again'
+            this.alertResponse = 'Notification reminder not created, please try again'
           }
           
         },

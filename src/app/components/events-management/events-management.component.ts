@@ -1,7 +1,7 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import * as moment from 'moment';
 import { IDropdownSettings } from 'ng-multiselect-dropdown';
@@ -77,6 +77,9 @@ export class EventsManagementComponent implements OnInit {
   public res_serror: boolean = false;
   public res_error: boolean = false;
 
+    // redirection
+    public redirectPath:string = ''
+
   // Permissions  
   public isChangeEventAllowed: boolean = false
   public isDeleteEventAllowed: boolean = false
@@ -93,10 +96,11 @@ export class EventsManagementComponent implements OnInit {
     private modalService: NgbModal,
     private cbfService: CbfService,
     private fb: FormBuilder,
-    private activatedRoute: ActivatedRoute
+    private activatedRoute: ActivatedRoute,
+    private router: Router
   ) { }
 
-  ngOnInit(): void {    
+  ngOnInit(): void {   
 
     this.activatedRoute.queryParams.subscribe(params => {
       const uid = params['ev']; 
@@ -199,6 +203,15 @@ export class EventsManagementComponent implements OnInit {
     if(data.is_paid) {
       this.paidEventUpdate = true;
     }
+
+  }
+
+  redirectToSettings(eventData: any) {  
+    let event_data = eventData
+    let event_id = event_data.id  
+    
+    this.redirectPath = '/admin/event_notifications'
+    this.router.navigate([this.redirectPath], { queryParams: { evn: event_id }});
 
   }
    
