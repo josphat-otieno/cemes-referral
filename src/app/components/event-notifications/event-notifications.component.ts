@@ -4,6 +4,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import ls from 'localstorage-slim';
+import * as moment from 'moment';
 import { IDropdownSettings } from 'ng-multiselect-dropdown';
 import { Subject, Subscription, throwError } from 'rxjs';
 import { ApiEndpointService } from 'src/app/core/api-endpoint.service';
@@ -26,6 +27,7 @@ export class EventNotificationsComponent implements OnInit {
   public messageList:any = []
   public reminderList:any = []
   public reminderCount:number = 0
+  public current_date:string = ""
 
   public notificationModalData:any = []
   public alertResponse:string = ''
@@ -33,6 +35,7 @@ export class EventNotificationsComponent implements OnInit {
   public msg:string = ''
 
   public selected_message:number = 0
+  public selected_message_object:any = []
   dropdownSettings!:IDropdownSettings;
 
   public validity:boolean = false
@@ -41,7 +44,7 @@ export class EventNotificationsComponent implements OnInit {
   // Event Title
   public eventName:string = ""
   public filtered_event_id:number = 0;
-  public title:string = ""
+  public title:string = "List of all notification reminders for this event"
   
   // Files  
   public upload = 0;
@@ -72,10 +75,15 @@ export class EventNotificationsComponent implements OnInit {
     this.accessToken = this.cbfService.AccessToken
     this.user_id = Number(this.cbfService.currentUserValue)
 
+    // Limit previous dates
+    let date = Date();
+    var dateString = moment(date).format('YYYY-MM-DD');
+    this.current_date = dateString
+
     this.dropdownSettings = {
       singleSelection: true,
       idField: 'id',
-      textField: 'message',
+      textField: 'name',
       allowSearchFilter: true,
       closeDropDownOnSelection: true
     };
@@ -107,13 +115,13 @@ export class EventNotificationsComponent implements OnInit {
     this.getEventDetail()
     this.createForm()
     this.getmessageList()
-
     this.getreminderList()
   }
 
   createForm() {
     this.notificationRegistration = this.fb.group({
       message: ['', [Validators.required ]],
+      notification_date: ['', [Validators.required ]],
     })
   }
 
@@ -138,6 +146,13 @@ export class EventNotificationsComponent implements OnInit {
     this.modalService.open(content)
     this.notificationModalData = data
 
+    if( this.notificationModalData.message_id != ''){
+
+      let trim = this.notificationModalData.message.substring(0, 30) + ' ...';      
+      this.selected_message_object.push({'id': this.notificationModalData.message_id, 'name': trim})
+
+    }
+
   }
 
   onItemSelect(item: any) {
@@ -159,10 +174,11 @@ export class EventNotificationsComponent implements OnInit {
     const eventsSubscr = this.cbfService.getEventDetails(this.filtered_event_id, this.accessToken)
     .subscribe({
       next: (response: any) => {
-        let result = response.result
+        let result = response.results
+        let counter = response.count
 
-        this.eventName = result.eventName        
-        this.title = "Showing "+ this.eventName + " notification reminders"
+        this.eventName = result[0].event_name 
+        return this.title = "Showing " + counter + " notification reminder(s) for " + this.eventName
         
       },      
       error: (err: HttpErrorResponse) => {
@@ -210,16 +226,13 @@ export class EventNotificationsComponent implements OnInit {
     const msgSubscr = this.cbfService.getNotificationMessages(this.accessToken)
     .subscribe({
       next: (response: any) => {
-        let result = response 
+        let result = response.results 
 
-        let msgArray:any = []
-        msgArray.push(result.results)
-
-        msgArray.forEach((x:any) => {
+        result.forEach((x:any) => {
           let msg_id = x.id
-          let msg_truncated = x.message.substring(0,10);
+          let msg_truncated = x.message.substring(0,30) + ' ...';
 
-          let msg_object = {'id':msg_id, 'message':msg_truncated}           
+          let msg_object = {'id':msg_id, 'name':msg_truncated}           
           this.messageList.push(msg_object) 
 
         })
@@ -234,17 +247,21 @@ export class EventNotificationsComponent implements OnInit {
 
   }
 
+
   saveNotification() {
 
     const regData:FormData = new FormData()
-    let message_content = ""
-    message_content = this.notificationRegistration.get('message')?.value
+    let message_id = 0
+    let message_object = this.notificationRegistration.get('message')?.value
+    let datum = this.notificationRegistration.get('notification_date')?.value
 
-    if(message_content != "") {
+    message_id = message_object[0].id
+
+    if(message_id != 0) {
   
-      regData.append('event_id', message_content)
-      regData.append('message_id', message_content)
-      regData.append('notification_date', message_content)
+      regData.append('event_id', this.filtered_event_id.toString())
+      regData.append('message_id', message_id.toString())
+      regData.append('notification_date', datum)
   
       const regsterSubscr = this.cbfService.createCustomNotification(regData, this.accessToken)
   
@@ -282,29 +299,27 @@ export class EventNotificationsComponent implements OnInit {
   updateAction(data: any) {
 
     let modalData = data
-    let msgId = modalData.id
+    let reminderId = modalData.id
 
-    let message_content = ""
-    message_content = modalData.message
+    let message_id = 0
+    let message_content = modalData.message
+    let notification_Date = modalData.notification_date
+    message_id = message_content[0].id
 
-    if(message_content != "") {
+    if(message_id != 0) {
 
       const updateData:FormData = new FormData()
+      updateData.append('message', message_id.toString())
+      updateData.append('notification_date', notification_Date)
 
-      if(this.updatedCoverFile){
-        updateData.append('image', this.updatedCoverFile, this.updatedCoverFile.name)
-      }
-
-      updateData.append('message', message_content)
-
-      const updateSubscr = this.cbfService.updateMessage(msgId, updateData, this.accessToken)
+      const updateSubscr = this.cbfService.updateReminder(reminderId, updateData, this.accessToken)
 
       .subscribe({
         next: (response: any) => {
           
           if(response.id){
             
-            this.messageResponse = 'Message updated successfully'
+            this.messageResponse = 'Notification reminder updated successfully'
               
             setTimeout(() => {
               window.location.reload()
@@ -336,12 +351,12 @@ export class EventNotificationsComponent implements OnInit {
     let modalData = data
     let msgId = modalData.id
 
-    const delSubscr = this.cbfService.deleteMessage(msgId, this.accessToken)
+    const delSubscr = this.cbfService.deleteReminder(msgId, this.accessToken)
 
     .subscribe({
       next: (response: any) => {
         
-        this.messageResponse = 'Message deleted successfully'
+        this.messageResponse = 'Notification reminder deleted successfully'
             
         setTimeout(() => {
           window.location.reload()

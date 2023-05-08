@@ -1273,6 +1273,25 @@ export class CbfService implements OnDestroy {
 
   }
 
+    // Get Notification Message details
+    public getNotificationMessage(msg_id:number, access: string): Observable<any> {
+      const url = ApiEndpointService.getEndpoint(ApiEndpointService.ENDPOINT.NOTIFICATION_MESSAGE);
+      return this.http.get<any>(url + msg_id + '/', {
+        headers: {
+          'Authorization': `Bearer ${access}`
+        }
+      }).pipe(
+        map(function (response: any) {
+          return response;
+        }),
+        catchError((fault: HttpErrorResponse) => {
+          return throwError(() => fault);
+  
+        })
+      )
+  
+    }
+
   // Get Event Notification Reminders
   public getEventReminders(eventID:number, access: string): Observable<any> {
     const url = ApiEndpointService.getEndpoint(ApiEndpointService.ENDPOINT.EVENT_REMINDERS);
@@ -1450,10 +1469,48 @@ export class CbfService implements OnDestroy {
 
   }
 
-  // Create Custom Notification
+  // Create Custom Notification Reminder
   public createCustomNotification(notificationData:FormData, access: string): Observable<any> {
     const url = ApiEndpointService.getEndpoint(ApiEndpointService.ENDPOINT.CUSTOM_NOTIFICATION);
     return this.http.post<any>(url, notificationData, {
+      headers: {
+        'Authorization': `Bearer ${access}`
+      }
+    }).pipe(
+      map(function (response: any) {
+        return response;
+      }),
+      catchError((fault: HttpErrorResponse) => {
+        return throwError(() => fault);
+
+      })
+    )
+
+  }
+  
+  // Update Custom Notification Reminder
+  public updateReminder(msg_id: number, msgData:FormData, access: string): Observable<any> {
+    const url = ApiEndpointService.getEndpoint(ApiEndpointService.ENDPOINT.CUSTOM_NOTIFICATION);
+    return this.http.patch<any>(url + msg_id + '/', msgData, {
+      headers: {
+        'Authorization': `Bearer ${access}`
+      }
+    }).pipe(
+      map(function (response: any) {
+        return response;
+      }),
+      catchError((fault: HttpErrorResponse) => {
+        return throwError(() => fault);
+
+      })
+    )
+
+  }
+
+  // Delete Custom Notification Reminder
+  public deleteReminder(msgID: number, access: string): Observable<any> {
+    const url = ApiEndpointService.getEndpoint(ApiEndpointService.ENDPOINT.CUSTOM_NOTIFICATION);
+    return this.http.delete<any>(url + msgID + '/', {
       headers: {
         'Authorization': `Bearer ${access}`
       }

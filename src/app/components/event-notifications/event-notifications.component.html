@@ -3,7 +3,7 @@
         <div class="row page-titles mx-0">
             <div class="col-sm-6 p-md-0">
                 <div class="welcome-text">
-                    <h4>Event Notifications</h4>
+                    <h4>Event Notification Reminders</h4>
                 </div>
             </div>
             <div class="col-sm-6 p-md-0 justify-content-sm-end mt-2 mt-sm-0 d-flex">
@@ -42,11 +42,14 @@
                     </thead>
                     <tbody>
                         <tr *ngFor="let reminder of reminderList; index as i">
-                            <td>{{reminder.message  | slice:0:20}} ...</td>
+                            <td>{{reminder.message  | slice:0:30}} ...</td>
                             <td>{{reminder.reminder_date | date:'mediumDate'}}</td>
                             <td>{{reminder.created_date | date:'mediumDate'}}</td>
-                            <td>{{reminder.status}}</td>
-                            
+                            <td>
+                                <span class="badge badge-warning text-capitalize" *ngIf="reminder?.status == 'pending'">{{reminder.status}}</span>
+                                <span class="badge badge-success text-capitalize" *ngIf="reminder?.status == 'sent'">{{reminder.status}}</span>
+                                <span class="badge badge-danger text-capitalize" *ngIf="reminder?.status == 'failed'">{{reminder.status}}</span>
+                            </td>                            
                             <td>
                                 <div class="button_containers">
                                     <button type="button" class="btn btn-sm btn-success" (click)="reviewModal(editMessageModal, reminder)"> <i class="fa fa-pencil"></i>&nbsp;Edit</button> &nbsp;
@@ -101,7 +104,7 @@
                     <label class="col-lg-5 col-form-label" for="remDate">Reminder Date</label>
 
                     <div class="col-lg-7">                        
-                        <input type="date" class="form-control" required formControlName="notification_date" id="remDate">
+                        <input type="date" min="{{current_date}}" class="form-control" required formControlName="notification_date" id="remDate">
                     </div>
 
                     <div *ngIf="notificationRegistration.controls['notification_date'].invalid && (notificationRegistration.controls['notification_date'].dirty || notificationRegistration.controls['notification_date'].touched)" class="text-danger fs-13 mt-1">
@@ -149,9 +152,9 @@
             <div class="form-group row">
                 <label class="col-lg-5 col-form-label"> Selected Message </label>
                 <div class="col-lg-7">                         
-                    <ng-multiselect-dropdown [placeholder]="'Select an event...'" name="message"
+                    <ng-multiselect-dropdown [placeholder]="'Select a message...'" name="message"
                     [settings]="dropdownSettings" [data]="messageList" (onSelect)="onItemSelect($event)"
-                    (onDeSelect)="onItemDeSelect($event)" [(ngModel)]="selected_message">
+                    (onDeSelect)="onItemDeSelect($event)" [(ngModel)]="selected_message_object">
                     </ng-multiselect-dropdown>
                 </div>
             </div>
@@ -160,7 +163,7 @@
                 <label class="col-lg-5 col-form-label" for="remDateUpdate">Reminder Date</label>
 
                 <div class="col-lg-7">                        
-                    <input type="date" class="form-control" required ngModel="{{notificationModalData?.notification_date}}" value="{{notificationModalData?.notification_date}}" 
+                    <input type="date" min="{{current_date}}" class="form-control" required ngModel="{{notificationModalData?.reminder_date}}" value="{{notificationModalData?.reminder_date}}" 
                     name="notification_date" id="remDateUpdate">
                 </div>
 
