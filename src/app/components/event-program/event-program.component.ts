@@ -20,7 +20,7 @@ export class EventProgramComponent implements OnInit {
   public loading:boolean = false
   public loadingEdit:boolean = false
   public loadingItemEdit:boolean = false
-  public form_data_loading:boolean = true
+  public program_data_loading:boolean = true
 
   public accessToken:string = ''
   public user_id:number = 0
@@ -28,6 +28,7 @@ export class EventProgramComponent implements OnInit {
   
   public programListCount:number = 0;
   public programList:any = [];
+  public programData:any = [];
   public eventModalData:any = [];
   public itemData:any = [];
   public churchGroups:any = [];
@@ -188,29 +189,31 @@ export class EventProgramComponent implements OnInit {
     this.openModal(content, size)  
 
   }
-   
-  // preview form design
-  previewModal(targetModal:any, data:any) {
-    // this.spinner.show();
+  
+   // preview program design
+   viewProgramTemplate(targetModal:any, data:any) {
 
-    if(data.customForm == null || data.customForm == ''){
-      this.form_data_loading = false
-      this.formResponse = 'No custom form attached to this event';
+    let program_Data = data
+    
+    this.program_name = program_Data.name
+    let itemCount = program_Data.items.count
 
-    } else {      
+    if(itemCount <= 0) {
 
-        this.eventId = data.event_id
-        this.program_name = data.name
+      this.program_data_loading = false
+      this.formResponse = 'There are no items attached to this program';
+
+    } else { 
+      
+        this.programData = program_Data
 
         this.modalService.open(targetModal, {
           centered: true,
           backdrop: 'static'
         });
-    
-        this.getFormItems()
   
         setTimeout(() => {
-          this.form_data_loading = false
+          this.program_data_loading = false
         }, 1600);
    
     }   

@@ -52,30 +52,11 @@
                         <td>
 
                           <div class="button_containers">
-                            <!-- <button type="button" class="btn btn-sm btn-info" (click)="previewModal(previewProgram, program)"> <i class="fa fa-eye"></i>Preview Event</button> &nbsp; -->
+                            <button type="button" class="btn btn-sm prog_prev" (click)="viewProgramTemplate(programPreviewModal, program)"> <i class="fa fa-eye"></i>&nbsp;Preview Program</button> &nbsp;
                             <button type="button" class="btn btn-sm btn-primary" (click)="reviewModal(editItemsModal, program, 'lg')"> <i class="fa fa-pencil"></i>&nbsp;Manage Program Items </button> &nbsp;
                             <button type="button" class="btn btn-sm btn-success" (click)="reviewModal(editProgramModal, program, 'lg')"> <i class="fa fa-pencil"></i>&nbsp;Edit </button> &nbsp;
                             <button type="button" class="btn btn-sm btn-danger" (click)="reviewModal(deleteProgramModal, program, 'md')"> <i class="fa fa-trash"></i>&nbsp;Delete</button> 
                           </div>
-                          <!-- <span>
-                            <i *ngIf="isChangeCustomFormAllowed === false" mat-raised-button matTooltip="View Form"
-                              matTooltipPosition="below" class="fa fa-eye fa-4px" data-toggle="modal"
-                              (click)="openPerm()"></i> &nbsp;
-                            <i *ngIf="isChangeCustomFormAllowed === true" mat-raised-button matTooltip="View Form"
-                              matTooltipPosition="below" class="fa fa-eye fa-4px" data-toggle="modal"
-                              (click)="previewModal('preview', event)"></i> &nbsp;
-      
-                            <i *ngIf="isChangeEventAllowed === true" class="fa fa-edit fa-4px"
-                              (click)="openModal(editProgramModal, event)"></i> &nbsp;
-                            <i *ngIf="isChangeEventAllowed === false" class="fa fa-edit fa-4px" (click)="openPerm()"></i>
-                            &nbsp;
-      
-                            <i *ngIf="isdeleteProgramModalAllowed === true" class="fa fa-trash fa-4px"
-                              (click)="openModals('deleteProgramModal', event)"></i>
-                            <i *ngIf="isdeleteProgramModalAllowed === false" class="fa fa-trash fa-4px" (click)="openPerm()"></i>
-                            <-- <i class="fa fa-edit fa-4px" (click)="isChangeEventAllowed ? openModal(editProgramModal, event) : '' "></i> &nbsp;
-                              <i class="fa fa-trash fa-4px" (click)="isdeleteProgramModalAllowed ? openModals(deleteProgramModal, event) : '' "></i> --
-                          </span> -->
                         </td>
                       </tr>
 
@@ -148,41 +129,90 @@
     </div>
   </ng-template>
 
-  <ng-template #previewProgram let-modal>
+  <ng-template #programPreviewModal let-modal>
     <div class="modal-header">
       <h5 class="modal-title text-capitalize" id="">{{program_name}}</h5>
       <button type="button" class="close" (click)="modal.dismiss('Cross click')" aria-label="Close">
         <span aria-hidden="true">&times;</span>
       </button>
     </div>
-    <div class="modal-body">
+
+    <div class="modal-body"  *ngIf="program_data_loading === true">
 
       <!-- spinner -->
       <div class="row">
-        <div class="loader text-center" *ngIf="form_data_loading"> Loading program preview, please wait ... </div>
+        <div class="loader text-center" *ngIf="program_data_loading"> Loading program preview, please wait ... </div>
       </div>
-  
-      <form class="form" *ngIf="form_data_loading === false">
-        <div>
-          <div class="form-group" *ngFor="let item of programList.items">
-            <label for="">{{item.title}}</label>
-            <div>
-  
-              <input *ngIf="item.value == '' || item.title.indexOf('Birth') > -1 || item.title.indexOf('birth') > -1"
-                type="{{item.dataType}}" class="form-control" placeholder="{{item.hint}}" max="{{max_date}}">
-  
-              <select name="" id="" class="form-control" *ngIf="item.value != ''">
-                <option value="" selected disabled *ngIf="item.value !== ''">select {{item.title}}</option>
-                <option *ngFor="let value of item.value" value="">{{value.name}}</option>
-              </select>
+
+    </div>
+
+    <div class="modal-body"  *ngIf="program_data_loading === false" style="background-image: url({{programData?.event_image}}); opacity: 0.75;">
+
+      <div class="card">
+        <div class="card-body">
+
+          <p class="text-center fs-20"> <strong class="text-primary"><b>{{programData?.event_name}}</b></strong> </p>
+          <p class="text-center fs-8"> <b>{{programData?.event_date | date:'mediumDate'}}</b> </p>
+
+            <div id="DZ_W_TimeLine" class="widget-timeline dz-scroll height370" [perfectScrollbar]>
+              <ul class="timeline" *ngFor="let item of programData.items.results">
+                <li>
+                  <div class="timeline-badge primary"></div>
+                  <a class="timeline-panel text-muted" href="#">
+                    <span> <b>Timeframe:</b> {{item?.startTime}} - {{item?.endTime}} </span>
+                    <h6 class="mb-0">{{item?.item_name}}</h6>
+                    <p> <b>Speaker:</b> &nbsp; <strong class="text-primary">{{item?.speaker}}</strong> <br>
+                        <b>Youtube Link:</b> &nbsp; <i>{{item?.youtube_link}}</i> 
+                    </p>
+                  </a>
+                </li>
+                <!-- <li>
+                  <div class="timeline-badge info">
+                  </div>
+                  <a class="timeline-panel text-muted" href="#">
+                    <span>20 minutes ago</span>
+                    <h6 class="mb-0">New order placed <strong class="text-info">#XF-2356.</strong></h6>
+                    <p class="mb-0">Quisque a consequat ante Sit amet magna at volutapt...</p>
+                  </a>
+                </li>
+                <li>
+                  <div class="timeline-badge danger">
+                  </div>
+                  <a class="timeline-panel text-muted" href="#">
+                    <span>30 minutes ago</span>
+                    <h6 class="mb-0">john just buy your product <strong class="text-warning">Sell $250</strong></h6>
+                  </a>
+                </li>
+                <li>
+                  <div class="timeline-badge success">
+                  </div>
+                  <a class="timeline-panel text-muted" href="#">
+                    <span>15 minutes ago</span>
+                    <h6 class="mb-0">StumbleUpon is acquired by eBay. </h6>
+                  </a>
+                </li>
+                <li>
+                  <div class="timeline-badge warning">
+                  </div>
+                  <a class="timeline-panel text-muted" href="#">
+                    <span>20 minutes ago</span>
+                    <h6 class="mb-0">Mashable, a news website and blog, goes live.</h6>
+                  </a>
+                </li>
+                <li>
+                  <div class="timeline-badge dark">
+                  </div>
+                  <a class="timeline-panel text-muted" href="#">
+                    <span>20 minutes ago</span>
+                    <h6 class="mb-0">Mashable, a news website and blog, goes live.</h6>
+                  </a>
+                </li> -->
+              </ul>
             </div>
-  
-          </div>
+
         </div>
-        <div class="modal-footer">
-          <button type="submit" class="btn btn-primary btn-md">Submit</button>
-        </div>
-      </form>
+
+      </div>
 
       <div *ngIf="formResponse" class="row alert alert-danger">
         <p><i class="fa fa-exclamation"></i> &nbsp;  {{formResponse}}</p>
