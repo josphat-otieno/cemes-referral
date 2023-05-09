@@ -18,6 +18,10 @@ export class CustomFormComponent implements OnInit {
   public msg: string = ''
   public customForm: FormGroup | any
 
+  // messages
+  public messageResponse:string = ""
+  public alertResponse:string = ""
+
   formId: any
   customFormName: string = ''
   selectedItems: any = []
@@ -41,7 +45,6 @@ export class CustomFormComponent implements OnInit {
   formOptions: any = {};
   formTrigger: Subject<any> = new Subject<any>();
 
-  messageResponse: string = ''
   customModalData: any;
   customFormData: any = []
 
@@ -195,7 +198,7 @@ export class CustomFormComponent implements OnInit {
 
           if (results.id) {
 
-            this.messageResponse = 'Category created successfully'
+            this.messageResponse = 'Custom Form created successfully'
 
             setTimeout(() => {
               window.location.reload()
@@ -255,7 +258,7 @@ export class CustomFormComponent implements OnInit {
 
           if (response.id) {
 
-            this.messageResponse = 'Custom Form  updated successfully'
+            this.messageResponse = 'Custom Form updated successfully'
 
             setTimeout(() => {
               window.location.reload()
@@ -265,7 +268,7 @@ export class CustomFormComponent implements OnInit {
 
         },
         error: (e: HttpErrorResponse) => {
-          this.messageResponse = 'Something went wrong, please try again'
+          this.alertResponse = 'Something went wrong, please try again'
         }
       })
 
@@ -299,7 +302,7 @@ export class CustomFormComponent implements OnInit {
 
         },
         error: (e: HttpErrorResponse) => {
-          this.messageResponse = 'Something went wrong, please try again'
+          this.alertResponse = 'Something went wrong, please try again'
         }
       })
 
@@ -349,7 +352,7 @@ export class CustomFormComponent implements OnInit {
           },
           error: (e: HttpErrorResponse) => {
             this.msg = 'Something went wrong, please try again'
-            this.messageResponse = this.msg
+            this.alertResponse = this.msg
           }
         })
 
@@ -367,7 +370,7 @@ export class CustomFormComponent implements OnInit {
         },
         error: (e: HttpErrorResponse) => {
           this.msg = 'Something went wrong, please try again'
-          this.messageResponse = this.msg
+          this.alertResponse = this.msg
         }
       })
   }
@@ -394,7 +397,7 @@ getCustomFormItems(){
       },
       error: (e: HttpErrorResponse) => {
         this.msg = 'Something went wrong, please try again'
-        this.messageResponse = this.msg
+        this.alertResponse = this.msg
       }
     })
     this.unsubscribe.push(formItemSubscr);

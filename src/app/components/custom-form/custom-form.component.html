@@ -118,11 +118,21 @@
                     formControlName="description" placeholder="Briefly describe the purpose of the form"></textarea>
                 </div>
             </div>
+            
+             <!-- message -->
+            <div *ngIf="messageResponse" class="row alert alert-info">
+                <p><i class="fa fa-exclamation"></i> &nbsp;  {{messageResponse}}</p>
+            </div>        
+            <div *ngIf="alertResponse" class="row alert alert-danger">
+                <p><i class="fa fa-exclamation"></i> &nbsp;  {{alertResponse}}</p>
+            </div>
+
             <div class="modal-footer">
                 <button type="submit" class="btn btn-sm btn-primary">Save</button>
                 <button type="button" class="btn btn-sm btn-secondary" (click)="modal.dismiss()">Close</button>
             </div>
         </form>
+
     </div>
 </ng-template>
 
