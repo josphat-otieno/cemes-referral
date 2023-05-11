@@ -63,6 +63,12 @@ export class BusinessListingComponent implements OnInit {
   public businessCategory:number = 0
   public assemblyId:number = 0
 
+  // Files
+  public regCertificate:File | any
+  public regCertificateUpdate:File | any
+  public kraCertificate:File | any
+  public kraCertificateUpdate:File | any
+
   // validation parameters
   public validity:boolean = false
 
@@ -252,6 +258,7 @@ export class BusinessListingComponent implements OnInit {
     let modalData = biz;
 
     this.businessModalData = modalData
+    this.businessLogo = this.businessModalData.business.logo
 
     // get images
     this.imagesCount = this.businessModalData.business.images.count
@@ -296,7 +303,6 @@ export class BusinessListingComponent implements OnInit {
       this.businessLogo = b_url;
     } else {      
       this.businessLogo = modalData.business.logo
-      this.updatedFile = this.businessLogo
     }    
 
     // set rating
@@ -319,7 +325,14 @@ export class BusinessListingComponent implements OnInit {
     if(mimeType.indexOf('image')> -1){
 
       // check if size is 10MB Max
+      let fileSize = file.size
 
+      if (fileSize >= 10000000) {
+        this.alertResponse = "Please select an image less than 10MB.";
+        this.updateValidity = false
+      } else {
+        this.updateValidity = true
+      }
 
       if (mimeType.match(/image\/*/) == null) {
         this.alertResponse = "Not An Image, Only images are supported."
@@ -339,6 +352,205 @@ export class BusinessListingComponent implements OnInit {
       this.upload = 0;
       this.alertResponse = "Not An Image, Only images are supported."
       return;
+
+    }
+    
+  }
+
+  // Certificate Management
+  uploadRegCert(event: any) {
+    this.alertResponse = ''
+
+    const file = event.target.files[0];
+
+    if (event.length === 0)
+      return;
+
+    var mimeType = file.type
+
+    // check if Image
+    if(mimeType.indexOf('image')> -1){
+
+      // check if size is 10MB Max
+      let fileSize = file.size
+
+      if (fileSize >= 10000000) {
+        this.alertResponse = "Please select an image less than 10MB.";
+        this.updateValidity = false
+      } else {
+        this.updateValidity = true
+      }
+
+
+      if (mimeType.match(/image\/*/) == null) {
+        this.alertResponse = "Not an Image, please upload an image file"
+        return;
+      } else {
+        this.upload = 1;        
+        this.regCertificate = file;
+      }
+
+    } else {
+
+      // check if PDF
+      if (mimeType.match(/pdf\/*/) == null) {
+
+        this.upload = 0;
+        this.alertResponse = "Incorrect format, Only images or PDF files are supported."
+        return;
+
+      } else {
+        this.upload = 1;
+        this.regCertificate = file
+      }   
+
+    }
+    
+  }
+
+  uploadKra(event: any) {
+    this.alertResponse = ''
+
+    const file = event.target.files[0];
+
+    if (event.length === 0)
+      return;
+
+    var mimeType = file.type
+
+    // check if Image
+    if(mimeType.indexOf('image')> -1){
+
+      // check if size is 10MB Max
+      let fileSize = file.size
+
+      if (fileSize >= 10000000) {
+        this.alertResponse = "Please select an image less than 10MB.";
+        this.updateValidity = false
+      } else {
+        this.updateValidity = true
+      }
+
+      if (mimeType.match(/image\/*/) == null) {
+        this.alertResponse = "Not an Image, please upload an image file"
+        return;
+      } else {
+        this.upload = 1;        
+        this.kraCertificate = file;
+      }
+
+    } else {
+
+      // check if PDF
+      if (mimeType.match(/pdf\/*/) == null) {
+
+        this.upload = 0;
+        this.alertResponse = "Incorrect format, Only images or PDF files are supported."
+        return;
+
+      } else {
+        this.upload = 1;
+        this.kraCertificate = file
+      }   
+
+    }
+    
+  }
+
+  updateRegCert(event: any) {
+    this.alertResponse = ''
+
+    const file = event.target.files[0];
+
+    if (event.length === 0)
+      return;
+
+    var mimeType = file.type
+
+    // check if Image
+    if(mimeType.indexOf('image')> -1){
+
+      // check if size is 10MB Max
+      let fileSize = file.size
+
+      if (fileSize >= 10000000) {
+        this.alertResponse = "Please select an image less than 10MB.";
+        this.updateValidity = false
+      } else {
+        this.updateValidity = true
+      }
+
+
+      if (mimeType.match(/image\/*/) == null) {
+        this.alertResponse = "Not an Image, please upload an image file"
+        return;
+      } else {
+        this.upload = 1;        
+        this.regCertificateUpdate = file;
+      }
+
+    } else {
+
+      // check if PDF
+      if (mimeType.match(/pdf\/*/) == null) {
+
+        this.upload = 0;
+        this.alertResponse = "Incorrect format, Only images or PDF files are supported."
+        return;
+
+      } else {
+        this.upload = 1;
+        this.regCertificateUpdate = file
+      }   
+
+    }
+    
+  }
+
+  updateKra(event: any) {
+    this.alertResponse = ''
+
+    const file = event.target.files[0];
+
+    if (event.length === 0)
+      return;
+
+    var mimeType = file.type
+
+    // check if Image
+    if(mimeType.indexOf('image')> -1){
+
+      // check if size is 10MB Max
+      let fileSize = file.size
+
+      if (fileSize >= 10000000) {
+        this.alertResponse = "Please select an image less than 10MB.";
+        this.updateValidity = false
+      } else {
+        this.updateValidity = true
+      }
+
+      if (mimeType.match(/image\/*/) == null) {
+        this.alertResponse = "Not an Image, please upload an image file"
+        return;
+      } else {
+        this.upload = 1;        
+        this.kraCertificateUpdate = file;
+      }
+
+    } else {
+
+      // check if PDF
+      if (mimeType.match(/pdf\/*/) == null) {
+
+        this.upload = 0;
+        this.alertResponse = "Incorrect format, Only images or PDF files are supported."
+        return;
+
+      } else {
+        this.upload = 1;
+        this.kraCertificateUpdate = file
+      }   
 
     }
     
@@ -504,8 +716,16 @@ export class BusinessListingComponent implements OnInit {
 
       regData.append('logo', this.actualFile, this.actualFile.name);
 
-    }    
-
+    } 
+    
+    // File Management
+    if (this.regCertificate) {
+      regData.append('certificateOfRegistration', this.regCertificate, this.regCertificate.name);
+    }
+    if (this.kraCertificate) {
+      regData.append('kraCertificate', this.kraCertificate, this.kraCertificate.name);
+    }
+    
     regData.append('name', this.BusinessRegistration.get('name')?.value)
     regData.append('nature', this.BusinessRegistration.get('nature')?.value)
     regData.append('physical_location', this.BusinessRegistration.get('physical_location')?.value)
@@ -583,12 +803,24 @@ export class BusinessListingComponent implements OnInit {
     if(this.updateValidity == true){
 
       const updateData:FormData = new FormData()
+      console.log(this.updatedFile)
 
-      if (!this.updatedFile) {
-        this.alertResponse = 'Caution, Kindly select an image to upload';      
-      } else {     
-        updateData.append('logo', this.updatedFile, this.updatedFile.name);
-      }    
+      if (typeof this.updatedFile != 'undefined') {
+      
+        let file_type = this.updatedFile.type 
+        if(file_type.indexOf('image')> -1){        
+          updateData.append('announcementImage', this.updatedFile, this.updatedFile.name);
+        }
+              
+      }       
+
+      // File Management
+      if (this.regCertificateUpdate) {
+        updateData.append('certificateOfRegistration', this.regCertificateUpdate, this.regCertificateUpdate.name);
+      }
+      if (this.kraCertificateUpdate) {
+        updateData.append('kraCertificate', this.kraCertificateUpdate, this.kraCertificateUpdate.name);
+      }
   
       updateData.append('name', businessName)
       updateData.append('nature', editData.nature)

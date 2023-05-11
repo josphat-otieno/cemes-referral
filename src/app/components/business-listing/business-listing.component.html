@@ -330,14 +330,14 @@
                         <div class="form-group row">
                             <label class="col-lg-4 col-form-label" for="certRegistration">Certificate of Registration</label>
                             <div class="col-lg-6">
-                                <input type="file" class="form-control" id="certRegistration" placeholder="Certificate of Registration" formControlName="certificateOfRegistration">                                
+                                <input type="file" class="form-control" id="certRegistration" (change)="uploadRegCert($event)" placeholder="Certificate of Registration" formControlName="certificateOfRegistration">                                
                             </div>
                         </div>  
 
                         <div class="form-group row">
                             <label class="col-lg-4 col-form-label" for="kraCertificates">KRA Certificate</label>
                             <div class="col-lg-6">
-                                <input type="file" class="form-control" id="kraCertificates" placeholder="KRA Certificate" formControlName="kraCertificate">                                
+                                <input type="file" class="form-control" id="kraCertificates" (change)="uploadKra($event)" placeholder="KRA Certificate" formControlName="kraCertificate">                                
                             </div>
                         </div> 
                     </div>
@@ -616,14 +616,14 @@
                     <div class="form-group row">
                         <label class="col-lg-4 col-form-label" for="certRegistrationUpd">Certificate of Registration</label>
                         <div class="col-lg-6">
-                            <input type="file" class="form-control" id="certRegistrationUpd" placeholder="Certificate of Registration" name="certificate">                                
+                            <input type="file" class="form-control" id="certRegistrationUpd" (change)="updateRegCert($event)" placeholder="Certificate of Registration" name="certificate">                                
                         </div>
                     </div>  
 
                     <div class="form-group row">
                         <label class="col-lg-4 col-form-label" for="kraCertificatesUpd">KRA Certificate</label>
                         <div class="col-lg-6">                           
-                            <input type="file" class="form-control" id="kraCertificates" placeholder="KRA Certificate" name="kra" >                                
+                            <input type="file" class="form-control" id="kraCertificates" (change)="updateKra($event)" placeholder="KRA Certificate" name="kra" >                                
                         </div>
                     </div> 
                 </div>
@@ -633,7 +633,7 @@
 
                     <div class="image-upload">
                         <label for="file-input">
-                          <img src="{{businessLogo}}" (error)="handleMissingImage()"  alt="business logo" />
+                          <img src="{{businessLogo}}" alt="business logo" />
                         </label>
                       
                         <input id="file-input" type="file" accept="image/*" #output (change)="onUpdateChange($event)">
