@@ -112,10 +112,10 @@ export class EventNotificationsComponent implements OnInit {
       ]
     };    
 
+    this.getreminderList()
     this.getEventDetail()
     this.createForm()
     this.getmessageList()
-    this.getreminderList()
   }
 
   createForm() {
@@ -175,7 +175,7 @@ export class EventNotificationsComponent implements OnInit {
     .subscribe({
       next: (response: any) => {
         let result = response.results
-        let counter = response.count
+        let counter = this.reminderCount
 
         this.eventName = result[0].event_name 
         return this.title = "Showing " + counter + " notification reminder(s) for " + this.eventName

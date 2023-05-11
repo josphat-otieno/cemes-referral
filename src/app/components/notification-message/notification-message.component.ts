@@ -37,8 +37,8 @@ export class NotificationMessageComponent implements OnInit {
   public updatedCoverFile: File | any;
   
   // Logo holder
-  public coverDefaultLogo: any = "assets/images/default/cover.jpg";  
-  public coverSavedLogo: any = "assets/images/default/cover.jpg";
+  public coverDefaultLogo: any = "assets/images/default/message.png";  
+  public coverSavedLogo: any = "assets/images/default/message.png";
 
   public mediaUrl = ApiEndpointService.getEndpoint(ApiEndpointService.ENDPOINT.IMAGE_FOLDER);
   

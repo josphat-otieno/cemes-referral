@@ -43,7 +43,8 @@
                         <tr *ngFor="let message of messageList; index as i">
                             <td>
                                 <div class="circular_image_container symbol symbol-50px me-5">
-                                    <img src="{{message.image}}" alt="event image preview"/>
+                                    <img *ngIf="message?.image != null" src="{{message.image}}" alt="event image preview"/>
+                                    <img *ngIf="message?.image === null" src="{{coverDefaultLogo}}" alt="event image preview"/>
                                 </div>
                             </td>
                             <td>{{message.message  | slice:0:20}} ...</td>
