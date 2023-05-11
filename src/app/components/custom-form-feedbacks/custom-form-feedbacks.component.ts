@@ -1,6 +1,7 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
+import { Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Subscription, Subject } from 'rxjs';
 import { CbfService } from 'src/app/core/cbf.service';
@@ -19,7 +20,8 @@ export class CustomFormFeedbacksComponent implements OnInit {
   customFeedbacks:any
   forms_count:number =0
 
-
+   // redirection
+   public redirectUrl:string = ''
 
   // Datatables
   dtOptions: any = {};
@@ -29,30 +31,39 @@ export class CustomFormFeedbacksComponent implements OnInit {
   constructor(
     private cbfService: CbfService,
     private modalService: NgbModal,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private router: Router
   ) { }
 
   ngOnInit(): void {
 
-        // datatable
-        this.dtOptions = {
-          pagingType: 'full_numbers',
-          pageLength: 10,
-          processing: true,
-          buttons: [
-            'copy',
-            'print',
-            'csv',
-            'excel',
-            'pdf'
-          ]
-        };
-
+      // datatable
+      this.dtOptions = {
+        pagingType: 'full_numbers',
+        pageLength: 10,
+        processing: true,
+        buttons: [
+          'copy',
+          'print',
+          'csv',
+          'excel',
+          'pdf'
+        ]
+      };
 
     this.accessToken = this.cbfService.AccessToken
     this.user_id = Number(this.cbfService.currentUserValue)
 
     this.getCustomFormFeedbacks()
+  }
+
+
+  redirectMe(formId: number) {
+
+    let form_id = formId
+    
+    this.redirectUrl = '/admin/user-responses'
+    this.router.navigate([this.redirectUrl], { queryParams: { gidb64: form_id }});
   }
 
   getCustomFormFeedbacks(){
