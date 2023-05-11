@@ -20,93 +20,94 @@ export class SharedService {
   // bestDoctor: [];
   // doc: [];
   
+  bestBusinesses = []
   
-  bestBusinesses = [
-        {
-          image: "assets/images/avatar/1.jpg",
-          number: "#1",
-          name: "Dr. Gerald Consultation Clinic",
-          specialist: "Gynecologist",
-          total_reviews: "451 reviews",
-          url: "admin/doctors-details",
-		  ratings_class: [
-            {
-              icon_class:"fa fa-star text-orange",
-            },
-            {
-              icon_class:"fa fa-star text-orange",
-            },
-            {
-              icon_class:"fa fa-star text-orange",
-            },
-            {
-              icon_class:"fa fa-star text-orange",
-            },
-            {
-              icon_class:"fa fa-star text-gray",
-            },
-          ],
-          social_link: [
-            {
-              title:"facebook",
-              icon_class:"fa fa-instagram",
-              link:"#",
-            },
-            {
-              title:"twitter",
-              icon_class:"fa fa-twitter",
-              link:"#",
-            },
-            {
-              title:"linkedin",
-              icon_class:"fa fa-facebook",
-              link:"#",
-            },
-          ]
-        },
-        {
-          image: "assets/images/product/4.jpg",
-          number: "#2",
-          name: "Jane's Perfumes",
-          specialist: "Smell good, feel great",
-          total_reviews: "238 reviews",
-          url: "#",
-		  ratings_class: [
-            {
-              icon_class:"fa fa-star text-orange",
-            },
-            {
-              icon_class:"fa fa-star text-orange",
-            },
-            {
-              icon_class:"fa fa-star text-orange",
-            },
-            {
-              icon_class:"fa fa-star text-gray",
-            },
-            {
-              icon_class:"fa fa-star text-gray",
-            },
-          ],
-          social_link: [
-            {
-              title:"facebook",
-              icon_class:"fa fa-instagram",
-              link:"#",
-            },
-            {
-              title:"twitter",
-              icon_class:"fa fa-twitter",
-              link:"#",
-            },
-            {
-              title:"linkedin",
-              icon_class:"fa fa-facebook",
-              link:"#",
-            },
-          ]
-        }
-    ];
+  // bestBusinesses = [
+  //       {
+  //         image: "assets/images/avatar/1.jpg",
+  //         number: "#1",
+  //         name: "Dr. Gerald Consultation Clinic",
+  //         specialist: "Gynecologist",
+  //         total_reviews: "451 reviews",
+  //         url: "admin/doctors-details",
+	// 	  ratings_class: [
+  //           {
+  //             icon_class:"fa fa-star text-orange",
+  //           },
+  //           {
+  //             icon_class:"fa fa-star text-orange",
+  //           },
+  //           {
+  //             icon_class:"fa fa-star text-orange",
+  //           },
+  //           {
+  //             icon_class:"fa fa-star text-orange",
+  //           },
+  //           {
+  //             icon_class:"fa fa-star text-gray",
+  //           },
+  //         ],
+  //         social_link: [
+  //           {
+  //             title:"facebook",
+  //             icon_class:"fa fa-instagram",
+  //             link:"#",
+  //           },
+  //           {
+  //             title:"twitter",
+  //             icon_class:"fa fa-twitter",
+  //             link:"#",
+  //           },
+  //           {
+  //             title:"linkedin",
+  //             icon_class:"fa fa-facebook",
+  //             link:"#",
+  //           },
+  //         ]
+  //       },
+  //       {
+  //         image: "assets/images/product/4.jpg",
+  //         number: "#2",
+  //         name: "Jane's Perfumes",
+  //         specialist: "Smell good, feel great",
+  //         total_reviews: "238 reviews",
+  //         url: "#",
+	// 	  ratings_class: [
+  //           {
+  //             icon_class:"fa fa-star text-orange",
+  //           },
+  //           {
+  //             icon_class:"fa fa-star text-orange",
+  //           },
+  //           {
+  //             icon_class:"fa fa-star text-orange",
+  //           },
+  //           {
+  //             icon_class:"fa fa-star text-gray",
+  //           },
+  //           {
+  //             icon_class:"fa fa-star text-gray",
+  //           },
+  //         ],
+  //         social_link: [
+  //           {
+  //             title:"facebook",
+  //             icon_class:"fa fa-instagram",
+  //             link:"#",
+  //           },
+  //           {
+  //             title:"twitter",
+  //             icon_class:"fa fa-twitter",
+  //             link:"#",
+  //           },
+  //           {
+  //             title:"linkedin",
+  //             icon_class:"fa fa-facebook",
+  //             link:"#",
+  //           },
+  //         ]
+  //       }
+  //   ];
     
     
     add_doc() {
