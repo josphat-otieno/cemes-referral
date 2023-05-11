@@ -3,13 +3,13 @@
         <div class="row page-titles mx-0">
             <div class="col-sm-6 p-md-0">
                 <div class="welcome-text">
-                    <h4>Events Form Responses</h4>
+                    <h4>Custom Form Responses</h4>
                 </div>
             </div>
             <div class="col-sm-6 p-md-0 justify-content-sm-end mt-2 mt-sm-0 d-flex">
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item"><a href="admin/dashboard">Home</a></li>
-                    <li class="breadcrumb-item active"><a href="javascript:void(0)">Events Form Responses</a></li>
+                    <li class="breadcrumb-item active"><a href="javascript:void(0)">Custom Form Responses</a></li>
                 </ol>
             </div>
         </div>
@@ -20,7 +20,7 @@
         <div class="card">
             <div class="card-header">
                 <div class="col-6">
-                   Form Resposes
+                   Form Response(s)
                 </div>
 
                 <!-- <div class="col-6">
@@ -37,9 +37,7 @@
                         <thead>
                           <tr>
                             <th class="wd-15p border-bottom-0">Form Name</th>
-                          <th class="wd-15p border-bottom-0">Total Responses</th>
-
-
+                            <th class="wd-15p border-bottom-0">Total Responses</th>
                             <th class="wd-15p border-bottom-0">Actions</th>
                           </tr>
                         </thead>
@@ -59,6 +57,13 @@
           
                             </td>
                           </tr>
+
+                          <tr *ngIf="customFeedbacks.length == 0">
+                            <td colspan="3" class="no_data_display">
+                                No data available for display
+                            </td>
+                        </tr>
+
                         </tbody>
                       </table>
                     </div>
