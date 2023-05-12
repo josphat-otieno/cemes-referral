@@ -58,12 +58,13 @@ export class CustomFormFeedbacksComponent implements OnInit {
   }
 
 
-  redirectMe(formId: number) {
+  redirectMe(formData: any) {
 
-    let form_id = formId
+    let form_id = formData.id
     
     this.redirectUrl = '/admin/user-responses'
     this.router.navigate([this.redirectUrl], { queryParams: { gidb64: form_id }});
+    
   }
 
   getCustomFormFeedbacks(){

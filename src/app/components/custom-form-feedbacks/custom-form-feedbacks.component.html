@@ -46,16 +46,14 @@
                           <tr *ngFor="let item of customFeedbacks">
           
                             <td>{{item.name}}</td>
-                            <td>{{item.response_count}}</td>
-
-          
+                            <td>{{item.response_count}}</td>          
                             <td>
                               <div class="d-flex flex-row">
-                                  <a href="redirectMe({{item.id}})"><button type="button" class="btn btn-info btn-sm">view </button></a>
-          
-                              </div>
-          
+                                <button type="button" class="btn btn-info btn-sm" (click)="redirectMe(item)"> 
+                                  <i class="fa fa-eye"></i>&nbsp;View </button>          
+                              </div>          
                             </td>
+
                           </tr>
 
                           <tr *ngIf="customFeedbacks.length == 0">
@@ -68,13 +66,7 @@
                       </table>
                     </div>
                   </div>
-        </div>
+          </div>
 
     </div>
-</div>
-
-
-
-
-
-  
+</div>  
