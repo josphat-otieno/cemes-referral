@@ -377,6 +377,7 @@ export class EventProgramComponent implements OnInit {
     this.dtTrigger.unsubscribe()
     this.getPrograms()
   }
+  
   saveProgramItem() {
 
     let formValidity:boolean = false
@@ -386,9 +387,13 @@ export class EventProgramComponent implements OnInit {
     var program_id:Number = 0;
     program_id = this.selectedProgram
 
-    let itemName = this.programItemRegistration.controls['item_name'].value
-    let speaker = this.programItemRegistration.controls['speaker'].value
-    let youtube = this.programItemRegistration.controls['youtube_link'].value
+    let speaker = ""
+    let itemName = ""
+    let youtube = ""
+
+    itemName = this.programItemRegistration.controls['item_name'].value
+    speaker = this.programItemRegistration.controls['speaker'].value
+    youtube = this.programItemRegistration.controls['youtube_link'].value
     let startTime = this.programItemRegistration.controls['startTime'].value
     let endTime = this.programItemRegistration.controls['endTime'].value
 
