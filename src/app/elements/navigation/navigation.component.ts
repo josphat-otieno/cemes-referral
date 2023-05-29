@@ -70,7 +70,8 @@ export class NavigationComponent implements OnInit {
     '/admin/custom-form-items',
     '/admin/events-custom-form-feedbacks',
     '/admin/notification-messages',
-    '/admin/event_notifications'
+    '/admin/event_notifications',
+    '/admin/events-payments'
   ];
     
   formsArray = [

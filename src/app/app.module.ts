@@ -1320,8 +1320,7 @@ function appInitializer(authService: CbfService) {
     CustomFormFeedbacksComponent,
     UserResponsesComponent,
     NotificationMessageComponent,
-    EventNotificationsComponent,
-    
+    EventNotificationsComponent,    
     
   ],
   imports: [

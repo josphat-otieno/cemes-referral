@@ -160,6 +160,7 @@ import { EventProgramComponent } from './components/event-program/event-program.
 import { NotificationMessageComponent } from './components/notification-message/notification-message.component';
 import { EventNotificationsComponent } from './components/event-notifications/event-notifications.component';
 import { HashLocationStrategy, LocationStrategy } from '@angular/common';
+import { EventPaymentsComponent } from './components/event-payments/event-payments.component';
 
 
 const routes: Routes = [
@@ -297,6 +298,7 @@ const routes: Routes = [
               {path: 'business-sub-category', component: BusinessSubCategoryComponent},
               {path: 'forum', component: ForumComponent},
               {path: 'events-management', component: EventsManagementComponent},
+              {path: 'events-payments', component: EventPaymentsComponent},
               {path: 'event_notifications', component: EventNotificationsComponent},
               {path: 'notification-messages', component: NotificationMessageComponent},
               {path: 'event-program-management', component: EventProgramComponent},
