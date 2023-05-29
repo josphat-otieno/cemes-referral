@@ -77,7 +77,8 @@ export class ApiEndpointService {
       MANAGE_CUSTOMFORM_CUSTOMFORMITEM:`${ApiEndpointService.MAIN_CONTEXT}/business/custom-form_custom-form-items/`,
       MANAGE_CUSTOM_FORM_ITEMS:`${ApiEndpointService.MAIN_CONTEXT}/business/custom-form-items/`,
 
-      
+    // Payments 
+    GET_EVENT_PAYMENTS: `${ApiEndpointService.MAIN_CONTEXT}/payments/get-event-payments/`,
 
     // Communication
     GET_FORUM_LIST: `${ApiEndpointService.MAIN_CONTEXT}/communication/get-forum-list/`,
@@ -89,7 +90,7 @@ export class ApiEndpointService {
     CUSTOM_NOTIFICATION: `${ApiEndpointService.MAIN_CONTEXT}/communication/custom-notification/`,
     EVENT_REMINDERS: `${ApiEndpointService.MAIN_CONTEXT}/communication/get-event-reminders/`,
 
-    // custom forms
+    // Custom forms
     MANAGE_CUSTOM_FORMS:`${ApiEndpointService.MAIN_CONTEXT}/business/custom-forms/`,
     
     MANAGE_CUSTOM_FORM_FEEDBACK:`${ApiEndpointService.MAIN_CONTEXT}/business/customformfeedback/`,

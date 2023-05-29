@@ -691,6 +691,7 @@ import { UserResponsesComponent } from './components/user-responses/user-respons
 import { EventProgramComponent } from './components/event-program/event-program.component';
 import { NotificationMessageComponent } from './components/notification-message/notification-message.component';
 import { EventNotificationsComponent } from './components/event-notifications/event-notifications.component';
+import { EventPaymentsComponent } from './components/event-payments/event-payments.component';
 
 function appInitializer(authService: CbfService) {
   return () => {
@@ -1320,7 +1321,8 @@ function appInitializer(authService: CbfService) {
     CustomFormFeedbacksComponent,
     UserResponsesComponent,
     NotificationMessageComponent,
-    EventNotificationsComponent,    
+    EventNotificationsComponent,  
+    EventPaymentsComponent  
     
   ],
   imports: [

@@ -1469,6 +1469,27 @@ export class CbfService implements OnDestroy {
 
   }
 
+  // Get Event Payments
+  public getEventPayments(filteredEvent:number, access: string): Observable<any> {
+    const url = ApiEndpointService.getEndpoint(ApiEndpointService.ENDPOINT.GET_EVENT_PAYMENTS);
+    return this.http.get<any>(url + '?event_id=' + filteredEvent, {
+      headers: {
+        'Content-Type': 'application/json; charset=utf-8',
+        'Accept': 'application/json',
+        'Authorization': `Bearer ${access}`
+      }
+    }).pipe(
+      map(function (response: any) {
+        return response;
+      }),
+      catchError((fault: HttpErrorResponse) => {
+        return throwError(() => fault);
+
+      })
+    )
+
+  }
+
   // Create Custom Notification Reminder
   public createCustomNotification(notificationData:FormData, access: string): Observable<any> {
     const url = ApiEndpointService.getEndpoint(ApiEndpointService.ENDPOINT.CUSTOM_NOTIFICATION);
