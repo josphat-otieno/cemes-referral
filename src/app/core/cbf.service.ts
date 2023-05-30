@@ -1470,9 +1470,10 @@ export class CbfService implements OnDestroy {
   }
 
   // Get Event Payments
-  public getEventPayments(filteredEvent:number, access: string): Observable<any> {
+  public getEventPayments(filteredEvent:number, year:string, month:string, start_date:string, end_date:string, access:string): Observable<any> {
     const url = ApiEndpointService.getEndpoint(ApiEndpointService.ENDPOINT.GET_EVENT_PAYMENTS);
-    return this.http.get<any>(url + '?event_id=' + filteredEvent, {
+    return this.http.get<any>(url + '?event_id=' + filteredEvent + '&year_select=' + year + '&selected_month=' + month + '&start_date='
+    + start_date + '&end_date=' + end_date, {
       headers: {
         'Content-Type': 'application/json; charset=utf-8',
         'Accept': 'application/json',
@@ -1483,8 +1484,7 @@ export class CbfService implements OnDestroy {
         return response;
       }),
       catchError((fault: HttpErrorResponse) => {
-        return throwError(() => fault);
-
+        return throwError(fault);
       })
     )
 
