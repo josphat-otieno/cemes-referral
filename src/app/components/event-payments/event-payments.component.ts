@@ -42,6 +42,9 @@ export class EventPaymentsComponent implements OnInit {
   public monthFilter:boolean = false
   public yearFilter:boolean = false
 
+  public rangeValidationMessage:boolean = false
+  public rangeMessage:string = ""
+
   public year: number = new Date().getFullYear();
   public selected_year:number = this.year
   public yearValidationMessage:boolean = false
@@ -139,8 +142,6 @@ export class EventPaymentsComponent implements OnInit {
 
   getPayments(selected_event_id:number, filter_value:string){
 
-    this.spinner.show()
-
     let year = ''
     let month = ''
     let start_date = ''
@@ -156,7 +157,7 @@ export class EventPaymentsComponent implements OnInit {
     } else if(filter_value == 'range'){
       start_date = this.filtered_start_date
       end_date = this.filtered_end_date
-      period_string = 'payments between ' + start_date + 'and ' + end_date
+      period_string = 'payments between ' + start_date + ' and ' + end_date
     } else if(filter_value == 'monthly'){
       month = this.filtered_selected_month.toString()
       year = this.filtered_selected_year.toString()
@@ -201,9 +202,10 @@ export class EventPaymentsComponent implements OnInit {
               this.dtTrigger.next(this.payment_list)
           }
 
-          this.messageResponse = "Filter successful"
-          this.spinner.hide()
-        }        
+        }         
+        
+        this.messageResponse = "Filter successful"
+        this.spinner.hide()
         
       },      
       error: (err: HttpErrorResponse) => {
@@ -288,10 +290,53 @@ export class EventPaymentsComponent implements OnInit {
 
   }
 
+  // get start date for range
+  getStartRange(st_date: any) {
+    this.filtered_start_date = st_date
+  }
+
+  // validate date range
+  validateRange(end_date: any) {
+    
+    this.rangeValidationMessage = false
+    this.rangeMessage = ""
+
+    this.filtered_end_date = end_date;
+
+    if(this.filtered_start_date == '') {
+      this.rangeValidationMessage = true
+      this.rangeMessage = "Please enter the start date"
+
+    } else {
+
+      let days:number = 0
+
+      var startDate = new Date(this.filtered_start_date);
+      var endDate = new Date(this.filtered_end_date);
+    
+      var Time = endDate.getTime() - startDate.getTime();
+      days = Time / (1000 * 3600 * 24);
+
+      if((days >= 2) && (days <= 12)){
+
+        this.rangeValidationMessage = false;
+
+      } else if(days > 12){
+
+        this.rangeValidationMessage = true;
+        this.rangeMessage = "Kindly note, you can only select a range of 12 days maximum"
+
+      } else if(days < 2){
+        this.rangeValidationMessage = true;
+        this.rangeMessage = "Kindly note, you need to select a range of 2 days minimum"
+      }
+
+    }
+    
+  }
+
   // Form Actions
   filterPaymentAction(data:any) {
-
-    console.log(data)
 
     // event filter
     let event_filter_id:number = 0
@@ -306,6 +351,7 @@ export class EventPaymentsComponent implements OnInit {
       // get range
       this.filtered_start_date = data.start_date
       this.filtered_end_date = data.end_date
+
     } else if(selected_period == 'single') {
       this.filtered_selected_date = data.day_selected
     } else if(selected_period == 'monthly') {
@@ -329,7 +375,9 @@ export class EventPaymentsComponent implements OnInit {
       
     } else if(selected_period == 'yearly') {
       this.filtered_selected_year = data.year
-    } 
+    }    
+
+    this.spinner.show()
 
     // get Payments
     this.getPayments(event_filter_id, selected_period)
