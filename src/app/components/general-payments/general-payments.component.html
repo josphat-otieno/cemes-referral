@@ -1,0 +1,229 @@
+<div class="content-body">
+    <div class="container-fluid">
+        <div class="row page-titles mx-0">
+            <div class="col-sm-6 p-md-0">
+                <div class="welcome-text">
+                    <h4>Payments Management</h4>
+                </div>
+            </div>
+            <div class="col-sm-6 p-md-0 justify-content-sm-end mt-2 mt-sm-0 d-flex">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="admin/dashboard">Home</a></li>
+                    <li class="breadcrumb-item active"><a href="javascript:void(0)">General Payments</a></li>
+                </ol>
+            </div>
+        </div>
+
+        <!-- Parameters -->
+        <div class="row">
+            <div class="col-xl-3 col-xxl-4 col-lg-6 col-sm-6">
+                <div class="widget-stat card">
+                    <div class="card-body p-4">
+                        <div class="media ai-icon">
+                            <span class="mr-3 bgl-primary text-primary">
+                                <!-- <i class="ti-user"></i> -->
+                                <svg id="icon-customers" xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-user">
+                                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                                    <circle cx="12" cy="7" r="4"></circle>
+                                </svg>
+                            </span>
+                            <div class="media-body">
+                                <p class="mb-1">Business Awareness Payments</p>
+                                <h4 class="mb-0">{{paid_events_count}}</h4>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-3 col-xxl-4 col-lg-6 col-sm-6">
+                <div class="widget-stat card">
+                    <div class="card-body p-4">
+                        <div class="media ai-icon">
+                            <span class="mr-3 bgl-warning text-warning">                    
+                                <svg id="icon-orders" xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text">
+                                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                    <polyline points="14 2 14 8 20 8"></polyline>
+                                    <line x1="16" y1="13" x2="8" y2="13"></line>
+                                    <line x1="16" y1="17" x2="8" y2="17"></line>
+                                    <polyline points="10 9 9 9 8 9"></polyline>
+                                </svg>
+                            </span>
+                            <div class="media-body">
+                                <p class="mb-1">Event Payments</p>
+                                <h4 class="mb-0">{{active_events_count}}</h4> 
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-3 col-xxl-4 col-lg-6 col-sm-6">
+                <div class="widget-stat card">
+                    <div class="card-body  p-4">
+                        <div class="media ai-icon">
+                            <span class="mr-3 bgl-success text-success">
+                                <svg id="icon-database-widget" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-database">
+                                    <ellipse cx="12" cy="5" rx="9" ry="3"></ellipse>
+                                    <path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"></path>
+                                    <path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"></path>
+                                </svg> 
+                            </span>
+                            <div class="media-body">
+                                <p class="mb-1">Total Payments</p>
+                                <h4 class="mb-0">{{payment_count}}</h4>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        
+        </div>
+
+        <!-- Main Content -->
+        <div class="card">
+            <div class="card-header">
+                <div class="col-6">
+                    {{payment_title}}
+                </div>
+
+                <div class="col-6"> 
+                    <button class="btn btn-sm btn-primary rightBtns" type="button" (click)="openModal(filterPaymentModal, 'md')">
+                        <i class="fa fa-filter"></i>&nbsp;Filter Payments
+                    </button>                  
+                </div>
+
+            </div>
+           
+            <div class="card-body">
+                           
+                <div class="table-responsive">
+                    <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th scope="col">Payment Description</th>
+                        <th scope="col">Payment Type</th>
+                        <th scope="col">Payment Channel</th>
+                        <th scope="col">Payment Receipt</th>
+                        <th scope="col">Amount</th>
+                        <th scope="col">Paid By</th>
+                        <th scope="col">Phone Number</th>
+                        <th scope="col">Payment Time</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let payment of payment_list">
+                          <td>{{payment.event_name}}</td>  
+                          <td>event</td>  
+                          <td>{{payment.channel}}</td>  
+                          <td>{{payment.receipt_number}}</td>  
+                          <td>{{payment.amount}}</td>  
+                          <td>{{payment.paid_by}}</td>  
+                          <td>{{payment.phone_number}}</td>  
+                          <td>{{payment.paid_at | date:'medium'}}</td>  
+                        </tr>
+
+                        <tr *ngIf="payment_count == 0">
+                            <td colspan="8" class="no_data_display">
+                                No data available for display
+                            </td>
+                        </tr>
+                    </tbody>
+                    </table>
+                </div>
+               
+            </div>
+        </div>
+      
+	</div>
+</div>
+
+<!-- Modals -->
+<ng-template #filterPaymentModal let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title">Filter Event Payments</h4>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body default-calendar">
+        <form #filterForm="ngForm">     
+            <div class="row form-group">
+                <label class="col-lg-5 col-form-label" for="event_id_filter">Select Event</label>
+                <div class="col-lg-7">
+                    <ng-multiselect-dropdown id="event_id_filter" [placeholder]="'Select an event...'" name="event"
+                        [settings]="dropdownSettings" [(ngModel)]="selected_event" [data]="event_list" (onSelect)="onItemSelect($event)"
+                        (onDeSelect)="onItemDeSelect($event)">
+                    </ng-multiselect-dropdown>
+                </div> 
+            </div>         
+            <div class="row form-group">
+                <label class="col-lg-5 col-form-label" for="period_filter" >Period Filter</label>
+                <div class="col-lg-7">
+                    <select class="form-control" name="period_select" #period_selection (change)="selectPeriod(period_selection.value)">
+                        <option value="">Select a period filter ...</option>
+                        <option value="life">Lifetime</option>
+                        <option value="range">Date range</option>
+                        <option value="single">Specific Date</option>
+                        <option value="monthly">Monthly</option>
+                        <option value="yearly">Yearly</option>
+                    </select>
+                </div> 
+            </div>  <hr>    
+            
+            <div class="container" *ngIf="periodSelection">
+                <!-- weekly -->
+                <div class="form-group row" *ngIf="rangeFilter">
+                    <div class="col-sm-12">
+                        <label>Start Date</label>
+                        <input class="form-control" #start_date_input name="start_date" type="date" ngModel="{{filtered_start_date}}" value="{{filtered_start_date}}"
+                        (input)="getStartRange(start_date_input.value)">
+                    </div>
+                    <div class="col-sm-12">
+                        <label>End Date</label>
+                        <input class="form-control" #end_date_input name="end_date" type="date" ngModel="{{filtered_end_date}}" value="{{filtered_end_date}}" 
+                        (input)="validateRange(end_date_input.value)">
+                    </div>                    
+
+                    <i *ngIf="rangeValidationMessage" style="color:red">{{rangeMessage}}</i>
+                </div>
+
+                <!-- specific date  -->
+                <div class="form-group row" *ngIf="dateFilter">
+                    <div class="col-sm-12">
+                        <label>Select a Date</label>
+                        <input class="form-control" name="day_selected" type="date" ngModel="{{filtered_selected_date}}" value="{{filtered_selected_date}}">
+                    </div>
+                </div>
+
+                <!-- Monthly -->
+                <div class="form-group row" *ngIf="monthFilter">
+                    <div class="col-sm-12">
+                        <label>Select a Month</label>
+                        <input class="form-control" name="month" type="month" ngModel="{{filtered_selected_month}}" value="{{filtered_selected_month}}">
+                    </div>
+                </div>
+
+                <!-- Yearly -->
+                <div class="form-group row" *ngIf="yearFilter">
+                    <div class="col-sm-12">
+                        <label>Select a Year</label>
+                        <input class="form-control" #years required name="year" type="number" (input)="validateYear(years.value)" ngModel="{{filtered_selected_year}}"
+                        value="{{filtered_selected_year}}">
+                        <i *ngIf="yearValidationMessage" style="color:red">You have entered an incorrect year, kindly try again</i> 
+                    </div>
+                </div>
+
+            </div>
+        </form>
+  
+        <!-- message -->
+        <div *ngIf="messageResponse" class="row alert alert-info">
+          <p><i class="fa fa-exclamation"></i> &nbsp;  {{messageResponse}}</p>
+        </div>
+  
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-sm btn-light" (click)="modal.close('Close click')">Cancel</button>
+        <button type="button" class="btn btn-sm btn-primary" [disabled]="yearValidationMessage === true || rangeValidationMessage === true" 
+        (click)="filterPaymentAction(filterForm.value)">Filter</button>
+    </div>
+</ng-template>

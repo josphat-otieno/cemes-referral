@@ -225,7 +225,6 @@
                 <ul aria-expanded="false" [ngClass]="{'mm-show': membershipArray.indexOf(currentHref) > -1}">
                     <li><a [routerLink]="['/admin/member-database']" class="{{(currentHref == '/admin/member-database') ? 'mm-active' : ''}}">Member Database</a></li>
                     <li><a [routerLink]="['/admin/app-users']" class="{{(currentHref == '/admin/app-users') ? 'mm-active' : ''}}">App Users</a></li>
-                    <li><a [routerLink]="['/admin/payments']" class="{{(currentHref == '/admin/payments') ? 'mm-active' : ''}}">Payment</a></li>
                     <li><a [routerLink]="['/admin/member-complaints']" class="{{(currentHref == '/admin/member-complaints') ? 'mm-active' : ''}}">Complaints</a></li>
                     <!-- <li><a [routerLink]="['#']" class="{{(currentHref == '#') ? 'mm-active' : ''}}">Membership Requests</a></li> -->
                     <!-- <li><a [routerLink]="['#']" class="{{(currentHref == '#') ? 'mm-active' : ''}}">Referrals</a></li> -->
@@ -244,7 +243,17 @@
                     <li><a [routerLink]="['/admin/event-custom-forms']" class="{{(currentHref == '/admin/event-custom-forms') ? 'mm-active' : ''}}">Custom Forms</a></li>
                     <li><a [routerLink]="['/admin/custom-form-items']" class="{{(currentHref == '/admin/app-users') ? 'mm-active' : ''}}">Custom Form Items</a></li>
                     <li><a [routerLink]="['/admin/events-custom-form-feedbacks']" class="{{(currentHref == '/admin/events-custom-form-feedbacks') ? 'mm-active' : ''}}">Custom Form Feedbacks</a></li>
-                    <li><a [routerLink]="['/admin/events-payments']" class="{{(currentHref == '/admin/events-payments') ? 'mm-active' : ''}}">Event Payments</a></li>
+                </ul>
+            </li>
+
+            <li [ngClass]="{'mm-active': paymentArray.indexOf(currentHref) > -1}">
+                <a class="has-arrow ai-icon" href="javascript:void()" aria-expanded="false">
+                    <i class="flaticon-381-incoming-call"></i>
+                    <span class="nav-text">Payment Management</span>
+                </a>
+                <ul aria-expanded="false" [ngClass]="{'mm-show': paymentArray.indexOf(currentHref) > -1}">
+                    <li><a [routerLink]="['/admin/payments']" class="{{(currentHref == '/admin/payments') ? 'mm-active' : ''}}">General Payments</a></li>
+                    <li><a [routerLink]="['/admin/events-payments']" class="{{(currentHref == '/admin/events-payments') ? 'mm-active' : ''}}">Event Payments</a></li>               
                 </ul>
             </li>
 

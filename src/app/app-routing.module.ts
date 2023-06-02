@@ -145,7 +145,6 @@ import { AssemblyComponent } from './components/assembly/assembly.component';
 import { OffersPromotionsAwarenessComponent } from './components/offers-promotions-awareness/offers-promotions-awareness.component';
 import { ProfileComponent } from './components/profile/profile.component';
 import { BusinessRatingComponent } from './components/business-rating/business-rating.component';
-import { PaymentsComponent } from './components/payments/payments.component';
 import { ResetPasswordComponent } from './pages/reset-password/reset-password.component';
 import { BusinessProductsComponent } from './components/business-products/business-products.component';
 import { ForumManagementComponent } from './components/forum-management/forum-management.component';
@@ -161,6 +160,7 @@ import { NotificationMessageComponent } from './components/notification-message/
 import { EventNotificationsComponent } from './components/event-notifications/event-notifications.component';
 import { HashLocationStrategy, LocationStrategy } from '@angular/common';
 import { EventPaymentsComponent } from './components/event-payments/event-payments.component';
+import { GeneralPaymentsComponent } from './components/general-payments/general-payments.component';
 
 
 const routes: Routes = [
@@ -299,6 +299,7 @@ const routes: Routes = [
               {path: 'forum', component: ForumComponent},
               {path: 'events-management', component: EventsManagementComponent},
               {path: 'events-payments', component: EventPaymentsComponent},
+              {path: 'payments', component: GeneralPaymentsComponent},
               {path: 'event_notifications', component: EventNotificationsComponent},
               {path: 'notification-messages', component: NotificationMessageComponent},
               {path: 'event-program-management', component: EventProgramComponent},
@@ -306,7 +307,6 @@ const routes: Routes = [
               {path: 'advertisement', component: AdvertisementsComponent},
               {path: 'business-rating', component: BusinessRatingComponent},
               {path: 'profile', component: ProfileComponent},
-              {path: 'payments', component: PaymentsComponent},
               {path: 'profanity-report', component: ProfanityReportComponent},
               {path: 'event-custom-forms', component: CustomFormComponent},
               {path: 'custom-form-items', component: CustomFormItemsComponent},

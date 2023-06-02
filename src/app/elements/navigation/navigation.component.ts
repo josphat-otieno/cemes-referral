@@ -55,7 +55,6 @@ export class NavigationComponent implements OnInit {
   membershipArray = [
     '/admin/member-database',
     '/admin/app-users',
-    '/admin/payments',
     '/admin/member-complaints',
 	];
 
@@ -71,8 +70,12 @@ export class NavigationComponent implements OnInit {
     '/admin/events-custom-form-feedbacks',
     '/admin/notification-messages',
     '/admin/event_notifications',
-    '/admin/events-payments'
   ];
+
+  paymentArray = [    
+    '/admin/payments',
+    '/admin/events-payments'
+  ]
     
   formsArray = [
     '/admin/form-element',

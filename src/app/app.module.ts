@@ -674,7 +674,6 @@ import { ProfileComponent } from './components/profile/profile.component';
 import { BusinessRatingComponent } from './components/business-rating/business-rating.component';
 import { BusinessIntegrityRatingComponent } from './components/business-integrity-rating/business-integrity-rating.component';
 import { PendingStaffListComponent } from './components/pending-staff-list/pending-staff-list.component';
-import { PaymentsComponent } from './components/payments/payments.component';
 import { ResetPasswordComponent } from './pages/reset-password/reset-password.component';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 import { BusinessProductsComponent } from './components/business-products/business-products.component';
@@ -692,6 +691,7 @@ import { EventProgramComponent } from './components/event-program/event-program.
 import { NotificationMessageComponent } from './components/notification-message/notification-message.component';
 import { EventNotificationsComponent } from './components/event-notifications/event-notifications.component';
 import { EventPaymentsComponent } from './components/event-payments/event-payments.component';
+import { GeneralPaymentsComponent } from './components/general-payments/general-payments.component';
 
 function appInitializer(authService: CbfService) {
   return () => {
@@ -1307,7 +1307,6 @@ function appInitializer(authService: CbfService) {
     BusinessRatingComponent,
     BusinessIntegrityRatingComponent,
     PendingStaffListComponent,
-    PaymentsComponent,
     ResetPasswordComponent,
     BusinessProductsComponent,
     ForumManagementComponent,
@@ -1322,7 +1321,7 @@ function appInitializer(authService: CbfService) {
     UserResponsesComponent,
     NotificationMessageComponent,
     EventNotificationsComponent,  
-    EventPaymentsComponent  
+    EventPaymentsComponent, GeneralPaymentsComponent  
     
   ],
   imports: [
