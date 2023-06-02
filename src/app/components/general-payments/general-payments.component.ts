@@ -1,12 +1,17 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { DataTableDirective } from 'angular-datatables';
 import { IDropdownSettings } from 'ng-multiselect-dropdown';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { Subject, Subscription } from 'rxjs';
 import { CbfService } from 'src/app/core/cbf.service';
+
+import 'datatables.net-buttons/js/buttons.colVis.min';
+import 'datatables.net-buttons/js/dataTables.buttons.min';
+import 'datatables.net-buttons/js/buttons.flash.min';
+import 'datatables.net-buttons/js/buttons.html5.min';
+
 
 @Component({
   selector: 'app-general-payments',
@@ -85,13 +90,9 @@ export class GeneralPaymentsComponent implements OnInit {
       pagingType: 'full_numbers',
       pageLength: 10,
       processing: true,
+      dom: 'Bfrtip',
       buttons: [
-        'copy',
-        'print',
-        'csv',
-        'excel',
-        'pdf'
-      ]
+        'pageLength', 'copy', 'print', 'csv','columnsToggle','colvis','pdf','excel']    
     };    
 
     this.accessToken = this.cbfService.AccessToken
