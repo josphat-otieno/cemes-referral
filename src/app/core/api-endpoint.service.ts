@@ -79,6 +79,7 @@ export class ApiEndpointService {
 
     // Payments 
     GET_EVENT_PAYMENTS: `${ApiEndpointService.MAIN_CONTEXT}/payments/get-event-payments/`,
+    GET_C2B_PAYMENTS: `${ApiEndpointService.MAIN_CONTEXT}/payments/get-transactions-list/`,
 
     // Communication
     GET_FORUM_LIST: `${ApiEndpointService.MAIN_CONTEXT}/communication/get-forum-list/`,

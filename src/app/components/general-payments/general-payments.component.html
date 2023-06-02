@@ -29,7 +29,7 @@
                             </span>
                             <div class="media-body">
                                 <p class="mb-1">Business Awareness Payments</p>
-                                <h4 class="mb-0">{{paid_events_count}}</h4>
+                                <h4 class="mb-0">{{promotion_payment_count}}</h4>
                             </div>
                         </div>
                     </div>
@@ -50,7 +50,7 @@
                             </span>
                             <div class="media-body">
                                 <p class="mb-1">Event Payments</p>
-                                <h4 class="mb-0">{{active_events_count}}</h4> 
+                                <h4 class="mb-0">{{event_payment_count}}</h4> 
                             </div>
                         </div>
                     </div>
@@ -111,14 +111,14 @@
                     </thead>
                     <tbody>
                         <tr *ngFor="let payment of payment_list">
-                          <td>{{payment.event_name}}</td>  
-                          <td>event</td>  
-                          <td>{{payment.channel}}</td>  
-                          <td>{{payment.receipt_number}}</td>  
+                          <td>{{payment.desc}}</td>  
+                          <td>{{payment.type}}</td>  
+                          <td class="text-capitalize">{{payment.method}}</td>  
+                          <td>{{payment.receipt}}</td>  
                           <td>{{payment.amount}}</td>  
-                          <td>{{payment.paid_by}}</td>  
-                          <td>{{payment.phone_number}}</td>  
-                          <td>{{payment.paid_at | date:'medium'}}</td>  
+                          <td>{{payment.names}}</td>  
+                          <td>{{payment.phone}}</td>  
+                          <td>{{payment.time | date:'medium'}}</td>  
                         </tr>
 
                         <tr *ngIf="payment_count == 0">
@@ -139,22 +139,13 @@
 <!-- Modals -->
 <ng-template #filterPaymentModal let-modal>
     <div class="modal-header">
-      <h4 class="modal-title" id="modal-basic-title">Filter Event Payments</h4>
+      <h4 class="modal-title" id="modal-basic-title">Filter Payments</h4>
       <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
         <span aria-hidden="true">&times;</span>
       </button>
     </div>
     <div class="modal-body default-calendar">
-        <form #filterForm="ngForm">     
-            <div class="row form-group">
-                <label class="col-lg-5 col-form-label" for="event_id_filter">Select Event</label>
-                <div class="col-lg-7">
-                    <ng-multiselect-dropdown id="event_id_filter" [placeholder]="'Select an event...'" name="event"
-                        [settings]="dropdownSettings" [(ngModel)]="selected_event" [data]="event_list" (onSelect)="onItemSelect($event)"
-                        (onDeSelect)="onItemDeSelect($event)">
-                    </ng-multiselect-dropdown>
-                </div> 
-            </div>         
+        <form #filterForm="ngForm">         
             <div class="row form-group">
                 <label class="col-lg-5 col-form-label" for="period_filter" >Period Filter</label>
                 <div class="col-lg-7">

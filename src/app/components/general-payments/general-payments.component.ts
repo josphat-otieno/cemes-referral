@@ -28,8 +28,8 @@ export class GeneralPaymentsComponent implements OnInit {
   public selected_event:any = []
   public selected_event_id:number = 0
   public selected_event_name:string = ""
-  public paid_events_count:number = 0
-  public active_events_count:number = 0
+  public event_payment_count:number = 0
+  public promotion_payment_count:number = 0
   public payment_count:number = 0
 
   public messageResponse:string = ''
@@ -80,14 +80,6 @@ export class GeneralPaymentsComponent implements OnInit {
 
   ngOnInit(): void {
 
-    this.dropdownSettings = {
-      singleSelection: true,
-      idField: 'id',
-      textField: 'name',
-      allowSearchFilter: true,
-      closeDropDownOnSelection: true
-    };
-
     // datatable
     this.dtOptions = {
       pagingType: 'full_numbers',
@@ -106,41 +98,11 @@ export class GeneralPaymentsComponent implements OnInit {
     this.user_id = Number(this.cbfService.currentUserValue)
 
     // fetch all payments
-    this.getEvents()
-    this.getPayments(0, 'life')
+    this.getPayments('life')
   }
       
   // Endpoints Consumption  
-  getEvents(){
-
-    const eventsSubscr = this.cbfService.getEventDetails(0, this.accessToken)
-    .subscribe({
-      next: (response: any) => {
-        let result = response  
-        
-        let eventArray:any = []
-
-        let eventsArr = result.results
-        eventsArr.forEach((x:any) => {
-
-          let eventId = x.id
-          let eventName = x.event_name
-          eventArray.push({'id':eventId, 'name':eventName})
-
-        })
-
-        this.event_list = eventArray       
-      },      
-      error: (err: HttpErrorResponse) => {
-        //  this.toaster.warning('Failure fetching user details, kindly refresh', 'Something went wrong')
-      }
-    })
-
-    this.unsubscribe.push(eventsSubscr);
-
-  }
-
-  getPayments(selected_event_id:number, filter_value:string){
+  getPayments(filter_value:string){
 
     let year = ''
     let month = ''
@@ -173,21 +135,15 @@ export class GeneralPaymentsComponent implements OnInit {
       period_string = 'lifetime payments'
     }
 
-    let event_id = selected_event_id
-    if(event_id == 0) {
-      this.payment_title = "List of all " + period_string
-    } else {
-      // check period
-      this.payment_title = this.selected_event_name + ' ' + period_string
-    }
+    this.payment_title = "List of all " + period_string
 
-    const paymentSubscr = this.cbfService.getEventPayments(event_id, year, month, start_date, end_date, this.accessToken)
+    const paymentSubscr = this.cbfService.getGeneralPayments(year, month, start_date, end_date, this.accessToken)
     .subscribe({
       next: (response: any) => {
         let result = response   
         this.payment_count = result.total_payments
-        this.paid_events_count = result.paid_events 
-        this.active_events_count = result.active_events 
+        this.event_payment_count = result.events 
+        this.promotion_payment_count = result.adverts 
         this.payment_list = result.results 
 
         if(this.payment_count > 0){
@@ -232,23 +188,7 @@ export class GeneralPaymentsComponent implements OnInit {
 
   }
 
-  // Select Options
-  onItemSelect(item: any) {
-    let selected_event = item;
-
-    this.selected_event.push(selected_event)
-    this.selected_event_id = selected_event.id
-    this.selected_event_name = selected_event.name
-  }
-
-  onItemDeSelect(event: any) {
-
-    this.selected_event = []
-    this.selected_event_id = 0
-    this.selected_event_name = ""
-  }
-
-  // select period
+  // Select Options -- select period
   selectPeriod(period: string) {
     if(period == "") {
       this.periodSelection = false
@@ -338,12 +278,6 @@ export class GeneralPaymentsComponent implements OnInit {
   // Form Actions
   filterPaymentAction(data:any) {
 
-    // event filter
-    let event_filter_id:number = 0
-    if(this.selected_event_id != 0){
-      event_filter_id = this.selected_event_id
-    }
-
     // period filter
     let selected_period = this.selected_filter_string
 
@@ -380,7 +314,7 @@ export class GeneralPaymentsComponent implements OnInit {
     this.spinner.show()
 
     // get Payments
-    this.getPayments(event_filter_id, selected_period)
+    this.getPayments(selected_period)
 
     setTimeout(() => {
       this.modalService.dismissAll()

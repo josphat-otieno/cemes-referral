@@ -1490,6 +1490,27 @@ export class CbfService implements OnDestroy {
 
   }
 
+  // Get All Payments
+  public getGeneralPayments(year:string, month:string, start_date:string, end_date:string, access:string): Observable<any> {
+    const url = ApiEndpointService.getEndpoint(ApiEndpointService.ENDPOINT.GET_C2B_PAYMENTS);
+    return this.http.get<any>(url + '?selected_year=' + year + '&selected_month=' + month + '&start_date='
+    + start_date + '&end_date=' + end_date, {
+      headers: {
+        'Content-Type': 'application/json; charset=utf-8',
+        'Accept': 'application/json',
+        'Authorization': `Bearer ${access}`
+      }
+    }).pipe(
+      map(function (response: any) {
+        return response;
+      }),
+      catchError((fault: HttpErrorResponse) => {
+        return throwError(fault);
+      })
+    )
+
+  }
+
   // Create Custom Notification Reminder
   public createCustomNotification(notificationData:FormData, access: string): Observable<any> {
     const url = ApiEndpointService.getEndpoint(ApiEndpointService.ENDPOINT.CUSTOM_NOTIFICATION);
