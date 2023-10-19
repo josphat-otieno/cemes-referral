@@ -75,69 +75,70 @@ export class LoginComponent implements OnInit {
 
   loginUser() {
     this.hasError = false;
-    const loginSubscr = this.cbfService.loginUser(this.signInForm.value)
+    this.router.navigate(['/admin/dashboard'])
+    // const loginSubscr = this.cbfService.loginUser(this.signInForm.value)
 
-    .subscribe({
-      next: (response: any) => {
-        let results = response
+    // .subscribe({
+    //   next: (response: any) => {
+    //     let results = response
 
-        // variables
-        let jwt = results.data.tokens.refresh
-        let staff_verify = results.data.is_staff
-        let account_verify = results.data.is_verified
-        let user_id = results.data.id
+    //     // variables
+    //     let jwt = results.data.tokens.refresh
+    //     let staff_verify = results.data.is_staff
+    //     let account_verify = results.data.is_verified
+    //     let user_id = results.data.id
 
-        if(!jwt){
-          this.warningAlert = true
-        } else {
-          if(staff_verify != true){
-            this.alertMessage="Only staff are allowed into this portal.";
-          } else {
+    //     if(!jwt){
+    //       this.warningAlert = true
+    //     } else {
+    //       if(staff_verify != true){
+    //         this.alertMessage="Only staff are allowed into this portal.";
+    //       } else {
 
-            this.alertMessage = ''
+    //         this.alertMessage = ''
 
-            // check verification
-            if(account_verify != true){
-              this.alertMessage = 'Sorry, your account is yet to be verified. Kindly wait for verification'
-            } else {
+    //         // check verification
+    //         if(account_verify != true){
+    //           this.alertMessage = 'Sorry, your account is yet to be verified. Kindly wait for verification'
+    //         } else {
               
-              this.successAlert = true;
+    //           this.successAlert = true;
   
-              //store session cookie
-              this.cookieService.set('JTW', jwt); // To Set Cookie
+    //           //store session cookie
+    //           this.cookieService.set('JTW', jwt); // To Set Cookie
     
-              //store user id
-              ls.set('id', JSON.stringify(user_id), {encrypt: true, secret: 43}); 
+    //           //store user id
+    //           ls.set('id', JSON.stringify(user_id), {encrypt: true, secret: 43}); 
 
-              // set USer Id and Acstk
-              this.cbfService.getUserByToken().subscribe()     
+    //           // set USer Id and Acstk
+    //           this.cbfService.getUserByToken().subscribe()     
                  
-                //Start watching for user inactivity.
-                this.userIdle.startWatching();
+    //             //Start watching for user inactivity.
+    //             this.userIdle.startWatching();
                 
-                // Start watching when user idle is starting.
-                // this.userIdle.onTimerStart().subscribe(count => console.log(count));   
+    //             // Start watching when user idle is starting.
+    //             // this.userIdle.onTimerStart().subscribe(count => console.log(count));   
                 
-                // Stop watch when time is up.                        
-                this.userIdle.onTimeout().subscribe(() => this.cbfService.logoutUser());
+    //             // Stop watch when time is up.                        
+    //             this.userIdle.onTimeout().subscribe(() => this.cbfService.logoutUser());
 
-              setTimeout(() => {
-                this.router.navigate([this.returnUrl]);
-              }, 2000);
+    //           setTimeout(() => {
+    //             this.router.navigate([this.returnUrl]);
+    //           }, 2000);
 
-            }
+    //         }
            
-          }
-        }
+    //       }
+    //     }
       
-      },
-      error: (e:HttpErrorResponse) =>  {
-        console.log(e)
-        this.alertMessage = 'No account matches these credentials, please try again'
-      }
-    })
+    //   },
+    //   error: (e:HttpErrorResponse) =>  {
+    //     console.log(e)
+    //     this.alertMessage = 'No account matches these credentials, please try again'
+    //   }
+    // })
     
-    this.unsubscribe.push(loginSubscr);
+    // this.unsubscribe.push(loginSubscr);
   }
 
   stop() {

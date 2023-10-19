@@ -166,7 +166,7 @@ import { GeneralPaymentsComponent } from './components/general-payments/general-
 const routes: Routes = [
       {path: '', redirectTo: 'admin/dashboard', pathMatch: 'full' },
       {
-          path: 'admin', component: AdminComponent, canActivate: [AuthGuard], children: [
+          path: 'admin', component: AdminComponent, children: [
               {path: '', component: DashboardComponent},
               {path: 'index', component: DashboardComponent},
               {path: 'index-1', component: DashboardComponent},

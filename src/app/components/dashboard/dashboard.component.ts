@@ -14,9 +14,9 @@ export class DashboardComponent implements OnInit {
   // parameters
   public accessToken:string = ''
   public user_id:number  = 0
-  public businessCount:number = 0
+  public businessCount:number = 150
   public advertCount:number = 0
-  public memberCount:number = 0
+  public memberCount:number = 100
   public revenueFigure:number = 0
   public msg:string = ''
   public dashboardWidgets:any = []
@@ -64,30 +64,33 @@ export class DashboardComponent implements OnInit {
     // set timeout
     setTimeout(() => {
         this.dashboardWidgets = [
+//          
+// Number of leads
+
           {
-            title: "Number of Businesses",
+            title: " Referrals this week",
             total_no: this.businessCount,
             icon_class: "flaticon-381-list",
             wrapper_class: "bg-danger",
           },
           {
-            title: "Number of Members",
+            title: "Number of Leads",
             total_no: this.memberCount,
             icon_class: "flaticon-381-user-9",
             wrapper_class: "bg-success",
           },
-          {
-            title: "Paid Advertisements",
-            total_no: this.advertCount,
-            icon_class: "flaticon-381-add-3",
-            wrapper_class: "bg-info",
-          },
-          {
-            title: "Revenue",
-            total_no: "Ksh."+this.revenueFigure,
-            icon_class: "flaticon-381-diamond",
-            wrapper_class: "bg-primary",
-          },
+          // {
+          //   title: "Paid Advertisements",
+          //   total_no: this.advertCount,
+          //   icon_class: "flaticon-381-add-3",
+          //   wrapper_class: "bg-info",
+          // },
+          // {
+          //   title: "Revenue",
+          //   total_no: "Ksh."+this.revenueFigure,
+          //   icon_class: "flaticon-381-diamond",
+          //   wrapper_class: "bg-primary",
+          // },
     ];
     }, 1200);
   }
