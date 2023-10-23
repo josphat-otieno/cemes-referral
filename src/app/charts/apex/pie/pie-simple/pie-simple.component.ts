@@ -46,7 +46,7 @@ export class PieSimpleComponent implements OnInit {
               show: true,
             },
             dataLabels: {
-                enabled: false,
+                enabled: true,
             },
           }
         }

@@ -28,40 +28,39 @@
                         </div>
                     </div>
                 </div>
-                <div class="row">
-                    <div class="col-xl-12 col-xxl-12 col-lg-12 col-md-12">
-                        <div class="card">
-                            <div class="card-body">                            
-                                <app-basic-line-chart></app-basic-line-chart>                            
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    
-                    <div class="col-xl-12 col-xxl-12 col-lg-12 col-md-12">
-                        <app-best-doctor [data]="bestBusinesses"></app-best-doctor>
-                    </div>
-                    
-                </div>
+
                 
             </div>
 
-            <div class="col-xl-6 col-xxl-12">
-                <div class="row">
-                    <!-- <div class="col-xl-12 col-xxl-12 col-lg-12 col-md-12"> -->
-                    <!-- <div class="col-xl-6 col-xxl-6 col-lg-6 col-md-6">
-                        <app-graph-recovered></app-graph-recovered>
+            <div class="col-md-7">
+                <div class="card">
+                    <div class="card-header d-block">
+                        <h4 class="card-title">Points Awarded: Current Week</h4>
+                        <div class="d-flex flex-row">
+                            <div class="">Collection: 200 </div>
+                            <div class="float-right ml-2">Disbursements 400 </div>
+                        </div>
+            
                     </div>
-                    <div class="col-xl-6 col-xxl-6 col-lg-6 col-md-6">
-                        <app-graph-visitors></app-graph-visitors>
-                    </div> -->
-                    <div class="col-xl-12 col-xxl-12 col-lg-12 col-md-12">
-                        <app-graph-patients></app-graph-patients>
+                    <div class="card-body">
+                        
+                        <app-dashed-line-chart></app-dashed-line-chart>
+                        
                     </div>
-                    
                 </div>
-            </div>            
+            </div>   
+            <div class="col-md-5">
+                <div class="card text-center">
+                    <div class="card-header d-block">
+                        <h4 class="card-title">Simple Pie Chart</h4>
+                    </div>
+                    <div class="card-body">
+                        
+                        <app-pie-simple></app-pie-simple>
+                        
+                    </div>
+                </div>
+            </div>         
         </div>
     </div>
 </div>

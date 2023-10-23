@@ -3,25 +3,24 @@
         <div class="row page-titles mx-0">
             <div class="col-sm-6 p-md-0">
                 <div class="welcome-text">
-                    <h4>Business Management</h4>
+                    <h4>Points Management</h4>
                 </div>
             </div>
             <div class="col-sm-6 p-md-0 justify-content-sm-end mt-2 mt-sm-0 d-flex">
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item"><a href="admin/dashboard">Home</a></li>
-                    <li class="breadcrumb-item active"><a href="javascript:void(0)">Business Management</a></li>
+                    <!-- <li class="breadcrumb-item active"><a href="javascript:void(0)">Business Management</a></li> -->
                 </ol>
             </div>
         </div>
 
         <!-- Parameters -->
-        <div class="row">
+        <!-- <div class="row">
             <div class="col-xl-3 col-xxl-4 col-lg-6 col-sm-6">
                 <div class="widget-stat card">
                     <div class="card-body p-4">
                         <div class="media ai-icon">
                             <span class="mr-3 bgl-primary text-primary">
-                                <!-- <i class="ti-user"></i> -->
                                 <svg id="icon-customers" xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-user">
                                     <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
                                     <circle cx="12" cy="7" r="4"></circle>
@@ -76,38 +75,34 @@
                 </div>
             </div>
         
-        </div>
+        </div> -->
 
         <!-- Main Content -->
         <div class="card">
             <div class="card-header">
                 <div class="col-6">
-                    List of all businesses
+                    List of points category
                 </div>
 
                 <div class="col-6">
                     <button class="btn btn-sm btn-primary rightBtns" type="button" (click)="openModal(addBusiness)">
-                        <i class="fa fa-plus"></i>&nbsp;Add Business
+                        <i class="fa fa-plus"></i>&nbsp;Add Points Category
                     </button>
                 </div>
             </div>
            
             <div class="card-body">
 
-                <mat-tab-group>
-                    <mat-tab label="Verified Business Profiles"> 
-                    <br/>
                            
                         <div class="table-responsive">
                             <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="table table-striped">
                             <thead>
                             <tr>
-                                <th scope="col">Business Logo</th>
-                                <th scope="col">Name</th>
-                                <th scope="col">Owner</th>
-                                <th scope="col">Assembly</th>
-                                <th scope="col">Registration Date</th>
-                                <th scope="col">Status</th>
+                                <!-- <th scope="col"></th> -->
+                                <th scope="col">Category Name</th>
+                                <th scope="col">Points</th>
+                                <th scope="col">Expiry Period</th>
+                                <th scope="col">Date Created</th>
                                 <th scope="col">Update Details</th>
                             </tr>
                             </thead>
@@ -148,64 +143,6 @@
                             </tbody>
                             </table>
                         </div>
-
-                    </mat-tab>
-
-                    <mat-tab label="Pending Verification: {{pendingbusinessCount}} Request(s)">
-                        <br/>
-                               
-                            <div class="table-responsive">
-                                <table datatable [dtOptions]="ptOptions" [dtTrigger]="ptTrigger" class="table table-striped">
-                                <thead>
-                                <tr>
-                                    <th scope="col">Business Logo</th>
-                                    <th scope="col">Name</th>
-                                    <th scope="col">Owner</th>
-                                    <th scope="col">Assembly</th>
-                                    <th scope="col">Registration Date</th>
-                                    <th scope="col">Status</th>
-                                    <th scope="col">Update Details</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <tr *ngFor="let res of pendingBusinesses; index as i">
-                                    <!-- <th scope="row">{{ i + 1 }}</th>		 -->
-                                    <td>
-                                        <div class="circular_image_container symbol symbol-50px me-5">
-                                            <img src="{{res.business.logo}}" alt="business logo"/>
-                                        </div>
-                                    </td>
-                                    <td>{{res.business.name}}</td>
-                                    <td>{{res.business.owner.name}}</td>
-                                    <td>{{res.business.owner.assembly}}</td>
-                                    <td>{{res.business.joinDate | date:'mediumDate'}}</td>
-                                    <td>
-                                        <span *ngIf="res.business.status === true" class="badge badge-success">Active</span>
-                                        <span *ngIf="res.business.status === false" class="badge badge-danger">Inactive</span>
-                                    </td>
-                                    <td>
-                                        <div class="button_containers">                                        
-                                            <button type="button" class="btn btn-sm btn-info" (click)="reviewUpdateModal(viewBusinessModal, res)">
-                                                <i class="fa fa-eye"></i> View Details
-                                            </button> &nbsp;
-                                            <button type="button" class="btn btn-sm btn-success" (click)="reviewModal(approveBusiness, res)"><i class="fa fa-check"></i> Approve</button> &nbsp;
-                                            <button type="button" [disabled]="res.deleteStatus === true" class="btn btn-sm btn-danger" (click)="reviewModal(rejectBusiness, res)"><i class="fa fa-close"></i> Reject</button>
-                                        </div>
-                                    </td>
-                                </tr>
-
-                                <tr *ngIf="pendingbusinessCount == 0">
-                                    <td colspan="7" class="no_data_display">
-                                        No data available for display
-                                    </td>
-                                </tr>
-                                </tbody>
-                                </table>
-                            </div>
-    
-                    </mat-tab>
-
-                </mat-tab-group>
                
             </div>
         </div>

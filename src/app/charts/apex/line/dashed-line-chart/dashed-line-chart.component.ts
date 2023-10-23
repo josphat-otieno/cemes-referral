@@ -42,17 +42,21 @@ export class DashedLineChartComponent implements OnInit {
     this.chartOptions = {
       series: [
         {
-          name: "Session Duration",
-          data: [45, 52, 38, 24, 33, 26, 21, 20, 6, 8, 15, 10]
+          // name: "Session Duration",
+          // data: [45, 52, 38, 24, 33, 26, 21, 20, 6, 8, 15, 10]
+          name: "Collections",
+          data: [45, 52, 38, 24, 33, 26,60]
         },
         {
-          name: "Page Views",
-          data: [35, 41, 62, 42, 13, 18, 29, 37, 36, 51, 32, 35]
+          // name: "Page Views",
+          // data: [35, 41, 62, 42, 13, 18, 29, 37, 36, 51, 32, 35]
+          name: "Disbursements",
+          data: [35, 41, 62, 42, 13, 18,54]
         },
-        {
-          name: "Total Visits",
-          data: [87, 57, 74, 99, 75, 38, 62, 47, 82, 56, 45, 47]
-        }
+        // {
+        //   name: "Total Visits",
+        //   data: [87, 57, 74, 99, 75, 38, 62, 47, 82, 56, 45, 47]
+        // }
       ],
       chart: {
         height: 350,
@@ -67,7 +71,7 @@ export class DashedLineChartComponent implements OnInit {
         dashArray: [0, 8, 5]
       },
       title: {
-        text: "Page Statistics",
+        text: "Referral Points",
         align: "left"
       },
       legend: {
@@ -91,18 +95,19 @@ export class DashedLineChartComponent implements OnInit {
           trim: false
         },
         categories: [
-          "01 Jan",
-          "02 Jan",
-          "03 Jan",
-          "04 Jan",
-          "05 Jan",
-          "06 Jan",
-          "07 Jan",
-          "08 Jan",
-          "09 Jan",
-          "10 Jan",
-          "11 Jan",
-          "12 Jan"
+          "01 Mon ",
+          "02 Tue",
+          "03 Wed",
+          "04 Thur",
+          "05 Fri",
+          "06 Sat",
+          "07 Sun",
+          // "07 Jan",
+          // "08 Jan",
+          // "09 Jan",
+          // "10 Jan",
+          // "11 Jan",
+          // "12 Jan"
         ]
       },
       tooltip: {
@@ -110,24 +115,28 @@ export class DashedLineChartComponent implements OnInit {
           {
             title: {
               formatter: function(val: any) {
-                return val + " (mins)";
-              }
-            }
-          },
-          {
-            title: {
-              formatter: function(val: any) {
-                return val + " per session";
-              }
-            }
-          },
-          {
-            title: {
-              formatter: function(val: any) {
+                // return val + " (mins)";
                 return val;
+
               }
             }
-          }
+          },
+          {
+            title: {
+              formatter: function(val: any) {
+                // return val + " per session";
+                return val ;
+
+              }
+            }
+          },
+          // {
+          //   title: {
+          //     formatter: function(val: any) {
+          //       return val;
+          //     }
+          //   }
+          // }
         ]
       },
       grid: {

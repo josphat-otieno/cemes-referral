@@ -3,13 +3,13 @@
         <div class="row page-titles mx-0">
             <div class="col-sm-6 p-md-0">
                 <div class="welcome-text">
-                    <h4>Assembly Management</h4>
+                    <h4>Membership Tiers</h4>
                 </div>
             </div>
             <div class="col-sm-6 p-md-0 justify-content-sm-end mt-2 mt-sm-0 d-flex">
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item"><a href="admin/dashboard">Home</a></li>
-                    <li class="breadcrumb-item active"><a href="javascript:void(0)">System Parameters</a></li>
+                    <!-- <li class="breadcrumb-item active"><a href="javascript:void(0)">System Parameters</a></li> -->
                 </ol>
             </div>
         </div>
@@ -18,12 +18,12 @@
         <div class="card">
             <div class="card-header">
                 <div class="col-6">
-                    List of all assemblies
+                    List of all tiers
                 </div>
 
                 <div class="col-6"> 
                     <button class="btn btn-sm btn-primary rightBtns" type="button" (click)="openModal(addAssembly, 'md')">
-                        <i class="fa fa-plus"></i>&nbsp;Add Assembly
+                        <i class="fa fa-plus"></i>&nbsp;Add Tier
                     </button>                  
                 </div>
             </div>
@@ -33,10 +33,9 @@
                     <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="table table-striped">
                     <thead>
                     <tr>
-                        <th scope="col">Name</th>
-                        <th scope="col">Physical Location</th>
-                        <th scope="col">Date Created</th>
-                        <th scope="col">Status</th>
+                        <th scope="col">Tier Name</th>
+                        <th scope="col">Points</th>
+               
                         <th scope="col">Update Details</th>
                     </tr>
                     </thead>
