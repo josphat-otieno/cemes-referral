@@ -20,13 +20,86 @@
                 <ul aria-expanded="false"  [ngClass]="{'mm-show': systemParameterArray.indexOf(currentHref) > -1}">
                     <li><a class="{{(currentHref == '/admin/membership-tiers') ? 'mm-active' : ''}}"  [routerLink]="['/admin/membership-tiers']">Membership Tiers</a></li>
                     <li><a class="{{(currentHref == '/admin/members') ? 'mm-active' : ''}}"  [routerLink]="['/admin/members']">Members</a></li>
-                    <li><a class="{{(currentHref == '/admin/business-sub-category') ? 'mm-active' : ''}}"  [routerLink]="['/admin/business-sub-category']">Referall Codes</a></li>
+                    <!-- <li><a class="{{(currentHref == '/admin/business-sub-category') ? 'mm-active' : ''}}"  [routerLink]="['/admin/business-sub-category']">Referall Codes</a></li> -->
 
                 </ul> 
             
             </li>
 
-            <!-- <li [ngClass]="{'mm-active': dashboardArray.indexOf(currentHref) > -1}"><a class="has-arrow ai-icon" href="javascript:void()" aria-expanded="false">
+          
+
+            <li [ngClass]="{'mm-active': businessArray.indexOf(currentHref) > -1}">
+                <a class="has-arrow ai-icon" href="javascript:void()" aria-expanded="false">
+                    <i class="flaticon-381-blueprint"></i>
+                    <span class="nav-text">Points Management</span>
+                </a>
+                <ul aria-expanded="false" [ngClass]="{'mm-show': businessArray.indexOf(currentHref) > -1}">
+                    <li><a [routerLink]="['/admin/points-category']" class="{{(currentHref == '/admin/admin/points-category') ? 'mm-active' : ''}}">Points Category </a></li>
+                    <li><a [routerLink]="['/admin/loyalty-rewards']" class="{{(currentHref == '/admin/admin/loyalty-rewards') ? 'mm-active' : ''}}">Loyalty Rewards</a></li>
+                    <!-- <li><a [routerLink]="['#']" class="{{(currentHref == '#') ? 'mm-active' : ''}}">Integrity Ratings</a></li> -->
+                    <li><a [routerLink]="['/admin/promotions']" class="{{(currentHref == '/admin/promotions') ? 'mm-active' : ''}}">Promotions</a></li>                    
+                    <li><a [routerLink]="['/admin/customer-points']" class="{{(currentHref == '/admin/customer-points') ? 'mm-active' : ''}}">Customer Points</a></li>
+                    <!-- <li><a [routerLink]="['/admin/point-redemption']" class="{{(currentHref == '/admin/point-redemption') ? 'mm-active' : ''}}">Points Redemption</a></li> -->
+                </ul>
+            </li>
+
+            <li [ngClass]="{'mm-active': membershipArray.indexOf(currentHref) > -1}">
+                <a class="has-arrow ai-icon" href="javascript:void()" aria-expanded="false">
+                    <i class="flaticon-381-user-9"></i>
+                    <span class="nav-text">Referall  Management</span>
+                </a>
+                <ul aria-expanded="false" [ngClass]="{'mm-show': membershipArray.indexOf(currentHref) > -1}">
+                    <li><a [routerLink]="['/admin/leads']" class="{{(currentHref == '/admin/leads') ? 'mm-active' : ''}}">Leads</a></li>
+                    <!-- <li><a [routerLink]="['/admin/app-users']" class="{{(currentHref == '/admin/app-users') ? 'mm-active' : ''}}">App Users</a></li>
+                    <li><a [routerLink]="['/admin/member-complaints']" class="{{(currentHref == '/admin/member-complaints') ? 'mm-active' : ''}}">Complaints</a></li> -->
+                    <!-- <li><a [routerLink]="['#']" class="{{(currentHref == '#') ? 'mm-active' : ''}}">Membership Requests</a></li> -->
+                    <!-- <li><a [routerLink]="['#']" class="{{(current Href == '#') ? 'mm-active' : ''}}">Referrals</a></li> -->
+                </ul>
+            </li>
+
+
+            
+            <br/><hr/>
+
+            <li>
+                <button class="btn btn-sm btn-primary" (click)="logoutUserAction()">
+                    <i class="fa fa-sign-out"></i>&nbsp;Sign Out
+                </button>
+            </li>
+            
+            <!-- <li [ngClass]="{'mm-active': formsArray.indexOf(currentHref) > -1}">
+                <a class="has-arrow ai-icon" href="javascript:void()" aria-expanded="false">
+                    <i class="flaticon-381-notepad"></i>
+                    <span class="nav-text">Forms</span>
+                </a>
+                <ul aria-expanded="false" [ngClass]="{'mm-show': formsArray.indexOf(currentHref) > -1}">
+                    <li><a [routerLink]="['/admin/form-element']" class="{{(currentHref == '/admin/form-element') ? 'mm-active' : ''}}">Form Elements</a></li>
+                    <li><a [routerLink]="['/admin/form-validate']" class="{{(currentHref == '/admin/form-validate') ? 'mm-active' : ''}}">Form Validate</a></li>
+                </ul>
+            </li>
+            <li>
+                <a class="has-arrow ai-icon" href="javascript:void()" aria-expanded="false">
+                    <i class="flaticon-381-layer-1"></i>
+                    <span class="nav-text">Pages</span>
+                </a>
+                <ul aria-expanded="false">
+                    <li><a [routerLink]="['/page-register']">Register</a></li>
+                    <li><a [routerLink]="['/page-login']">Login</a></li>
+                    <li><a class="has-arrow" href="javascript:void()" aria-expanded="false">Error</a>
+                        <ul aria-expanded="false">
+                            <li><a [routerLink]="['/page-error-400']">Error 400</a></li>
+                            <li><a [routerLink]="['/page-error-403']">Error 403</a></li>
+                            <li><a [routerLink]="['/page-error-404']">Error 404</a></li>
+                            <li><a [routerLink]="['/page-error-500']">Error 500</a></li>
+                            <li><a [routerLink]="['/page-error-503']">Error 503</a></li>
+                        </ul>
+                    </li>
+                    <li><a [routerLink]="['/page-lock-screen']">Lock Screen</a></li>
+                </ul>
+            </li> -->
+
+
+              <!-- <li [ngClass]="{'mm-active': dashboardArray.indexOf(currentHref) > -1}"><a class="has-arrow ai-icon" href="javascript:void()" aria-expanded="false">
                 <i class="flaticon-381-networking"></i>
                 <span class="nav-text">Dashboard</span>
             </a> 
@@ -197,76 +270,6 @@
                     <i class="flaticon-381-settings-2"></i>
                     <span class="nav-text">Widget</span>
                 </a>
-            </li> -->
-
-            <li [ngClass]="{'mm-active': businessArray.indexOf(currentHref) > -1}">
-                <a class="has-arrow ai-icon" href="javascript:void()" aria-expanded="false">
-                    <i class="flaticon-381-blueprint"></i>
-                    <span class="nav-text">Points Management</span>
-                </a>
-                <ul aria-expanded="false" [ngClass]="{'mm-show': businessArray.indexOf(currentHref) > -1}">
-                    <li><a [routerLink]="['/admin/business-list']" class="{{(currentHref == '/admin/admin/business-list') ? 'mm-active' : ''}}">Points Category </a></li>
-                    <li><a [routerLink]="['/admin/business-products']" class="{{(currentHref == '/admin/admin/business-products') ? 'mm-active' : ''}}">Loyalty Rewards</a></li>
-                    <!-- <li><a [routerLink]="['#']" class="{{(currentHref == '#') ? 'mm-active' : ''}}">Integrity Ratings</a></li> -->
-                    <li><a [routerLink]="['/admin/business-rating']" class="{{(currentHref == '/admin/business-rating') ? 'mm-active' : ''}}">Promotions</a></li>                    
-                    <li><a [routerLink]="['/admin/advertisement']" class="{{(currentHref == '/admin/advertisement') ? 'mm-active' : ''}}">Customer Points</a></li>
-                    <li><a [routerLink]="['/admin/awareness']" class="{{(currentHref == '/admin/awareness') ? 'mm-active' : ''}}">Points Redemption</a></li>
-                </ul>
-            </li>
-
-            <li [ngClass]="{'mm-active': membershipArray.indexOf(currentHref) > -1}">
-                <a class="has-arrow ai-icon" href="javascript:void()" aria-expanded="false">
-                    <i class="flaticon-381-user-9"></i>
-                    <span class="nav-text">Referall  Management</span>
-                </a>
-                <ul aria-expanded="false" [ngClass]="{'mm-show': membershipArray.indexOf(currentHref) > -1}">
-                    <li><a [routerLink]="['/admin/member-database']" class="{{(currentHref == '/admin/member-database') ? 'mm-active' : ''}}">Leads</a></li>
-                    <!-- <li><a [routerLink]="['/admin/app-users']" class="{{(currentHref == '/admin/app-users') ? 'mm-active' : ''}}">App Users</a></li>
-                    <li><a [routerLink]="['/admin/member-complaints']" class="{{(currentHref == '/admin/member-complaints') ? 'mm-active' : ''}}">Complaints</a></li> -->
-                    <!-- <li><a [routerLink]="['#']" class="{{(currentHref == '#') ? 'mm-active' : ''}}">Membership Requests</a></li> -->
-                    <!-- <li><a [routerLink]="['#']" class="{{(current Href == '#') ? 'mm-active' : ''}}">Referrals</a></li> -->
-                </ul>
-            </li>
-
-
-            
-            <br/><hr/>
-
-            <li>
-                <button class="btn btn-sm btn-primary" (click)="logoutUserAction()">
-                    <i class="fa fa-sign-out"></i>&nbsp;Sign Out
-                </button>
-            </li>
-            
-            <!-- <li [ngClass]="{'mm-active': formsArray.indexOf(currentHref) > -1}">
-                <a class="has-arrow ai-icon" href="javascript:void()" aria-expanded="false">
-                    <i class="flaticon-381-notepad"></i>
-                    <span class="nav-text">Forms</span>
-                </a>
-                <ul aria-expanded="false" [ngClass]="{'mm-show': formsArray.indexOf(currentHref) > -1}">
-                    <li><a [routerLink]="['/admin/form-element']" class="{{(currentHref == '/admin/form-element') ? 'mm-active' : ''}}">Form Elements</a></li>
-                    <li><a [routerLink]="['/admin/form-validate']" class="{{(currentHref == '/admin/form-validate') ? 'mm-active' : ''}}">Form Validate</a></li>
-                </ul>
-            </li>
-            <li>
-                <a class="has-arrow ai-icon" href="javascript:void()" aria-expanded="false">
-                    <i class="flaticon-381-layer-1"></i>
-                    <span class="nav-text">Pages</span>
-                </a>
-                <ul aria-expanded="false">
-                    <li><a [routerLink]="['/page-register']">Register</a></li>
-                    <li><a [routerLink]="['/page-login']">Login</a></li>
-                    <li><a class="has-arrow" href="javascript:void()" aria-expanded="false">Error</a>
-                        <ul aria-expanded="false">
-                            <li><a [routerLink]="['/page-error-400']">Error 400</a></li>
-                            <li><a [routerLink]="['/page-error-403']">Error 403</a></li>
-                            <li><a [routerLink]="['/page-error-404']">Error 404</a></li>
-                            <li><a [routerLink]="['/page-error-500']">Error 500</a></li>
-                            <li><a [routerLink]="['/page-error-503']">Error 503</a></li>
-                        </ul>
-                    </li>
-                    <li><a [routerLink]="['/page-lock-screen']">Lock Screen</a></li>
-                </ul>
             </li> -->
         </ul>
         

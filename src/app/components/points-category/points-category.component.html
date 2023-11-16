@@ -1,0 +1,699 @@
+<div class="content-body">
+    <div class="container-fluid">
+        <div class="row page-titles mx-0">
+            <div class="col-sm-6 p-md-0">
+                <div class="welcome-text">
+                    <h4>Points Management</h4>
+                </div>
+            </div>
+            <div class="col-sm-6 p-md-0 justify-content-sm-end mt-2 mt-sm-0 d-flex">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="admin/dashboard">Home</a></li>
+                    <!-- <li class="breadcrumb-item active"><a href="javascript:void(0)">Business Management</a></li> -->
+                </ol>
+            </div>
+        </div>
+
+        <!-- Parameters -->
+        <!-- <div class="row">
+            <div class="col-xl-3 col-xxl-4 col-lg-6 col-sm-6">
+                <div class="widget-stat card">
+                    <div class="card-body p-4">
+                        <div class="media ai-icon">
+                            <span class="mr-3 bgl-primary text-primary">
+                                <svg id="icon-customers" xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-user">
+                                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                                    <circle cx="12" cy="7" r="4"></circle>
+                                </svg>
+                            </span>
+                            <div class="media-body">
+                                <p class="mb-1">Total Businesses</p>
+                                <h4 class="mb-0">{{businessCount}}</h4>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-3 col-xxl-4 col-lg-6 col-sm-6">
+                <div class="widget-stat card">
+                    <div class="card-body p-4">
+                        <div class="media ai-icon">
+                            <span class="mr-3 bgl-warning text-warning">                    
+                                <svg id="icon-orders" xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text">
+                                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                    <polyline points="14 2 14 8 20 8"></polyline>
+                                    <line x1="16" y1="13" x2="8" y2="13"></line>
+                                    <line x1="16" y1="17" x2="8" y2="17"></line>
+                                    <polyline points="10 9 9 9 8 9"></polyline>
+                                </svg>
+                            </span>
+                            <div class="media-body">
+                                <p class="mb-1">Businesses pending verification</p>
+                                <h4 class="mb-0">{{pendingbusinessCount}}</h4> 
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-3 col-xxl-4 col-lg-6 col-sm-6">
+                <div class="widget-stat card">
+                    <div class="card-body  p-4">
+                        <div class="media ai-icon">
+                            <span class="mr-3 bgl-success text-success">
+                                <svg id="icon-database-widget" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-database">
+                                    <ellipse cx="12" cy="5" rx="9" ry="3"></ellipse>
+                                    <path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"></path>
+                                    <path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"></path>
+                                </svg> 
+                            </span>
+                            <div class="media-body">
+                                <p class="mb-1">Total Products</p>
+                                <h4 class="mb-0">{{productsCount}}</h4>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        
+        </div> -->
+
+        <!-- Main Content -->
+        <div class="card">
+            <div class="card-header">
+                <div class="col-6">
+                    List of points category
+                </div>
+
+                <div class="col-6">
+                    <button class="btn btn-sm btn-primary rightBtns" type="button" (click)="openModal(addBusiness)">
+                        <i class="fa fa-plus"></i>&nbsp;Add Points Category
+                    </button>
+                </div>
+            </div>
+           
+            <div class="card-body">
+
+                           
+                        <div class="table-responsive">
+                            <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="table table-striped">
+                            <thead>
+                            <tr>
+                                <!-- <th scope="col"></th> -->
+                                <th scope="col">Category Name</th>
+                                <th scope="col">Points</th>
+                                <th scope="col">Expiry Period</th>
+                                <th scope="col">Date Created</th>
+                                <th scope="col">Update Details</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr *ngFor="let res of businesses; index as i">
+                                <!-- <th scope="row">{{ i + 1 }}</th>		 -->
+                                <td>
+                                    <div class="circular_image_container symbol symbol-50px me-5">
+                                        <img src="{{res.business.logo}}" alt="business logo"/>
+                                    </div>
+                                </td>
+                                <td>{{res.business.name}}</td>
+                                <td>{{res.business.owner.name}}</td>
+                                <td>{{res.business.owner.assembly}}</td>
+                                <td>{{res.business.joinDate | date:'mediumDate'}}</td>
+                                <td>
+                                    <span *ngIf="res.business.status === true" class="badge badge-success">Active</span>
+                                    <span *ngIf="res.business.status === false" class="badge badge-danger">Inactive</span>
+                                </td>
+                                <td>
+                                    <div class="button_containers">                                        
+                                        <button type="button" class="btn btn-sm btn-info" (click)="reviewUpdateModal(viewBusinessModal, res)">
+                                            <i class="fa fa-eye"></i> View Details
+                                        </button> &nbsp;
+                                        <button type="button" [disabled] class="btn btn-sm btn-success" (click)="reviewUpdateModal(editBusiness, res)"><i class="fa fa-edit"></i> Edit</button> &nbsp;
+                                        <button type="button" *ngIf="res.business.status === true" class="btn btn-sm btn-danger" (click)="reviewModal(deactivateBusiness, res)"><i class="fa fa-close"></i> Deactivate</button>
+                                        <button type="button" *ngIf="res.business.status === false" class="btn btn-sm btn-success" (click)="reviewModal(activateBusiness, res)"><i class="fa fa-refresh"></i> Activate</button>
+                                    </div>
+                                </td>
+                            </tr>
+
+                            <tr *ngIf="businessCount == 0">
+                                <td colspan="7" class="no_data_display">
+                                    No data available for display
+                                </td>
+                            </tr>
+
+                            </tbody>
+                            </table>
+                        </div>
+               
+            </div>
+        </div>
+      
+	</div>
+</div>
+
+<!-- Modals -->
+<ng-template #addBusiness let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title">Register Business</h4>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body default-calendar">
+        <div class="form-validation">
+            <form [formGroup]="BusinessRegistration" novalidate>
+                <div class="row">
+
+                    <div class="col-xl-6">
+                        <div class="form-group row">
+                            <label class="col-lg-4 col-form-label" for="name">Business Name
+                                <span class="text-danger">*</span>
+                            </label>
+                            <div class="col-lg-6">
+                                <input required type="text" class="form-control" id="name" formControlName="name" placeholder="Enter business name...">
+                                <div *ngIf="BusinessRegistration.controls['name'].invalid && (BusinessRegistration.controls['name'].dirty || BusinessRegistration.controls['name'].touched)" class="text-danger fs-13 mt-1">
+                                    
+                                    <div *ngIf="BusinessRegistration.controls['name'].errors.required">
+                                        A name is required for the business.
+                                    </div>
+                                </div>
+                            </div>                    
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-lg-4 col-form-label" for="natureAdd">Nature </label>
+                            <div class="col-lg-6">
+                                <input type="text" class="form-control" id="natureAdd" formControlName="nature" placeholder="The nature of the buiness ...">                               
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label class="col-lg-4 col-form-label" for="businessCategory">Category
+                                <span class="text-danger">*</span>
+                            </label>
+                            <div class="col-lg-6">
+                                <select required class="form-control default-select" id="businessCategory" formControlName="business_category" >
+                                    <option value="">Please select a category</option>
+                                    <option *ngFor="let res of businessCategories" value="{{res.id}}">{{res.category}}</option>
+                                   
+                                </select>
+                                <div *ngIf="BusinessRegistration.controls['business_category'].invalid && (BusinessRegistration.controls['business_category'].dirty || BusinessRegistration.controls['business_category'].touched)" class="text-danger fs-13 mt-1">
+                                    
+                                    <div *ngIf="BusinessRegistration.controls['business_category'].errors.required">
+                                        Select at least one business category.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label class="col-lg-4 col-form-label" for="businessOwner">Business Owner
+                                <span class="text-danger">*</span>
+                            </label>
+                            <div class="col-lg-6">
+                                <select required class="form-control default-select" id="businessOwner" formControlName="business_owner" >
+                                    <option value="">Please select owner of this business...</option>
+                                    <option *ngFor="let owner of businessOwners" value="{{owner.id}}">{{owner.name}}</option>
+                                   
+                                </select>
+                                <div *ngIf="BusinessRegistration.controls['business_owner'].invalid && (BusinessRegistration.controls['business_owner'].dirty || BusinessRegistration.controls['business_owner'].touched)" class="text-danger fs-13 mt-1">
+                                    
+                                    <div *ngIf="BusinessRegistration.controls['business_owner'].errors.required">
+                                        Select owner of the business.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>                         
+                        
+                    </div>
+
+                    <div class="col-xl-6">
+                         
+                        <div class="form-group row">
+                            <label class="col-lg-4 col-form-label" for="locData">Location</label>
+                            <div class="col-lg-6">
+                                <input type="text" class="form-control" id="locData" placeholder="Physical location ..." formControlName="physical_location">                                
+                            </div>
+                        </div>    
+                      
+                        <div class="form-group row">
+                            <label class="col-lg-4 col-form-label" for="BuildingNme">Building Name</label>
+                            <div class="col-lg-6">
+                                <input type="text" class="form-control" id="BuildingNme" placeholder="Business premises name" formControlName="building_name">                                
+                            </div>
+                        </div>                            
+                        <div class="form-group row">
+                            <label class="col-lg-4 col-form-label" for="floorNumber">Floor Number</label>
+                            <div class="col-lg-6">
+                                <input type="text" class="form-control" id="floorNumber" placeholder="Floor number..." formControlName="floor">                                
+                            </div>
+                        </div>                            
+                        <div class="form-group row">
+                            <label class="col-lg-4 col-form-label" for="officeNumber">Office Number</label>
+                            <div class="col-lg-6">
+                                <input type="text" class="form-control" id="officeNumber" placeholder="Office number..." formControlName="office_number">                                
+                            </div>
+                        </div> 
+
+                    </div>     
+        
+                </div>
+                
+                <span class="fs-6 text-muted">Business Media</span><hr/>
+
+                <!-- Media -->
+                <div class="row">
+
+                    <div class="col-6">
+                         <!-- certificates -->
+                        <div class="form-group row">
+                            <label class="col-lg-4 col-form-label" for="certRegistration">Certificate of Registration</label>
+                            <div class="col-lg-6">
+                                <input type="file" class="form-control" id="certRegistration" (change)="uploadRegCert($event)" placeholder="Certificate of Registration" formControlName="certificateOfRegistration">                                
+                            </div>
+                        </div>  
+
+                        <div class="form-group row">
+                            <label class="col-lg-4 col-form-label" for="kraCertificates">KRA Certificate</label>
+                            <div class="col-lg-6">
+                                <input type="file" class="form-control" id="kraCertificates" (change)="uploadKra($event)" placeholder="KRA Certificate" formControlName="kraCertificate">                                
+                            </div>
+                        </div> 
+                    </div>
+
+                    <div class="col-6">
+                        <label for="file">Business Logo</label>
+
+                        <div class="image-upload">
+                            <label for="file-input">
+                              <img src="{{businessDefaultLogo}}"  alt="business logo" />
+                            </label>
+                          
+                            <input id="file-input" type="file" accept="image/*" #output (change)="onChange($event)">
+                        </div>
+                    </div>                   
+
+                </div>
+            </form>
+        </div>
+        
+        <!-- message -->
+        <div *ngIf="messageResponse" class="row alert alert-info">
+            <p><i class="fa fa-exclamation"></i> &nbsp;  {{messageResponse}}</p>
+        </div>
+        <div *ngIf="alertResponse != ''" class="row alert alert-warning">
+            <p><i class="fa fa-exclamation"></i> &nbsp;  {{alertResponse}}</p>
+        </div>
+
+    </div>
+
+    <div class="modal-footer">
+        <button type="button" class="btn btn-light" (click)="modal.close('Close click')">Cancel</button>
+        <button type="button" class="btn btn-primary" [disabled]="BusinessRegistration.pristine || BusinessRegistration.invalid" (click)="saveBusiness()">Save</button>
+    </div>
+  </ng-template>
+
+  <ng-template #viewBusinessModal let-modal>
+    <div class="modal-header alert alert-success">
+      <h4 class="modal-title" id="modal-edit-title">{{businessModalData.business.name}} 's Details</h4>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+
+    <div class="modal-body">
+
+        <!-- display profile -->
+        <div class="row profiler">
+			<div class="col-lg-12">
+				<div class="profile card card-body px-3 pt-3 pb-0">
+					<div class="profile-head">
+						<div class="photo-content">
+							<div class="cover-photo"></div>
+						</div>
+						<div class="profile-info">
+							<div class="circular_business_image_container symbol symbol-50px me-5">
+								<img src="{{businessModalData?.business.logo}}" class="img-fluid rounded-circle" alt="">
+							</div>
+							<div class="profile-details">
+								<div class="profile-name px-3 pt-2">
+									<h4 class="text-primary mb-0">{{businessModalData?.business.name}}</h4>
+									<p>
+                                        <!-- <ngb-rating [(rate)]="currentRate" [max]="5" [readonly]="true"></ngb-rating> {{currentRate}} <br/> -->
+
+                                        <ng-template #t let-fill="fill">
+                                            <span class="star" [class.filled]="fill === 100">
+                                              <span class="half" [style.width.%]="fill">&#9733;</span>&#9733;
+                                            </span>
+                                          </ng-template>
+                                          
+                                        <ngb-rating [(rate)]="currentRate" [starTemplate]="t" [readonly]="true" [max]="5"></ngb-rating> ({{currentRate}}) <br/>                                          
+                                        <a href="/admin/business-rating" class="badge badge-sm badge-info"><i class="fa fa-eye"></i> {{businessModalData?.business.reviews}} reviews(s)</a>  &nbsp;
+                                        <span (click)="goToProducts(businessModalData?.business.id)" class="badge badge-sm badge-success"><i class="fa fa-eye"></i> {{businessModalData?.business.productCount}} product(s)</span> 
+                                    </p>
+								</div>
+								<div class="profile-email px-2 pt-2">
+									<h4 class="text-muted mb-0">{{businessModalData?.business.category}}</h4>
+									<p>{{businessModalData?.business.nature}}</p>
+								</div>
+								
+							</div>
+						</div>
+					</div> <hr/>
+
+                    <!-- Business Details -->
+                    <div class="row">
+                        <div class="col-6">               
+                            <label class="text-muted mb-2">Business Details</label>
+                            <p class="fs-6">
+                                <b> Owned By: </b>{{businessModalData?.business.owner.name}}
+                            </p>
+                            <p class="fs-6">
+                                <b> Assembly: </b> {{businessModalData?.business.owner.assembly}}
+                            </p>
+                            <p class="fs-6">
+                                <b> Registration Date: </b>{{businessModalData.business.joinDate | date:'longDate'}}
+                           </p>
+                        </div>
+
+                        <div class="col-6">
+                            <label class="text-muted mb-2">Contact Information</label>
+
+                            <div class="container" *ngIf="contactsExist === true">
+                                <p class="fs-3">
+                                    <b> Phone Number(s)</b> <br/> {{mobileContacts}}
+                                </p> 
+                                <p class="fs-3">
+                                    <b> Email(s)</b> <br/> {{mailContacts}}
+                                </p>
+                            </div>
+
+                            <div class="container" *ngIf="contactsExist === false">
+                                <p class="fs-3 text-danger">
+                                    Business has no contacts
+                                </p>
+                            </div>
+
+                            <!-- <p class="fs-3"><b>Social Links</b></p>
+
+                                <div class="social-media">
+                                    <a *ngFor="let social of social_link" title="{{social.title}}" href="{{social.link}}" 
+                                    class="btn btn-outline-primary btn-rounded btn-sm {{social.icon_class}}" target="_blank"></a> &nbsp;
+                                </div> -->
+
+                        </div>
+                    </div>
+
+                    <!-- business images -->
+                    <div class="row">
+                        <div class="col-12">
+                            <label class="text-muted mb-2">Business Images</label>
+                            <div class="card-body pb-1">
+                                <div id="lightgallery" *ngIf="imagesExist === true" class="row">
+                                    <a class="col-lg-3 col-md-6 mb-4" href="javascript:void(0);" 
+                                        *ngFor="let item of businessImages; let key=index"><img class="rounded" [src]="item.thumb" 
+                                        (click)="open(businessImages, key)" style="width:60%;">
+                                    </a>
+                                </div>
+
+                                <div class="container" *ngIf="imagesExist === false">
+                                    <p class="text-danger"> Business has no images </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+				</div>
+			</div>
+		</div>
+        
+        <div class="modal-footer">
+            <button class="btn btn-block btn-md btn-primary" type="button" aria-label="Close" (click)="modal.dismiss('Cross click')">
+                Close
+            </button>
+        </div>
+    </div>
+  </ng-template>
+
+  <ng-template #editBusiness let-modal>
+    <div class="modal-header alert alert-success">
+      <h4 class="modal-title" id="modal-edit-title">Edit Business</h4>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+
+    <div class="modal-body default-calendar">
+        <form class="form" #editForm="ngForm" autocomplete="on">
+            <input type="hidden" name="id" ngModel="{{businessModalData?.business.id}}" value="{{businessModalData?.business.id}}">
+
+            <div class="row">
+
+                <div class="col-xl-6">
+                    <div class="form-group row">
+                        <label class="col-lg-4 col-form-label" for="name">Business Name
+                            <span class="text-danger">*</span>
+                        </label>
+                        <div class="col-lg-6">
+                            <input required type="text" class="form-control" name="name" ngModel="{{businessModalData?.business.name}}" value="{{businessModalData?.business.name}}" placeholder="Enter business name...">
+                            <div *ngIf="emptyName">
+                                A name is required for the business.
+                            </div>
+                        </div>                    
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-lg-4 col-form-label" for="natureUpdate">Nature </label>
+                        <div class="col-lg-6">
+                            <input type="text" class="form-control" id="natureUpdate" name="nature" ngModel="{{businessModalData?.business.nature}}" value="{{businessModalData?.business.nature}}" placeholder="The nature of the buiness ...">                               
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label class="col-lg-4 col-form-label" for="businessCategoryUpdate">Category
+                            <span class="text-danger">*</span>
+                        </label>
+                        <div class="col-lg-6">
+                            <select required class="form-control default-select" id="businessCategoryUpdate" name="categoryId" ngModel="{{businessModalData?.business.categoryId}}" value="{{businessModalData?.business.categoryId}}" >
+                                <option value="0">Please select a category</option>
+                                <option *ngFor="let res of businessCategories" value="{{res.id}}">{{res.category}}</option>
+                               
+                            </select>
+                            <div *ngIf="emptyCategory">
+                                Select at least one business category.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label class="col-lg-4 col-form-label" for="businessOwnerUpdate">Business Owner
+                            <span class="text-danger">*</span>
+                        </label>
+                        <div class="col-lg-6">
+                            <select required class="form-control default-select" id="businessOwnerUpdate" name="ownerId" ngModel="{{businessModalData?.business.owner.ownerId}}" value="{{businessModalData?.business.owner.ownerId}}">
+                                <option value="0">Please select owner of this business...</option>
+                                <option *ngFor="let owner of businessOwners" value="{{owner.id}}">{{owner.name}}</option>
+                               
+                            </select>
+                            <div *ngIf="emptyOwner">
+                                Select owner of the business.
+                            </div>
+                        </div>
+                    </div>                         
+                    
+                </div>
+
+                <div class="col-xl-6">
+                     
+                    <div class="form-group row">
+                        <label class="col-lg-4 col-form-label" for="locUpdate">Location</label>
+                        <div class="col-lg-6">
+                            <input type="text" class="form-control" id="locUpdate" placeholder="Physical location ..." name="location" ngModel="{{businessModalData?.business.location}}" value="{{businessModalData?.business.location}}">                                
+                        </div>
+                    </div>    
+                  
+                    <div class="form-group row">
+                        <label class="col-lg-4 col-form-label" for="BuildingNmeUpdate">Building Name</label>
+                        <div class="col-lg-6">
+                            <input type="text" class="form-control" id="BuildingNmeUpdate" placeholder="Business premises name" name="building" ngModel="{{businessModalData?.business.building}}" value="{{businessModalData?.business.building}}">                                
+                        </div>
+                    </div>                            
+                    <div class="form-group row">
+                        <label class="col-lg-4 col-form-label" for="floorNumberUpdate">Floor Number</label>
+                        <div class="col-lg-6">
+                            <input type="text" class="form-control" id="floorNumberUpdate" placeholder="Floor number..." name="floor" ngModel="{{businessModalData?.business.floor}}" value="{{businessModalData?.business.floor}}">                                
+                        </div>
+                    </div>                            
+                    <div class="form-group row">
+                        <label class="col-lg-4 col-form-label" for="officeNumberUpdate">Office Number</label>
+                        <div class="col-lg-6">
+                            <input type="text" class="form-control" id="officeNumberUpdate" placeholder="Office number..." name="office" ngModel="{{businessModalData?.business.office}}" value="{{businessModalData?.business.office}}">                                
+                        </div>
+                    </div> 
+
+                </div>     
+    
+            </div>
+            
+            <span class="fs-6 text-muted">Business Media</span><hr/>
+
+            <!-- Media -->
+            <div class="row">
+
+                <div class="col-6">
+                    <!-- Current -->
+                    <label class="text-muted fs-6 current_label">Current Files</label><br/>
+
+                    <a class="text-muted fs-6" target="_blank" href="{{businessModalData?.business.kra}}" *ngIf="businessModalData?.business.kra != 'no_file'">KRA Certificate: <span class="badge badge-info badge-sm">Download</span></a>
+                    <a class="text-muted fs-6" target="_blank" *ngIf="businessModalData?.business.kra == 'no_file'">KRA Certificate: <span class="badge badge-danger badge-sm">No File</span> </a>
+                    <br/>
+                    <a class="text-muted fs-6" target="_blank" href="{{businessModalData?.business.certificate}}" *ngIf="businessModalData?.business.certificate != 'no_file'">Registration Certificate: <span class="badge badge-info badge-sm">Download</span></a>
+                    <a class="text-muted fs-6" target="_blank" *ngIf="businessModalData?.business.certificate == 'no_file'">Registration Certificate: <span class="badge badge-danger badge-sm">No File</span> </a>
+                    <br/>
+                    <br/>
+
+                    <!-- certificates -->
+                    <div class="form-group row">
+                        <label class="col-lg-4 col-form-label" for="certRegistrationUpd">Certificate of Registration</label>
+                        <div class="col-lg-6">
+                            <input type="file" class="form-control" id="certRegistrationUpd" (change)="updateRegCert($event)" placeholder="Certificate of Registration" name="certificate">                                
+                        </div>
+                    </div>  
+
+                    <div class="form-group row">
+                        <label class="col-lg-4 col-form-label" for="kraCertificatesUpd">KRA Certificate</label>
+                        <div class="col-lg-6">                           
+                            <input type="file" class="form-control" id="kraCertificates" (change)="updateKra($event)" placeholder="KRA Certificate" name="kra" >                                
+                        </div>
+                    </div> 
+                </div>
+
+                <div class="col-6">
+                    <label for="file">Business Logo</label>
+
+                    <div class="image-upload">
+                        <label for="file-input">
+                          <img src="{{businessLogo}}" alt="business logo" />
+                        </label>
+                      
+                        <input id="file-input" type="file" accept="image/*" #output (change)="onUpdateChange($event)">
+                    </div>
+                </div>                   
+
+            </div>
+
+            <!-- message -->
+            <div *ngIf="messageResponse" class="row alert alert-info">
+                <p><i class="fa fa-exclamation"></i> &nbsp;  {{messageResponse}}</p>
+            </div>
+            <div *ngIf="alertResponse != ''" class="row alert alert-warning">
+                <p><i class="fa fa-exclamation"></i> &nbsp;  {{alertResponse}}</p>
+            </div>
+
+            <div class="modal-footer">
+              <button type="button" class="btn btn-light" data-dismiss="modal" (click)="modal.dismiss('Cross click')">Cancel</button>
+              <button type="submit" [disabled]="!updateValidity" (click)="updateBusiness(editForm.value)" class="btn btn-primary" >Save Changes</button>
+            </div>
+          </form>
+    </div>
+  </ng-template>
+
+  <ng-template #deactivateBusiness let-modal>
+    <div class="modal-header alert alert-danger">
+      <h4 class="modal-title" id="modal-del-title">Deactivate Business</h4>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body default-calendar">
+      <form #deactivForm="ngForm">        
+        <input type="hidden" name="id" ngModel="{{businessModalData?.business.id}}" value="{{businessModalData?.business.id}}">
+        <p>Are you sure you want to deactivate <b>{{businessModalData.business.name}}</b>?</p>
+      </form>
+
+       <!-- message -->
+       <div *ngIf="messageResponse" class="row alert alert-info">
+        <p><i class="fa fa-exclamation"></i> &nbsp;  {{messageResponse}}</p>
+        </div>
+
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-sm btn-light" (click)="modal.close('Close click')">No</button>
+        <button type="button" class="btn btn-sm btn-primary" (click)="deactivateBusinessAction(deactivForm.value)">Yes</button>
+    </div>
+  </ng-template>
+
+  <ng-template #activateBusiness let-modal>
+    <div class="modal-header alert alert-success">
+      <h4 class="modal-title" id="modal-del-title">Activate Business</h4>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body default-calendar">
+      <form #activForm="ngForm">        
+        <input type="hidden" name="id" ngModel="{{businessModalData?.business.id}}" value="{{businessModalData?.business.id}}">
+        <p>Are you sure you want to activate <b>{{businessModalData.business.name}}</b>?</p>
+      </form>
+
+      <!-- message -->
+      <div *ngIf="messageResponse" class="row alert alert-info">
+        <p><i class="fa fa-exclamation"></i> &nbsp;  {{messageResponse}}</p>
+        </div>
+
+    </div>
+
+    <div class="modal-footer">
+        <button type="button" class="btn btn-sm btn-light" (click)="modal.close('Close click')">No</button>
+        <button type="button" class="btn btn-sm btn-primary" (click)="activateBusinessAction(activForm.value)">Yes</button>
+    </div>
+  </ng-template>
+  
+  <ng-template #approveBusiness let-modal>
+    <div class="modal-header alert alert-success">
+      <h4 class="modal-title" id="modal-del-title">Approve {{businessModalData?.business.name}}</h4>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body default-calendar">
+      <form #approvalForm="ngForm">        
+        <input type="hidden" name="id" ngModel="{{businessModalData?.business.id}}" value="{{businessModalData?.business.id}}">
+        <p>Are you sure you want to approve <b>{{businessModalData?.business.name}}</b>?</p>
+      </form>
+
+      <!-- message -->
+      <div *ngIf="messageResponse" class="row alert alert-info">
+        <p><i class="fa fa-exclamation"></i> &nbsp;  {{messageResponse}}</p>
+        </div>
+
+    </div>
+
+    <div class="modal-footer">
+        <button type="button" class="btn btn-sm btn-light" (click)="modal.close('Close click')">No</button>
+        <button type="button" class="btn btn-sm btn-primary" (click)="approveBusinessAction(approvalForm.value)">Yes</button>
+    </div>
+  </ng-template>
+
+  <ng-template #rejectBusiness let-modal>
+    <div class="modal-header alert alert-danger">
+      <h4 class="modal-title" id="modal-del-title">Reject {{businessModalData?.business.name}}</h4>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body default-calendar">
+      <form #rejectForm="ngForm">        
+        <input type="hidden" name="id" ngModel="{{businessModalData?.business.id}}" value="{{businessModalData?.business.id}}">
+        <p>Are you sure you want to reject <b>{{businessModalData?.business.name}}</b>?</p>
+      </form>
+
+      <!-- message -->
+      <div *ngIf="messageResponse" class="row alert alert-info">
+        <p><i class="fa fa-exclamation"></i> &nbsp;  {{messageResponse}}</p>
+      </div>
+
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-sm btn-light" (click)="modal.close('Close click')">No</button>
+        <button type="button" class="btn btn-sm btn-primary" (click)="revokeBusinessAction(rejectForm.value)">Yes</button>
+    </div>
+  </ng-template>
+    

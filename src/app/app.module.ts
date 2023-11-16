@@ -692,6 +692,13 @@ import { NotificationMessageComponent } from './components/notification-message/
 import { EventNotificationsComponent } from './components/event-notifications/event-notifications.component';
 import { EventPaymentsComponent } from './components/event-payments/event-payments.component';
 import { GeneralPaymentsComponent } from './components/general-payments/general-payments.component';
+import { MembershipTiersComponent } from './components/membership-tiers/membership-tiers.component';
+import { CemesMembersComponent } from './components/cemes-members/cemes-members.component';
+import { PointsCategoryComponent } from './components/points-category/points-category.component';
+import { LoyaltyRewardsComponent } from './components/loyalty-rewards/loyalty-rewards.component';
+import { PromotionsComponent } from './components/promotions/promotions.component';
+import { CustomerPointsComponent } from './components/customer-points/customer-points.component';
+import { LeadsComponent } from './components/leads/leads.component';
 
 function appInitializer(authService: CbfService) {
   return () => {
@@ -1321,7 +1328,7 @@ function appInitializer(authService: CbfService) {
     UserResponsesComponent,
     NotificationMessageComponent,
     EventNotificationsComponent,  
-    EventPaymentsComponent, GeneralPaymentsComponent  
+    EventPaymentsComponent, GeneralPaymentsComponent, MembershipTiersComponent, CemesMembersComponent, PointsCategoryComponent, LoyaltyRewardsComponent, PromotionsComponent, CustomerPointsComponent, LeadsComponent  
     
   ],
   imports: [

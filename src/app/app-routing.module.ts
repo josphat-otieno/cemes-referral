@@ -161,6 +161,11 @@ import { EventNotificationsComponent } from './components/event-notifications/ev
 import { HashLocationStrategy, LocationStrategy } from '@angular/common';
 import { EventPaymentsComponent } from './components/event-payments/event-payments.component';
 import { GeneralPaymentsComponent } from './components/general-payments/general-payments.component';
+import { LoyaltyRewardsComponent } from './components/loyalty-rewards/loyalty-rewards.component';
+import { PointsCategoryComponent } from './components/points-category/points-category.component';
+import { LeadsComponent } from './components/leads/leads.component';
+import { MembershipTiersComponent } from './components/membership-tiers/membership-tiers.component';
+import { CemesMembersComponent } from './components/cemes-members/cemes-members.component';
 
 
 const routes: Routes = [
@@ -285,16 +290,18 @@ const routes: Routes = [
 
               // CBF Components
               {path: 'users', component: UsersComponent},
-              {path: 'member-database', component: MembersComponent},
-              {path: 'member-complaints', component: MemberComplaintsComponent},
-              {path: 'app-users', component: AppUsersComponent},
-              {path: 'business-list', component: BusinessListingComponent},
-              {path: 'business-products', component: BusinessProductsComponent},
-              {path: 'membership-tiers', component: AssemblyComponent},
+              {path: 'leads', component: LeadsComponent},
+              {path: 'members', component: CemesMembersComponent},
+              {path: 'points-category', component: PointsCategoryComponent},
+              {path: 'loyalty-rewards', component: LoyaltyRewardsComponent},
+              {path: 'membership-tiers', component: MembershipTiersComponent},
+              {path: 'customer-points', component: AdvertisementsComponent},
+              {path: 'promotions', component: BusinessRatingComponent},
               // {path: 'account-packages', component: AccountPackagesComponent},
               // {path: 'forum-category', component: ForumCategoryComponent},
               // {path: 'awareness', component: OffersPromotionsAwarenessComponent},
-              {path: 'members', component: BusinessCategoryComponent},
+              {path: 'app-users', component: AppUsersComponent},
+              {path: 'member-complaints', component: MemberComplaintsComponent},
               {path: 'business-sub-category', component: BusinessSubCategoryComponent},
               {path: 'forum', component: ForumComponent},
               {path: 'events-management', component: EventsManagementComponent},
@@ -304,8 +311,8 @@ const routes: Routes = [
               {path: 'notification-messages', component: NotificationMessageComponent},
               {path: 'event-program-management', component: EventProgramComponent},
               {path: 'forum-management', component: ForumManagementComponent},
-              {path: 'advertisement', component: AdvertisementsComponent},
-              {path: 'business-rating', component: BusinessRatingComponent},
+              
+              
               {path: 'profile', component: ProfileComponent},
               {path: 'profanity-report', component: ProfanityReportComponent},
               {path: 'event-custom-forms', component: CustomFormComponent},

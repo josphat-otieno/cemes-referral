@@ -1,0 +1,198 @@
+<div class="content-body">
+    <div class="container-fluid">
+        <div class="row page-titles mx-0">
+            <div class="col-sm-6 p-md-0">
+                <div class="welcome-text">
+                    <h4>Membership Tiers</h4>
+                </div>
+            </div>
+            <div class="col-sm-6 p-md-0 justify-content-sm-end mt-2 mt-sm-0 d-flex">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="admin/dashboard">Home</a></li>
+                    <!-- <li class="breadcrumb-item active"><a href="javascript:void(0)">System Parameters</a></li> -->
+                </ol>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="card">
+            <div class="card-header">
+                <div class="col-6">
+                    List of all tiers
+                </div>
+
+                <div class="col-6"> 
+                    <button class="btn btn-sm btn-primary rightBtns" type="button" (click)="openModal(addAssembly, 'md')">
+                        <i class="fa fa-plus"></i>&nbsp;Add Tier
+                    </button>                  
+                </div>
+            </div>
+           
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th scope="col">Tier Name</th>
+                        <th scope="col">Points</th>
+               
+                        <th scope="col">Update Details</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let assembly of assemblyList; index as i">
+                            <td>{{assembly.name}}</td>
+                            <td>{{assembly.physical_location}}</td>
+                            <td>{{assembly.created_at | date:'mediumDate'}}</td>
+                            <td>
+                                <span *ngIf="assembly.is_deleted === true" class="badge badge-danger">Deleted</span>
+                                <span *ngIf="assembly.is_deleted === false" class="badge badge-success">Active</span>
+                            </td>
+                            <td>
+                                <div class="button_containers">
+                                    <button type="button" class="btn btn-sm btn-success" (click)="reviewModal(editAssembly, assembly)"> <i class="fa fa-pencil"></i>Edit</button> &nbsp;
+                                    <button type="button" [disabled]="assembly.is_deleted === true" class="btn btn-sm btn-danger" (click)="reviewModal(deleteAssembly, assembly)"> <i class="fa fa-trash"></i>Delete</button> 
+                                </div>
+                            </td>
+                        </tr>
+
+                        <tr *ngIf="assemblyCount == 0">
+                            <td colspan="5" class="no_data_display">
+                                No data available for display
+                            </td>
+                        </tr>
+                    </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+      
+	</div>
+</div>
+
+  
+<ng-template #addAssembly let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title">Create Assembly</h4>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body default-calendar">
+        <div class="form-validation">
+            <form class="form-valide" action="#" method="post" [formGroup]="assemblyRegistration" novalidate>
+                <div class="form-group row">
+                    <label class="col-lg-5 col-form-label" for="assemblyName">Assembly Name
+                        <span class="text-danger">*</span>
+                    </label>
+                    <div class="col-lg-7">
+                        <input type="text" class="form-control" id="assemblyName" formControlName="assemblyName" placeholder="Enter assembly name...">
+                        <div *ngIf="assemblyRegistration.controls['assemblyName'].invalid && (assemblyRegistration.controls['assemblyName'].dirty || assemblyRegistration.controls['assemblyName'].touched)" class="text-danger fs-13 mt-1">
+                            
+                            <div *ngIf="assemblyRegistration.controls['assemblyName'].errors.required">
+                                Assembly name is required.
+                            </div>
+                        </div>
+                    </div>
+                    
+                </div>
+                <div class="form-group row">
+                    <label class="col-lg-5 col-form-label" for="Location">Location
+                        <span class="text-danger">*</span>
+                    </label>
+                    <div class="col-lg-7">
+                        <input type="text" class="form-control" id="Location" formControlName="location" placeholder="Enter location...">
+                        <div *ngIf="assemblyRegistration.controls['location'].invalid && (assemblyRegistration.controls['location'].dirty || assemblyRegistration.controls['location'].touched)" class="text-danger fs-13 mt-1">                            
+                            <div *ngIf="assemblyRegistration.controls['location'].errors.required">
+
+                                
+                                Location is required.
+                            </div>
+                        </div>
+                    </div>
+                    
+                </div>
+              
+            </form>
+        </div>
+        
+        <!-- message -->
+        <div *ngIf="messageResponse" class="row alert alert-info">
+            <p><i class="fa fa-exclamation"></i> &nbsp;  {{messageResponse}}</p>
+        </div>
+
+    </div>
+
+    <div class="modal-footer">
+        <button type="button" class="btn btn-light" (click)="modal.close('Close click')">Cancel</button>
+        <button type="button" class="btn btn-primary" [disabled]="assemblyRegistration.pristine || assemblyRegistration.invalid" (click)="saveAssembly()">Save</button>
+    </div>
+  </ng-template>
+
+<ng-template #editAssembly let-modal>
+    <div class="modal-header alert alert-success">
+      <h4 class="modal-title" id="modal-edit-title">Edit Assembly Details</h4>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+
+    <div class="modal-body default-calendar">
+        <form class="form" #editForm="ngForm" autocomplete="on">
+            <div class="form-group row">
+                <label class="col-lg-5 col-form-label" for="assemblyNameEdit">Assembly Name
+                    <span class="text-danger">*</span>
+                </label>
+                <div class="col-lg-7">
+                    <input type="hidden" name="id" ngModel="{{assemblyModalData?.id}}" value="{{assemblyModalData?.id}}">
+                    <input type="text" class="form-control" id="assemblyNameEdit" name="name" ngModel="{{assemblyModalData?.name}}" value="{{assemblyModalData?.name}}">
+                </div>                        
+            </div>
+            <div class="form-group row">
+                <label class="col-lg-5 col-form-label" for="assemblyLocationEdit">Location
+                    <span class="text-danger">*</span>
+                </label>
+                <div class="col-lg-7">
+                    <input type="text" class="form-control" id="assemblyLocationEdit" name="location" ngModel="{{assemblyModalData?.physical_location}}" value="{{assemblyModalData?.physical_location}}">
+                </div>                        
+            </div>
+           
+
+            <!-- message -->
+            <div *ngIf="messageResponse" class="row alert alert-info">
+                <p><i class="fa fa-exclamation"></i> &nbsp;  {{messageResponse}}</p>
+            </div>
+
+            <div class="modal-footer">
+              <button type="button" class="btn btn-light" data-dismiss="modal" (click)="modal.dismiss('Cross click')">Cancel</button>
+              <button type="submit" [disabled]="!editForm.valid" class="btn btn-primary" (click)="updateAssemblyAction(editForm.value)"
+               >Save Changes</button>
+            </div>
+          </form>
+    </div>
+  </ng-template>
+
+  <ng-template #deleteAssembly let-modal>
+    <div class="modal-header alert alert-danger">
+      <h4 class="modal-title" id="modal-del-title">Delete Assembly</h4>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body default-calendar">
+      <form #deleteForm="ngForm">        
+        <input type="hidden" name="id" ngModel="{{assemblyModalData?.id}}" value="{{assemblyModalData?.id}}">
+        <p>Are you sure you want to delete <b>{{assemblyModalData.name}}</b>?</p>
+      </form>
+
+       <!-- message -->
+       <div *ngIf="messageResponse" class="row alert alert-info">
+        <p><i class="fa fa-exclamation"></i> &nbsp;  {{messageResponse}}</p>
+        </div>
+
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-sm btn-light" (click)="modal.close('Close click')">No</button>
+        <button type="button" class="btn btn-sm btn-primary" (click)="deleteAssemblyAction(deleteForm.value)">Yes</button>
+    </div>
+  </ng-template>

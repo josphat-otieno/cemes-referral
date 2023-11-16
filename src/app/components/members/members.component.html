@@ -3,13 +3,13 @@
         <div class="row page-titles mx-0">
             <div class="col-sm-6 p-md-0">
                 <div class="welcome-text">
-                    <h4>Members Database</h4>
+                    <h4>LEADS</h4>
                 </div>
             </div>
             <div class="col-sm-6 p-md-0 justify-content-sm-end mt-2 mt-sm-0 d-flex">
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item"><a href="admin/dashboard">Home</a></li>
-                    <li class="breadcrumb-item active"><a href="javascript:void(0)">Member Management</a></li>
+                    <!-- <li class="breadcrumb-item active"><a href="javascript:void(0)">Member Management</a></li> -->
                 </ol>
             </div>
         </div>
@@ -28,14 +28,14 @@
                                 </svg>
                             </span>
                             <div class="media-body">
-                                <p class="mb-1">Total Members</p>
+                                <p class="mb-1">Total Leads</p>
                                 <h4 class="mb-0">{{memberCount}}</h4>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="col-xl-3 col-xxl-4 col-lg-6 col-sm-6">
+            <!-- <div class="col-xl-3 col-xxl-4 col-lg-6 col-sm-6">
                 <div class="widget-stat card">
                     <div class="card-body p-4">
                         <div class="media ai-icon">
@@ -56,8 +56,8 @@
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="col-xl-3 col-xxl-4 col-lg-6 col-sm-6">
+            </div> -->
+            <!-- <div class="col-xl-3 col-xxl-4 col-lg-6 col-sm-6">
                 <div class="widget-stat card">
                     <div class="card-body  p-4">
                         <div class="media ai-icon">
@@ -75,7 +75,7 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </div> -->
         
         </div>
 
@@ -83,49 +83,39 @@
         <div class="card">
             <div class="card-header">
                 <div class="col-6">
-                    List of all members
+                    List of all leads
                 </div>
 
-                <div class="col-6">
+                <!-- <div class="col-6">
                     <button class="btn btn-sm btn-primary rightBtns" type="button" (click)="openModal(addMember)">
                         <i class="fa fa-plus"></i>&nbsp;Add Member
                     </button>
-                </div>
+                </div> -->
             </div>
            
             <div class="card-body">
 
-                <mat-tab-group>
-                    <mat-tab label="Verified Members"> 
-                        <br/>
                            
                         <div class="table-responsive">
                             <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="table table-striped">
                             <thead>
                             <tr>
-                                <th scope="col">Profile Picture</th>
+                              
                                 <th scope="col">Full Name</th>
-                                <th scope="col">Email Address</th>
                                 <th scope="col">Phone Number</th>
-                                <th scope="col">Assembly</th>
-                                <th scope="col">Number of Businesses</th>
-                                <th scope="col">Joining Date</th>
-                                <th scope="col">Status</th>
-                                <th scope="col">Update Details</th>
+                                <th scope="col">Referred By</th>
+                                <th scope="col">Referred Date</th>
+                                <th scope="col">Action</th>
                             </tr>
                             </thead>
                             <tbody>
                                 <tr *ngFor="let member of members; index as i">
                                     <!-- <th scope="row">{{ i + 1 }}</th>		 -->
-                                    <td>
-                                        <div class="circular_image_container symbol symbol-50px me-5">
-                                            <img src="{{member.profilePicture}}" alt="profile pic"/>
-                                        </div>
-                                    </td>
+                              
                                     <td>{{member.name}}</td>
-                                    <td>{{member.email}}</td>
+                          
                                     <td>{{member.phone}}</td>
-                                    <td>{{member.assembly}}</td>
+                              
                                     <td class="text-center">{{member.businesses}}</td>
                                     <td>{{member.joinDate | date:'mediumDate'}}</td>
                                     <td>
@@ -148,68 +138,6 @@
                             </tbody>
                             </table>
                         </div>
-
-                    </mat-tab>
-
-                    <mat-tab label="Pending Verification: {{pendingMemberCount}} Request(s)">
-                        <br/>
-
-                        <div class="table-responsive">
-                            <table datatable [dtOptions]="ptOptions" [dtTrigger]="ptTrigger" class="table table-striped">
-                            <thead>
-                            <tr>
-                                <th scope="col">Profile Picture</th>
-                                <th scope="col">Full Name</th>
-                                <th scope="col">Email Address</th>
-                                <th scope="col">Phone Number</th>
-                                <th scope="col">Assembly</th>
-                                <th scope="col">Number of Businesses</th>
-                                <th scope="col">Joining Date</th>
-                                <th scope="col">Status</th>
-                                <th scope="col">Update Details</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                                <tr *ngFor="let member of pendingMembers; index as i">
-                                    <!-- <th scope="row">{{ i + 1 }}</th>		 -->
-                                    <td>
-                                        <div class="circular_image_container symbol symbol-50px me-5">
-                                            <img src="{{member.profilePicture}}" alt="profile pic"/>
-                                        </div>
-                                    </td>
-                                    <td>{{member.name}}</td>
-                                    <td>{{member.email}}</td>
-                                    <td>{{member.phone}}</td>
-                                    <td>{{member.assembly}}</td>
-                                    <td>{{member.businesses}}</td>
-                                    <td>{{member.joinDate | date:'mediumDate'}}</td>
-                                    <td>
-                                        <span *ngIf="member.deleteStatus === true" class="badge badge-danger">Inactive</span>
-                                        <span *ngIf="member.deleteStatus === false" class="badge badge-success">Active</span>
-                                    </td>
-                                    <td>
-
-                                        <div class="button_containers">                                        
-                                            <button type="button" class="btn btn-sm btn-success" (click)="reviewModal(approveMember, member)"> <i class="fa fa-check"></i> Approve</button> &nbsp;
-                                            <button type="button" class="btn btn-sm btn-danger" (click)="reviewModal(rejectMember, member)"> <i class="fa fa-close"></i> Reject</button>
-                                        </div>
-                                    
-                                    </td>
-                                </tr>
-
-                                <tr *ngIf="pendingMemberCount == 0">
-                                    <td colspan="9" class="no_data_display">
-                                        No data available for display
-                                    </td>
-                                </tr>
-                            </tbody>
-                            </table>
-                        </div>
-                        
-                    </mat-tab>
-
-                </mat-tab-group>
-               
             </div>
         </div>
       
