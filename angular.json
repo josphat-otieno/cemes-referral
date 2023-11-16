@@ -122,5 +122,8 @@
       }
     }
   },
-  "defaultProject": "cemes"
+  "defaultProject": "cemes",
+  "cli": {
+    "analytics": "64e69e4f-b0b8-4b30-bd5b-c51baf43ec61"
+  }
 }
